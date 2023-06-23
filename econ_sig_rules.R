@@ -7,8 +7,7 @@ rm(list =ls())
 library(ggplot2)
 library(dplyr)
 
-# import data from github
-# Load dataset from GitHub
+# load data set from GitHub
 url_file <- "https://raw.githubusercontent.com/yqz5514/Reg-Stats-Coding-Project/main/es_rules_published_presidential_year_2023-03-28.csv"
 sig <- read.csv(url(url_file))
 
