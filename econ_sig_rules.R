@@ -43,6 +43,7 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
   xlab("") +
   scale_y_continuous(expand = c(0, 0)) +
   theme(
+    plot.title = element_text(margin = margin(b = 50, unit = "pt")),
     axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
     legend.position = "none",
     panel.grid.major.x = element_blank(),
@@ -50,11 +51,14 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
     panel.grid.minor = element_blank()
   )
 
+bar1
+
+
 # Generate bar2
 y_lines <- c(0, 25, 50, 75, 100, 125, 150)
 
 num_lines <- 4
-increment <- max(sig$econ) / (num_lines + 1)
+increment <- max(150) / (num_lines + 1)
 additional_lines <- seq(increment, max(sig$econ), by = increment)
 
 bar2 <- bar1 +
@@ -65,6 +69,8 @@ bar2 <- bar1 +
     panel.grid.major.y = element_line(color = "gray", linetype = "solid"),
     panel.grid.minor = element_blank()
   )
+
+bar2
 
 # Generate bar3
 current_date <- format(Sys.Date(), "%B %d, %Y")
