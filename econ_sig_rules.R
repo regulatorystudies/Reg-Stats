@@ -38,12 +38,12 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
   geom_bar(stat = "identity", width = 0.5, color = "black") +
   scale_fill_manual(values = c("blue", "red")) +
   theme_minimal() +
-  ggtitle("Economically Significant Final Rules Published by Presidential Year") +
+  ggtitle("Economically Significant Final Rules Published \nby Presidential Year") +
   ylab("Number of Rules") +
   xlab("") +
   scale_y_continuous(expand = c(0, 0)) +
   theme(
-    plot.title = element_text(margin = margin(b = 50, unit = "pt")),
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 40, unit = "pt")),
     axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
     legend.position = "none",
     panel.grid.major.x = element_blank(),
