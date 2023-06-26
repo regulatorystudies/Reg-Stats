@@ -14,9 +14,6 @@ sig <- read.csv(url(url_file))
 # import data from computer (this pathname must be manually updated, right click on file, hold option, and click copy "" as pathname, paste into read.csv("") below this text)
 # sig <- read.csv("/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/econ_sig_rules/es_rules_published_presidential_year_2023-03-28.csv")
 
-# structure of data frame 
-str(sig)
-
 # modify column names
 colnames(sig) <- c("year", "econ", "excluding.withdrawn")
 
@@ -32,14 +29,35 @@ sig$party <- ifelse(sig$year %in% c(1993:2000, 2009:2016, 2021:2024), "dem", "re
 # make party factor variable
 sig$party <- as.factor(sig$party)
 
-# generate bar graph
-bar <- ggplot(sig, aes(x = year, y = econ, fill = party)) + 
-  geom_bar(stat = "identity", width= 0.5, color = "black") +
+# generate bar1 graph
+bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
+  geom_bar(stat = "identity", width = 0.5, color = "black") +
   scale_fill_manual(values = c("blue", "red")) +
+  theme_minimal() +
   ggtitle("Economically Significant Final Rules Published by Presidential Year") +
   ylab("Number of Rules") +
   xlab("") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
-        legend.position = "none")
-bar
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = "gray", linetype = "solid"),
+    panel.grid.minor = element_blank()
+  )
+bar1
+
+y_lines <- c(0, 25, 50, 75, 100, 125, 150)
+
+num_lines <- 4
+increment <- max(sig$econ) / (num_lines + 1)
+additional_lines <- seq(increment, max(sig$econ), by = increment)
+
+bar2 <- bar1 + scale_y_continuous(breaks = c(y_lines))
+bar2
+
+
+
+
+
+
 
