@@ -69,6 +69,7 @@ bar3 <- bar2 + labs(caption = caption) +
 bar3
 
 
+# test
 
 
 
