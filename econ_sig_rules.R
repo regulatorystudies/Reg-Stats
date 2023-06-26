@@ -33,7 +33,7 @@ sig$party <- ifelse(sig$year %in% c(1993:2000, 2009:2016, 2021:2024), "dem", "re
 # make party factor variable
 sig$party <- as.factor(sig$party)
 
-# generate bar1 graph
+# Generate bar1
 bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
   geom_bar(stat = "identity", width = 0.5, color = "black") +
   scale_fill_manual(values = c("blue", "red")) +
@@ -41,6 +41,7 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
   ggtitle("Economically Significant Final Rules Published by Presidential Year") +
   ylab("Number of Rules") +
   xlab("") +
+  scale_y_continuous(expand = c(0, 0)) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
     legend.position = "none",
@@ -48,30 +49,30 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
     panel.grid.major.y = element_line(color = "gray", linetype = "solid"),
     panel.grid.minor = element_blank()
   )
-bar1
 
+# Generate bar2
 y_lines <- c(0, 25, 50, 75, 100, 125, 150)
 
 num_lines <- 4
 increment <- max(sig$econ) / (num_lines + 1)
 additional_lines <- seq(increment, max(sig$econ), by = increment)
 
-bar2 <- bar1 + scale_y_continuous(breaks = c(y_lines))
-bar2
+bar2 <- bar1 +
+  scale_y_continuous(breaks = c(y_lines), expand = c(0, 0.05)) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = "gray", linetype = "solid"),
+    panel.grid.minor = element_blank()
+  )
 
+# Generate bar3
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
 caption <- paste("Sources: Office of the Federal Register (federalregister.gov) for the years starting 2021;\nOffice of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
 
-bar3 <- bar2 + labs(caption = caption) +
+bar3 <- bar2 +
+  labs(caption = caption) +
   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, unit = "pt")))
 
 bar3
-
-
-# test
-
-
-
-
-
