@@ -6,6 +6,10 @@ rm(list =ls())
 # load packages
 library(ggplot2)
 library(dplyr)
+library(extrafont)
+
+# get custom font
+# font_import(path='/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/GW Logos and Fonts/GW Fonts')
 
 # load data set from GitHub
 url_file <- "https://raw.githubusercontent.com/yqz5514/Reg-Stats-Coding-Project/main/es_rules_published_presidential_year_2023-03-28.csv"
@@ -54,6 +58,15 @@ additional_lines <- seq(increment, max(sig$econ), by = increment)
 
 bar2 <- bar1 + scale_y_continuous(breaks = c(y_lines))
 bar2
+
+current_date <- format(Sys.Date(), "%B %d, %Y")
+
+caption <- paste("Sources: Office of the Federal Register (federalregister.gov) for the years starting 2021;\nOffice of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
+
+bar3 <- bar2 + labs(caption = caption) +
+  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, unit = "pt")))
+
+bar3
 
 
 
