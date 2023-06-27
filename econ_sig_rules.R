@@ -45,7 +45,7 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
   xlab("") +
   scale_y_continuous(expand = c(0, 0)) +
   theme(
-    plot.title = element_text(hjust = 0.5, margin = margin(b = 40, unit = "pt")),
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 30, unit = "pt")),
     axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
     legend.position = "none",
     panel.grid.major.x = element_blank(),
@@ -73,24 +73,68 @@ bar2 <- bar1 +
 
 bar2
 
-# # Generate bar3
+# Generate bar3
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
-caption <- paste("Sources: Office of the Federal Register (federalregister.gov) for the years starting 2021;\nOffice of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for the years starting 2021;\nOffice of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
 
 bar3 <- bar2 +
-  labs(caption = caption) +
+  labs(caption = caption_text) +
   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, unit = "pt")))
 
 bar3
 
 # add tick marks
-bar3 +
-  annotate(
-    geom = "segment",
-    x = seq(1.5, length(sig$year) - 0.5, by = 1),
-    xend = seq(1.5, length(sig$year) - 0.5, by = 1),
-    y = 0,
-    yend = -2,
-    color = "grey"
+ bar3 +
+   annotate(
+     geom = "segment",
+     x = seq(1.5, length(sig$year) - 0.5, by = 1),
+     xend = seq(1.5, length(sig$year) - 0.5, by = 1),
+     y = 0,
+     yend = -2,
+     color = "grey"
   )
+ 
+ bar3 +
+   annotate(
+     geom = "segment",
+     x = seq(0.5, length(sig$year) - 0.5, by = 1),
+     xend = seq(0.5, length(sig$year) - 0.5, by = 1),
+     y = 0,
+     yend = -2,
+     color = "grey"
+   )
+
+ bar3 +
+   annotate(
+     geom = "segment",
+     x = seq(0.5, length(sig$year) + 0.5, by = 1),
+     xend = seq(0.5, length(sig$year) + 0.5, by = 1),
+     y = 0,
+     yend = -2,
+     color = "grey"
+   )
+ 
+
+# # Define the caption text
+# sentence1 <- "This is a caption for the graph."
+# sentence2 <- "It has multiple sentences."
+# sentence3 <- "Each sentence is aligned to the left."
+# 
+# caption_text <- paste(strwrap(sentence1, width = 30), strwrap(sentence2, width = 30), strwrap(sentence3, width = 30), sep = "\n")
+# 
+# # Create a grid viewport for the caption
+# caption_vp <- viewport(
+#   width = 0.8,  # Adjust the width of the caption block
+#   height = 0.1,  # Adjust the height of the caption block
+#   x = 0.5,  # Adjust the x-coordinate of the caption block
+#   y = 0.1  # Adjust the y-coordinate of the caption block
+# )
+# 
+# # Plot the graph and add the caption using grid
+# grid.newpage()
+# pushViewport(viewport(layout = grid.layout(nrow = 2, ncol = 1, heights = unit(c(0.9, 0.1), c("null", "lines")))))
+# vplayout <- function(x, y)
+#   viewport(layout.pos.row = x, layout.pos.col = y)
+# print(bar2, vp = vplayout(1, 1))
+# grid.text(caption_text, vp = caption_vp, hjust = 0, x = 0, gp = gpar(fontsize = 10))
