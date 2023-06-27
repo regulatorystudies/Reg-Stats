@@ -7,6 +7,8 @@ rm(list =ls())
 library(ggplot2)
 library(dplyr)
 library(extrafont)
+library(grid)
+library(ggnewscale)
 
 # get custom font
 # font_import(path='/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/GW Logos and Fonts/GW Fonts')
@@ -35,7 +37,7 @@ sig$party <- as.factor(sig$party)
 
 # Generate bar1
 bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
-  geom_bar(stat = "identity", width = 0.5, color = "black") +
+  geom_bar(stat = "identity", width = 0.5) +
   scale_fill_manual(values = c("blue", "red")) +
   theme_minimal() +
   ggtitle("Economically Significant Final Rules Published \nby Presidential Year") +
@@ -52,7 +54,6 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
   )
 
 bar1
-
 
 # Generate bar2
 y_lines <- c(0, 25, 50, 75, 100, 125, 150)
@@ -72,7 +73,7 @@ bar2 <- bar1 +
 
 bar2
 
-# Generate bar3
+# # Generate bar3
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
 caption <- paste("Sources: Office of the Federal Register (federalregister.gov) for the years starting 2021;\nOffice of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
@@ -82,3 +83,14 @@ bar3 <- bar2 +
   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, unit = "pt")))
 
 bar3
+
+# add tick marks
+bar3 +
+  annotate(
+    geom = "segment",
+    x = seq(1.5, length(sig$year) - 0.5, by = 1),
+    xend = seq(1.5, length(sig$year) - 0.5, by = 1),
+    y = 0,
+    yend = -2,
+    color = "grey"
+  )
