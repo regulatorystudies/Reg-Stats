@@ -88,34 +88,14 @@ bar3
  bar3 +
    annotate(
      geom = "segment",
-     x = seq(1.5, length(sig$year) - 0.5, by = 1),
-     xend = seq(1.5, length(sig$year) - 0.5, by = 1),
-     y = 0,
-     yend = -2,
-     color = "grey"
-  )
- 
- bar3 +
-   annotate(
-     geom = "segment",
-     x = seq(0.5, length(sig$year) - 0.5, by = 1),
-     xend = seq(0.5, length(sig$year) - 0.5, by = 1),
-     y = 0,
-     yend = -2,
-     color = "grey"
-   )
-
- bar3 +
-   annotate(
-     geom = "segment",
      x = seq(0.5, length(sig$year) + 0.5, by = 1),
      xend = seq(0.5, length(sig$year) + 0.5, by = 1),
      y = 0,
      yend = -2,
      color = "grey"
-   )
+  )
  
-
+ 
 # # Define the caption text
 # sentence1 <- "This is a caption for the graph."
 # sentence2 <- "It has multiple sentences."
