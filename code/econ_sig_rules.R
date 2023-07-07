@@ -15,7 +15,7 @@ library(stringr)
 # font_import(path='/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/GW Logos and Fonts/GW Fonts')
 
 # load data set from GitHub
-url_file <- "https://raw.githubusercontent.com/yqz5514/Reg-Stats-Coding-Project/main/es_rules_published_presidential_year_2023-03-28.csv"
+url_file <- "https://raw.githubusercontent.com/yqz5514/Reg-Stats-Coding-Project/main/data/es_rules_published_presidential_year_2023-03-28.csv"
 sig <- read.csv(url(url_file))
 
 # import data from computer (this pathname must be manually updated, right click on file, hold option, and click copy "" as pathname, paste into read.csv("") below this text)
