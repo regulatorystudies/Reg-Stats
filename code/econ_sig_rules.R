@@ -47,7 +47,7 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
   xlab("") +
   scale_y_continuous(expand = c(0, 0)) +
   theme(
-    plot.title = element_text(hjust = 0.5, margin = margin(b = 30, unit = "pt")),
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
     axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
     legend.position = "none",
     panel.grid.major.x = element_blank(),
@@ -83,35 +83,6 @@ bar3 <- bar2 +
 
 bar3
 
-# # Generate caption text
-# current_date <- format(Sys.Date(), "%B %d, %Y")
-# 
-# caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for the years starting 2021; Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.>",
-#                       "Updated:", current_date)
-# 
-# # Add line breaks to align sentences
-# caption_text_wrapped <- str_wrap(caption_text, width = 50)
-# 
-# # Create a function to format the caption
-# format_caption <- function(caption) {
-#   lines <- str_split(caption, pattern = ">")[[1]]
-#   formatted_lines <- paste0("\n", lines, "\n")
-#   formatted_caption <- paste0("\n\n", paste(formatted_lines, collapse = ""), "\n")
-#   return(formatted_caption)
-# }
-# 
-# # Format the caption
-# formatted_caption <- format_caption(caption_text_wrapped)
-# 
-# # Create the plot with the formatted caption
-# bar3 <- bar2 +
-#   labs(caption = formatted_caption) +
-#   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, unit = "pt")))
-# 
-# bar3
-
-
-
 # add tick marks
  bar3 +
    annotate(
@@ -123,26 +94,3 @@ bar3
      color = "grey"
   )
  
- 
-# # Define the caption text
-# sentence1 <- "This is a caption for the graph."
-# sentence2 <- "It has multiple sentences."
-# sentence3 <- "Each sentence is aligned to the left."
-# 
-# caption_text <- paste(strwrap(sentence1, width = 30), strwrap(sentence2, width = 30), strwrap(sentence3, width = 30), sep = "\n")
-# 
-# # Create a grid viewport for the caption
-# caption_vp <- viewport(
-#   width = 0.8,  # Adjust the width of the caption block
-#   height = 0.1,  # Adjust the height of the caption block
-#   x = 0.5,  # Adjust the x-coordinate of the caption block
-#   y = 0.1  # Adjust the y-coordinate of the caption block
-# )
-# 
-# # Plot the graph and add the caption using grid
-# grid.newpage()
-# pushViewport(viewport(layout = grid.layout(nrow = 2, ncol = 1, heights = unit(c(0.9, 0.1), c("null", "lines")))))
-# vplayout <- function(x, y)
-#   viewport(layout.pos.row = x, layout.pos.col = y)
-# print(bar2, vp = vplayout(1, 1))
-# grid.text(caption_text, vp = caption_vp, hjust = 0, x = 0, gp = gpar(fontsize = 10))
