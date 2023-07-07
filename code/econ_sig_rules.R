@@ -15,9 +15,6 @@ library(extrafont)
 url_file <- "https://raw.githubusercontent.com/yqz5514/Reg-Stats-Coding-Project/main/data/ES_rules_published_presidential_year_(with_party)2023-03-28.csv"
 sig <- read.csv(url(url_file))
 
-# import data from computer (this pathname must be manually updated, right click on file, hold option, and click copy "" as pathname, paste into read.csv("") below this text)
-# sig <- read.csv("/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/econ_sig_rules/es_rules_published_presidential_year_2023-03-28.csv")
-
 # modify column names
 colnames(sig) <- c("year", "party", "econ", "excluding.withdrawn")
 
@@ -26,10 +23,6 @@ sig$excluding.withdrawn <- NULL
 
 # remove rows with NA values
 sig <- sig[complete.cases(sig), ]
-
-# create party column ("demyears" must be manually updated with years of Democrat Presidents)
-# demyears <- c(1993:2000, 2009:2016, 2021:2024)
-# sig$party <- ifelse(sig$year %in% demyears, "dem", "rep")
 
 # make party factor variable
 sig$party <- as.factor(sig$party)
