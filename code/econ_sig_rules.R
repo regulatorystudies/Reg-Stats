@@ -7,9 +7,6 @@ rm(list =ls())
 library(ggplot2)
 library(dplyr)
 library(extrafont)
-library(grid)
-library(ggnewscale)
-library(stringr)
 
 # get custom font
 # font_import(path='/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/GW Logos and Fonts/GW Fonts')
@@ -58,14 +55,8 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
 bar1
 
 # generate bar2
-y_lines <- c(0, 25, 50, 75, 100, 125, 150)
-
-num_lines <- 4
-increment <- 150 / (num_lines + 1)
-additional_lines <- seq(increment, max(sig$econ), by = increment)
-
 bar2 <- bar1 +
-  scale_y_continuous(breaks = c(y_lines), expand = c(0, 0.05)) +
+  scale_y_continuous(breaks = seq(0, max(sig$econ) + 25, by = 25), expand = c(0, 0.05), limits = c(-2, max(sig$econ) + 25)) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
     panel.grid.major.x = element_blank(),
@@ -82,18 +73,14 @@ caption_text <- paste("Sources: Office of the Federal Register (federalregister.
 
 bar3 <- bar2 +
   labs(caption = caption_text) +
-  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 6, unit = "pt")))
+  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 6, unit = "pt"))) +
+  annotate(
+    geom = "segment",
+    x = seq(0.5, length(sig$year) + 0.5, by = 1),
+    xend = seq(0.5, length(sig$year) + 0.5, by = 1),
+    y = 0,
+    yend = -2,
+    color = "grey"
+  )
 
 bar3
-
-# add tick marks
- bar3 +
-   annotate(
-     geom = "segment",
-     x = seq(0.5, length(sig$year) + 0.5, by = 1),
-     xend = seq(0.5, length(sig$year) + 0.5, by = 1),
-     y = 0,
-     yend = -2,
-     color = "grey"
-  )
- 
