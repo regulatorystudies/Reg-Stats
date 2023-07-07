@@ -57,12 +57,15 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
 
 bar1
 
+# generate bar2
+y_lines <- c(0, 25, 50, 75, 100, 125, 150)
+
 num_lines <- 4
 increment <- 150 / (num_lines + 1)
 additional_lines <- seq(increment, max(sig$econ), by = increment)
 
 bar2 <- bar1 +
-  scale_y_continuous(breaks = seq(0, max(sig$econ) + 25, by = 25), expand = c(0, 0.05), limits = c(0, max(sig$econ) + 25)) +
+  scale_y_continuous(breaks = c(y_lines), expand = c(0, 0.05)) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
     panel.grid.major.x = element_blank(),
