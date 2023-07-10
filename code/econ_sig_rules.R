@@ -12,8 +12,8 @@ library(extrafont)
 # font_import(path='/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/GW Logos and Fonts/GW Fonts')
 
 # load data set from GitHub
-url_file <- "https://raw.githubusercontent.com/yqz5514/Reg-Stats-Coding-Project/main/data/ES_rules_published_presidential_year_(with_party)2023-03-28.csv"
-sig <- read.csv(url(url_file))
+url_file <- "https://github.com/yqz5514/Reg-Stats-Coding-Project/blob/main/data/ES_rules_published_presidential_year_(with_party)2023-03-28.csv"
+sig <- suppressWarnings(read.csv(url(url_file)))
 
 # modify column names
 colnames(sig) <- c("year", "party", "econ", "excluding.withdrawn")
