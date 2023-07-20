@@ -7,6 +7,9 @@ rm(list =ls())
 library(ggplot2)
 library(dplyr)
 library(extrafont)
+library(tidyverse)
+library(png)
+library(grid)
 
 # get custom font
 # font_import(path='/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/GW Logos and Fonts/GW Fonts')
@@ -77,3 +80,37 @@ bar3 <- bar2 +
   )
 
 bar3
+
+
+
+# add logo
+aPNGFile <- "https://raw.githubusercontent.com/yqz5514/Reg-Stats-Coding-Project/34ad18004520eed898cd773e0079d51c8356140f/gw_ci_rsc_2cs_pos.png"
+
+download.file(aPNGFile,
+              "./logo/RSC_logo.png",mode="wb")
+
+# Read the PNG logo image
+logo <- readPNG("./logo/RSC_logo.png")
+
+# Set the file path for the output PNG logo
+output_path <- "logo.png"
+
+# Save the PNG logo in the working directory
+png(file = output_path)
+grid.raster(logo)
+dev.off()
+
+get_png <- function(filename, width, height) {
+  grid::rasterGrob(png::readPNG(filename), interpolate = TRUE, width = width, height = height)
+}
+
+l <- get_png("logo.png", width = unit(4, "cm"), height = unit(4, "cm"))
+
+t <- grid::roundrectGrob()
+
+bar3 +
+  annotation_custom(l, xmin = 5, xmax = 7, ymin = -15, ymax = -50) +
+  coord_cartesian(clip = "off") +
+  theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "lines"))
+
+
