@@ -30,6 +30,15 @@ sig <- sig[complete.cases(sig), ]
 # make party factor variable
 sig$party <- as.factor(sig$party)
 
+#read logo
+get_png <- function(filename) {
+  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
+}
+
+l <- get_png("/Users/henryhirsch/Henry/Git/Reg-Stats-Coding-Project/code/RSC_logo.png")
+
+
+
 # generate bar1
 bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
   geom_bar(stat = "identity", width = 0.5) +
@@ -39,6 +48,8 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
   ylab("Number of Rules") +
   xlab("") +
   scale_y_continuous(expand = c(0, 0)) +
+  annotation_custom(l, xmin = -9, xmax = 20, ymin = -10, ymax = -30) + # for logo
+  coord_cartesian(clip = "off") +
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
     axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
@@ -81,29 +92,31 @@ bar3 <- bar2 +
 
 bar3
 
-# add logo
-# Read the PNG logo image
-logo <- readPNG("/Users/henryhirsch/Henry/Git/Reg-Stats-Coding-Project/code/RSC_logo.png")
+ggsave("plot1.pdf", plot = bar3, width = 12.5, height = 9, dpi = 300)
 
-# Set the file path for the output PNG logo
-output_path <- "logo.png"
-
-# Save the PNG logo in the working directory
-png(file = output_path)
-grid.raster(logo)
-dev.off()
-
-get_png <- function(filename, width, height) {
-  grid::rasterGrob(png::readPNG(filename), interpolate = TRUE, width = width, height = height)
-}
-
-l <- get_png("logo.png", width = unit(4, "cm"), height = unit(4, "cm"))
-
-t <- grid::roundrectGrob()
-
-bar3 +
-  annotation_custom(l, xmin = 5, xmax = 7, ymin = -25, ymax = -50) +
-  coord_cartesian(clip = "off") +
-  theme(plot.margin = unit(c(1, 1, 1, 1), "lines"))
+# # add logo
+# # Read the PNG logo image
+# logo <- readPNG("/Users/henryhirsch/Henry/Git/Reg-Stats-Coding-Project/code/RSC_logo.png")
+# 
+# # Set the file path for the output PNG logo
+# output_path <- "logo.png"
+# 
+# # Save the PNG logo in the working directory
+# png(file = output_path)
+# grid.raster(logo)
+# dev.off()
+# 
+# get_png <- function(filename, width, height) {
+#   grid::rasterGrob(png::readPNG(filename), interpolate = TRUE, width = width, height = height)
+# }
+# 
+# l <- get_png("logo.png", width = unit(4, "cm"), height = unit(4, "cm"))
+# 
+# t <- grid::roundrectGrob()
+# 
+# bar3 +
+#   annotation_custom(l, xmin = 5, xmax = 7, ymin = -25, ymax = -50) +
+#   coord_cartesian(clip = "off") +
+#   theme(plot.margin = unit(c(1, 1, 1, 1), "lines"))
 
 
