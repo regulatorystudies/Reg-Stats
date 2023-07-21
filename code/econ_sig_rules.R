@@ -94,29 +94,5 @@ bar3
 
 ggsave("plot1.pdf", plot = bar3, width = 12.5, height = 9, dpi = 300)
 
-# # add logo
-# # Read the PNG logo image
-# logo <- readPNG("/Users/henryhirsch/Henry/Git/Reg-Stats-Coding-Project/code/RSC_logo.png")
-# 
-# # Set the file path for the output PNG logo
-# output_path <- "logo.png"
-# 
-# # Save the PNG logo in the working directory
-# png(file = output_path)
-# grid.raster(logo)
-# dev.off()
-# 
-# get_png <- function(filename, width, height) {
-#   grid::rasterGrob(png::readPNG(filename), interpolate = TRUE, width = width, height = height)
-# }
-# 
-# l <- get_png("logo.png", width = unit(4, "cm"), height = unit(4, "cm"))
-# 
-# t <- grid::roundrectGrob()
-# 
-# bar3 +
-#   annotation_custom(l, xmin = 5, xmax = 7, ymin = -25, ymax = -50) +
-#   coord_cartesian(clip = "off") +
-#   theme(plot.margin = unit(c(1, 1, 1, 1), "lines"))
 
 
