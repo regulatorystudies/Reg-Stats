@@ -83,8 +83,8 @@ bar3 <- bar2 +
   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 6, unit = "pt"))) +
   annotate(
     geom = "segment",
-    x = seq(0.5, length(sig$year) + 0.5, by = 1),
-    xend = seq(0.5, length(sig$year) + 0.5, by = 1),
+    x = sig$year,
+    xend = sig$year,
     y = 0,
     yend = -2,
     color = "grey"
@@ -92,6 +92,7 @@ bar3 <- bar2 +
 
 bar3
 
+# save plot as pdf
 ggsave("plot1.pdf", plot = bar3, width = 12.5, height = 9, dpi = 300)
 
 
