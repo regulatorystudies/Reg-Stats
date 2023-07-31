@@ -3,6 +3,9 @@
 # clean environment
 rm(list =ls())
 
+# remotes::install_github("coolbutuseless/ggpattern")
+# ^ use this to install ggpattern package
+
 # load packages
 library(ggplot2)
 library(dplyr)
@@ -10,6 +13,7 @@ library(extrafont)
 library(tidyverse)
 library(png)
 library(grid)
+library(ggpattern)
 
 # get custom font
 # font_import(path='/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/GW Logos and Fonts/GW Fonts')
@@ -39,10 +43,16 @@ l <- get_png("/Users/henryhirsch/Henry/Git/Reg-Stats-Coding-Project/code/RSC_log
 
 
 
+
 # generate bar1
-bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
-  geom_bar(stat = "identity", width = 0.5) +
+bar1 <- ggplot(sig, aes(x = year, y = econ, pattern = party)) +
+  geom_bar_pattern(stat = "identity", width = 0.5,
+                   position = position_dodge(preserve = "single"),
+                   pattern_fill = "black", pattern_angle = 45,
+                   pattern_density = 0.1, pattern_spacing = 0.025,
+                   pattern_key_scale_factor = 0.6, color = "black") +
   scale_fill_manual(values = c("blue", "red")) +
+  scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
   theme_minimal() +
   ggtitle("Economically Significant Final Rules Published \nby Presidential Year") +
   ylab("Number of Rules") +
@@ -60,6 +70,7 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, fill = party)) +
   )
 
 bar1
+
 
 # generate bar2
 bar2 <- bar1 +
