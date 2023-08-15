@@ -36,8 +36,6 @@ pres_colors <- c("Reagan" = "#033C5A", "Bush_41" = "#0190DB","Clinton" = "#FFC72
 # set pres annotations
 pres_annotations <- data.frame(
   president = c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump", "Biden"),
-  x_coords = c(92, 48, 76, 92, 92, 48, 10),
-  y_coords = c(120, 125, 275, 280, 475, 250, 70),
   labels = c("Reagan", "Bush 41", "Clinton", "Bush 43", "Obama", "Trump", "Biden")
 )
 
@@ -66,7 +64,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   theme(panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
         panel.grid.minor = element_blank()) +
-  xlab("Months In Office") +
+  xlab("Number of Months In Office") +
   ylab("Number of Economically Significant Rules Published") +
   ggtitle("Cumulative Economically Significant Final Rules by Administration") +
   labs(color = "President") +
