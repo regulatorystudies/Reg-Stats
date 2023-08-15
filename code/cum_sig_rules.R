@@ -61,7 +61,8 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                   color = pres_annotations$name_color) +
   scale_color_manual(values = pres_colors) +
   theme_minimal() +
-  theme(panel.grid.major.x = element_blank(),
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
         panel.grid.minor = element_blank()) +
   xlab("Number of Months In Office") +
