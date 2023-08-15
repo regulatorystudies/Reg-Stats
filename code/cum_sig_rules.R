@@ -49,7 +49,7 @@ line_ends <- cum_sig_long %>%
   group_by(president) %>%
   summarise(months_in_office = max(months_in_office), econ_rules = max(econ_rules))
 
-# join the end points with the annotations data
+# join the line end points with the pres annotations data
 pres_annotations <- merge(pres_annotations, line_ends, by = "president")
 
 # generate line graph
