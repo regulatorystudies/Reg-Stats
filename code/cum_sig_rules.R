@@ -6,6 +6,7 @@ rm(list = ls())
 # load packages
 library(ggplot2)
 library(tidyr)
+library(dplyr)
 library(ggrepel)
 
 # load data
@@ -28,9 +29,11 @@ cum_sig_long_NA <- pivot_longer(cum_sig, cols = c("Reagan", "Bush_41", "Clinton"
 # remove NA values from long data frame (these NA values are the potential econ_rules values for presidents who didn't/haven't yet served the maximum number of months)
 cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
 
+# set pres colors
 pres_colors <- c("Reagan" = "#033C5A", "Bush_41" = "#0190DB","Clinton" = "#FFC72C", "Bush_43" = "#AA9868", "Obama" = "#008364", "Trump" = "#78BE20", "Biden" = "#C9102F"
 )
 
+# set pres annotations
 pres_annotations <- data.frame(
   president = c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump", "Biden"),
   x_coords = c(92, 48, 76, 92, 92, 48, 10),
@@ -38,13 +41,26 @@ pres_annotations <- data.frame(
   labels = c("Reagan", "Bush 41", "Clinton", "Bush 43", "Obama", "Trump", "Biden")
 )
 
-# Matching the colors directly
+# match the colors directly
 pres_annotations$name_color <- pres_colors[pres_annotations$president]
 
+# calculate the end points of the lines
+line_ends <- cum_sig_long %>%
+  group_by(president) %>%
+  summarise(months_in_office = max(months_in_office), econ_rules = max(econ_rules))
+
+# join the end points with the annotations data
+pres_annotations <- merge(pres_annotations, line_ends, by = "president")
+
+# generate line graph
 line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) + 
   geom_line(linewidth = 0.75) +
-  geom_text(data = pres_annotations, aes(x = x_coords, y = y_coords, label = labels),
-            vjust = -0.5, hjust = 0.5, size = 3, color = pres_annotations$name_color) +  # Set color here
+  geom_text_repel(data = pres_annotations, 
+                  aes(x = months_in_office, y = econ_rules, label = labels),
+                  nudge_x = -1, nudge_y = 10,
+                  segment.size = 0.2,
+                  size = 3,
+                  color = pres_annotations$name_color) +
   scale_color_manual(values = pres_colors) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank(),
@@ -62,9 +78,6 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                      limits = c(0, max(cum_sig_long$months_in_office)))
 
 line1
-
-
-
 
 
 
