@@ -30,8 +30,7 @@ cum_sig_long_NA <- pivot_longer(cum_sig, cols = c("Reagan", "Bush_41", "Clinton"
 cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
 
 # set pres colors
-pres_colors <- c("Reagan" = "#033C5A", "Bush_41" = "#0190DB","Clinton" = "#FFC72C", "Bush_43" = "#AA9868", "Obama" = "#008364", "Trump" = "#78BE20", "Biden" = "#C9102F"
-)
+pres_colors <- c("Reagan" = "#033C5A", "Bush_41" = "#0190DB","Clinton" = "#FFC72C", "Bush_43" = "#AA9868", "Obama" = "#008364", "Trump" = "#78BE20", "Biden" = "#C9102F")
 
 # set pres annotations
 pres_annotations <- data.frame(
@@ -53,12 +52,19 @@ pres_annotations <- merge(pres_annotations, line_ends, by = "president")
 # generate line graph
 line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) + 
   geom_line(linewidth = 0.75) +
-  geom_text_repel(data = pres_annotations, 
+  geom_label_repel(data = pres_annotations, 
                   aes(x = months_in_office, y = econ_rules, label = labels),
-                  nudge_x = -1, nudge_y = 10,
+                  nudge_x = 0, nudge_y = 10,
                   segment.size = 0.2,
                   size = 3,
-                  color = pres_annotations$name_color) +
+                  color = pres_annotations$name_color,
+                  point.size = 1,
+                  box.padding = 0,
+                  point.padding = 0,
+                  min.segment.length = 0.5,
+                  label.size = NA, 
+                  label.padding = 0,
+                  fill = alpha(c("white"), 0.8)) +
   scale_color_manual(values = pres_colors) +
   theme_minimal() +
   theme(legend.position = "none",
