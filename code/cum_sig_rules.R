@@ -12,6 +12,13 @@ library(ggrepel)
 # load data
 cum_sig <- read.csv("/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/cum_sig_rules/Cumulative_ES_rules_published_months_in_office_071023.csv", skip = 1)
 
+#read logo
+get_png <- function(filename) {
+  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
+}
+
+l <- get_png("/Users/henryhirsch/Henry/Git/Reg-Stats-Coding-Project/code/RSC_logo.png")
+
 # Create president_names list which can be updated at the top of the code and then referenced later in the code as needed?
 
 # rename columns (will need to manually update with the names of new presidents)
@@ -49,6 +56,12 @@ line_ends <- cum_sig_long %>%
 # join the line end points with the pres annotations data
 pres_annotations <- merge(pres_annotations, line_ends, by = "president")
 
+# set current date
+current_date <- format(Sys.Date(), "%B %d, %Y")
+
+# set caption text
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for the Biden administration and onwards;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
+
 # generate line graph
 line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) + 
   geom_line(linewidth = 0.75) +
@@ -68,16 +81,19 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                   label.r = 0,
                   fill = alpha(c("white"), 0.8)) +
   scale_color_manual(values = pres_colors) +
+  annotation_custom(l, xmin = 0, xmax = 18, ymin = -80, ymax = -30) + # for logo (need to play around with these settings)
+  coord_cartesian(clip = "off") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         legend.position = "none",
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
-        panel.grid.minor = element_blank()) +
+        panel.grid.minor = element_blank(), 
+        plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 6, unit = "pt"))) +
   xlab("Number of Months In Office") +
   ylab("Number of Economically Significant Rules Published") +
   ggtitle("Cumulative Economically Significant Final Rules by Administration") +
-  labs(color = "President") +
+  labs(color = "President", caption = caption_text) +
   scale_y_continuous(breaks = seq(0, max(cum_sig_long$econ_rules) + 50, by = 50),
                      expand = c(0, 0), 
                      limits = c(-2, max(cum_sig_long$econ_rules) + 50)) +
@@ -87,5 +103,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 
 line1
 
+# save line1 as pdf
+ggsave("line1.pdf", plot = line1, width = 12.5, height = 9, dpi = 300)
 
 
