@@ -30,7 +30,7 @@ cum_sig_long_NA <- pivot_longer(cum_sig, cols = c("Reagan", "Bush_41", "Clinton"
 cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
 
 # set pres colors
-pres_colors <- c("Reagan" = "#033C5A", "Bush_41" = "#0190DB","Clinton" = "#FFC72C", "Bush_43" = "#AA9868", "Obama" = "#008364", "Trump" = "#78BE20", "Biden" = "#C9102F")
+pres_colors <- c("Reagan" = "#C9102F", "Bush_41" = "#008364","Clinton" = "#033C5A", "Bush_43" = "#AA9868", "Obama" = "#0190DB", "Trump" = "#FFC72C", "Biden" = "#78BE20")
 
 # set pres annotations
 pres_annotations <- data.frame(
@@ -69,7 +69,8 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                   fill = alpha(c("white"), 0.8)) +
   scale_color_manual(values = pres_colors) +
   theme_minimal() +
-  theme(legend.position = "none",
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.position = "none",
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
         panel.grid.minor = element_blank()) +
