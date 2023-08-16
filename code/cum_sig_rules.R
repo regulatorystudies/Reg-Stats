@@ -8,6 +8,7 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(ggrepel)
+library(png)
 
 # load data
 cum_sig <- read.csv("/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/cum_sig_rules/Cumulative_ES_rules_published_months_in_office_071023.csv", skip = 1)
@@ -60,7 +61,7 @@ pres_annotations <- merge(pres_annotations, line_ends, by = "president")
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
 # set caption text
-caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for the Biden administration and onwards;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for the Biden administration and subsequent administrations;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
 
 # generate line graph
 line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) + 
@@ -89,7 +90,9 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
         panel.grid.major.x = element_blank(),
         panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
         panel.grid.minor = element_blank(), 
-        plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 6, unit = "pt"))) +
+        plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 6, unit = "pt")),
+        axis.ticks.x = element_line(color = "lightgrey")
+        ) +
   xlab("Number of Months In Office") +
   ylab("Number of Economically Significant Rules Published") +
   ggtitle("Cumulative Economically Significant Final Rules by Administration") +
@@ -104,6 +107,6 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 line1
 
 # save line1 as pdf
-ggsave("line1.pdf", plot = line1, width = 12.5, height = 9, dpi = 300)
+# ggsave("line1.pdf", plot = line1, width = 12.5, height = 9, dpi = 300)
 
 
