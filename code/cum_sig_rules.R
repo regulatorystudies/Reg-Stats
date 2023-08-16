@@ -64,6 +64,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                   min.segment.length = 0.5,
                   label.size = NA, 
                   label.padding = 0,
+                  label.r = 0,
                   fill = alpha(c("white"), 0.8)) +
   scale_color_manual(values = pres_colors) +
   theme_minimal() +
