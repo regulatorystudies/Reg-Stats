@@ -64,7 +64,7 @@ line_ends <- cum_sig_long %>%
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
 # set caption text
-caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for the Biden administration and subsequent administrations;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
 
 # generate line graph
 line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) + 
