@@ -90,7 +90,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                                 "#0190DB",
                                 "#FFC72C",
                                 "#78BE20")) +
-  annotation_custom(l, xmin = 0, xmax = 18, ymin = -80, ymax = -30) + # for logo (need to play around with these settings)
+  annotation_custom(l, xmin = 0, xmax = 18, ymin = -100, ymax = -45) + # for logo (need to play around with these settings)
   coord_cartesian(clip = "off") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
@@ -118,6 +118,6 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 line1
 
 # save line1 as pdf
-ggsave("line1.pdf", plot = line1, width = 15, height = 10, dpi = 300)
+ggsave("line1.pdf", plot = line1, width = 12, height = 9, dpi = 300)
 
 
