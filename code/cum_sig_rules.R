@@ -37,25 +37,28 @@ cum_sig_long_NA <- pivot_longer(cum_sig, cols = c("Reagan", "Bush_41", "Clinton"
 # remove NA values from long data frame (these NA values are the potential econ_rules values for presidents who didn't/haven't yet served the maximum number of months)
 cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
 
-# set pres colors
-pres_colors <- c("Reagan" = "#C9102F", "Bush_41" = "#008364","Clinton" = "#033C5A", "Bush_43" = "#AA9868", "Obama" = "#0190DB", "Trump" = "#FFC72C", "Biden" = "#78BE20")
-
-# set pres annotations
-pres_annotations <- data.frame(
-  president = c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump", "Biden"),
-  labels = c("Reagan", "Bush 41", "Clinton", "Bush 43", "Obama", "Trump", "Biden")
-)
-
-# match the colors directly
-pres_annotations$name_color <- pres_colors[pres_annotations$president]
+# change president column to factor (assign levels and labels)
+cum_sig_long <- cum_sig_long %>% 
+  mutate(president = factor(president,
+                        levels = c("Reagan", 
+                                   "Bush_41",
+                                   "Clinton", 
+                                   "Bush_43",
+                                   "Obama", 
+                                   "Trump",
+                                   "Biden"),
+                        labels = c("Reagan", 
+                                   "Bush 41",
+                                   "Clinton", 
+                                   "Bush 43",
+                                   "Obama", 
+                                   "Trump",
+                                   "Biden")))
 
 # calculate the end points of the lines
 line_ends <- cum_sig_long %>%
   group_by(president) %>%
-  summarise(months_in_office = max(months_in_office), econ_rules = max(econ_rules))
-
-# join the line end points with the pres annotations data
-pres_annotations <- merge(pres_annotations, line_ends, by = "president")
+  summarise(months_in_office_end = max(months_in_office), econ_rules_end = max(econ_rules))
 
 # set current date
 current_date <- format(Sys.Date(), "%B %d, %Y")
@@ -66,12 +69,11 @@ caption_text <- paste("Sources: Office of the Federal Register (federalregister.
 # generate line graph
 line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) + 
   geom_line(linewidth = 0.75) +
-  geom_label_repel(data = pres_annotations, 
-                  aes(x = months_in_office, y = econ_rules, label = labels),
+  geom_label_repel(data = line_ends, 
+                  aes(x = months_in_office_end, y = econ_rules_end, label = president),
                   nudge_x = 0, nudge_y = 10,
                   segment.size = 0.2,
                   size = 3,
-                  color = pres_annotations$name_color,
                   point.size = 1,
                   box.padding = 0,
                   point.padding = 0,
@@ -81,7 +83,13 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                   label.padding = 0,
                   label.r = 0,
                   fill = alpha(c("white"), 0.8)) +
-  scale_color_manual(values = pres_colors) +
+  scale_color_manual(values = c("#C9102F",
+                                "#008364",
+                                "#033C5A",
+                                "#AA9868",
+                                "#0190DB",
+                                "#FFC72C",
+                                "#78BE20")) +
   annotation_custom(l, xmin = 0, xmax = 18, ymin = -80, ymax = -30) + # for logo (need to play around with these settings)
   coord_cartesian(clip = "off") +
   theme_minimal() +
@@ -107,6 +115,6 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 line1
 
 # save line1 as pdf
-# ggsave("line1.pdf", plot = line1, width = 12.5, height = 9, dpi = 300)
+ggsave("line1.pdf", plot = line1, width = 12.5, height = 9, dpi = 300)
 
 
