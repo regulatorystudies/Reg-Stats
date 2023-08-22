@@ -99,7 +99,10 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
         panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
         panel.grid.minor = element_blank(), 
         plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 6, unit = "pt")),
-        axis.ticks.x = element_line(color = "lightgrey")
+        axis.ticks.x = element_line(color = "lightgrey"),
+        axis.title.x = element_text(margin = margin(t = 10), hjust = 0.5),
+        axis.title.y = element_text(margin = margin(r = 10), vjust = 0.5),
+        plot.margin = margin(40, 40, 40, 40)
         ) +
   xlab("Number of Months In Office") +
   ylab("Number of Economically Significant Rules Published") +
@@ -115,6 +118,6 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 line1
 
 # save line1 as pdf
-ggsave("line1.pdf", plot = line1, width = 12.5, height = 9, dpi = 300)
+ggsave("line1.pdf", plot = line1, width = 15, height = 10, dpi = 300)
 
 
