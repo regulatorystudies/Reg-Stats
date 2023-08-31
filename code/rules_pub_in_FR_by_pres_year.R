@@ -34,7 +34,7 @@ rules_pub_long <- rules_pub_long %>%
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
 # set caption text
-caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
+caption_text <- paste("Source: Federal Register API; excludes\n corrections to rules.\n\nUpdated:", current_date)
 
 line1 <- ggplot(rules_pub_long,
                 aes(x = year,
@@ -45,7 +45,7 @@ line1 <- ggplot(rules_pub_long,
   geom_line(aes(linetype = rule_type), linewidth = 0.75) +
   scale_color_manual(values = c("#033C5A", "#0190DB"),
                      guide = "legend") +
-  scale_linetype_manual(values = c("solid", "dashed"),
+  scale_linetype_manual(values = c("solid", "33"),
                         guide = "legend") +
   coord_cartesian(clip = "off") +
   theme_minimal() +
@@ -71,6 +71,7 @@ line1 <- ggplot(rules_pub_long,
   )
 
 line1
+
 
 
 
