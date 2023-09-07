@@ -8,9 +8,17 @@ library(ggplot2)
 library(png)
 library(tidyr)
 library(dplyr)
+library(png)
 
 # load data
 rules_pub_NA <- read.csv("/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/rules_pub_in_FR_by_pres_year/federal_register_rules_presidential_year_0.csv")
+
+#read logo
+get_png <- function(filename) {
+  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
+}
+
+l <- get_png("/Users/henryhirsch/Henry/Git/Reg-Stats-Coding-Project/code/RSC_logo.png")
 
 # modify column names
 colnames(rules_pub_NA) <- c("year", "final", "proposed")
@@ -34,7 +42,7 @@ rules_pub_long <- rules_pub_long %>%
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
 # set caption text
-caption_text <- paste("Source: Federal Register API; excludes\n corrections to rules.\n\nUpdated:", current_date)
+caption_text <- paste("Source: Federal Register API;\n excludes corrections to rules.\n\nUpdated:", current_date)
 
 line1 <- ggplot(rules_pub_long,
                 aes(x = year,
@@ -47,6 +55,7 @@ line1 <- ggplot(rules_pub_long,
                      guide = "legend") +
   scale_linetype_manual(values = c("solid", "33"),
                         guide = "legend") +
+  annotation_custom(l, xmin = 0, xmax = 10, ymin = -500, ymax = -1500) + # for logo (need to play around with these settings)
   coord_cartesian(clip = "off") +
   theme_minimal() +
   theme(
@@ -56,8 +65,8 @@ line1 <- ggplot(rules_pub_long,
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
     panel.grid.minor = element_blank(), 
-    plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 6, unit = "pt")),
-    plot.margin = margin(40, 40, 40, 40),
+    plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 0, unit = "pt")),
+    plot.margin = margin(50, 50, 50, 50),
     axis.text.x = element_text(angle = 60, hjust = 1)
   ) +
   xlab(element_blank()) +
@@ -67,12 +76,13 @@ line1 <- ggplot(rules_pub_long,
   scale_y_continuous(
     breaks = seq(0, max(rules_pub_long$rule_num) + 1000, by = 1000),
     expand = c(0, 0), 
-    limits = c(-2, max(rules_pub_long$rule_num) + 1000)
+    limits = c(0, max(rules_pub_long$rule_num) + 1000)
   )
 
 line1
 
-
+# save line1 as pdf
+ggsave("line2.pdf", plot = line1, width = 12, height = 9, dpi = 300)
 
 
 
