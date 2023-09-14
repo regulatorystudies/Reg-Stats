@@ -59,15 +59,18 @@ line1 <- ggplot(rules_pub_long,
   coord_cartesian(clip = "off") +
   theme_minimal() +
   theme(
-    plot.title = element_text(hjust = 0.5, margin = margin(b = 0)),
+    plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 0)),
     legend.position = "top",
-    legend.margin = margin(t = 10),
+    legend.margin = margin(t = 10, b = -50),
+    legend.text = element_text(size = 15),
+    legend.key.size = unit(2, "lines"),    
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
     panel.grid.minor = element_blank(), 
     plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 0, unit = "pt")),
     plot.margin = margin(50, 50, 50, 50),
-    axis.text.x = element_text(angle = 60, hjust = 1)
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    axis.title.y = element_text(size = 15)
   ) +
   xlab(element_blank()) +
   ylab("Number of Rules") +
