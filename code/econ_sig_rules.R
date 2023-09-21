@@ -62,7 +62,6 @@ bar1 <- ggplot(sig, aes(x = year, y = econ, pattern = party)) +
   coord_cartesian(clip = "off") +
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
-    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
     legend.position = "none",
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "gray", linetype = "solid"),
@@ -76,7 +75,7 @@ bar1
 bar2 <- bar1 +
   scale_y_continuous(breaks = seq(0, max(sig$econ) + 25, by = 25), expand = c(0, 0.05), limits = c(-2, max(sig$econ) + 25)) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "gray", linetype = "solid"),
     panel.grid.minor = element_blank()
@@ -104,7 +103,7 @@ bar3 <- bar2 +
 bar3
 
 # save plot as pdf
-ggsave("plot1.pdf", plot = bar3, width = 12.5, height = 9, dpi = 300)
+ggsave("bar1.pdf", plot = bar3, width = 12.5, height = 9, dpi = 300)
 
 
 

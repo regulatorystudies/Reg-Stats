@@ -15,7 +15,7 @@ rules_pub_NA <- read.csv("/Users/henryhirsch/Henry/Work/2023/Regulatory Studies 
 
 #read logo
 get_png <- function(filename) {
-  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
+  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE) # adjust logo size dimensions here
 }
 
 l <- get_png("/Users/henryhirsch/Henry/Git/Reg-Stats-Coding-Project/code/RSC_logo.png")
