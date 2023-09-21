@@ -55,7 +55,7 @@ line1 <- ggplot(rules_pub_long,
                      guide = "legend") +
   scale_linetype_manual(values = c("solid", "33"),
                         guide = "legend") +
-  annotation_custom(l, xmin = 0, xmax = 10, ymin = -500, ymax = -1500) + # for logo (need to play around with these settings)
+  annotation_custom(l, xmin = -4, xmax = 10, ymin = -450, ymax = -1050) + # for logo (need to play around with these settings)
   coord_cartesian(clip = "off") +
   theme_minimal() +
   theme(

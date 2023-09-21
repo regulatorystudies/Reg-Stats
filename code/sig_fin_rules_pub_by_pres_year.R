@@ -73,7 +73,7 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, pattern = party)) +
   ) +
   theme(
     panel.grid.minor = element_blank()) +
-  annotation_custom(l, xmin = -9, xmax = 20, ymin = -10, ymax = -30) + # for logo
+  annotation_custom(l, xmin = -9, xmax = 15, ymin = -70, ymax = -30) + # for logo
   coord_cartesian(clip = "off") +
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
