@@ -48,20 +48,23 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   geom_bar(stat = "identity", fill = "#033C5A") +
   theme_minimal() +
   ggtitle("Total Pages Published in the Federal Register") +
-  ylab("Thousands of Pages") +
-  xlab("Year") +
-  scale_y_continuous(breaks = seq(0, max(tot_pages$total) + 10000, by = 10000)) +
+  ylab("Number of Pages") +
+  xlab("") +
+  scale_y_continuous(breaks = seq(0, max(tot_pages$total) + 20000, by = 20000), expand = c(0, 0),
+                     limits = c(0, max(tot_pages$total) + 20000)) +
   labs(caption = caption_text) +
   theme(
     plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt")),
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
     axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
     legend.position = "none",
-    panel.grid.major.y = element_line(color = "gray", linetype = "solid")
+    panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
   )
 
-
 bar1
+
 
 # generate bar1
 # bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
