@@ -13,10 +13,10 @@ library(grid)
 library(ggpattern)
 library(scales)
 
-# # load data
+# load data
 tot_pages <- read.csv("/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/tot_pages_pub_in_FR/totalpagesfederalregister_03272023.csv", skip = 4)
 
-#read logo
+# read logo
 get_png <- function(filename) {
   grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
 }
@@ -73,9 +73,3 @@ bar1
 
 # save plot as pdf
 ggsave("bar3.pdf", plot = bar1, width = 12.5, height = 9, dpi = 300)
-
-
-
-
-
-

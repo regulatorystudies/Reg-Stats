@@ -75,7 +75,7 @@ bar1
 bar2 <- bar1 +
   scale_y_continuous(breaks = seq(0, max(sig$econ) + 25, by = 25), expand = c(0, 0.05), limits = c(-2, max(sig$econ) + 25)) +
   theme(
-    axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
+    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "gray", linetype = "solid"),
     panel.grid.minor = element_blank()

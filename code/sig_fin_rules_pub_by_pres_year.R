@@ -74,7 +74,7 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, pattern = party)) +
   coord_cartesian(clip = "off") +
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
-    axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
+    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
     legend.position = "none",
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = "gray", linetype = "solid"),

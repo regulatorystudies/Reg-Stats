@@ -69,7 +69,7 @@ line1 <- ggplot(rules_pub_long,
     panel.grid.minor = element_blank(), 
     plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 0, unit = "pt")),
     plot.margin = margin(50, 50, 50, 50),
-    axis.text.x = element_text(angle = 60, hjust = 1),
+    axis.text.x = element_text(angle = 65, hjust = 1),
     axis.title.y = element_text(size = 15)
   ) +
   xlab(element_blank()) +
