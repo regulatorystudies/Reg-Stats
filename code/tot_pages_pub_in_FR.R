@@ -51,57 +51,27 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   ggtitle("Total Pages Published in the Federal Register") +
   ylab("Number of Pages") +
   xlab("") +
-  scale_y_continuous(breaks = seq(0, max(tot_pages$total) + 20000, by = 20000), expand = c(0, 0),
-                     limits = c(-2, max(tot_pages$total) + 20000),
-                     labels = label_number(suffix = "k", scale = 1e-3)) +
+  scale_y_continuous(breaks = seq(0, max(tot_pages$total) + 10000, by = 10000), expand = c(0, 0),
+                     limits = c(-2, max(tot_pages$total) + 10000),
+                     labels = function(x) ifelse(x == 0, "0", scales::label_number(suffix = "k", scale = 1e-3)(x))
+  ) +
+  scale_x_discrete(breaks = seq(min(tot_pages$year), max(tot_pages$year), by = 2)) + 
   labs(caption = caption_text) +
   theme(
     plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt")),
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
-    axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
+    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
     legend.position = "none",
     panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
+    panel.grid.minor.y = element_blank(),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank()
   )
 
 bar1
 
-
-# generate bar1
-# bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
-#   theme_minimal() +
-#   ggtitle("Total Pages Published in the Federal Register") +
-#   ylab("Thousands of Pages") +
-#   xlab("") +
-#   scale_y_continuous(breaks = seq(0, max(tot_pages$total) + 50, by = 50), expand = c(0, 0.05), limits = c(-2, max(tot_pages$total) + 50)) +
-#   labs(caption = caption_text) +
-#   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
-#   annotate(
-#     geom = "segment",
-#     x = tot_pages$year,
-#     xend = tot_pages$year,
-#     y = 0,
-#     yend = -2,
-#     color = "grey"
-#   ) +
-#   theme(
-#     panel.grid.minor = element_blank()) +
-#   annotation_custom(l, xmin = -9, xmax = 15, ymin = -70, ymax = -30) + # for logo
-#   coord_cartesian(clip = "off") +
-#   theme(
-#     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
-#     axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
-#     legend.position = "none",
-#     panel.grid.major.x = element_blank(),
-#     panel.grid.major.y = element_line(color = "gray", linetype = "solid"),
-#     panel.grid.minor = element_blank()
-#   )
-# 
-# bar1
-
 # save plot as pdf
-# ggsave("bar3.pdf", plot = bar1, width = 12.5, height = 9, dpi = 300)
+ggsave("bar3.pdf", plot = bar1, width = 12.5, height = 9, dpi = 300)
 
 
 
