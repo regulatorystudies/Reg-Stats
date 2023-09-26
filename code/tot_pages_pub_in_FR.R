@@ -11,6 +11,7 @@ library(tidyverse)
 library(png)
 library(grid)
 library(ggpattern)
+library(scales)
 
 # # load data
 tot_pages <- read.csv("/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/tot_pages_pub_in_FR/totalpagesfederalregister_03272023.csv", skip = 4)
@@ -51,7 +52,8 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   ylab("Number of Pages") +
   xlab("") +
   scale_y_continuous(breaks = seq(0, max(tot_pages$total) + 20000, by = 20000), expand = c(0, 0),
-                     limits = c(0, max(tot_pages$total) + 20000)) +
+                     limits = c(-2, max(tot_pages$total) + 20000),
+                     labels = label_number(suffix = "k", scale = 1e-3)) +
   labs(caption = caption_text) +
   theme(
     plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt")),
