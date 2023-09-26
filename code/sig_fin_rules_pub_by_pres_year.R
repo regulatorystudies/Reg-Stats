@@ -3,7 +3,6 @@
 # clean environment
 rm(list =ls())
 
-
 # load packages
 library(ggplot2)
 library(dplyr)
@@ -12,7 +11,6 @@ library(tidyverse)
 library(png)
 library(grid)
 library(ggpattern)
-
 
 # load data
 sig_fin_rules <- read.csv("/Users/henryhirsch/Henry/Work/2023/Regulatory Studies Center/projects/project 2 (regstats graphs)/sig_fin_rules_pub_by_pres_year/sig_rules_published_presidential_year_(with_party)_032023.csv")
