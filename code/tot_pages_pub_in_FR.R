@@ -52,11 +52,12 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   ylab("Number of Pages") +
   xlab("") +
   scale_y_continuous(breaks = seq(0, max(tot_pages$total) + 10000, by = 10000), expand = c(0, 0),
-                     limits = c(-2, max(tot_pages$total) + 10000),
+                     limits = c(0, max(tot_pages$total) + 10000),
                      labels = function(x) ifelse(x == 0, "0", scales::label_number(suffix = "k", scale = 1e-3)(x))
   ) +
   scale_x_discrete(breaks = seq(min(tot_pages$year), max(tot_pages$year), by = 2)) + 
   labs(caption = caption_text) +
+  annotation_custom(l, xmin = 0, xmax = 100, ymin = -50, ymax = 100) + # for logo
   theme(
     plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt")),
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
