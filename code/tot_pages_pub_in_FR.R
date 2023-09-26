@@ -42,3 +42,64 @@ colnames(tot_pages) <- c("year", "total")
 
 # make total an integer variable (remove commas and then convert)
 tot_pages$total <- as.integer(gsub(",", "", tot_pages$total))
+
+# generate bar1
+bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
+  geom_bar(stat = "identity", fill = "#033C5A") +
+  theme_minimal() +
+  ggtitle("Total Pages Published in the Federal Register") +
+  ylab("Thousands of Pages") +
+  xlab("Year") +
+  scale_y_continuous(breaks = seq(0, max(tot_pages$total) + 10000, by = 10000)) +
+  labs(caption = caption_text) +
+  theme(
+    plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt")),
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
+    axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
+    legend.position = "none",
+    panel.grid.major.y = element_line(color = "gray", linetype = "solid")
+  )
+
+
+bar1
+
+# generate bar1
+# bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
+#   theme_minimal() +
+#   ggtitle("Total Pages Published in the Federal Register") +
+#   ylab("Thousands of Pages") +
+#   xlab("") +
+#   scale_y_continuous(breaks = seq(0, max(tot_pages$total) + 50, by = 50), expand = c(0, 0.05), limits = c(-2, max(tot_pages$total) + 50)) +
+#   labs(caption = caption_text) +
+#   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
+#   annotate(
+#     geom = "segment",
+#     x = tot_pages$year,
+#     xend = tot_pages$year,
+#     y = 0,
+#     yend = -2,
+#     color = "grey"
+#   ) +
+#   theme(
+#     panel.grid.minor = element_blank()) +
+#   annotation_custom(l, xmin = -9, xmax = 15, ymin = -70, ymax = -30) + # for logo
+#   coord_cartesian(clip = "off") +
+#   theme(
+#     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
+#     axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
+#     legend.position = "none",
+#     panel.grid.major.x = element_blank(),
+#     panel.grid.major.y = element_line(color = "gray", linetype = "solid"),
+#     panel.grid.minor = element_blank()
+#   )
+# 
+# bar1
+
+# save plot as pdf
+# ggsave("bar3.pdf", plot = bar1, width = 12.5, height = 9, dpi = 300)
+
+
+
+
+
+
