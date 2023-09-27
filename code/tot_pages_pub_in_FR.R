@@ -57,7 +57,7 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   ) +
   scale_x_discrete(breaks = seq(min(tot_pages$year), max(tot_pages$year), by = 2)) + 
   labs(caption = caption_text) +
-  annotation_custom(l, xmin = 0, xmax = 100, ymin = -50, ymax = 100) + # for logo
+  annotation_custom(l, xmin = 0, xmax = 50, ymin = -30, ymax = 0) + # for logo
   theme(
     plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt")),
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
