@@ -7,12 +7,18 @@ output: html_document
 
 ## Initialize
 
-We begin by initializing the Rmarkdown file. This is where we set relevant 
+We begin by initializing the Rmarkdown file. This is where we set relevant parameters and establish where this markdown file is located within the project directory, using the `[here](https://here.r-lib.org/reference/i_am.html)` package.
+
+The `i_am` function indicates that `workflow_demo.Rmd` is located within the `code` folder inside the main project directory. In other words, the project root is located immediately above the `code` folder. All future calls to files are based on their relative location to the project root.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
 here::i_am("code/workflow_demo.Rmd")
 ```
+
+Import the packages required for the remainder of the rmarkdown file. It's easier to keep track of the necessary packages when all imports occur at the top of the file.
 
 ```{r imports, results='hide', warning=FALSE}
 
@@ -27,10 +33,14 @@ library(here)
 
 ## Load data
 
-```{r}
+With the project root established, we can load the data using `here` with a relative path. In place of the absolute path (i.e., "C:\Users\mark\Box Sync\_MF\Reg_Stats\Reg-Stats-Coding-Project"), point to the file name by using the location relative to the project root ("data") and the file name ("federal_register_rules_presidential_year_0.csv").
+
+```{r load_data}
+
+# load csv using here
 rules_pub_NA <- read.csv(here("data", "federal_register_rules_presidential_year_0.csv"))
 
-
+# eventually separate this into another file for reuse, then import/call the function
 get_png <- function(filename) {
   grid::rasterGrob(png::readPNG(filename),interpolate = TRUE) # adjust logo size dimensions here
 }
@@ -39,7 +49,12 @@ l <- get_png(here("code", "RSC_logo.png"))
 
 ```
 
-```{r}
+## Process data
+
+Takes step to process the data so it's in a format convenient for plotting. This shouldn't change much.
+
+```{r clean_data}
+
 # modify column names
 colnames(rules_pub_NA) <- c("year", "final", "proposed")
 
@@ -60,7 +75,12 @@ rules_pub_long <- rules_pub_long %>%
 
 ```
 
-```{r}
+## Plot data
+
+Plot the data in the appropriate charts. This also shouldn't change much. The main difference is that the output file is saved using `here`. Notice that we specify the intended subfolder that will contain the file and the file name. If the output folder does not exist, it's [created](https://www.geeksforgeeks.org/r-check-if-a-directory-exists-and-create-if-it-does-not/) in the process.
+
+```{r plot_data, results='markup'}
+
 # set current date
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
@@ -106,6 +126,12 @@ line1 <- ggplot(rules_pub_long,
   )
 
 line1
+
+# create empty output folder if it doesn't already exist
+out = here("output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
 
 # save line1 as pdf
 ggsave(here("output", "FR_rules_by_pres_year.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
