@@ -54,22 +54,3 @@
   
   # thank you to Yaxin for developing this custom theme!
   
-  final_maj0 <- read.csv(here("data", "major_rules_presidential_year_03172023.csv"))
-  
-  final_maj <- final_maj0[c(2:28), c(0:5)]
-  
-  colnames(final_maj) <- c("year", "totalmr", "tmrexcludenonsig", "party", "fay")
-  
-  final_maj <- final_maj %>% 
-    mutate(totalmr = as.numeric(totalmr), 
-           tmrexcludenonsig = as.numeric(tmrexcludenonsig),
-           party = factor(party, 
-                          levels = c(0,1), 
-                          labels = c("Republican", "Democrat")))
-  
-  ggplot() +
-    geom_col(data = final_maj, 
-             mapping = aes(x = year, y = totalmr, 
-                           fill = party))+
-    scale_fill_manual(values = c(red, GWblue))
-  
