@@ -33,7 +33,7 @@ source(here("code", "style.R"))
 
 ```{r load data}
 # load csv using here
-sig_fin_rules <- read.csv(here("data", "ES_rules_published_presidential_year_(with_party)_2023-03-28.csv"))
+sig_fin_rules <- read.csv(here("data", "sig_rules_published_presidential_year_(with_party)_032023.csv"))
 
 # eventually separate this into another file for reuse, then import/call the function
 # ^ HOW TO DO THIS?
@@ -67,7 +67,7 @@ sig_fin_rules <- sig_fin_rules[ , c("year", "party", "rules")]
 sig_fin_rules <- sig_fin_rules[1:(nrow(sig_fin_rules) - 3), ]
 
 # get rid of remaining rows with NA values
-sig_fin_rules <- sig_fin_rules[complete.cases(sig_fin_rules), ]
+# sig_fin_rules <- sig_fin_rules[complete.cases(sig_fin_rules), ]
 
 # make party factor variable
 sig_fin_rules$party <- as.factor(sig_fin_rules$party)
@@ -76,12 +76,13 @@ sig_fin_rules$party <- as.factor(sig_fin_rules$party)
 
 ```{r generate graph}
 # generate bar1
-bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, pattern = party)) +
+bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = party)) +
   geom_bar_pattern(stat = "identity", width = 0.5,
                    position = position_dodge(preserve = "single"),
-                   pattern_fill = "black", pattern_angle = 45,
+                   pattern_color = NA,
+                   pattern_fill = lightblue, pattern_angle = 45,
                    pattern_density = 0.1, pattern_spacing = 0.025,
-                   pattern_key_scale_factor = 0.6, color = "black") +
+                   pattern_key_scale_factor = 0.6) +
   scale_fill_manual(values = c(GWblue, red)) +
   scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
   theme_minimal() +
