@@ -1,0 +1,95 @@
+---
+title: "Importing Style using source()"
+author: "Sarah Hay"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Initialize 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+here::i_am("code/demo_style_script.Rmd")
+
+```
+
+Import packages for the remainder of the file here. 
+```{r imports, results='hide', warning=FALSE, message=FALSE}
+
+library(tidyverse)
+library(ggpattern)
+library(ggrepel)
+library(here)
+```
+I'll note that I (personally) only load in the tidyverse package - it contains ggplot2, tidyr, dplyr, and any other tidy packages you use. I think it helps tidy things up a bit!
+
+# Load style content using source
+
+We will load our style information from a separate R script. This script contains colors as objects, the RSC logo, GW's preferred font, and a custom theme to use in plotting. By using source() to load our style information, we will only need to update style changes in one place, rather than across multiple scripts. 
+
+```{r importing_style_information, message=FALSE}
+
+source(here("code", "style.R"))
+
+```
+
+After running this code, you should now see colors, the logo, and a custom theme in your environment.
+
+# Demo chart
+I'll show how this works with a quick demo now, using the Number of Final Major Rules Published by Presidential year dataset. 
+
+## Preparation
+```{r loading data}
+final_maj0 <- read.csv(here("data", "major_rules_presidential_year_03172023.csv"))
+
+```
+One habit I got into during my data viz class is to load data to a data0 dataframe, and then make any changes to it in a new dataframe. That way, if anything goes horribly wrong, you still have your original dataset loaded in and ready to work with!
+
+```{r processing_data}
+final_maj <- final_maj0[c(2:28), c(0:5)]
+
+colnames(final_maj) <- c("year", "totalmr", "tmrexcludenonsig", "party", "fay")
+
+final_maj <- final_maj %>% 
+  mutate(totalmr = as.numeric(totalmr), 
+         tmrexcludenonsig = as.numeric(tmrexcludenonsig),
+         party = factor(party, 
+                        levels = c(0,1), 
+                        labels = c("Republican", "Democrat")))
+
+```
+```{r other_prep_for_plot}
+current_date <- format(Sys.Date(), "%B %d, %Y")
+  
+caption_text <- paste("Source: Government Accountability Office \n\nUpdated:", current_date)
+
+wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
+```
+
+## Plotting
+```{r plot}
+major_rules <- ggplot() +
+  geom_col_pattern(data = final_maj, 
+                   mapping = aes(x = year, y = totalmr, fill = party, pattern = party),
+                   width = 0.5, pattern_color = NA, pattern_fill = fill,
+                   pattern_angle = 45, pattern_density = 0.1, pattern_spacing = 0.03) +
+  labs(x = "", y = "Number of Major Rules", 
+       title = "Number of Final Major Rules Published\nby Presidential Year", 
+       caption = wrapped_caption) +
+  scale_y_continuous(limits = c(-2, max(final_maj$totalmr) + 25),
+                     breaks = seq(0, max(final_maj$totalmr) + 25, by = 25), 
+                     expand = c(0,0)) +
+  scale_fill_manual(values = c(red, GWblue)) +
+  scale_pattern_manual(values = c("none", "stripe")) + 
+  #annotation_custom(logo, xmin = -5, xmax = 10, ymin = -20, ymax = -50) +
+  #coord_cartesian(clip = "off") +
+  theme_RSC
+
+major_rules
+  
+``` 
+As you can see in this plot, the font worked, the colors worked, and the theme worked!
+
+I couldn't figure out how to add the logo the way y'all have it in your code, unfortunately (I typically use a different package in my own work). But I think this is a pretty solid proof of concept for using a separate Style script to read in colors, fonts, logos, and themes!

@@ -1,0 +1,143 @@
+# load packages
+
+```{r}
+  library(here)
+  library(showtext)
+  library(magick)
+  library(tidyverse)
+```
+
+# Reg Stats Style Guide
+
+## Purpose of Reg Stats
+
+The purpose of the Reg Stats page is to provide visually appealing charts that accurately communicate data that is important to or featured in our research.
+
+### Color Scheme for Charts and Graphs
+
+### GW Color Schemes
+
+GW's color palette for items intended for online use are separate from those in the Identity Standards. Details for GW Web Colors are as follows:
+
+Use a white background for all charts and graphs. ● Do this in Excel: Right click on the plot area \> Shape Fill \> Select a color.
+
+Use a standard black for all axis labels.
+
+Use the GW Blue for Democratic administration data and the Secondary red for Republican.
+
+If a graph or chart calls for three or more colors, use the above colors in the following order:
+
+#### core primary colors
+
+```{r}
+    GWblue <- "#033C5A"
+    GWbuff <- "#A69362"
+    Blue   <- "#0190DB"
+```
+
+#### secondary colors
+
+```{r}
+GWblue_sec: "#688A9C" 
+GWbuff_sec: "#AA9868", "#C0B28E", "#D9D0BB"
+Blue_sec:   "#0073AA", "#0190DB", "#67BCE9", "#B2DDF4"
+DarkGreen_sec:   "#00635D", "#008364","#66B5A2", "#B2D9D0"
+LightGreen_sec:  "#78BE20", "#AED879", "#D6EBBC"
+Brown_sec:  "#A75523", "#CA997B", "#E4CCBD"
+DarkYellow:     "#FFD400"
+Red:        "#C9102F"
+```
+
+#### Neutral Colors
+
+```{r}
+"#4A4A4A"
+"#9B9B9B"
+"#E0E0E0"
+"#F3F3F3"
+```
+
+Use a standard black for all axis labels.
+
+Use the GW Blue for Democratic administration data and the Secondary red for Republican.
+
+If a graph or chart calls for three or more colors, use the above colors in the following order: 1. GW Blue 2. GW Alternative Blue 3. GW Buff 4. Secondary red 5. Secondary teal 6. Secondary green 7. Secondary yellow 8. Secondary brown 9. Neutral colors
+
+### Formatting for Charts and Graphs
+
+#### Fonts
+
+For all Reg Stats charts, the primary font is AvenirNext LT Pro Regular
+
+```         
+● If the font is too wide for axis labels, use Avenir Next LT Pro Condensed
+● All other fonts should only be used if necessary
+```
+
+All charts will use the GW font package. The main fonts are
+
+```         
+● AvenirNext LT Pro Regular
+o AvenirNext LT Pro Italic
+● AvenirNext LT Pro Medium
+o AvenirNext LT Pro Medium Italic
+● AvenirNext LT Pro Bold
+o AvenirNext LT Pro Medium Bold
+● Avenir Next LT Pro Condensed
+o Avenir Next LT Pro Condensed Italic
+● Avenir Next LT Pro Bold Condensed
+o Avenir Next LT Pro Bold Condensed Italic
+● Hoefler Text Regular
+o Hoefler Text Italic
+● Hoefler Text Bold
+o Hoefler Text Bold Italic
+● Hoefler Text Black
+o Hoefler ext Black Italic
+● Liberator Light
+● Liberator Medium
+```
+
+```         
+● Liberator Heavy
+```
+
+#### Formatting
+
+All formatting should be simple and easily readable.
+
+If necessary, make lines and bars thicker to provide more visual appeal.
+
+```         
+● Do this in Excel: Right click on the line/bar > Format Data Series > Line Style > Increase
+or decrease the width or change the compound type.
+```
+
+Each chart should include:
+
+1.  Title (size 20 font)
+2.  X & Y-axis labels (12 font)
+3.  GW Reg Studies logo (copied below)
+4.  data source (11 font), and the date of when it was last updated (11 font).
+
+**You can adjust font sizes as needed.**
+
+5.  X-axis text is at a -65 degree rotation.
+6.  The tick mark lines are a 0.1 pt width, Black in color, with a 60% transparency. The gap width between lines is 100%.
+7.  The bars for Democratic administration data are in patent fill (Dotted: 75%), foreground = GW Blue, and no border line. The bars for Republican are in solid fill, color = Secondary red, and no border line.
+8.  The RSC log has a 'Height' of 0.81" 'Width' of 2.49", and its 'Scale Height' & 'Width' are at 3 0%.
+
+#### Example:
+
+#### Logo Image File:
+
+To create space at the bottom of the chart, click a space between the Y-axis lines within the chart itself and drag the 'chart area' inward as needed.
+
+The logo should be aligned with the left edge of the X-axis text, and the Source text should be along the right edge of the chart. The bottom of the logo and the text box should be aligned.
+
+Copy the logo image file above and paste it into your Excel file, then select the image and select Size & Properties in the Format Picture window, and check the 'Lock aspect ratio' and 'Relative to original picture size' boxes. A universal ratio may not apply to all charts, but the above example has a 'Height' of 1.08" 'Width' of 3.32" and its 'Scale Height' & 'Width' are at 40%.
+
+The logo should be hyperlinked to our website home page; <https://regulatorystudies.columbian.gwu.edu/>.
+
+Insert a text box to put in the Source & Updated information. The Source should be hyperlinked with where the source of the data can be found.
+
+This document serves as a guideline to follow. Use your best judgement for all charts!
