@@ -29,32 +29,32 @@ If a graph or chart calls for three or more colors, use the above colors in the 
 
 #### core primary colors
 
-```{r}
-    GWblue <- "#033C5A"
-    GWbuff <- "#A69362"
-    Blue   <- "#0190DB"
+```{comment}
+    GWblue: "#033C5A"
+    GWbuff: "#A69362"
+    Blue:   "#0190DB"
 ```
 
 #### secondary colors
 
-```{r}
-GWblue_sec: "#688A9C" 
-GWbuff_sec: "#AA9868", "#C0B28E", "#D9D0BB"
-Blue_sec:   "#0073AA", "#0190DB", "#67BCE9", "#B2DDF4"
-DarkGreen_sec:   "#00635D", "#008364","#66B5A2", "#B2D9D0"
-LightGreen_sec:  "#78BE20", "#AED879", "#D6EBBC"
-Brown_sec:  "#A75523", "#CA997B", "#E4CCBD"
-DarkYellow:     "#FFD400"
-Red:        "#C9102F"
+```{comment}
+    GWblue_sec:     "#688A9C" 
+    GWbuff_sec:     "#AA9868", "#C0B28E", "#D9D0BB"
+    Blue_sec:       "#0073AA", "#0190DB", "#67BCE9", "#B2DDF4"
+    DarkGreen_sec:  "#00635D", "#008364", "#66B5A2", "#B2D9D0"
+    LightGreen_sec: "#78BE20", "#AED879", "#D6EBBC"
+    Brown_sec:      "#A75523", "#CA997B", "#E4CCBD"
+    DarkYellow:     "#FFD400"
+    Red:            "#C9102F"
 ```
 
 #### Neutral Colors
 
-```{r}
-"#4A4A4A"
-"#9B9B9B"
-"#E0E0E0"
-"#F3F3F3"
+```{comment}
+    neutral_1: "#4A4A4A"
+    neutral_2: "#9B9B9B"
+    neutral_3: "#E0E0E0"
+    neutral_4: "#F3F3F3"
 ```
 
 Use a standard black for all axis labels.
