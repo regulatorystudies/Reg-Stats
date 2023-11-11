@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>README</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <!-- title: README -->
+<h1 id="federal-register-rules">Federal Register Rules</h1>
+<h2 id="overview">Overview</h2>
+<p>The graph of Federal Register (FR) rules, including both final and proposed rules, should be updated annually. The data come from the Federal Register API, which reflects daily updates by the Office of the Federal Register (OFR). Because the data are updated each business day and we currently depict charts by &quot;<a href="https://regulatorystudies.columbian.gwu.edu/reg-stats">presidential year</a>,&quot; this chart should be updated every year in early February.</p>
+<h2 id="last-updated">Last Updated</h2>
+<p>README: 2023-03-28</p>
+<p>Data: 2023-03-28</p>
+<p>Charts: 2023-03-28</p>
+<h2 id="update-instructions">Update Instructions</h2>
+<p>Follow these procedures to update the data:</p>
+<ol>
+<li>
+<p>Determine whether the data files and charts can be incremented by another year. The data for the prior calendar year can be updated on or after the first business day of January. The data for the prior presidential year can be updated on or after the first business day of February.</p>
+</li>
+<li>
+<p>Ensure whether python and the relevant packages are installed on your computer's environment.</p>
+</li>
+<li>
+<p>Retrieve the raw data from the Federal Register API to update the calendar year and presidential year data:</p>
+<ul>
+<li>Presidential year
+<ul>
+<li>Run the python code in &quot;fr_rules_presidential_year.py&quot; as a script (it can be executed in the IDE or editor of your choice or from the command line)</li>
+<li>Ensure that the code is executed correctly; if errors, troubleshoot</li>
+<li>Ensure that data saved in json and csv files</li>
+</ul>
+</li>
+<li>Calendar year
+<ul>
+<li>In progress (script: &quot;fr_rules_calendar_year.py&quot;)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Append the source note at bottom of the data files for sharing:</p>
+<ul>
+<li>Open the files &quot;federal_register_rules_calendar_year.csv&quot; and &quot;federal_register_rules_presidential_year.csv&quot;</li>
+<li>Add the citation text at the bottom of each file, starting two cells below the last line of data (see the citation text below)</li>
+</ul>
+</li>
+</ol>
+<p>Follow these procedures to update the charts:</p>
+<ol>
+<li>
+<p>Open each csv file with the newly processed data.</p>
+</li>
+<li>
+<p>Copy the data from the csv file into the first sheet of the corresponding Excel workbook (extension .xlsx).</p>
+</li>
+<li>
+<p>Update the chart in the second sheet in the Excel workbook.</p>
+</li>
+</ol>
+<h2 id="citation-text">Citation Text</h2>
+<p>Produced by the George Washington University Regulatory Studies Center, <a href="https://regulatorystudies.columbian.gwu.edu/">https://regulatorystudies.columbian.gwu.edu/</a><br>
+Source: Office of the Federal Register API, <a href="https://www.federalregister.gov/reader-aids/developer-resources/rest-api">https://www.federalregister.gov/reader-aids/developer-resources/rest-api</a><br>
+Updated: yyyy-mm-dd</p>
+<h2 id="environment-instructions">Environment Instructions</h2>
+<p>If your computer's environment is set up with <a href="https://www.python.org/downloads/">Python 3.10</a> (or newer) and the necessary packages, you should be able to run the code.</p>
+<p>Using <a href="https://www.anaconda.com/products/distribution">Anaconda</a>, the environment can be created using the environment.yml file with the following commands in  the terminal:</p>
+<pre><code class="language-{bash}">cd &quot;NAVIGATE TO DIRECTORY WHERE YML IS STORED&quot;
+
+conda env create -f environment.yml
+
+conda activate myenv
+
+conda env list
+</code></pre>
+<p>See the <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Anaconda documentation</a> for more details.</p>
+
+        
+        
+    </body>
+    </html>
