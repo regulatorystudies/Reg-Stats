@@ -1,0 +1,138 @@
+---
+title: "workflow demo"
+author: "Mark Febrizio"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Initialize
+
+We begin by initializing the Rmarkdown file. This is where we set relevant parameters and establish where this markdown file is located within the project directory, using the `[here](https://here.r-lib.org/reference/i_am.html)` package.
+
+The `i_am` function indicates that `workflow_demo.Rmd` is located within the `code` folder inside the main project directory. In other words, the project root is located immediately above the `code` folder. All future calls to files are based on their relative location to the project root.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+here::i_am("code/workflow_demo.Rmd")
+```
+
+Import the packages required for the remainder of the rmarkdown file. It's easier to keep track of the necessary packages when all imports occur at the top of the file.
+
+```{r imports, results='hide', warning=FALSE}
+
+# load packages
+library(ggplot2)
+library(png)
+library(tidyr)
+library(dplyr)
+library(here)
+
+```
+
+## Load data
+
+With the project root established, we can load the data using `here` with a relative path. In place of the absolute path (i.e., "C:\Users\mark\Box Sync\_MF\Reg_Stats\Reg-Stats-Coding-Project"), point to the file name by using the location relative to the project root ("data") and the file name ("federal_register_rules_presidential_year_0.csv").
+
+```{r load_data}
+
+# load csv using here
+rules_pub_NA <- read.csv(here("data", "federal_register_rules_presidential_year_0.csv"))
+
+# eventually separate this into another file for reuse, then import/call the function
+get_png <- function(filename) {
+  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE) # adjust logo size dimensions here
+}
+
+l <- get_png(here("code", "RSC_logo.png"))
+
+```
+
+## Process data
+
+Takes step to process the data so it's in a format convenient for plotting. This shouldn't change much.
+
+```{r clean_data}
+
+# modify column names
+colnames(rules_pub_NA) <- c("year", "final", "proposed")
+
+# remove rows with NA values
+rules_pub <- rules_pub_NA[complete.cases(rules_pub_NA), ]
+
+# make long data frame
+rules_pub_long <- pivot_longer(rules_pub, cols = c("final", "proposed"), names_to =
+"rule_type", values_to = "rule_num")
+
+# change rule_type column to factor (assign levels and labels)
+rules_pub_long <- rules_pub_long %>% 
+  mutate(rule_type = factor(rule_type,
+                            levels = c("final", 
+                                       "proposed"),
+                            labels = c("Final Rules", 
+                                       "Proposed Rules")))
+
+```
+
+## Plot data
+
+Plot the data in the appropriate charts. This also shouldn't change much. The main difference is that the output file is saved using `here`. Notice that we specify the intended subfolder that will contain the file and the file name. If the output folder does not exist, it's [created](https://www.geeksforgeeks.org/r-check-if-a-directory-exists-and-create-if-it-does-not/) in the process.
+
+```{r plot_data, results='markup'}
+
+# set current date
+current_date <- format(Sys.Date(), "%B %d, %Y")
+
+# set caption text
+caption_text <- paste("Source: Federal Register API;\n excludes corrections to rules.\n\nUpdated:", current_date)
+
+line1 <- ggplot(rules_pub_long,
+                aes(x = year,
+                    y = rule_num,
+                    group = rule_type,
+                    color = rule_type,
+                    linetype = rule_type)) +
+  geom_line(aes(linetype = rule_type), linewidth = 0.75) +
+  scale_color_manual(values = c("#033C5A", "#0190DB"),
+                     guide = "legend") +
+  scale_linetype_manual(values = c("solid", "33"),
+                        guide = "legend") +
+  annotation_custom(l, xmin = -4, xmax = 10, ymin = -450, ymax = -1050) + # for logo (need to play around with these settings)
+  coord_cartesian(clip = "off") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 0)),
+    legend.position = "top",
+    legend.margin = margin(t = 10, b = -50),
+    legend.text = element_text(size = 15),
+    legend.key.size = unit(2, "lines"),    
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
+    panel.grid.minor = element_blank(), 
+    plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 0, unit = "pt")),
+    plot.margin = margin(50, 50, 50, 50),
+    axis.text.x = element_text(angle = 65, hjust = 1),
+    axis.title.y = element_text(size = 15)
+  ) +
+  xlab(element_blank()) +
+  ylab("Number of Rules") +
+  ggtitle("Rules Published in the Federal Register by Presidential Year") +
+  labs(color = NULL, linetype = NULL, caption = caption_text) +
+  scale_y_continuous(
+    breaks = seq(0, max(rules_pub_long$rule_num) + 1000, by = 1000),
+    expand = c(0, 0), 
+    limits = c(0, max(rules_pub_long$rule_num) + 1000)
+  )
+
+line1
+
+# create empty output folder if it doesn't already exist
+out = here("output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+# save line1 as pdf
+ggsave(here("output", "FR_rules_by_pres_year.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
+```
