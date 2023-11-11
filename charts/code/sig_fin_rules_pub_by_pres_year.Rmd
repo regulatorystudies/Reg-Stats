@@ -1,0 +1,131 @@
+---
+title: "Significant Final Rules Published by Presidential Year"
+author: "Henry Hirsch"
+date: "2023-11-2"
+output: html_document
+---
+
+```{r clear environment}
+# clear environment
+rm(list=ls())
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+here::i_am("code/sig_fin_rules_pub_by_pres_year.Rmd")
+```
+
+```{r load packages, results='hide', warning=FALSE}
+# load packages
+library(tidyverse)
+library(png)
+# library(grid)
+library(ggpattern)
+library(here)
+```
+
+```{r load style, message=FALSE}
+# load style
+source(here("code", "style.R"))
+```
+
+```{r load data}
+# load csv using here
+sig_fin_rules <- read.csv(here("data", "sig_rules_published_presidential_year_(with_party)_032023.csv"))
+
+# eventually separate this into another file for reuse, then import/call the function
+# ^ HOW TO DO THIS?
+get_png <- function(filename) {
+  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
+}
+
+l <- get_png(here("code", "RSC_logo.png"))
+
+```
+
+```{r code}
+# current date
+current_date <- format(Sys.Date(), "%B %d, %Y")
+
+# create caption text
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for
+the years starting 2021;\n Office of Information and Regulatory
+Affairs (OIRA) (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
+
+# format wrapping setting for caption text
+wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
+
+# rename columns
+colnames(sig_fin_rules) <- c("year", "party", "rules", "withdrawn")
+
+# get rid of withdrawn column
+sig_fin_rules <- sig_fin_rules[ , c("year", "party", "rules")]
+
+# get rid of bottom three rows
+sig_fin_rules <- sig_fin_rules[1:(nrow(sig_fin_rules) - 3), ]
+
+# get rid of remaining rows with NA values
+# sig_fin_rules <- sig_fin_rules[complete.cases(sig_fin_rules), ]
+
+# make party factor variable
+sig_fin_rules$party <- as.factor(sig_fin_rules$party)
+
+```
+
+```{r generate graph}
+# generate bar1
+bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = party)) +
+  geom_bar_pattern(stat = "identity", width = 0.5,
+                   position = position_dodge(preserve = "single"),
+                   pattern_color = NA,
+                   pattern_fill = lightblue, pattern_angle = 45,
+                   pattern_density = 0.1, pattern_spacing = 0.025,
+                   pattern_key_scale_factor = 0.6) +
+  scale_fill_manual(values = c(GWblue, red)) +
+  scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
+  theme_minimal() +
+  ggtitle("Significant Final Rules Published by Presidential Year") +
+  ylab("Number of Significant Rules") +
+  xlab("") +
+  scale_y_continuous(breaks = seq(0, max(sig_fin_rules$rules) + 50, by = 50), expand = c(0, 0.05), limits = c(-2, max(sig_fin_rules$rules) + 50)) +
+  labs(caption = wrapped_caption) +
+  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
+  annotate(
+    geom = "segment",
+    x = sig_fin_rules$year,
+    xend = sig_fin_rules$year,
+    y = 0,
+    yend = -2,
+    color = RSCgray
+  ) +
+  theme_RSC +
+  theme(panel.grid.minor = element_blank()) +
+  annotation_custom(l, xmin = -9, xmax = 15, ymin = -70, ymax = -30) + # for logo
+  coord_cartesian(clip = "off") +
+  theme(
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
+    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
+    panel.grid.minor = element_blank()
+  )
+
+bar1
+```
+
+```{r output folder}
+# create empty output folder if it doesn't already exist
+out = here("output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+```
+
+```{r save to output}
+# save line1 as pdf
+ggsave(here("output", "Significant Final Rules Published by Presidential Year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
+```
+
