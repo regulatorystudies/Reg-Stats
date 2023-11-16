@@ -31,6 +31,21 @@ library(here)
 
 ```
 
+```{r refresh_data}
+
+source(here("charts", "code", "local_utils.R"))
+
+file_name <- "federal_register_rules_presidential_year_0.csv"
+path_chartdata <- here("charts", "data", file_name)
+
+# establish location for data subfolder
+copy_dataset(file_path, path_chartdata)
+
+
+
+
+```
+
 ## Load data
 
 With the project root established, we can load the data using `here` with a relative path. In place of the absolute path (i.e., "C:\Users\mark\Box Sync\_MF\Reg_Stats\Reg-Stats-Coding-Project"), point to the file name by using the location relative to the project root ("data") and the file name ("federal_register_rules_presidential_year_0.csv").
