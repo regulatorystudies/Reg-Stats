@@ -15,7 +15,8 @@ The `i_am` function indicates that `workflow_demo.Rmd` is located within the `co
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-here::i_am("code/workflow_demo.Rmd")
+here::i_am("charts/code/workflow_demo.Rmd")
+
 ```
 
 Import the packages required for the remainder of the rmarkdown file. It's easier to keep track of the necessary packages when all imports occur at the top of the file.
@@ -33,16 +34,13 @@ library(here)
 
 ```{r refresh_data}
 
+library(here)
+library(png)
 source(here("charts", "code", "local_utils.R"))
 
+# copy dataset
 file_name <- "federal_register_rules_presidential_year_0.csv"
-path_chartdata <- here("charts", "data", file_name)
-
-# establish location for data subfolder
-copy_dataset(file_path, path_chartdata)
-
-
-
+copy_dataset(file_name, here("data"), here("charts", "data", file_name))
 
 ```
 
