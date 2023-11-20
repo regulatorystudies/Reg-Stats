@@ -44,10 +44,12 @@ Follow these procedures to update the charts:
 
 ## Citation Text
 
-Produced by the George Washington University Regulatory Studies Center, https://regulatorystudies.columbian.gwu.edu/  
-Source: Office of the Federal Register API, https://www.federalregister.gov/reader-aids/developer-resources/rest-api  
+```{comment}
+Produced by the George Washington University Regulatory Studies Center, https://go.gwu.edu/regstudies  
+Source: Federal Register API, https://www.federalregister.gov/reader-aids/developer-resources/rest-api  
 Updated: yyyy-mm-dd  
 Notes: Excludes corrections to final and proposed rules.  
+```
 
 ## Environment Set Up
 
