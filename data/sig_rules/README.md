@@ -12,6 +12,7 @@ To update the number of significant rules for a new presidential year after 2021
 5.	Enter the number into the **Significant Rules Published** column for the corresponding year in the CSV file “significant_rules_by_presidential_year.csv”.
 
 When updating the new presidential year, check all the years from Reginfo.gov (i.e., 1994-2020) in case the data on Reginfo.gov have been updated since the last update of Reg Stats (which occurs more often for more recent years):
+
 6.	Go to [Reginfo.gov](https://www.reginfo.gov/public/); under the Regulatory Review tab, click on [Search](https://www.reginfo.gov/public/do/eoAdvancedSearchMain).
 7.	On the Search of Regulatory Review page, set the following search criteria:
 	- Review Status = Concluded
