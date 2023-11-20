@@ -12,16 +12,31 @@ This directory contains the R code, processed datasets, and style guides for gen
   - contains the processed datasets used for creating data visualizations
   - copied from each datasets subfolder in the `root/data/` directory
 - output/
-  - t
+  - contains the data visualization outputs of the R code, generally in .pdf format
 - style/
-  - t
+  - contains style guide information for Reg Stats charts, fonts, and a file of the RSC logo
+  - note: the actual style.R template for ggplot2 is contained in the `code/` folder
 
 ## Instructions
 
-Set up your environment (see instructions within the README in the root of this repository).
+When updating Reg Stats charts, you will enerally take the following steps:
 
-Open rmarkdown file
+1. Set up your environment
 
-Update code
+    See the instructions within the README in the root of this repository.
 
-Run code
+1. Open Rmarkdown (.Rmd) file
+
+    Open the relevant rmarkdown file for the chart of interest. For example, for the "Economically Significant Final Rules Published by Presidential Year" chart, open econ_significant_rules.Rmd.
+
+1. Update code (optional)
+
+    Make updates to the R code, as needed. Predominantly, this should be minor revisions, such as ensuring the range of years matches the data. At times, this could encompass debugging if you encounter errors.
+
+1. Run code
+
+    Run the R chunks in the .Rmd file in order, paying attention to the output for each chunk. Follow the markdown text in the .Rmd file as a guide.
+
+1. Push changes to repository
+
+    Running the code will make changes to files that are tracked by git, such as the output files. Push changes to the repository after running the code without error and checking the output. If you are uncertain about your changes, bring your changes to a new branch and open a pull request on GitHub.
