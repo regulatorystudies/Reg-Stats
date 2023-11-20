@@ -20,7 +20,7 @@ Follow these procedures to update the data:
 
 1. Determine whether the data files and charts can be incremented by another year. The data for the prior calendar year can be updated on or after the first business day of January. The data for the prior presidential year can be updated on or after the first business day of February.
 
-2. Ensure whether python and the relevant packages are installed on your computer's environment.
+2. Ensure whether Python and the relevant packages are installed on your computer's environment.
 
 3. Retrieve the raw data from the Federal Register API to update the calendar year and presidential year data:
     - Presidential year
@@ -44,12 +44,14 @@ Follow these procedures to update the charts:
 
 ## Citation Text
 
-Produced by the George Washington University Regulatory Studies Center, https://regulatorystudies.columbian.gwu.edu/  
-Source: Office of the Federal Register API, https://www.federalregister.gov/reader-aids/developer-resources/rest-api  
+```{comment}
+Produced by the George Washington University Regulatory Studies Center, https://go.gwu.edu/regstudies  
+Source: Federal Register API, https://www.federalregister.gov/reader-aids/developer-resources/rest-api  
 Updated: yyyy-mm-dd  
 Notes: Excludes corrections to final and proposed rules.  
+```
 
-## Environment Instructions
+## Environment Set Up
 
 If your computer's environment is set up with [Python 3.10](https://www.python.org/downloads/) (or newer) and the necessary packages, you should be able to run the code.
 
