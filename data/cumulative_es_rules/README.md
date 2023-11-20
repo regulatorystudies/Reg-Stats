@@ -24,7 +24,9 @@ To check the number of cumulative economically significant rules for the prior a
 	- Stage of Rulemaking = Interim Final Rule & Final Rule & Final Rule No Material Change
 	- Economically Significant = Yes
 	- Published Date Range = From (start date of the cumulative months) To (end date of the cumulative months) (e.g., 2/1/2017-2/28/2017 for one month Trump in office; 2/1/2017-3/31/2017 for two months Trump in office; 2/1/2017-1/31/2021 for 48 months Trump in office).
+
 *Note: We do not cut off the date by the inauguration day (i.e. 1/20) for each administration, because some rules finalized at the end of a previous administration may be published on the FR a few days after the inauguration day, and in that case, it would be unfair to count those rules under the new administration.*
+
 3. Click on Search.
 4. On the Search Results page, the “Number Of Records Found” indicates the cumulative number of economically significant rules for the X months the president in office.
 
