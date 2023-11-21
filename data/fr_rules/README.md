@@ -1,6 +1,6 @@
 <!-- title: README -->
 
-# Federal Register Rules
+# Federal Register Rules Data
 
 ## Overview
 
@@ -8,7 +8,7 @@ The graph of Federal Register (FR) rules, including both final and proposed rule
 
 ## Last Updated
 
-README: 2023-05-23
+README: 2023-11-21
 
 Data: 2023-03-28
 
@@ -33,14 +33,6 @@ Follow these procedures to update the data:
 4. Append the source note at bottom of the data files for sharing:
     - Open the files "federal_register_rules_calendar_year.csv" and "federal_register_rules_presidential_year.csv"
     - Add the citation text at the bottom of each file, starting two cells below the last line of data (see the citation text below)
-
-Follow these procedures to update the charts:
-
-1. Open each csv file with the newly processed data.
-
-2. Copy the data from the csv file into the first sheet of the corresponding Excel workbook (extension .xlsx).
-
-3. Update the chart in the second sheet in the Excel workbook.
 
 ## Citation Text
 

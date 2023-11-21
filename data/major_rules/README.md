@@ -1,8 +1,14 @@
-# Major Rules
+# Major Rules Data
 
-Last revised: November 3, 2022
+## Last Updated
 
-1. Update data in the Excel spreadsheet “major_rules_presidential_year_[date].xlsx”:
+README: 2023-11021
+
+Data: 2022-11-03
+
+## Update Instructions
+
+1. Update data in the spreadsheet `major_rules_by_presidential_year.csv`:
 
     - Go to GAO’s Congressional Review Act (CRA) [page](https://www.gao.gov/legal/other-legal-work/congressional-review-act).  
     - Scroll down to “Search Database of Rules” and fill in the following fields to get the number of major rules for the specified year:  
@@ -24,4 +30,4 @@ Last revised: November 3, 2022
         - Republican: solid fill, color = GW red
     - Refer to the latest Reg Stats Style Guide for other style instructions.  
 
-3. Save the Excel file as a CSV (Comma delimited) file for downloadable data on the webpage.
+3. Save the CSV (Comma delimited) file.
