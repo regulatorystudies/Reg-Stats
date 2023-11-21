@@ -19,11 +19,15 @@ This directory contains the R code, processed datasets, and style guides for gen
 
 ## Instructions
 
-When updating Reg Stats charts, you will enerally take the following steps:
+When updating Reg Stats charts, you will generally take the following steps:
 
 1. Set up your environment
 
     See the instructions within the README in the root of this repository.
+
+1. Fetch changes to respository
+
+    Other users may have made changes to the repository since you last used it. To align the files on your local machine with GitHub, fetch changes to the repository. Then pull any changes to your machine.
 
 1. Open Rmarkdown (.Rmd) file
 
