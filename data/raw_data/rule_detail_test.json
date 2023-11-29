@@ -1,0 +1,53 @@
+{
+    "description": "Contains detailed records for rules in GAO's CRA Database of Rules.",
+    "sources": "Series of links with pattern https://www.gao.gov/{control_number}",
+    "date_retrieved": "2023-11-29",
+    "major_only": false,
+    "rule_count": 3,
+    "results": [
+        {
+            "url": "https://www.gao.gov/fedrules/207897",
+            "title": "Federal Rules: Thrifty Food Plan Cost Estimates For Alaska And Hawaii; Fns-989 | U.S. Gao",
+            "agency": "Department of Agriculture",
+            "subagency": "Food and Nutrition Service",
+            "type": "Non-Major",
+            "description": "THRIFTY FOOD PLAN COST ESTIMATES FOR ALASKA AND HAWAII; FNS-989",
+            "priority": "Routine/Info/Other",
+            "effective": "2023-10-01T13:00:00Z",
+            "received": "2023-07-28T13:00:00Z",
+            "published": "2023-07-28T13:00:00Z",
+            "control_number": "207897",
+            "fed_reg_number": "N/A"
+        },
+        {
+            "url": "https://www.gao.gov/fedrules/207898",
+            "title": "Federal Rules: Streamlining Medicaid; Medicare Savings Program Eligibility Determination And Enrollment | U.S. Gao",
+            "agency": "Department of Health and Human Services",
+            "subagency": "Centers for Medicare & Medicaid Services",
+            "type": "Major",
+            "description": "STREAMLINING MEDICAID; MEDICARE SAVINGS PROGRAM ELIGIBILITY DETERMINATION AND ENROLLMENT",
+            "priority": "Significant/Substantive",
+            "received": "2023-09-21T13:00:00Z",
+            "published": "2023-09-21T13:00:00Z",
+            "control_number": "207898",
+            "fed_reg_number": "88 FR 65230",
+            "identifier": "0938-AU00",
+            "major_rule_report": "Department of Health and Human Services, Centers for Medicare & Medicaid Services: Streamlining Medicaid; Medicare Savings Program Eligibility Determination and Enrollment"
+        },
+        {
+            "url": "https://www.gao.gov/fedrules/207899",
+            "title": "Federal Rules: Seizure And Forfeiture Procedures; Fws-Hq-Le-2016-0067 | U.S. Gao",
+            "agency": "Department of the Interior",
+            "subagency": "United States Fish and Wildlife Service",
+            "type": "Non-Major",
+            "description": "SEIZURE AND FORFEITURE PROCEDURES; FWS-HQ-LE-2016-0067",
+            "priority": "Significant/Substantive",
+            "effective": "2023-08-24T13:00:00Z",
+            "received": "2023-07-31T13:00:00Z",
+            "published": "2023-07-31T13:00:00Z",
+            "control_number": "207899",
+            "fed_reg_number": "88 FR 47808",
+            "identifier": "1018-BG73"
+        }
+    ]
+}

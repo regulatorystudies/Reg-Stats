@@ -1,7 +1,7 @@
 {
     "description": "Contains records for rules in GAO's CRA Database of Rules.",
     "source": "https://www.gao.gov/legal/other-legal-work/congressional-review-act",
-    "date_retrieved": "2023-11-28",
+    "date_retrieved": "2023-10-29",
     "major_only": true,
     "rule_count": 2112,
     "results": [
@@ -169,12 +169,6 @@
         },
         {
             "page": 1,
-            "url": "https://www.gao.gov/fedrules/207737",
-            "type": "Major Federal Rule",
-            "effective_date": "2023-10-01T13:00:00Z"
-        },
-        {
-            "page": 1,
             "url": "https://www.gao.gov/fedrules/207796",
             "type": "Major Federal Rule",
             "effective_date": "2023-10-01T13:00:00Z"
@@ -187,15 +181,15 @@
         },
         {
             "page": 1,
-            "url": "https://www.gao.gov/fedrules/207696",
+            "url": "https://www.gao.gov/fedrules/207737",
             "type": "Major Federal Rule",
-            "effective_date": "2023-08-21T13:00:00Z"
+            "effective_date": "2023-10-01T13:00:00Z"
         },
         {
             "page": 1,
-            "url": "https://www.gao.gov/fedrules/207718",
+            "url": "https://www.gao.gov/fedrules/207696",
             "type": "Major Federal Rule",
-            "effective_date": "2023-10-01T13:00:00Z"
+            "effective_date": "2023-08-21T13:00:00Z"
         },
         {
             "page": 1,
@@ -211,21 +205,27 @@
         },
         {
             "page": 1,
+            "url": "https://www.gao.gov/fedrules/207718",
+            "type": "Major Federal Rule",
+            "effective_date": "2023-10-01T13:00:00Z"
+        },
+        {
+            "page": 1,
             "url": "https://www.gao.gov/fedrules/207736",
             "type": "Major Federal Rule",
             "effective_date": "2023-10-02T13:00:00Z"
         },
         {
             "page": 1,
-            "url": "https://www.gao.gov/fedrules/207605",
-            "type": "Major Federal Rule",
-            "effective_date": "2024-07-01T13:00:00Z"
-        },
-        {
-            "page": 1,
             "url": "https://www.gao.gov/fedrules/207673",
             "type": "Major Federal Rule",
             "effective_date": "2023-09-18T13:00:00Z"
+        },
+        {
+            "page": 1,
+            "url": "https://www.gao.gov/fedrules/207605",
+            "type": "Major Federal Rule",
+            "effective_date": "2024-07-01T13:00:00Z"
         },
         {
             "page": 1,
@@ -247,12 +247,6 @@
         },
         {
             "page": 2,
-            "url": "https://www.gao.gov/fedrules/207720",
-            "type": "Major Federal Rule",
-            "effective_date": "2023-09-29T13:00:00Z"
-        },
-        {
-            "page": 2,
             "url": "https://www.gao.gov/fedrules/207365",
             "type": "Major Federal Rule",
             "effective_date": "2023-07-31T13:00:00Z"
@@ -262,6 +256,12 @@
             "url": "https://www.gao.gov/fedrules/207366",
             "type": "Major Federal Rule",
             "effective_date": "2023-07-25T13:00:00Z"
+        },
+        {
+            "page": 2,
+            "url": "https://www.gao.gov/fedrules/207720",
+            "type": "Major Federal Rule",
+            "effective_date": "2023-09-29T13:00:00Z"
         },
         {
             "page": 2,
@@ -313,15 +313,15 @@
         },
         {
             "page": 2,
-            "url": "https://www.gao.gov/fedrules/206857",
-            "type": "Major Federal Rule",
-            "effective_date": "2023-06-18T13:00:00Z"
-        },
-        {
-            "page": 2,
             "url": "https://www.gao.gov/fedrules/206781",
             "type": "Major Federal Rule",
             "effective_date": "2023-07-01T13:00:00Z"
+        },
+        {
+            "page": 2,
+            "url": "https://www.gao.gov/fedrules/206857",
+            "type": "Major Federal Rule",
+            "effective_date": "2023-06-18T13:00:00Z"
         },
         {
             "page": 2,
@@ -769,6 +769,12 @@
         },
         {
             "page": 6,
+            "url": "https://www.gao.gov/fedrules/204362",
+            "type": "Major Federal Rule",
+            "effective_date": "2022-07-08T13:00:00Z"
+        },
+        {
+            "page": 6,
             "url": "https://www.gao.gov/fedrules/204317",
             "type": "Major Federal Rule",
             "effective_date": "2022-06-28T13:00:00Z"
@@ -778,12 +784,6 @@
             "url": "https://www.gao.gov/fedrules/204361",
             "type": "Major Federal Rule",
             "effective_date": "2022-07-25T13:00:00Z"
-        },
-        {
-            "page": 6,
-            "url": "https://www.gao.gov/fedrules/204362",
-            "type": "Major Federal Rule",
-            "effective_date": "2022-07-08T13:00:00Z"
         },
         {
             "page": 6,
@@ -811,15 +811,15 @@
         },
         {
             "page": 6,
-            "url": "https://www.gao.gov/fedrules/203877",
-            "type": "Major Federal Rule",
-            "effective_date": "2022-04-14T13:00:00Z"
-        },
-        {
-            "page": 6,
             "url": "https://www.gao.gov/fedrules/203878",
             "type": "Major Federal Rule",
             "effective_date": "2022-06-06T13:00:00Z"
+        },
+        {
+            "page": 6,
+            "url": "https://www.gao.gov/fedrules/203877",
+            "type": "Major Federal Rule",
+            "effective_date": "2022-04-14T13:00:00Z"
         },
         {
             "page": 6,
@@ -913,13 +913,13 @@
         },
         {
             "page": 7,
-            "url": "https://www.gao.gov/fedrules/203091",
+            "url": "https://www.gao.gov/fedrules/203089",
             "type": "Major Federal Rule",
             "effective_date": "2022-02-28T13:00:00Z"
         },
         {
             "page": 7,
-            "url": "https://www.gao.gov/fedrules/203089",
+            "url": "https://www.gao.gov/fedrules/203091",
             "type": "Major Federal Rule",
             "effective_date": "2022-02-28T13:00:00Z"
         },
@@ -979,12 +979,6 @@
         },
         {
             "page": 8,
-            "url": "https://www.gao.gov/fedrules/202997",
-            "type": "Major Federal Rule",
-            "effective_date": "2022-01-01T13:00:00Z"
-        },
-        {
-            "page": 8,
             "url": "https://www.gao.gov/fedrules/202998",
             "type": "Major Federal Rule",
             "effective_date": "2022-01-01T13:00:00Z"
@@ -992,6 +986,12 @@
         {
             "page": 8,
             "url": "https://www.gao.gov/fedrules/202999",
+            "type": "Major Federal Rule",
+            "effective_date": "2022-01-01T13:00:00Z"
+        },
+        {
+            "page": 8,
+            "url": "https://www.gao.gov/fedrules/202997",
             "type": "Major Federal Rule",
             "effective_date": "2022-01-01T13:00:00Z"
         },
@@ -1045,15 +1045,15 @@
         },
         {
             "page": 8,
-            "url": "https://www.gao.gov/fedrules/202990",
-            "type": "Major Federal Rule",
-            "effective_date": "2021-12-27T13:00:00Z"
-        },
-        {
-            "page": 8,
             "url": "https://www.gao.gov/fedrules/203006",
             "type": "Major Federal Rule",
             "effective_date": "2021-10-28T13:00:00Z"
+        },
+        {
+            "page": 8,
+            "url": "https://www.gao.gov/fedrules/202990",
+            "type": "Major Federal Rule",
+            "effective_date": "2021-12-27T13:00:00Z"
         },
         {
             "page": 8,
@@ -1309,21 +1309,21 @@
         },
         {
             "page": 10,
-            "url": "https://www.gao.gov/fedrules/202417",
-            "type": "Major Federal Rule",
-            "effective_date": "2021-06-29T13:00:00Z"
-        },
-        {
-            "page": 10,
             "url": "https://www.gao.gov/fedrules/202330",
             "type": "Major Federal Rule",
             "effective_date": "2021-06-30T13:00:00Z"
         },
         {
             "page": 10,
-            "url": "https://www.gao.gov/fedrules/202331",
+            "url": "https://www.gao.gov/fedrules/202417",
             "type": "Major Federal Rule",
-            "effective_date": "2021-05-03T13:00:00Z"
+            "effective_date": "2021-06-29T13:00:00Z"
+        },
+        {
+            "page": 10,
+            "url": "https://www.gao.gov/fedrules/202332",
+            "type": "Major Federal Rule",
+            "effective_date": "2021-04-22T13:00:00Z"
         },
         {
             "page": 11,
@@ -1339,15 +1339,15 @@
         },
         {
             "page": 11,
-            "url": "https://www.gao.gov/fedrules/202252",
-            "type": "Major Federal Rule",
-            "effective_date": "2021-04-09T13:00:00Z"
-        },
-        {
-            "page": 11,
             "url": "https://www.gao.gov/fedrules/202254",
             "type": "Major Federal Rule",
             "effective_date": "2021-06-08T13:00:00Z"
+        },
+        {
+            "page": 11,
+            "url": "https://www.gao.gov/fedrules/202252",
+            "type": "Major Federal Rule",
+            "effective_date": "2021-04-09T13:00:00Z"
         },
         {
             "page": 11,
@@ -1435,15 +1435,15 @@
         },
         {
             "page": 11,
-            "url": "https://www.gao.gov/fedrules/201571",
+            "url": "https://www.gao.gov/fedrules/201826",
             "type": "Major Federal Rule",
-            "effective_date": "2021-01-14T13:00:00Z"
+            "effective_date": "2021-03-15T13:00:00Z"
         },
         {
             "page": 11,
-            "url": "https://www.gao.gov/fedrules/201820",
+            "url": "https://www.gao.gov/fedrules/201549",
             "type": "Major Federal Rule",
-            "effective_date": "2021-03-22T13:00:00Z"
+            "effective_date": "2021-01-25T13:00:00Z"
         },
         {
             "page": 12,
@@ -1507,6 +1507,12 @@
         },
         {
             "page": 12,
+            "url": "https://www.gao.gov/fedrules/201548",
+            "type": "Major Federal Rule",
+            "effective_date": "2021-03-15T13:00:00Z"
+        },
+        {
+            "page": 12,
             "url": "https://www.gao.gov/fedrules/202077",
             "type": "Major Federal Rule",
             "effective_date": "2021-01-12T13:00:00Z"
@@ -1520,12 +1526,6 @@
         {
             "page": 12,
             "url": "https://www.gao.gov/fedrules/202112",
-            "type": "Major Federal Rule",
-            "effective_date": "2021-03-15T13:00:00Z"
-        },
-        {
-            "page": 12,
-            "url": "https://www.gao.gov/fedrules/201548",
             "type": "Major Federal Rule",
             "effective_date": "2021-03-15T13:00:00Z"
         },
@@ -1645,6 +1645,12 @@
         },
         {
             "page": 13,
+            "url": "https://www.gao.gov/fedrules/201453",
+            "type": "Major Federal Rule",
+            "effective_date": "2021-01-19T13:00:00Z"
+        },
+        {
+            "page": 13,
             "url": "https://www.gao.gov/fedrules/201397",
             "type": "Major Federal Rule",
             "effective_date": "2021-02-01T13:00:00Z"
@@ -1663,9 +1669,9 @@
         },
         {
             "page": 13,
-            "url": "https://www.gao.gov/fedrules/201453",
+            "url": "https://www.gao.gov/fedrules/201509",
             "type": "Major Federal Rule",
-            "effective_date": "2021-01-19T13:00:00Z"
+            "effective_date": "2021-11-30T13:00:00Z"
         },
         {
             "page": 13,
@@ -1680,22 +1686,10 @@
             "effective_date": "2021-01-29T13:00:00Z"
         },
         {
-            "page": 13,
-            "url": "https://www.gao.gov/fedrules/201509",
-            "type": "Major Federal Rule",
-            "effective_date": "2021-11-30T13:00:00Z"
-        },
-        {
             "page": 14,
             "url": "https://www.gao.gov/fedrules/201476",
             "type": "Major Federal Rule",
             "effective_date": "2020-11-27T13:00:00Z"
-        },
-        {
-            "page": 14,
-            "url": "https://www.gao.gov/fedrules/201468",
-            "type": "Major Federal Rule",
-            "effective_date": "2021-01-19T13:00:00Z"
         },
         {
             "page": 14,
@@ -1705,15 +1699,15 @@
         },
         {
             "page": 14,
-            "url": "https://www.gao.gov/fedrules/201324",
+            "url": "https://www.gao.gov/fedrules/201468",
             "type": "Major Federal Rule",
-            "effective_date": "2021-01-12T13:00:00Z"
+            "effective_date": "2021-01-19T13:00:00Z"
         },
         {
             "page": 14,
-            "url": "https://www.gao.gov/fedrules/201317",
+            "url": "https://www.gao.gov/fedrules/201324",
             "type": "Major Federal Rule",
-            "effective_date": "2021-01-01T13:00:00Z"
+            "effective_date": "2021-01-12T13:00:00Z"
         },
         {
             "page": 14,
@@ -1730,6 +1724,12 @@
         {
             "page": 14,
             "url": "https://www.gao.gov/fedrules/201321",
+            "type": "Major Federal Rule",
+            "effective_date": "2021-01-01T13:00:00Z"
+        },
+        {
+            "page": 14,
+            "url": "https://www.gao.gov/fedrules/201317",
             "type": "Major Federal Rule",
             "effective_date": "2021-01-01T13:00:00Z"
         },
@@ -1801,7 +1801,7 @@
         },
         {
             "page": 14,
-            "url": "https://www.gao.gov/fedrules/201392",
+            "url": "https://www.gao.gov/fedrules/201312",
             "type": "Major Federal Rule",
             "effective_date": "2020-12-28T13:00:00Z"
         },
@@ -1933,6 +1933,12 @@
         },
         {
             "page": 16,
+            "url": "https://www.gao.gov/fedrules/200776",
+            "type": "Major Federal Rule",
+            "effective_date": "2020-10-27T13:00:00Z"
+        },
+        {
+            "page": 16,
             "url": "https://www.gao.gov/fedrules/201271",
             "type": "Major Federal Rule",
             "effective_date": "2020-08-28T13:00:00Z"
@@ -1942,12 +1948,6 @@
             "url": "https://www.gao.gov/fedrules/201249",
             "type": "Major Federal Rule",
             "effective_date": "2020-08-28T13:00:00Z"
-        },
-        {
-            "page": 16,
-            "url": "https://www.gao.gov/fedrules/200776",
-            "type": "Major Federal Rule",
-            "effective_date": "2020-10-27T13:00:00Z"
         },
         {
             "page": 16,
@@ -1981,6 +1981,12 @@
         },
         {
             "page": 16,
+            "url": "https://www.gao.gov/fedrules/200514",
+            "type": "Major Federal Rule",
+            "effective_date": "2020-08-10T13:00:00Z"
+        },
+        {
+            "page": 16,
             "url": "https://www.gao.gov/fedrules/200515",
             "type": "Major Federal Rule",
             "effective_date": "2020-10-01T13:00:00Z"
@@ -1990,12 +1996,6 @@
             "url": "https://www.gao.gov/fedrules/200517",
             "type": "Major Federal Rule",
             "effective_date": "2020-10-01T13:00:00Z"
-        },
-        {
-            "page": 16,
-            "url": "https://www.gao.gov/fedrules/200514",
-            "type": "Major Federal Rule",
-            "effective_date": "2020-08-10T13:00:00Z"
         },
         {
             "page": 16,
@@ -2011,13 +2011,13 @@
         },
         {
             "page": 16,
-            "url": "https://www.gao.gov/fedrules/200513",
+            "url": "https://www.gao.gov/fedrules/200541",
             "type": "Major Federal Rule",
             "effective_date": "2020-10-02T13:00:00Z"
         },
         {
             "page": 16,
-            "url": "https://www.gao.gov/fedrules/200541",
+            "url": "https://www.gao.gov/fedrules/200513",
             "type": "Major Federal Rule",
             "effective_date": "2020-10-02T13:00:00Z"
         },
@@ -2095,21 +2095,15 @@
         },
         {
             "page": 17,
-            "url": "https://www.gao.gov/fedrules/199486",
-            "type": "Major Federal Rule",
-            "effective_date": "2020-07-01T13:00:00Z"
-        },
-        {
-            "page": 17,
             "url": "https://www.gao.gov/fedrules/199436",
             "type": "Major Federal Rule",
             "effective_date": "2020-06-26T13:00:00Z"
         },
         {
             "page": 17,
-            "url": "https://www.gao.gov/fedrules/199819",
+            "url": "https://www.gao.gov/fedrules/199486",
             "type": "Major Federal Rule",
-            "effective_date": "2020-06-26T13:00:00Z"
+            "effective_date": "2020-07-01T13:00:00Z"
         },
         {
             "page": 17,
@@ -2128,6 +2122,12 @@
             "url": "https://www.gao.gov/fedrules/199454",
             "type": "Major Federal Rule",
             "effective_date": "2020-03-27T13:00:00Z"
+        },
+        {
+            "page": 17,
+            "url": "https://www.gao.gov/fedrules/199819",
+            "type": "Major Federal Rule",
+            "effective_date": "2020-06-26T13:00:00Z"
         },
         {
             "page": 17,
@@ -2341,15 +2341,15 @@
         },
         {
             "page": 19,
-            "url": "https://www.gao.gov/fedrules/198696",
-            "type": "Major Federal Rule",
-            "effective_date": "2020-03-31T13:00:00Z"
-        },
-        {
-            "page": 19,
             "url": "https://www.gao.gov/fedrules/198695",
             "type": "Major Federal Rule",
             "effective_date": "2020-04-02T13:00:00Z"
+        },
+        {
+            "page": 19,
+            "url": "https://www.gao.gov/fedrules/198696",
+            "type": "Major Federal Rule",
+            "effective_date": "2020-03-31T13:00:00Z"
         },
         {
             "page": 19,
@@ -2443,12 +2443,6 @@
         },
         {
             "page": 20,
-            "url": "https://www.gao.gov/fedrules/197921",
-            "type": "Major Federal Rule",
-            "effective_date": "2020-04-06T13:00:00Z"
-        },
-        {
-            "page": 20,
             "url": "https://www.gao.gov/fedrules/197923",
             "type": "Major Federal Rule",
             "effective_date": "2020-02-04T13:00:00Z"
@@ -2456,6 +2450,12 @@
         {
             "page": 20,
             "url": "https://www.gao.gov/fedrules/197922",
+            "type": "Major Federal Rule",
+            "effective_date": "2020-04-06T13:00:00Z"
+        },
+        {
+            "page": 20,
+            "url": "https://www.gao.gov/fedrules/197921",
             "type": "Major Federal Rule",
             "effective_date": "2020-04-06T13:00:00Z"
         },
@@ -2491,18 +2491,6 @@
         },
         {
             "page": 20,
-            "url": "https://www.gao.gov/fedrules/197508",
-            "type": "Major Federal Rule",
-            "effective_date": "2020-03-10T13:00:00Z"
-        },
-        {
-            "page": 20,
-            "url": "https://www.gao.gov/fedrules/197507",
-            "type": "Major Federal Rule",
-            "effective_date": "2020-03-10T13:00:00Z"
-        },
-        {
-            "page": 20,
             "url": "https://www.gao.gov/fedrules/197509",
             "type": "Major Federal Rule",
             "effective_date": "2020-03-10T13:00:00Z"
@@ -2510,6 +2498,18 @@
         {
             "page": 20,
             "url": "https://www.gao.gov/fedrules/197510",
+            "type": "Major Federal Rule",
+            "effective_date": "2020-03-10T13:00:00Z"
+        },
+        {
+            "page": 20,
+            "url": "https://www.gao.gov/fedrules/197508",
+            "type": "Major Federal Rule",
+            "effective_date": "2020-03-10T13:00:00Z"
+        },
+        {
+            "page": 20,
+            "url": "https://www.gao.gov/fedrules/197507",
             "type": "Major Federal Rule",
             "effective_date": "2020-03-10T13:00:00Z"
         },
@@ -2629,6 +2629,12 @@
         },
         {
             "page": 21,
+            "url": "https://www.gao.gov/fedrules/196662",
+            "type": "Major Federal Rule",
+            "effective_date": "2020-07-01T13:00:00Z"
+        },
+        {
+            "page": 21,
             "url": "https://www.gao.gov/fedrules/196722",
             "type": "Major Federal Rule",
             "effective_date": "2019-12-31T13:00:00Z"
@@ -2638,12 +2644,6 @@
             "url": "https://www.gao.gov/fedrules/196689",
             "type": "Major Federal Rule",
             "effective_date": "2019-12-31T13:00:00Z"
-        },
-        {
-            "page": 21,
-            "url": "https://www.gao.gov/fedrules/196661",
-            "type": "Major Federal Rule",
-            "effective_date": "2020-07-01T13:00:00Z"
         },
         {
             "page": 22,
@@ -2683,13 +2683,13 @@
         },
         {
             "page": 22,
-            "url": "https://www.gao.gov/fedrules/196011",
+            "url": "https://www.gao.gov/fedrules/196002",
             "type": "Major Federal Rule",
             "effective_date": "2019-11-29T13:00:00Z"
         },
         {
             "page": 22,
-            "url": "https://www.gao.gov/fedrules/196002",
+            "url": "https://www.gao.gov/fedrules/196011",
             "type": "Major Federal Rule",
             "effective_date": "2019-11-29T13:00:00Z"
         },
@@ -3541,12 +3541,6 @@
         },
         {
             "page": 29,
-            "url": "https://www.gao.gov/fedrules/186706",
-            "type": "Major Federal Rule",
-            "effective_date": "2018-01-19T13:00:00Z"
-        },
-        {
-            "page": 29,
             "url": "https://www.gao.gov/fedrules/186675",
             "type": "Major Federal Rule",
             "effective_date": "2017-09-19T13:00:00Z"
@@ -3568,6 +3562,12 @@
             "url": "https://www.gao.gov/fedrules/186698",
             "type": "Major Federal Rule",
             "effective_date": "2017-03-20T13:00:00Z"
+        },
+        {
+            "page": 29,
+            "url": "https://www.gao.gov/fedrules/186706",
+            "type": "Major Federal Rule",
+            "effective_date": "2018-01-19T13:00:00Z"
         },
         {
             "page": 29,
@@ -3667,21 +3667,15 @@
         },
         {
             "page": 30,
-            "url": "https://www.gao.gov/fedrules/186509",
-            "type": "Major Federal Rule",
-            "effective_date": "2017-01-13T13:00:00Z"
-        },
-        {
-            "page": 30,
             "url": "https://www.gao.gov/fedrules/188837",
             "type": "Major Federal Rule",
             "effective_date": "2017-09-05T13:00:00Z"
         },
         {
             "page": 30,
-            "url": "https://www.gao.gov/fedrules/186398",
+            "url": "https://www.gao.gov/fedrules/186509",
             "type": "Major Federal Rule",
-            "effective_date": "2017-02-10T13:00:00Z"
+            "effective_date": "2017-01-13T13:00:00Z"
         },
         {
             "page": 30,
@@ -3697,9 +3691,21 @@
         },
         {
             "page": 30,
+            "url": "https://www.gao.gov/fedrules/186398",
+            "type": "Major Federal Rule",
+            "effective_date": "2017-02-10T13:00:00Z"
+        },
+        {
+            "page": 30,
             "url": "https://www.gao.gov/fedrules/186975",
             "type": "Major Federal Rule",
             "effective_date": "2017-02-06T13:00:00Z"
+        },
+        {
+            "page": 30,
+            "url": "https://www.gao.gov/fedrules/186403",
+            "type": "Major Federal Rule",
+            "effective_date": "2017-01-04T13:00:00Z"
         },
         {
             "page": 30,
@@ -3712,12 +3718,6 @@
             "url": "https://www.gao.gov/fedrules/186526",
             "type": "Major Federal Rule",
             "effective_date": "2017-04-01T13:00:00Z"
-        },
-        {
-            "page": 30,
-            "url": "https://www.gao.gov/fedrules/186403",
-            "type": "Major Federal Rule",
-            "effective_date": "2017-01-04T13:00:00Z"
         },
         {
             "page": 30,
@@ -3793,6 +3793,12 @@
         },
         {
             "page": 31,
+            "url": "https://www.gao.gov/fedrules/186248",
+            "type": "Major Federal Rule",
+            "effective_date": "2017-01-01T13:00:00Z"
+        },
+        {
+            "page": 31,
             "url": "https://www.gao.gov/fedrules/186128",
             "type": "Major Federal Rule",
             "effective_date": "2017-01-01T13:00:00Z"
@@ -3800,12 +3806,6 @@
         {
             "page": 31,
             "url": "https://www.gao.gov/fedrules/186247",
-            "type": "Major Federal Rule",
-            "effective_date": "2017-01-01T13:00:00Z"
-        },
-        {
-            "page": 31,
-            "url": "https://www.gao.gov/fedrules/186248",
             "type": "Major Federal Rule",
             "effective_date": "2017-01-01T13:00:00Z"
         },
@@ -3967,21 +3967,15 @@
         },
         {
             "page": 33,
-            "url": "https://www.gao.gov/fedrules/184837",
-            "type": "Major Federal Rule",
-            "effective_date": "2016-10-18T13:00:00Z"
-        },
-        {
-            "page": 33,
             "url": "https://www.gao.gov/fedrules/184838",
             "type": "Major Federal Rule",
             "effective_date": "2016-10-18T13:00:00Z"
         },
         {
             "page": 33,
-            "url": "https://www.gao.gov/fedrules/184740",
+            "url": "https://www.gao.gov/fedrules/184837",
             "type": "Major Federal Rule",
-            "effective_date": "2016-10-01T13:00:00Z"
+            "effective_date": "2016-10-18T13:00:00Z"
         },
         {
             "page": 33,
@@ -3992,6 +3986,12 @@
         {
             "page": 33,
             "url": "https://www.gao.gov/fedrules/184742",
+            "type": "Major Federal Rule",
+            "effective_date": "2016-10-01T13:00:00Z"
+        },
+        {
+            "page": 33,
+            "url": "https://www.gao.gov/fedrules/184740",
             "type": "Major Federal Rule",
             "effective_date": "2016-10-01T13:00:00Z"
         },
@@ -4057,15 +4057,15 @@
         },
         {
             "page": 33,
-            "url": "https://www.gao.gov/fedrules/184354",
-            "type": "Major Federal Rule",
-            "effective_date": "2016-09-01T13:00:00Z"
-        },
-        {
-            "page": 33,
             "url": "https://www.gao.gov/fedrules/184736",
             "type": "Major Federal Rule",
             "effective_date": "2016-08-29T13:00:00Z"
+        },
+        {
+            "page": 33,
+            "url": "https://www.gao.gov/fedrules/184354",
+            "type": "Major Federal Rule",
+            "effective_date": "2016-09-01T13:00:00Z"
         },
         {
             "page": 33,
@@ -4207,6 +4207,12 @@
         },
         {
             "page": 35,
+            "url": "https://www.gao.gov/fedrules/183483",
+            "type": "Major Federal Rule",
+            "effective_date": "2016-07-01T13:00:00Z"
+        },
+        {
+            "page": 35,
             "url": "https://www.gao.gov/fedrules/183399",
             "type": "Major Federal Rule",
             "effective_date": "2016-06-23T13:00:00Z"
@@ -4216,12 +4222,6 @@
             "url": "https://www.gao.gov/fedrules/183481",
             "type": "Major Federal Rule",
             "effective_date": "2016-03-31T13:00:00Z"
-        },
-        {
-            "page": 35,
-            "url": "https://www.gao.gov/fedrules/183483",
-            "type": "Major Federal Rule",
-            "effective_date": "2016-07-01T13:00:00Z"
         },
         {
             "page": 35,
@@ -4333,15 +4333,15 @@
         },
         {
             "page": 36,
-            "url": "https://www.gao.gov/fedrules/182680",
-            "type": "Major Federal Rule",
-            "effective_date": "2016-02-05T13:00:00Z"
-        },
-        {
-            "page": 36,
             "url": "https://www.gao.gov/fedrules/182699",
             "type": "Major Federal Rule",
             "effective_date": "2016-03-07T13:00:00Z"
+        },
+        {
+            "page": 36,
+            "url": "https://www.gao.gov/fedrules/182680",
+            "type": "Major Federal Rule",
+            "effective_date": "2016-02-05T13:00:00Z"
         },
         {
             "page": 36,
@@ -4387,21 +4387,15 @@
         },
         {
             "page": 36,
-            "url": "https://www.gao.gov/fedrules/182363",
-            "type": "Major Federal Rule",
-            "effective_date": "2016-02-01T13:00:00Z"
-        },
-        {
-            "page": 36,
             "url": "https://www.gao.gov/fedrules/182466",
             "type": "Major Federal Rule",
             "effective_date": "2015-12-01T13:00:00Z"
         },
         {
             "page": 36,
-            "url": "https://www.gao.gov/fedrules/182341",
+            "url": "https://www.gao.gov/fedrules/182363",
             "type": "Major Federal Rule",
-            "effective_date": "2016-04-01T13:00:00Z"
+            "effective_date": "2016-02-01T13:00:00Z"
         },
         {
             "page": 36,
@@ -4412,6 +4406,12 @@
         {
             "page": 36,
             "url": "https://www.gao.gov/fedrules/182359",
+            "type": "Major Federal Rule",
+            "effective_date": "2016-04-01T13:00:00Z"
+        },
+        {
+            "page": 36,
+            "url": "https://www.gao.gov/fedrules/182341",
             "type": "Major Federal Rule",
             "effective_date": "2016-04-01T13:00:00Z"
         },
@@ -4441,6 +4441,18 @@
         },
         {
             "page": 36,
+            "url": "https://www.gao.gov/fedrules/182242",
+            "type": "Major Federal Rule",
+            "effective_date": "2016-05-16T13:00:00Z"
+        },
+        {
+            "page": 37,
+            "url": "https://www.gao.gov/fedrules/182325",
+            "type": "Major Federal Rule",
+            "effective_date": "2016-01-01T13:00:00Z"
+        },
+        {
+            "page": 37,
             "url": "https://www.gao.gov/fedrules/182326",
             "type": "Major Federal Rule",
             "effective_date": "2016-01-01T13:00:00Z"
@@ -4450,18 +4462,6 @@
             "url": "https://www.gao.gov/fedrules/182242",
             "type": "Major Federal Rule",
             "effective_date": "2016-05-16T13:00:00Z"
-        },
-        {
-            "page": 37,
-            "url": "https://www.gao.gov/fedrules/182319",
-            "type": "Major Federal Rule",
-            "effective_date": "2016-01-01T13:00:00Z"
-        },
-        {
-            "page": 37,
-            "url": "https://www.gao.gov/fedrules/182325",
-            "type": "Major Federal Rule",
-            "effective_date": "2016-01-01T13:00:00Z"
         },
         {
             "page": 37,
@@ -4495,13 +4495,13 @@
         },
         {
             "page": 37,
-            "url": "https://www.gao.gov/fedrules/181988",
+            "url": "https://www.gao.gov/fedrules/181989",
             "type": "Major Federal Rule",
             "effective_date": "2015-12-28T13:00:00Z"
         },
         {
             "page": 37,
-            "url": "https://www.gao.gov/fedrules/181989",
+            "url": "https://www.gao.gov/fedrules/181988",
             "type": "Major Federal Rule",
             "effective_date": "2015-12-28T13:00:00Z"
         },
@@ -4759,13 +4759,13 @@
         },
         {
             "page": 39,
-            "url": "https://www.gao.gov/fedrules/180293",
+            "url": "https://www.gao.gov/fedrules/180294",
             "type": "Major Federal Rule",
             "effective_date": "2015-05-18T13:00:00Z"
         },
         {
             "page": 39,
-            "url": "https://www.gao.gov/fedrules/180294",
+            "url": "https://www.gao.gov/fedrules/180293",
             "type": "Major Federal Rule",
             "effective_date": "2015-05-18T13:00:00Z"
         },
@@ -4831,13 +4831,13 @@
         },
         {
             "page": 40,
-            "url": "https://www.gao.gov/fedrules/179599",
+            "url": "https://www.gao.gov/fedrules/179609",
             "type": "Major Federal Rule",
             "effective_date": "2015-02-03T13:00:00Z"
         },
         {
             "page": 40,
-            "url": "https://www.gao.gov/fedrules/179609",
+            "url": "https://www.gao.gov/fedrules/179599",
             "type": "Major Federal Rule",
             "effective_date": "2015-02-03T13:00:00Z"
         },
@@ -4849,15 +4849,15 @@
         },
         {
             "page": 40,
-            "url": "https://www.gao.gov/fedrules/179593",
-            "type": "Major Federal Rule",
-            "effective_date": "2015-12-01T13:00:00Z"
-        },
-        {
-            "page": 40,
             "url": "https://www.gao.gov/fedrules/179594",
             "type": "Major Federal Rule",
             "effective_date": "2016-12-01T13:00:00Z"
+        },
+        {
+            "page": 40,
+            "url": "https://www.gao.gov/fedrules/179593",
+            "type": "Major Federal Rule",
+            "effective_date": "2015-12-01T13:00:00Z"
         },
         {
             "page": 40,
@@ -4873,13 +4873,13 @@
         },
         {
             "page": 40,
-            "url": "https://www.gao.gov/fedrules/179296",
+            "url": "https://www.gao.gov/fedrules/179295",
             "type": "Major Federal Rule",
             "effective_date": "2015-01-01T13:00:00Z"
         },
         {
             "page": 40,
-            "url": "https://www.gao.gov/fedrules/179295",
+            "url": "https://www.gao.gov/fedrules/179296",
             "type": "Major Federal Rule",
             "effective_date": "2015-01-01T13:00:00Z"
         },
@@ -4903,12 +4903,6 @@
         },
         {
             "page": 40,
-            "url": "https://www.gao.gov/fedrules/178925",
-            "type": "Major Federal Rule",
-            "effective_date": "2015-01-01T13:00:00Z"
-        },
-        {
-            "page": 40,
             "url": "https://www.gao.gov/fedrules/178926",
             "type": "Major Federal Rule",
             "effective_date": "2015-01-01T13:00:00Z"
@@ -4916,6 +4910,12 @@
         {
             "page": 40,
             "url": "https://www.gao.gov/fedrules/178924",
+            "type": "Major Federal Rule",
+            "effective_date": "2015-01-01T13:00:00Z"
+        },
+        {
+            "page": 40,
+            "url": "https://www.gao.gov/fedrules/178925",
             "type": "Major Federal Rule",
             "effective_date": "2015-01-01T13:00:00Z"
         },
@@ -4933,6 +4933,12 @@
         },
         {
             "page": 41,
+            "url": "https://www.gao.gov/fedrules/178882",
+            "type": "Major Federal Rule",
+            "effective_date": "2014-09-26T13:00:00Z"
+        },
+        {
+            "page": 41,
             "url": "https://www.gao.gov/fedrules/178899",
             "type": "Major Federal Rule",
             "effective_date": "2014-09-27T13:00:00Z"
@@ -4942,12 +4948,6 @@
             "url": "https://www.gao.gov/fedrules/178901",
             "type": "Major Federal Rule",
             "effective_date": "2015-01-01T13:00:00Z"
-        },
-        {
-            "page": 41,
-            "url": "https://www.gao.gov/fedrules/178882",
-            "type": "Major Federal Rule",
-            "effective_date": "2014-09-26T13:00:00Z"
         },
         {
             "page": 41,
@@ -4981,13 +4981,13 @@
         },
         {
             "page": 41,
-            "url": "https://www.gao.gov/fedrules/178544",
+            "url": "https://www.gao.gov/fedrules/178529",
             "type": "Major Federal Rule",
             "effective_date": "2014-08-29T13:00:00Z"
         },
         {
             "page": 41,
-            "url": "https://www.gao.gov/fedrules/178529",
+            "url": "https://www.gao.gov/fedrules/178544",
             "type": "Major Federal Rule",
             "effective_date": "2014-08-29T13:00:00Z"
         },
@@ -5251,6 +5251,12 @@
         },
         {
             "page": 43,
+            "url": "https://www.gao.gov/fedrules/176587",
+            "type": "Major Federal Rule",
+            "effective_date": "2014-04-01T13:00:00Z"
+        },
+        {
+            "page": 43,
             "url": "https://www.gao.gov/fedrules/181356",
             "type": "Major Federal Rule",
             "effective_date": "2014-03-03T13:00:00Z"
@@ -5269,12 +5275,6 @@
         },
         {
             "page": 43,
-            "url": "https://www.gao.gov/fedrules/176587",
-            "type": "Major Federal Rule",
-            "effective_date": "2014-04-01T13:00:00Z"
-        },
-        {
-            "page": 43,
             "url": "https://www.gao.gov/fedrules/176632",
             "type": "Major Federal Rule",
             "effective_date": "2014-03-18T13:00:00Z"
@@ -5287,15 +5287,15 @@
         },
         {
             "page": 44,
-            "url": "https://www.gao.gov/fedrules/176375",
-            "type": "Major Federal Rule",
-            "effective_date": "2014-01-01T13:00:00Z"
-        },
-        {
-            "page": 44,
             "url": "https://www.gao.gov/fedrules/176340",
             "type": "Major Federal Rule",
             "effective_date": "2014-03-04T13:00:00Z"
+        },
+        {
+            "page": 44,
+            "url": "https://www.gao.gov/fedrules/176375",
+            "type": "Major Federal Rule",
+            "effective_date": "2014-01-01T13:00:00Z"
         },
         {
             "page": 44,
@@ -5341,15 +5341,15 @@
         },
         {
             "page": 44,
-            "url": "https://www.gao.gov/fedrules/176058",
-            "type": "Major Federal Rule",
-            "effective_date": "2013-12-31T13:00:00Z"
-        },
-        {
-            "page": 44,
             "url": "https://www.gao.gov/fedrules/176025",
             "type": "Major Federal Rule",
             "effective_date": "2014-01-01T13:00:00Z"
+        },
+        {
+            "page": 44,
+            "url": "https://www.gao.gov/fedrules/176058",
+            "type": "Major Federal Rule",
+            "effective_date": "2013-12-31T13:00:00Z"
         },
         {
             "page": 44,
@@ -5431,13 +5431,13 @@
         },
         {
             "page": 45,
-            "url": "https://www.gao.gov/fedrules/175615",
+            "url": "https://www.gao.gov/fedrules/175649",
             "type": "Major Federal Rule",
             "effective_date": "2013-09-21T13:00:00Z"
         },
         {
             "page": 45,
-            "url": "https://www.gao.gov/fedrules/175649",
+            "url": "https://www.gao.gov/fedrules/175615",
             "type": "Major Federal Rule",
             "effective_date": "2013-09-21T13:00:00Z"
         },
@@ -5515,15 +5515,15 @@
         },
         {
             "page": 45,
-            "url": "https://www.gao.gov/fedrules/175151",
+            "url": "https://www.gao.gov/fedrules/175154",
             "type": "Major Federal Rule",
             "effective_date": "2013-10-01T13:00:00Z"
         },
         {
             "page": 45,
-            "url": "https://www.gao.gov/fedrules/175154",
+            "url": "https://www.gao.gov/fedrules/175442",
             "type": "Major Federal Rule",
-            "effective_date": "2013-10-01T13:00:00Z"
+            "effective_date": "2013-09-05T13:00:00Z"
         },
         {
             "page": 46,
@@ -5545,13 +5545,13 @@
         },
         {
             "page": 46,
-            "url": "https://www.gao.gov/fedrules/175092",
+            "url": "https://www.gao.gov/fedrules/175085",
             "type": "Major Federal Rule",
             "effective_date": "2013-09-23T13:00:00Z"
         },
         {
             "page": 46,
-            "url": "https://www.gao.gov/fedrules/175085",
+            "url": "https://www.gao.gov/fedrules/175092",
             "type": "Major Federal Rule",
             "effective_date": "2013-09-23T13:00:00Z"
         },
@@ -5665,15 +5665,15 @@
         },
         {
             "page": 47,
-            "url": "https://www.gao.gov/fedrules/174245",
-            "type": "Major Federal Rule",
-            "effective_date": "2013-04-30T13:00:00Z"
-        },
-        {
-            "page": 47,
             "url": "https://www.gao.gov/fedrules/174304",
             "type": "Major Federal Rule",
             "effective_date": "2013-05-10T13:00:00Z"
+        },
+        {
+            "page": 47,
+            "url": "https://www.gao.gov/fedrules/174245",
+            "type": "Major Federal Rule",
+            "effective_date": "2013-04-30T13:00:00Z"
         },
         {
             "page": 47,
@@ -5839,15 +5839,21 @@
         },
         {
             "page": 48,
+            "url": "https://www.gao.gov/fedrules/172945",
+            "type": "Major Federal Rule",
+            "effective_date": "2012-09-22T13:00:00Z"
+        },
+        {
+            "page": 48,
             "url": "https://www.gao.gov/fedrules/172963",
             "type": "Major Federal Rule",
             "effective_date": "2012-09-24T13:00:00Z"
         },
         {
             "page": 48,
-            "url": "https://www.gao.gov/fedrules/172945",
+            "url": "https://www.gao.gov/fedrules/173200",
             "type": "Major Federal Rule",
-            "effective_date": "2012-09-22T13:00:00Z"
+            "effective_date": "2012-10-22T13:00:00Z"
         },
         {
             "page": 48,
@@ -5857,9 +5863,9 @@
         },
         {
             "page": 48,
-            "url": "https://www.gao.gov/fedrules/173200",
+            "url": "https://www.gao.gov/fedrules/172869",
             "type": "Major Federal Rule",
-            "effective_date": "2012-10-22T13:00:00Z"
+            "effective_date": "2012-11-13T13:00:00Z"
         },
         {
             "page": 48,
@@ -5870,12 +5876,6 @@
         {
             "page": 48,
             "url": "https://www.gao.gov/fedrules/174483",
-            "type": "Major Federal Rule",
-            "effective_date": "2012-11-13T13:00:00Z"
-        },
-        {
-            "page": 48,
-            "url": "https://www.gao.gov/fedrules/172869",
             "type": "Major Federal Rule",
             "effective_date": "2012-11-13T13:00:00Z"
         },
@@ -5911,15 +5911,15 @@
         },
         {
             "page": 49,
-            "url": "https://www.gao.gov/fedrules/172792",
-            "type": "Major Federal Rule",
-            "effective_date": "2012-08-30T13:00:00Z"
-        },
-        {
-            "page": 49,
             "url": "https://www.gao.gov/fedrules/172811",
             "type": "Major Federal Rule",
             "effective_date": "2013-01-01T13:00:00Z"
+        },
+        {
+            "page": 49,
+            "url": "https://www.gao.gov/fedrules/172792",
+            "type": "Major Federal Rule",
+            "effective_date": "2012-08-30T13:00:00Z"
         },
         {
             "page": 49,
@@ -6013,13 +6013,13 @@
         },
         {
             "page": 50,
-            "url": "https://www.gao.gov/fedrules/171718",
+            "url": "https://www.gao.gov/fedrules/171729",
             "type": "Major Federal Rule",
             "effective_date": "2012-07-16T13:00:00Z"
         },
         {
             "page": 50,
-            "url": "https://www.gao.gov/fedrules/171729",
+            "url": "https://www.gao.gov/fedrules/171718",
             "type": "Major Federal Rule",
             "effective_date": "2012-07-16T13:00:00Z"
         },
@@ -6055,15 +6055,15 @@
         },
         {
             "page": 50,
-            "url": "https://www.gao.gov/fedrules/171711",
-            "type": "Major Federal Rule",
-            "effective_date": "2012-05-21T13:00:00Z"
-        },
-        {
-            "page": 50,
             "url": "https://www.gao.gov/fedrules/171484",
             "type": "Major Federal Rule",
             "effective_date": "2011-10-01T13:00:00Z"
+        },
+        {
+            "page": 50,
+            "url": "https://www.gao.gov/fedrules/171711",
+            "type": "Major Federal Rule",
+            "effective_date": "2012-05-21T13:00:00Z"
         },
         {
             "page": 50,
@@ -6103,6 +6103,12 @@
         },
         {
             "page": 50,
+            "url": "https://www.gao.gov/fedrules/171046",
+            "type": "Major Federal Rule",
+            "effective_date": "2012-05-22T13:00:00Z"
+        },
+        {
+            "page": 50,
             "url": "https://www.gao.gov/fedrules/171047",
             "type": "Major Federal Rule",
             "effective_date": "2012-06-21T13:00:00Z"
@@ -6112,12 +6118,6 @@
             "url": "https://www.gao.gov/fedrules/171045",
             "type": "Major Federal Rule",
             "effective_date": "2014-01-01T13:00:00Z"
-        },
-        {
-            "page": 50,
-            "url": "https://www.gao.gov/fedrules/171046",
-            "type": "Major Federal Rule",
-            "effective_date": "2012-05-22T13:00:00Z"
         },
         {
             "page": 50,
@@ -6265,15 +6265,15 @@
         },
         {
             "page": 52,
-            "url": "https://www.gao.gov/fedrules/169369",
-            "type": "Major Federal Rule",
-            "effective_date": "2012-01-09T13:00:00Z"
-        },
-        {
-            "page": 52,
             "url": "https://www.gao.gov/fedrules/169374",
             "type": "Major Federal Rule",
             "effective_date": "2013-02-08T13:00:00Z"
+        },
+        {
+            "page": 52,
+            "url": "https://www.gao.gov/fedrules/169369",
+            "type": "Major Federal Rule",
+            "effective_date": "2012-01-09T13:00:00Z"
         },
         {
             "page": 52,
@@ -6313,13 +6313,13 @@
         },
         {
             "page": 52,
-            "url": "https://www.gao.gov/fedrules/168851",
+            "url": "https://www.gao.gov/fedrules/168852",
             "type": "Major Federal Rule",
             "effective_date": "2011-09-24T13:00:00Z"
         },
         {
             "page": 52,
-            "url": "https://www.gao.gov/fedrules/168852",
+            "url": "https://www.gao.gov/fedrules/168851",
             "type": "Major Federal Rule",
             "effective_date": "2011-09-24T13:00:00Z"
         },
@@ -6349,6 +6349,12 @@
         },
         {
             "page": 52,
+            "url": "https://www.gao.gov/fedrules/168538",
+            "type": "Major Federal Rule",
+            "effective_date": "2011-09-01T13:00:00Z"
+        },
+        {
+            "page": 52,
             "url": "https://www.gao.gov/fedrules/168542",
             "type": "Major Federal Rule",
             "effective_date": "2011-10-31T13:00:00Z"
@@ -6360,22 +6366,10 @@
             "effective_date": "2011-10-31T13:00:00Z"
         },
         {
-            "page": 52,
-            "url": "https://www.gao.gov/fedrules/168507",
-            "type": "Major Federal Rule",
-            "effective_date": "2011-09-01T13:00:00Z"
-        },
-        {
             "page": 53,
-            "url": "https://www.gao.gov/fedrules/168558",
+            "url": "https://www.gao.gov/fedrules/168542",
             "type": "Major Federal Rule",
             "effective_date": "2011-10-31T13:00:00Z"
-        },
-        {
-            "page": 53,
-            "url": "https://www.gao.gov/fedrules/168353",
-            "type": "Major Federal Rule",
-            "effective_date": "2011-08-30T13:00:00Z"
         },
         {
             "page": 53,
@@ -6385,21 +6379,27 @@
         },
         {
             "page": 53,
+            "url": "https://www.gao.gov/fedrules/168353",
+            "type": "Major Federal Rule",
+            "effective_date": "2011-08-30T13:00:00Z"
+        },
+        {
+            "page": 53,
             "url": "https://www.gao.gov/fedrules/168303",
             "type": "Major Federal Rule",
             "effective_date": "2011-10-24T13:00:00Z"
         },
         {
             "page": 53,
-            "url": "https://www.gao.gov/fedrules/168119",
-            "type": "Major Federal Rule",
-            "effective_date": "2011-10-01T13:00:00Z"
-        },
-        {
-            "page": 53,
             "url": "https://www.gao.gov/fedrules/168151",
             "type": "Major Federal Rule",
             "effective_date": "2011-09-19T13:00:00Z"
+        },
+        {
+            "page": 53,
+            "url": "https://www.gao.gov/fedrules/168119",
+            "type": "Major Federal Rule",
+            "effective_date": "2011-10-01T13:00:00Z"
         },
         {
             "page": 53,
@@ -6433,13 +6433,13 @@
         },
         {
             "page": 53,
-            "url": "https://www.gao.gov/fedrules/167774",
+            "url": "https://www.gao.gov/fedrules/167772",
             "type": "Major Federal Rule",
             "effective_date": "2011-10-01T13:00:00Z"
         },
         {
             "page": 53,
-            "url": "https://www.gao.gov/fedrules/167772",
+            "url": "https://www.gao.gov/fedrules/167774",
             "type": "Major Federal Rule",
             "effective_date": "2011-10-01T13:00:00Z"
         },
@@ -6481,9 +6481,9 @@
         },
         {
             "page": 53,
-            "url": "https://www.gao.gov/fedrules/167458",
+            "url": "https://www.gao.gov/fedrules/167346",
             "type": "Major Federal Rule",
-            "effective_date": "2012-09-22T13:00:00Z"
+            "effective_date": "2011-08-22T13:00:00Z"
         },
         {
             "page": 54,
@@ -6631,15 +6631,15 @@
         },
         {
             "page": 55,
-            "url": "https://www.gao.gov/fedrules/165277",
-            "type": "Major Federal Rule",
-            "effective_date": "2011-04-04T13:00:00Z"
-        },
-        {
-            "page": 55,
             "url": "https://www.gao.gov/fedrules/165257",
             "type": "Major Federal Rule",
             "effective_date": "2011-03-25T13:00:00Z"
+        },
+        {
+            "page": 55,
+            "url": "https://www.gao.gov/fedrules/165277",
+            "type": "Major Federal Rule",
+            "effective_date": "2011-04-04T13:00:00Z"
         },
         {
             "page": 55,
@@ -6901,15 +6901,15 @@
         },
         {
             "page": 57,
-            "url": "https://www.gao.gov/fedrules/163009",
-            "type": "Major Federal Rule",
-            "effective_date": "2010-09-08T13:00:00Z"
-        },
-        {
-            "page": 57,
             "url": "https://www.gao.gov/fedrules/163193",
             "type": "Major Federal Rule",
             "effective_date": "2010-11-08T13:00:00Z"
+        },
+        {
+            "page": 57,
+            "url": "https://www.gao.gov/fedrules/163009",
+            "type": "Major Federal Rule",
+            "effective_date": "2010-09-08T13:00:00Z"
         },
         {
             "page": 57,
@@ -7099,15 +7099,15 @@
         },
         {
             "page": 59,
-            "url": "https://www.gao.gov/fedrules/161642",
-            "type": "Major Federal Rule",
-            "effective_date": "2010-06-15T13:00:00Z"
-        },
-        {
-            "page": 59,
             "url": "https://www.gao.gov/fedrules/161461",
             "type": "Major Federal Rule",
             "effective_date": "2009-10-21T13:00:00Z"
+        },
+        {
+            "page": 59,
+            "url": "https://www.gao.gov/fedrules/161642",
+            "type": "Major Federal Rule",
+            "effective_date": "2010-06-15T13:00:00Z"
         },
         {
             "page": 59,
@@ -7243,15 +7243,15 @@
         },
         {
             "page": 60,
-            "url": "https://www.gao.gov/fedrules/160711",
-            "type": "Major Federal Rule",
-            "effective_date": "2010-03-16T13:00:00Z"
-        },
-        {
-            "page": 60,
             "url": "https://www.gao.gov/fedrules/160789",
             "type": "Major Federal Rule",
             "effective_date": "2011-01-01T13:00:00Z"
+        },
+        {
+            "page": 60,
+            "url": "https://www.gao.gov/fedrules/160711",
+            "type": "Major Federal Rule",
+            "effective_date": "2010-03-16T13:00:00Z"
         },
         {
             "page": 60,
@@ -7297,12 +7297,6 @@
         },
         {
             "page": 60,
-            "url": "https://www.gao.gov/fedrules/160214",
-            "type": "Major Federal Rule",
-            "effective_date": "2010-02-02T13:00:00Z"
-        },
-        {
-            "page": 60,
             "url": "https://www.gao.gov/fedrules/160208",
             "type": "Major Federal Rule",
             "effective_date": "2010-02-01T13:00:00Z"
@@ -7312,6 +7306,12 @@
             "url": "https://www.gao.gov/fedrules/160212",
             "type": "Major Federal Rule",
             "effective_date": "2009-12-04T13:00:00Z"
+        },
+        {
+            "page": 60,
+            "url": "https://www.gao.gov/fedrules/160214",
+            "type": "Major Federal Rule",
+            "effective_date": "2010-02-02T13:00:00Z"
         },
         {
             "page": 60,
@@ -7507,13 +7507,13 @@
         },
         {
             "page": 62,
-            "url": "https://www.gao.gov/fedrules/158358",
+            "url": "https://www.gao.gov/fedrules/158408",
             "type": "Major Federal Rule",
             "effective_date": "2009-07-29T13:00:00Z"
         },
         {
             "page": 62,
-            "url": "https://www.gao.gov/fedrules/158408",
+            "url": "https://www.gao.gov/fedrules/158358",
             "type": "Major Federal Rule",
             "effective_date": "2009-07-29T13:00:00Z"
         },
@@ -7555,15 +7555,15 @@
         },
         {
             "page": 62,
-            "url": "https://www.gao.gov/fedrules/158239",
-            "type": "Major Federal Rule",
-            "effective_date": "2009-09-08T13:00:00Z"
-        },
-        {
-            "page": 62,
             "url": "https://www.gao.gov/fedrules/158248",
             "type": "Major Federal Rule",
             "effective_date": "0002-11-30T13:00:00Z"
+        },
+        {
+            "page": 62,
+            "url": "https://www.gao.gov/fedrules/158239",
+            "type": "Major Federal Rule",
+            "effective_date": "2009-09-08T13:00:00Z"
         },
         {
             "page": 63,
@@ -7855,6 +7855,12 @@
         },
         {
             "page": 65,
+            "url": "https://www.gao.gov/fedrules/156646",
+            "type": "Major Federal Rule",
+            "effective_date": "2011-12-31T13:00:00Z"
+        },
+        {
+            "page": 65,
             "url": "https://www.gao.gov/fedrules/156628",
             "type": "Major Federal Rule",
             "effective_date": "2009-01-01T13:00:00Z"
@@ -7864,12 +7870,6 @@
             "url": "https://www.gao.gov/fedrules/156641",
             "type": "Major Federal Rule",
             "effective_date": "2009-01-19T13:00:00Z"
-        },
-        {
-            "page": 65,
-            "url": "https://www.gao.gov/fedrules/156646",
-            "type": "Major Federal Rule",
-            "effective_date": "2011-12-31T13:00:00Z"
         },
         {
             "page": 65,
@@ -7891,13 +7891,13 @@
         },
         {
             "page": 65,
-            "url": "https://www.gao.gov/fedrules/156526",
+            "url": "https://www.gao.gov/fedrules/156627",
             "type": "Major Federal Rule",
             "effective_date": "2009-01-16T13:00:00Z"
         },
         {
             "page": 65,
-            "url": "https://www.gao.gov/fedrules/156627",
+            "url": "https://www.gao.gov/fedrules/156526",
             "type": "Major Federal Rule",
             "effective_date": "2009-01-16T13:00:00Z"
         },
@@ -7951,12 +7951,6 @@
         },
         {
             "page": 66,
-            "url": "https://www.gao.gov/fedrules/156389",
-            "type": "Major Federal Rule",
-            "effective_date": "2008-11-17T13:00:00Z"
-        },
-        {
-            "page": 66,
             "url": "https://www.gao.gov/fedrules/156339",
             "type": "Major Federal Rule",
             "effective_date": "2008-10-18T13:00:00Z"
@@ -7969,9 +7963,21 @@
         },
         {
             "page": 66,
+            "url": "https://www.gao.gov/fedrules/156389",
+            "type": "Major Federal Rule",
+            "effective_date": "2008-11-17T13:00:00Z"
+        },
+        {
+            "page": 66,
             "url": "https://www.gao.gov/fedrules/156739",
             "type": "Major Federal Rule",
             "effective_date": "2009-01-12T13:00:00Z"
+        },
+        {
+            "page": 66,
+            "url": "https://www.gao.gov/fedrules/156254",
+            "type": "Major Federal Rule",
+            "effective_date": "2008-12-09T13:00:00Z"
         },
         {
             "page": 66,
@@ -7982,12 +7988,6 @@
         {
             "page": 66,
             "url": "https://www.gao.gov/fedrules/156223",
-            "type": "Major Federal Rule",
-            "effective_date": "2008-12-09T13:00:00Z"
-        },
-        {
-            "page": 66,
-            "url": "https://www.gao.gov/fedrules/156254",
             "type": "Major Federal Rule",
             "effective_date": "2008-12-09T13:00:00Z"
         },
@@ -8005,27 +8005,27 @@
         },
         {
             "page": 66,
-            "url": "https://www.gao.gov/fedrules/156104",
-            "type": "Major Federal Rule",
-            "effective_date": "2008-11-06T13:00:00Z"
-        },
-        {
-            "page": 66,
             "url": "https://www.gao.gov/fedrules/156346",
             "type": "Major Federal Rule",
             "effective_date": "2008-11-06T13:00:00Z"
         },
         {
             "page": 66,
-            "url": "https://www.gao.gov/fedrules/156103",
+            "url": "https://www.gao.gov/fedrules/156104",
             "type": "Major Federal Rule",
-            "effective_date": "2008-10-06T13:00:00Z"
+            "effective_date": "2008-11-06T13:00:00Z"
         },
         {
             "page": 66,
             "url": "https://www.gao.gov/fedrules/156095",
             "type": "Major Federal Rule",
             "effective_date": "2008-12-05T13:00:00Z"
+        },
+        {
+            "page": 66,
+            "url": "https://www.gao.gov/fedrules/156103",
+            "type": "Major Federal Rule",
+            "effective_date": "2008-10-06T13:00:00Z"
         },
         {
             "page": 66,
@@ -8041,9 +8041,9 @@
         },
         {
             "page": 66,
-            "url": "https://www.gao.gov/fedrules/155927",
+            "url": "https://www.gao.gov/fedrules/155817",
             "type": "Major Federal Rule",
-            "effective_date": "2008-09-27T13:00:00Z"
+            "effective_date": "2008-09-26T13:00:00Z"
         },
         {
             "page": 67,
@@ -8275,15 +8275,15 @@
         },
         {
             "page": 68,
-            "url": "https://www.gao.gov/fedrules/153931",
-            "type": "Major Federal Rule",
-            "effective_date": "2009-06-01T13:00:00Z"
-        },
-        {
-            "page": 68,
             "url": "https://www.gao.gov/fedrules/153896",
             "type": "Major Federal Rule",
             "effective_date": "2008-05-31T13:00:00Z"
+        },
+        {
+            "page": 68,
+            "url": "https://www.gao.gov/fedrules/153931",
+            "type": "Major Federal Rule",
+            "effective_date": "2009-06-01T13:00:00Z"
         },
         {
             "page": 69,
@@ -8389,15 +8389,15 @@
         },
         {
             "page": 69,
-            "url": "https://www.gao.gov/fedrules/153021",
-            "type": "Major Federal Rule",
-            "effective_date": "2008-03-03T13:00:00Z"
-        },
-        {
-            "page": 69,
             "url": "https://www.gao.gov/fedrules/152878",
             "type": "Major Federal Rule",
             "effective_date": "2008-01-03T13:00:00Z"
+        },
+        {
+            "page": 69,
+            "url": "https://www.gao.gov/fedrules/153021",
+            "type": "Major Federal Rule",
+            "effective_date": "2008-03-03T13:00:00Z"
         },
         {
             "page": 69,
@@ -8527,9 +8527,9 @@
         },
         {
             "page": 71,
-            "url": "https://www.gao.gov/fedrules/151817",
+            "url": "https://www.gao.gov/fedrules/151902",
             "type": "Major Federal Rule",
-            "effective_date": "2007-10-23T13:00:00Z"
+            "effective_date": "2008-02-20T13:00:00Z"
         },
         {
             "page": 71,
@@ -8713,15 +8713,15 @@
         },
         {
             "page": 72,
-            "url": "https://www.gao.gov/fedrules/150190",
-            "type": "Major Federal Rule",
-            "effective_date": "2007-02-01T13:00:00Z"
-        },
-        {
-            "page": 72,
             "url": "https://www.gao.gov/fedrules/144968",
             "type": "Major Federal Rule",
             "effective_date": "2007-02-27T13:00:00Z"
+        },
+        {
+            "page": 72,
+            "url": "https://www.gao.gov/fedrules/150190",
+            "type": "Major Federal Rule",
+            "effective_date": "2007-02-01T13:00:00Z"
         },
         {
             "page": 72,
@@ -8755,15 +8755,15 @@
         },
         {
             "page": 72,
-            "url": "https://www.gao.gov/fedrules/144746",
-            "type": "Major Federal Rule",
-            "effective_date": "2007-01-23T13:00:00Z"
-        },
-        {
-            "page": 72,
             "url": "https://www.gao.gov/fedrules/144744",
             "type": "Major Federal Rule",
             "effective_date": "2007-01-01T13:00:00Z"
+        },
+        {
+            "page": 72,
+            "url": "https://www.gao.gov/fedrules/144746",
+            "type": "Major Federal Rule",
+            "effective_date": "2007-01-23T13:00:00Z"
         },
         {
             "page": 73,
@@ -8827,6 +8827,12 @@
         },
         {
             "page": 73,
+            "url": "https://www.gao.gov/fedrules/143941",
+            "type": "Major Federal Rule",
+            "effective_date": "2007-01-01T13:00:00Z"
+        },
+        {
+            "page": 73,
             "url": "https://www.gao.gov/fedrules/143913",
             "type": "Major Federal Rule",
             "effective_date": "2007-01-01T13:00:00Z"
@@ -8834,12 +8840,6 @@
         {
             "page": 73,
             "url": "https://www.gao.gov/fedrules/143919",
-            "type": "Major Federal Rule",
-            "effective_date": "2007-01-01T13:00:00Z"
-        },
-        {
-            "page": 73,
-            "url": "https://www.gao.gov/fedrules/143941",
             "type": "Major Federal Rule",
             "effective_date": "2007-01-01T13:00:00Z"
         },
@@ -8887,7 +8887,7 @@
         },
         {
             "page": 74,
-            "url": "https://www.gao.gov/fedrules/143406",
+            "url": "https://www.gao.gov/fedrules/143407",
             "type": "Major Federal Rule",
             "effective_date": "2006-10-01T13:00:00Z"
         },
@@ -9085,18 +9085,6 @@
         },
         {
             "page": 75,
-            "url": "https://www.gao.gov/fedrules/140535",
-            "type": "Major Federal Rule",
-            "effective_date": "2006-01-01T13:00:00Z"
-        },
-        {
-            "page": 75,
-            "url": "https://www.gao.gov/fedrules/140282",
-            "type": "Major Federal Rule",
-            "effective_date": "2006-01-01T13:00:00Z"
-        },
-        {
-            "page": 75,
             "url": "https://www.gao.gov/fedrules/140283",
             "type": "Major Federal Rule",
             "effective_date": "2006-01-01T13:00:00Z"
@@ -9104,6 +9092,18 @@
         {
             "page": 75,
             "url": "https://www.gao.gov/fedrules/140284",
+            "type": "Major Federal Rule",
+            "effective_date": "2006-01-01T13:00:00Z"
+        },
+        {
+            "page": 75,
+            "url": "https://www.gao.gov/fedrules/140535",
+            "type": "Major Federal Rule",
+            "effective_date": "2006-01-01T13:00:00Z"
+        },
+        {
+            "page": 75,
+            "url": "https://www.gao.gov/fedrules/140282",
             "type": "Major Federal Rule",
             "effective_date": "2006-01-01T13:00:00Z"
         },
@@ -9121,7 +9121,7 @@
         },
         {
             "page": 75,
-            "url": "https://www.gao.gov/fedrules/139811",
+            "url": "https://www.gao.gov/fedrules/139757",
             "type": "Major Federal Rule",
             "effective_date": "2006-01-01T13:00:00Z"
         },
@@ -9355,13 +9355,13 @@
         },
         {
             "page": 77,
-            "url": "https://www.gao.gov/fedrules/136664",
+            "url": "https://www.gao.gov/fedrules/136631",
             "type": "Major Federal Rule",
             "effective_date": "2005-03-22T13:00:00Z"
         },
         {
             "page": 77,
-            "url": "https://www.gao.gov/fedrules/136631",
+            "url": "https://www.gao.gov/fedrules/136664",
             "type": "Major Federal Rule",
             "effective_date": "2005-03-22T13:00:00Z"
         },
@@ -9409,15 +9409,15 @@
         },
         {
             "page": 78,
-            "url": "https://www.gao.gov/fedrules/136009",
-            "type": "Major Federal Rule",
-            "effective_date": "2005-02-07T13:00:00Z"
-        },
-        {
-            "page": 78,
             "url": "https://www.gao.gov/fedrules/136011",
             "type": "Major Federal Rule",
             "effective_date": "2005-01-01T13:00:00Z"
+        },
+        {
+            "page": 78,
+            "url": "https://www.gao.gov/fedrules/136009",
+            "type": "Major Federal Rule",
+            "effective_date": "2005-02-07T13:00:00Z"
         },
         {
             "page": 78,
@@ -9439,6 +9439,12 @@
         },
         {
             "page": 78,
+            "url": "https://www.gao.gov/fedrules/135697",
+            "type": "Major Federal Rule",
+            "effective_date": "2005-01-01T13:00:00Z"
+        },
+        {
+            "page": 78,
             "url": "https://www.gao.gov/fedrules/135698",
             "type": "Major Federal Rule",
             "effective_date": "2005-01-01T13:00:00Z"
@@ -9457,12 +9463,6 @@
         },
         {
             "page": 78,
-            "url": "https://www.gao.gov/fedrules/135697",
-            "type": "Major Federal Rule",
-            "effective_date": "2005-01-01T13:00:00Z"
-        },
-        {
-            "page": 78,
             "url": "https://www.gao.gov/fedrules/135580",
             "type": "Major Federal Rule",
             "effective_date": "2005-01-01T13:00:00Z"
@@ -9475,15 +9475,15 @@
         },
         {
             "page": 78,
-            "url": "https://www.gao.gov/fedrules/135883",
-            "type": "Major Federal Rule",
-            "effective_date": "2005-01-28T13:00:00Z"
-        },
-        {
-            "page": 78,
             "url": "https://www.gao.gov/fedrules/136177",
             "type": "Major Federal Rule",
             "effective_date": "2005-02-25T13:00:00Z"
+        },
+        {
+            "page": 78,
+            "url": "https://www.gao.gov/fedrules/135883",
+            "type": "Major Federal Rule",
+            "effective_date": "2005-01-28T13:00:00Z"
         },
         {
             "page": 79,
@@ -9571,15 +9571,15 @@
         },
         {
             "page": 79,
-            "url": "https://www.gao.gov/fedrules/134770",
-            "type": "Major Federal Rule",
-            "effective_date": "2004-08-30T13:00:00Z"
-        },
-        {
-            "page": 79,
             "url": "https://www.gao.gov/fedrules/134774",
             "type": "Major Federal Rule",
             "effective_date": "2004-09-01T13:00:00Z"
+        },
+        {
+            "page": 79,
+            "url": "https://www.gao.gov/fedrules/134770",
+            "type": "Major Federal Rule",
+            "effective_date": "2004-08-30T13:00:00Z"
         },
         {
             "page": 79,
@@ -9643,13 +9643,13 @@
         },
         {
             "page": 80,
-            "url": "https://www.gao.gov/fedrules/133507",
+            "url": "https://www.gao.gov/fedrules/133490",
             "type": "Major Federal Rule",
             "effective_date": "2004-07-01T13:00:00Z"
         },
         {
             "page": 80,
-            "url": "https://www.gao.gov/fedrules/133490",
+            "url": "https://www.gao.gov/fedrules/133507",
             "type": "Major Federal Rule",
             "effective_date": "2004-07-01T13:00:00Z"
         },
@@ -9763,6 +9763,12 @@
         },
         {
             "page": 81,
+            "url": "https://www.gao.gov/fedrules/131879",
+            "type": "Major Federal Rule",
+            "effective_date": "2004-01-01T13:00:00Z"
+        },
+        {
+            "page": 81,
             "url": "https://www.gao.gov/fedrules/131880",
             "type": "Major Federal Rule",
             "effective_date": "2004-01-01T13:00:00Z"
@@ -9770,12 +9776,6 @@
         {
             "page": 81,
             "url": "https://www.gao.gov/fedrules/131882",
-            "type": "Major Federal Rule",
-            "effective_date": "2004-01-01T13:00:00Z"
-        },
-        {
-            "page": 81,
-            "url": "https://www.gao.gov/fedrules/131879",
             "type": "Major Federal Rule",
             "effective_date": "2004-01-01T13:00:00Z"
         },
@@ -9817,6 +9817,12 @@
         },
         {
             "page": 81,
+            "url": "https://www.gao.gov/fedrules/131441",
+            "type": "Major Federal Rule",
+            "effective_date": "2004-01-01T13:00:00Z"
+        },
+        {
+            "page": 81,
             "url": "https://www.gao.gov/fedrules/131443",
             "type": "Major Federal Rule",
             "effective_date": "2004-01-01T13:00:00Z"
@@ -9829,25 +9835,19 @@
         },
         {
             "page": 81,
-            "url": "https://www.gao.gov/fedrules/131441",
-            "type": "Major Federal Rule",
-            "effective_date": "2004-01-01T13:00:00Z"
-        },
-        {
-            "page": 81,
             "url": "https://www.gao.gov/fedrules/130855",
             "type": "Major Federal Rule",
             "effective_date": "2003-11-24T13:00:00Z"
         },
         {
             "page": 81,
-            "url": "https://www.gao.gov/fedrules/131083",
+            "url": "https://www.gao.gov/fedrules/131082",
             "type": "Major Federal Rule",
             "effective_date": "2004-01-01T13:00:00Z"
         },
         {
             "page": 82,
-            "url": "https://www.gao.gov/fedrules/131082",
+            "url": "https://www.gao.gov/fedrules/131083",
             "type": "Major Federal Rule",
             "effective_date": "2004-01-01T13:00:00Z"
         },
@@ -9877,6 +9877,12 @@
         },
         {
             "page": 82,
+            "url": "https://www.gao.gov/fedrules/130561",
+            "type": "Major Federal Rule",
+            "effective_date": "2003-09-26T13:00:00Z"
+        },
+        {
+            "page": 82,
             "url": "https://www.gao.gov/fedrules/130564",
             "type": "Major Federal Rule",
             "effective_date": "2003-09-27T13:00:00Z"
@@ -9886,12 +9892,6 @@
             "url": "https://www.gao.gov/fedrules/130566",
             "type": "Major Federal Rule",
             "effective_date": "2003-09-27T13:00:00Z"
-        },
-        {
-            "page": 82,
-            "url": "https://www.gao.gov/fedrules/130561",
-            "type": "Major Federal Rule",
-            "effective_date": "2003-09-26T13:00:00Z"
         },
         {
             "page": 82,
@@ -9907,21 +9907,27 @@
         },
         {
             "page": 82,
-            "url": "https://www.gao.gov/fedrules/130221",
-            "type": "Major Federal Rule",
-            "effective_date": "2003-08-27T13:00:00Z"
-        },
-        {
-            "page": 82,
             "url": "https://www.gao.gov/fedrules/130222",
             "type": "Major Federal Rule",
             "effective_date": "2003-09-01T13:00:00Z"
         },
         {
             "page": 82,
+            "url": "https://www.gao.gov/fedrules/130221",
+            "type": "Major Federal Rule",
+            "effective_date": "2003-08-27T13:00:00Z"
+        },
+        {
+            "page": 82,
             "url": "https://www.gao.gov/fedrules/129707",
             "type": "Major Federal Rule",
             "effective_date": "2003-11-28T13:00:00Z"
+        },
+        {
+            "page": 82,
+            "url": "https://www.gao.gov/fedrules/129734",
+            "type": "Major Federal Rule",
+            "effective_date": "2003-10-01T13:00:00Z"
         },
         {
             "page": 82,
@@ -9932,12 +9938,6 @@
         {
             "page": 82,
             "url": "https://www.gao.gov/fedrules/129737",
-            "type": "Major Federal Rule",
-            "effective_date": "2003-10-01T13:00:00Z"
-        },
-        {
-            "page": 82,
-            "url": "https://www.gao.gov/fedrules/129734",
             "type": "Major Federal Rule",
             "effective_date": "2003-10-01T13:00:00Z"
         },
@@ -10123,12 +10123,6 @@
         },
         {
             "page": 84,
-            "url": "https://www.gao.gov/fedrules/126713",
-            "type": "Major Federal Rule",
-            "effective_date": "2002-10-16T13:00:00Z"
-        },
-        {
-            "page": 84,
             "url": "https://www.gao.gov/fedrules/126534",
             "type": "Major Federal Rule",
             "effective_date": "2003-01-01T13:00:00Z"
@@ -10138,6 +10132,12 @@
             "url": "https://www.gao.gov/fedrules/126536",
             "type": "Major Federal Rule",
             "effective_date": "2003-01-01T13:00:00Z"
+        },
+        {
+            "page": 84,
+            "url": "https://www.gao.gov/fedrules/126713",
+            "type": "Major Federal Rule",
+            "effective_date": "2002-10-16T13:00:00Z"
         },
         {
             "page": 84,
@@ -10195,13 +10195,13 @@
         },
         {
             "page": 84,
-            "url": "https://www.gao.gov/fedrules/126017",
+            "url": "https://www.gao.gov/fedrules/126016",
             "type": "Major Federal Rule",
             "effective_date": "2002-09-01T13:00:00Z"
         },
         {
             "page": 84,
-            "url": "https://www.gao.gov/fedrules/126016",
+            "url": "https://www.gao.gov/fedrules/126017",
             "type": "Major Federal Rule",
             "effective_date": "2002-09-01T13:00:00Z"
         },
@@ -10627,6 +10627,12 @@
         },
         {
             "page": 88,
+            "url": "https://www.gao.gov/fedrules/120552",
+            "type": "Major Federal Rule",
+            "effective_date": "2001-03-19T13:00:00Z"
+        },
+        {
+            "page": 88,
             "url": "https://www.gao.gov/fedrules/120484",
             "type": "Major Federal Rule",
             "effective_date": "2001-03-21T13:00:00Z"
@@ -10636,12 +10642,6 @@
             "url": "https://www.gao.gov/fedrules/120436",
             "type": "Major Federal Rule",
             "effective_date": "2001-03-21T13:00:00Z"
-        },
-        {
-            "page": 88,
-            "url": "https://www.gao.gov/fedrules/120552",
-            "type": "Major Federal Rule",
-            "effective_date": "2001-03-19T13:00:00Z"
         },
         {
             "page": 88,
@@ -10675,21 +10675,27 @@
         },
         {
             "page": 88,
+            "url": "https://www.gao.gov/fedrules/119514",
+            "type": "Major Federal Rule",
+            "effective_date": "2001-01-18T13:00:00Z"
+        },
+        {
+            "page": 88,
             "url": "https://www.gao.gov/fedrules/119466",
             "type": "Major Federal Rule",
             "effective_date": "2001-05-22T13:00:00Z"
         },
         {
-            "page": 88,
+            "page": 89,
             "url": "https://www.gao.gov/fedrules/119702",
             "type": "Major Federal Rule",
             "effective_date": "2001-02-21T13:00:00Z"
         },
         {
             "page": 89,
-            "url": "https://www.gao.gov/fedrules/119514",
+            "url": "https://www.gao.gov/fedrules/119923",
             "type": "Major Federal Rule",
-            "effective_date": "2001-01-18T13:00:00Z"
+            "effective_date": "2001-08-17T13:00:00Z"
         },
         {
             "page": 89,
@@ -10705,9 +10711,9 @@
         },
         {
             "page": 89,
-            "url": "https://www.gao.gov/fedrules/119923",
+            "url": "https://www.gao.gov/fedrules/119718",
             "type": "Major Federal Rule",
-            "effective_date": "2001-08-17T13:00:00Z"
+            "effective_date": "2001-01-18T13:00:00Z"
         },
         {
             "page": 89,
@@ -10723,33 +10729,15 @@
         },
         {
             "page": 89,
-            "url": "https://www.gao.gov/fedrules/119718",
-            "type": "Major Federal Rule",
-            "effective_date": "2001-01-18T13:00:00Z"
-        },
-        {
-            "page": 89,
-            "url": "https://www.gao.gov/fedrules/119717",
-            "type": "Major Federal Rule",
-            "effective_date": "2004-01-20T13:00:00Z"
-        },
-        {
-            "page": 89,
             "url": "https://www.gao.gov/fedrules/119714",
             "type": "Major Federal Rule",
             "effective_date": "2001-07-31T13:00:00Z"
         },
         {
             "page": 89,
-            "url": "https://www.gao.gov/fedrules/119713",
+            "url": "https://www.gao.gov/fedrules/119717",
             "type": "Major Federal Rule",
-            "effective_date": "2001-03-13T13:00:00Z"
-        },
-        {
-            "page": 89,
-            "url": "https://www.gao.gov/fedrules/118977",
-            "type": "Major Federal Rule",
-            "effective_date": "2001-03-13T13:00:00Z"
+            "effective_date": "2004-01-20T13:00:00Z"
         },
         {
             "page": 89,
@@ -10765,6 +10753,24 @@
         },
         {
             "page": 89,
+            "url": "https://www.gao.gov/fedrules/119713",
+            "type": "Major Federal Rule",
+            "effective_date": "2001-03-13T13:00:00Z"
+        },
+        {
+            "page": 89,
+            "url": "https://www.gao.gov/fedrules/118977",
+            "type": "Major Federal Rule",
+            "effective_date": "2001-03-13T13:00:00Z"
+        },
+        {
+            "page": 89,
+            "url": "https://www.gao.gov/fedrules/119922",
+            "type": "Major Federal Rule",
+            "effective_date": "2001-05-11T13:00:00Z"
+        },
+        {
+            "page": 89,
             "url": "https://www.gao.gov/fedrules/119589",
             "type": "Major Federal Rule",
             "effective_date": "2001-03-12T13:00:00Z"
@@ -10777,21 +10783,15 @@
         },
         {
             "page": 89,
-            "url": "https://www.gao.gov/fedrules/119922",
+            "url": "https://www.gao.gov/fedrules/119721",
             "type": "Major Federal Rule",
-            "effective_date": "2001-05-11T13:00:00Z"
+            "effective_date": "2002-01-09T13:00:00Z"
         },
         {
             "page": 89,
             "url": "https://www.gao.gov/fedrules/119940",
             "type": "Major Federal Rule",
             "effective_date": "2001-01-09T13:00:00Z"
-        },
-        {
-            "page": 89,
-            "url": "https://www.gao.gov/fedrules/119721",
-            "type": "Major Federal Rule",
-            "effective_date": "2002-01-09T13:00:00Z"
         },
         {
             "page": 89,
@@ -10831,15 +10831,15 @@
         },
         {
             "page": 90,
-            "url": "https://www.gao.gov/fedrules/118934",
-            "type": "Major Federal Rule",
-            "effective_date": "2001-09-04T13:00:00Z"
-        },
-        {
-            "page": 90,
             "url": "https://www.gao.gov/fedrules/118976",
             "type": "Major Federal Rule",
             "effective_date": "2001-02-05T13:00:00Z"
+        },
+        {
+            "page": 90,
+            "url": "https://www.gao.gov/fedrules/118934",
+            "type": "Major Federal Rule",
+            "effective_date": "2001-09-04T13:00:00Z"
         },
         {
             "page": 90,
@@ -10852,6 +10852,12 @@
             "url": "https://www.gao.gov/fedrules/118955",
             "type": "Major Federal Rule",
             "effective_date": "2001-01-29T13:00:00Z"
+        },
+        {
+            "page": 90,
+            "url": "https://www.gao.gov/fedrules/118933",
+            "type": "Major Federal Rule",
+            "effective_date": "2001-01-20T13:00:00Z"
         },
         {
             "page": 90,
@@ -10868,12 +10874,6 @@
         {
             "page": 90,
             "url": "https://www.gao.gov/fedrules/118899",
-            "type": "Major Federal Rule",
-            "effective_date": "2001-01-20T13:00:00Z"
-        },
-        {
-            "page": 90,
-            "url": "https://www.gao.gov/fedrules/118933",
             "type": "Major Federal Rule",
             "effective_date": "2001-01-20T13:00:00Z"
         },
@@ -11005,13 +11005,13 @@
         },
         {
             "page": 91,
-            "url": "https://www.gao.gov/fedrules/118176",
+            "url": "https://www.gao.gov/fedrules/118175",
             "type": "Major Federal Rule",
             "effective_date": "2000-09-01T13:00:00Z"
         },
         {
             "page": 91,
-            "url": "https://www.gao.gov/fedrules/118175",
+            "url": "https://www.gao.gov/fedrules/118176",
             "type": "Major Federal Rule",
             "effective_date": "2000-09-01T13:00:00Z"
         },
@@ -11041,15 +11041,15 @@
         },
         {
             "page": 91,
-            "url": "https://www.gao.gov/fedrules/117833",
-            "type": "Major Federal Rule",
-            "effective_date": "2000-10-23T13:00:00Z"
-        },
-        {
-            "page": 92,
             "url": "https://www.gao.gov/fedrules/118097",
             "type": "Major Federal Rule",
             "effective_date": "2000-08-23T13:00:00Z"
+        },
+        {
+            "page": 92,
+            "url": "https://www.gao.gov/fedrules/117833",
+            "type": "Major Federal Rule",
+            "effective_date": "2000-10-23T13:00:00Z"
         },
         {
             "page": 92,
@@ -11065,15 +11065,15 @@
         },
         {
             "page": 92,
-            "url": "https://www.gao.gov/fedrules/117586",
-            "type": "Major Federal Rule",
-            "effective_date": "2000-08-01T13:00:00Z"
-        },
-        {
-            "page": 92,
             "url": "https://www.gao.gov/fedrules/117584",
             "type": "Major Federal Rule",
             "effective_date": "2000-10-01T13:00:00Z"
+        },
+        {
+            "page": 92,
+            "url": "https://www.gao.gov/fedrules/117586",
+            "type": "Major Federal Rule",
+            "effective_date": "2000-08-01T13:00:00Z"
         },
         {
             "page": 92,
@@ -11107,15 +11107,15 @@
         },
         {
             "page": 92,
-            "url": "https://www.gao.gov/fedrules/117506",
-            "type": "Major Federal Rule",
-            "effective_date": "2000-08-01T13:00:00Z"
-        },
-        {
-            "page": 92,
             "url": "https://www.gao.gov/fedrules/117315",
             "type": "Major Federal Rule",
             "effective_date": "2000-09-05T13:00:00Z"
+        },
+        {
+            "page": 92,
+            "url": "https://www.gao.gov/fedrules/117506",
+            "type": "Major Federal Rule",
+            "effective_date": "2000-08-01T13:00:00Z"
         },
         {
             "page": 92,
@@ -11143,15 +11143,15 @@
         },
         {
             "page": 92,
-            "url": "https://www.gao.gov/fedrules/117089",
-            "type": "Major Federal Rule",
-            "effective_date": "2000-07-17T13:00:00Z"
-        },
-        {
-            "page": 92,
             "url": "https://www.gao.gov/fedrules/117130",
             "type": "Major Federal Rule",
             "effective_date": "2000-06-16T13:00:00Z"
+        },
+        {
+            "page": 92,
+            "url": "https://www.gao.gov/fedrules/117089",
+            "type": "Major Federal Rule",
+            "effective_date": "2000-07-17T13:00:00Z"
         },
         {
             "page": 92,
@@ -11179,15 +11179,15 @@
         },
         {
             "page": 93,
-            "url": "https://www.gao.gov/fedrules/116865",
-            "type": "Major Federal Rule",
-            "effective_date": "2000-11-13T13:00:00Z"
-        },
-        {
-            "page": 93,
             "url": "https://www.gao.gov/fedrules/116866",
             "type": "Major Federal Rule",
             "effective_date": "2000-07-31T13:00:00Z"
+        },
+        {
+            "page": 93,
+            "url": "https://www.gao.gov/fedrules/116865",
+            "type": "Major Federal Rule",
+            "effective_date": "2000-11-13T13:00:00Z"
         },
         {
             "page": 93,
@@ -11353,15 +11353,15 @@
         },
         {
             "page": 94,
-            "url": "https://www.gao.gov/fedrules/113549",
-            "type": "Major Federal Rule",
-            "effective_date": "1999-10-01T13:00:00Z"
-        },
-        {
-            "page": 94,
             "url": "https://www.gao.gov/fedrules/113551",
             "type": "Major Federal Rule",
             "effective_date": "1999-09-27T13:00:00Z"
+        },
+        {
+            "page": 94,
+            "url": "https://www.gao.gov/fedrules/113549",
+            "type": "Major Federal Rule",
+            "effective_date": "1999-10-01T13:00:00Z"
         },
         {
             "page": 94,
@@ -11515,13 +11515,13 @@
         },
         {
             "page": 95,
-            "url": "https://www.gao.gov/fedrules/111216",
+            "url": "https://www.gao.gov/fedrules/111213",
             "type": "Major Federal Rule",
             "effective_date": "1999-05-24T13:00:00Z"
         },
         {
             "page": 95,
-            "url": "https://www.gao.gov/fedrules/111213",
+            "url": "https://www.gao.gov/fedrules/111214",
             "type": "Major Federal Rule",
             "effective_date": "1999-05-24T13:00:00Z"
         },
@@ -11677,13 +11677,13 @@
         },
         {
             "page": 97,
-            "url": "https://www.gao.gov/fedrules/109283",
+            "url": "https://www.gao.gov/fedrules/109285",
             "type": "Major Federal Rule",
             "effective_date": "1999-01-01T13:00:00Z"
         },
         {
             "page": 97,
-            "url": "https://www.gao.gov/fedrules/109285",
+            "url": "https://www.gao.gov/fedrules/109283",
             "type": "Major Federal Rule",
             "effective_date": "1999-01-01T13:00:00Z"
         },
@@ -11749,12 +11749,6 @@
         },
         {
             "page": 97,
-            "url": "https://www.gao.gov/fedrules/108604",
-            "type": "Major Federal Rule",
-            "effective_date": "1998-08-07T13:00:00Z"
-        },
-        {
-            "page": 97,
             "url": "https://www.gao.gov/fedrules/108672",
             "type": "Major Federal Rule",
             "effective_date": "1998-09-01T13:00:00Z"
@@ -11764,6 +11758,12 @@
             "url": "https://www.gao.gov/fedrules/108842",
             "type": "Major Federal Rule",
             "effective_date": "1998-11-10T13:00:00Z"
+        },
+        {
+            "page": 97,
+            "url": "https://www.gao.gov/fedrules/108604",
+            "type": "Major Federal Rule",
+            "effective_date": "1998-08-07T13:00:00Z"
         },
         {
             "page": 98,
@@ -11839,15 +11839,15 @@
         },
         {
             "page": 98,
-            "url": "https://www.gao.gov/fedrules/107590",
-            "type": "Major Federal Rule",
-            "effective_date": "1998-10-01T13:00:00Z"
-        },
-        {
-            "page": 98,
             "url": "https://www.gao.gov/fedrules/107589",
             "type": "Major Federal Rule",
             "effective_date": "1999-01-01T13:00:00Z"
+        },
+        {
+            "page": 98,
+            "url": "https://www.gao.gov/fedrules/107590",
+            "type": "Major Federal Rule",
+            "effective_date": "1998-10-01T13:00:00Z"
         },
         {
             "page": 98,
@@ -11857,15 +11857,15 @@
         },
         {
             "page": 98,
-            "url": "https://www.gao.gov/fedrules/107773",
-            "type": "Major Federal Rule",
-            "effective_date": "1998-07-27T13:00:00Z"
-        },
-        {
-            "page": 98,
             "url": "https://www.gao.gov/fedrules/107783",
             "type": "Major Federal Rule",
             "effective_date": "1998-08-28T13:00:00Z"
+        },
+        {
+            "page": 98,
+            "url": "https://www.gao.gov/fedrules/107773",
+            "type": "Major Federal Rule",
+            "effective_date": "1998-07-27T13:00:00Z"
         },
         {
             "page": 98,
@@ -11887,9 +11887,9 @@
         },
         {
             "page": 99,
-            "url": "https://www.gao.gov/fedrules/107784",
+            "url": "https://www.gao.gov/fedrules/107538",
             "type": "Major Federal Rule",
-            "effective_date": "1998-09-09T13:00:00Z"
+            "effective_date": "1998-08-10T13:00:00Z"
         },
         {
             "page": 99,
@@ -11947,15 +11947,15 @@
         },
         {
             "page": 99,
-            "url": "https://www.gao.gov/fedrules/106753",
-            "type": "Major Federal Rule",
-            "effective_date": "1998-06-15T13:00:00Z"
-        },
-        {
-            "page": 99,
             "url": "https://www.gao.gov/fedrules/106562",
             "type": "Major Federal Rule",
             "effective_date": "1998-07-01T13:00:00Z"
+        },
+        {
+            "page": 99,
+            "url": "https://www.gao.gov/fedrules/106753",
+            "type": "Major Federal Rule",
+            "effective_date": "1998-06-15T13:00:00Z"
         },
         {
             "page": 99,
@@ -12415,13 +12415,13 @@
         },
         {
             "page": 103,
-            "url": "https://www.gao.gov/fedrules/101301",
+            "url": "https://www.gao.gov/fedrules/101302",
             "type": "Major Federal Rule",
             "effective_date": "1997-01-01T13:00:00Z"
         },
         {
             "page": 103,
-            "url": "https://www.gao.gov/fedrules/101302",
+            "url": "https://www.gao.gov/fedrules/101301",
             "type": "Major Federal Rule",
             "effective_date": "1997-01-01T13:00:00Z"
         },
@@ -12469,15 +12469,15 @@
         },
         {
             "page": 103,
-            "url": "https://www.gao.gov/fedrules/103364",
-            "type": "Major Federal Rule",
-            "effective_date": "1996-09-28T13:00:00Z"
-        },
-        {
-            "page": 103,
             "url": "https://www.gao.gov/fedrules/103729",
             "type": "Major Federal Rule",
             "effective_date": "1996-09-27T13:00:00Z"
+        },
+        {
+            "page": 103,
+            "url": "https://www.gao.gov/fedrules/103364",
+            "type": "Major Federal Rule",
+            "effective_date": "1996-09-28T13:00:00Z"
         },
         {
             "page": 103,
@@ -12499,13 +12499,13 @@
         },
         {
             "page": 104,
-            "url": "https://www.gao.gov/fedrules/103352",
+            "url": "https://www.gao.gov/fedrules/103765",
             "type": "Major Federal Rule",
             "effective_date": "1996-08-20T13:00:00Z"
         },
         {
             "page": 104,
-            "url": "https://www.gao.gov/fedrules/103765",
+            "url": "https://www.gao.gov/fedrules/103352",
             "type": "Major Federal Rule",
             "effective_date": "1996-08-20T13:00:00Z"
         },
