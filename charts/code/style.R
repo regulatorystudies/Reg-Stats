@@ -5,6 +5,8 @@
   library(tidyverse)
 
 
+here::i_am("charts/code/style.R")
+
 # assigning colors to objects ####
   
   # I got these hex codes from the GW Web Accessible Color Guidelines
@@ -28,10 +30,10 @@
       # this is the color used in the striping on patterned charts
     
 # logo ####
-  logo <- image_read(here("gw_ci_rsc_2cs_pos.png"))
+  logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
     
 # font ####
-  font_add("avenir_lt_pro", here("a-avenir-next-lt-pro.otf"))
+  font_add("avenir_lt_pro", here("charts", "style", "a-avenir-next-lt-pro.otf"))
   showtext_auto()
     # according to documentation, showtext_auto needed for this to work properly 
   

@@ -14,7 +14,7 @@ rm(list=ls())
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-here::i_am("code/cum_sig_rules.Rmd")
+here::i_am("charts/code/cum_sig_rules.Rmd")
 ```
 
 ```{r load packages, results='hide', warning=FALSE}
@@ -23,24 +23,25 @@ library(tidyverse)
 library(ggrepel)
 library(png)
 library(here)
+source(here("charts", "code", "local_utils.R"))
 ```
 
 ```{r load style, message=FALSE}
 # load style
-source(here("code", "style.R"))
+source(here("charts", "code", "style.R"))
 ```
 
 ```{r load data}
 # load csv using here
-cum_sig <- read.csv(here("data", "Cumulative_ES_rules_published_months_in_office_071023.csv"), skip = 1)
+cum_sig <- read.csv(here("charts", "data", "cumulative_econ_significant_rules_by_presidential_month.csv"), skip = 1)
 
 # eventually separate this into another file for reuse, then import/call the function
 # ^ HOW TO DO THIS?
-get_png <- function(filename) {
-  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
-}
+# get_png <- function(filename) {
+#   grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
+# }
 
-l <- get_png(here("code", "RSC_logo.png"))
+l <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 
 ```
 
