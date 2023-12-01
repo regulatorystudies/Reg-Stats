@@ -2,10 +2,7 @@
   library(here)
   library(showtext)
   library(magick)
-  library(tidyverse)
-
-
-here::i_am("charts/code/style.R")
+  library(ggplot2)
 
 # assigning colors to objects ####
   
@@ -49,7 +46,7 @@ here::i_am("charts/code/style.R")
       axis.title.y = element_text(size = 12, angle = 90, vjust = 1),
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
       panel.grid.minor = element_blank(),
-      text =element_text(family = "avenir_lt_pro"),
+      text = element_text(family = "avenir_lt_pro"),
       plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 6, unit = "pt"),size=11),
       plot.margin = margin(50, 50, 50, 50),
       axis.ticks.x = element_line(color = RSCgray)
@@ -67,7 +64,7 @@ here::i_am("charts/code/style.R")
       axis.title.y = element_text(size = 12, angle = 90, vjust = 1),
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
       panel.grid.minor = element_blank(),
-      text =element_text(family = "avenir_lt_pro"),
+      text = element_text(family = "avenir_lt_pro"),
       plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 6, unit = "pt"),size=11),
       plot.margin = margin(50, 50, 50, 50),
       axis.ticks.x = element_line(color = RSCgray)
