@@ -6,18 +6,24 @@ output: html_document
 ---
 ## Initialize
 
-We begin by initializing the Rmarkdown file. This is where we set relevant parameters and establish where this markdown file is located within the project directory, using the `[here](https://here.r-lib.org/reference/i_am.html)` package.
-
-The `i_am` function indicates that `workflow_demo.Rmd` is located within the `code` folder inside the main project directory. In other words, the project root is located immediately above the `code` folder. All future calls to files are based on their relative location to the project root.
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-here::i_am("code/Number of Final Major Rules Published by Pres year.Rmd")
-```
+library(here)
+i_am("charts/code/Active Actions Published in the Unified Agenda.Rmd")
 
-Import the packages required for the remainder of the rmarkdown file. It's easier to keep track of the necessary packages when all imports occur at the top of the file.
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "active_actions_by_unified_agenda.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
+```
 
 ## Load Packages
 
@@ -32,13 +38,6 @@ library(tidyr)
 library(ggrepel)
 library(dplyr)
 library(scales)
-```
-
-## Load Style
-
-```{r load style}
-# load style
-source(here("code", "style.R"))
 ```
 
 ## Load data
