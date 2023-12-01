@@ -12,7 +12,7 @@ We rely on the Federal Register for the data starting 2021 and Reginfo.gov for a
 
 To update the number of economically significant rules for a new presidential year after 2021, follow these steps:
 
-1. Go to the FR Tracking folder, open the Excel file `FR_tracking_[date].xls`.
+1. Go to the FR Tracking folder, open the Excel file `fr_tracking.xls`.
 2. In the Excel file, filter `publication_date` to show only documents from the presidential year you are updating (e.g., Feb 2021 – Jan 2022).
 3. Use the filter to select `econ_significant = 1`.
 4. The number of records found indicates the number of economically significant rules published during the selected presidential year.
