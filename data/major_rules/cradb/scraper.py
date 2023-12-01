@@ -117,7 +117,12 @@ class PopulationScraper(Scraper):
             int: Number of documents meeting the search parameters.
         """        
         results_count = soup.find("div", class_="count")
-        document_count = int(results_count.text.strip().split()[-1])
+        results_text = results_count.text.strip().split()
+        if results_text:
+            document_count = int(results_text[-1])
+        else:
+            document_count = 0
+        
         return document_count
         
     def get_page_count(self, soup: BeautifulSoup):
@@ -349,19 +354,22 @@ def main(data_path: Path, major_only: bool = False, new_only: bool = False, **kw
     # request and parse html
     soup = ps.request_soup()
     document_count = ps.get_document_count(soup)
-    page_count = ps.get_page_count(soup)
-    print(f"Requesting {document_count} rules from {page_count + 1} pages.")
-    
-    # scrape population data and save
-    pop_data = ps.scrape_population(page_count)
-    ps.to_json(pop_data, data_path, f"population_{type}")
-    
-    # initialize RuleScraper
-    rs = RuleScraper(input_data=pop_data)
-    
-    # scrape rule detail data and save
-    rule_data = rs.scrape_rules()
-    rs.to_json(rule_data, data_path, f"rule_detail_{type}")
+    if document_count < 1:
+        print("No new rules to retrieve.")
+    else:
+        page_count = ps.get_page_count(soup)
+        print(f"Requesting {document_count} rules from {page_count + 1} pages.")
+        
+        # scrape population data and save
+        pop_data = ps.scrape_population(page_count)
+        ps.to_json(pop_data, data_path, f"population_{type}")
+        
+        # initialize RuleScraper
+        rs = RuleScraper(input_data=pop_data)
+        
+        # scrape rule detail data and save
+        rule_data = rs.scrape_rules()
+        rs.to_json(rule_data, data_path, f"rule_detail_{type}")
 
 
 if __name__ == "__main__":
@@ -390,16 +398,18 @@ if __name__ == "__main__":
             # set major_only param
             if major_prompt.lower() in y_inputs:
                 major_only = True
+                file_name = "population_major"
             elif major_prompt.lower() in n_inputs:
                 major_only = False
+                file_name = "population_all"
             
             # set new_only param
             if new_prompt.lower() in y_inputs:
                 new_only = True
-                file_name = input("Enter file name of existing dataset (i.e., 'population_major'): ")
+                #file_name = input("Enter file name of existing dataset (i.e., 'population_major'): ")
             elif new_prompt.lower() in n_inputs:
                 new_only = False
-                file_name = "population_"
+                #file_name = "population_"
         
             # call scraper pipeline
             main(data_path, major_only=major_only, new_only=new_only, path=data_path, file_name=file_name)

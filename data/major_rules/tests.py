@@ -1,7 +1,7 @@
 from pathlib import Path
 from pprint import pprint
 
-from cradatabase.scraper import (
+from cradb.scraper import (
     PopulationScraper, 
     RuleScraper,
 )
