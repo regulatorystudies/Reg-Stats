@@ -157,38 +157,39 @@ if __name__ == "__main__":
     if not data_path.is_dir():
         print("Cannot locate data.")
 
-while True:
-    
-    # print prompts to console
-    major_prompt = input("Process only major rules? [yes/no]: ").lower()
-    
-    # check user inputs
-    y_inputs = ["y", "yes", "true"]
-    n_inputs = ["n", "no", "false"]
-    valid_inputs = y_inputs + n_inputs
-    if major_prompt in valid_inputs:
+    while True:
         
-        # set major_only param
-        if major_prompt.lower() in y_inputs:
-            major_only = True
-            data_file = "rule_detail_major"
-        elif major_prompt.lower() in n_inputs:
-            major_only = False
-            data_file = "rule_detail_all"
+        # print prompts to console
+        major_prompt = input("Process only major rules? [yes/no]: ").lower()
+        
+        # check user inputs
+        y_inputs = ["y", "yes", "true"]
+        n_inputs = ["n", "no", "false"]
+        valid_inputs = y_inputs + n_inputs
+        if major_prompt in valid_inputs:
+            
+            # set major_only param
+            if major_prompt.lower() in y_inputs:
+                major_only = True
+                data_file = "rule_detail_major"
+            elif major_prompt.lower() in n_inputs:
+                major_only = False
+                data_file = "rule_detail_all"
 
-        # call processing pipeline
-        data = load_json(data_path, data_file)    
-        df = json_to_df(data)
-        df = convert_to_presidential_year(df, "received")
-        grouped = groupby_year(df, year_col = "presidential")
-        output = define_presidential_terms(grouped)
-        print("Aggregated data:", output, sep="\n")
-        save_csv(output, major_path, "major_rules_received_year_test")
-        break
+            # call processing pipeline
+            data = load_json(data_path, data_file)    
+            df = json_to_df(data)
+            timeframe = "received"
+            df = convert_to_presidential_year(df, timeframe)
+            grouped = groupby_year(df, year_col = "presidential")
+            output = define_presidential_terms(grouped)
+            print("Aggregated data:", output, sep="\n")
+            save_csv(output, major_path, f"major_rules_by_{timeframe}_year")
+            break
 
-    else:
-        print(f"Invalid input. Must enter one of the following: {', '.join(valid_inputs)}.")
- 
-    # calculate time elapsed
-    stop = time.process_time()
-    print(f"CPU time: {stop - start:0.1f} seconds")
+        else:
+            print(f"Invalid input. Must enter one of the following: {', '.join(valid_inputs)}.")
+    
+        # calculate time elapsed
+        stop = time.process_time()
+        print(f"CPU time: {stop - start:0.1f} seconds")

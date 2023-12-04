@@ -15,12 +15,15 @@ while True:
     # print prompts to console
     major_prompt = input("Retrieve only major rules? [yes/no]: ").lower()
     new_prompt = input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
+    detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
     
     # check user inputs
     y_inputs = ["y", "yes", "true"]
     n_inputs = ["n", "no", "false"]
     valid_inputs = y_inputs + n_inputs
-    if (major_prompt in valid_inputs) and (new_prompt in valid_inputs):
+    if ((major_prompt in valid_inputs) 
+        and (new_prompt in valid_inputs) 
+        and (detail_prompt in valid_inputs)):
         
         # set major_only param
         if major_prompt.lower() in y_inputs:
@@ -37,9 +40,14 @@ while True:
         elif new_prompt.lower() in n_inputs:
             new_only = False
             #file_name = "population_"
-    
+
+        if detail_prompt.lower() in y_inputs:
+            rule_detail = True
+        elif detail_prompt.lower() in n_inputs:
+            rule_detail = False
+        
         # call scraper pipeline
-        main(data_path, major_only=major_only, new_only=new_only, path=data_path, file_name=file_name)
+        main(data_path, major_only=major_only, new_only=new_only, path=data_path, rule_detail=rule_detail, file_name=file_name)
         break
 
     else:

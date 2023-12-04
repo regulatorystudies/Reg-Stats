@@ -2,6 +2,7 @@ from collections import Counter
 from datetime import date
 import json
 from pathlib import Path
+#from pprint import pprint
 import re
 
 import requests
@@ -168,25 +169,39 @@ class PopulationScraper(Scraper):
             
             # get rules on this page
             rules_this_page = soup_this_page.find_all("div", class_="views-row")
+            if len(rules_this_page) != 20 and page != pages:
+                raise ParseError("Failed to parse number of rules per page correctly.")
+                
             one_page = []
             for rule in rules_this_page:
                 bookmark = rule.find("div", class_="teaser-search--bookmark").a
-                effective_date = rule.find("time")
+                rows = rule.find_all("div", class_="teaser-search--row")
                 rule_dict = {
                     "page": page, 
                     "url": f"{self.url_stem}{bookmark['href']}", 
-                    "type": bookmark.string.strip(), 
-                    "effective_date": effective_date["datetime"]
+                    "type": bookmark.string.strip()
                     }
+                for row in rows:
+                    teasers = row.find_all("div", class_=has_teaser_search)
+                    for t in teasers:
+                        label = clean_label(t.find("label").string.strip(":").lower())
+                        div = t.find("div", class_=has_field_name)
+                        if div.time is not None:
+                            value = div.time["datetime"]
+                        elif div.time is None:
+                            value = div.string.strip()
+                        else:
+                            raise ParseError
+                        rule_dict.update({label: value})
                 one_page.append(rule_dict)
             
             all_rules.extend(one_page)
-            print_frequency = (pages + 1) // 10
+            print_frequency = ((pages) // 10) + 1  # adding 1 ensures no ZeroDivisionError
             if (page > 1) and (page % print_frequency == 0):
-                print(f"Retrieved {len(all_rules)} rules from {page + 1} pages.")
+                print(f"Retrieved {len(all_rules)} rules from {page + 1} page(s).")
         
         type_counts = Counter([rule["type"] for rule in all_rules])
-        print(f"Retrieved {type_counts.total()} rules from {page + 1} pages.")
+        print(f"Retrieved {type_counts.total()} rules from {page + 1} page(s).")
         for k, v in type_counts.items():
             print(f"{k}s: {v}")
         
@@ -304,8 +319,13 @@ class RuleScraper(Scraper):
 
 
 def has_field_name(class_):
-    """Helper function to pass to BeautifulSoup `find_all()` method. Identifies html containing field names."""
+    """Helper function to pass to BeautifulSoup `find_all()` method. Identifies html tags containing field names."""
     return re.compile("field field--name-field-").search(class_)
+
+
+def has_teaser_search(class_):
+    """Helper function to pass to BeautifulSoup `find_all()` method. Identifies html tags containing "teaser-search" class."""
+    return re.compile("teaser-search--").search(class_)
 
 
 def clean_label(label: str, replace_with: str = "_"):
@@ -335,9 +355,20 @@ def get_retrieval_date(path : Path, file_name: str):
         data = json.load(f)
     
     return data["date_retrieved"]
+
+
+def filter_duplicates(results: list):
+    pass
     
 
-def main(data_path: Path, major_only: bool = False, new_only: bool = False, **kwargs):
+
+
+
+def main(data_path: Path, 
+         major_only: bool = False, 
+         new_only: bool = False, 
+         rule_detail: bool = True, 
+         **kwargs):
     """Executes main pipeline for retrieving data from GAO's CRA database.
 
     Args:
@@ -364,12 +395,13 @@ def main(data_path: Path, major_only: bool = False, new_only: bool = False, **kw
         pop_data = ps.scrape_population(page_count)
         ps.to_json(pop_data, data_path, f"population_{type}")
         
-        # initialize RuleScraper
-        rs = RuleScraper(input_data=pop_data)
-        
-        # scrape rule detail data and save
-        rule_data = rs.scrape_rules()
-        rs.to_json(rule_data, data_path, f"rule_detail_{type}")
+        if rule_detail:
+            # initialize RuleScraper
+            rs = RuleScraper(input_data=pop_data)
+            
+            # scrape rule detail data and save
+            rule_data = rs.scrape_rules()
+            rs.to_json(rule_data, data_path, f"rule_detail_{type}")
 
 
 if __name__ == "__main__":
@@ -388,12 +420,15 @@ if __name__ == "__main__":
         # print prompts to console
         major_prompt = input("Retrieve only major rules? [yes/no]: ").lower()
         new_prompt = input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
+        detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
         
         # check user inputs
         y_inputs = ["y", "yes", "true"]
         n_inputs = ["n", "no", "false"]
         valid_inputs = y_inputs + n_inputs
-        if (major_prompt in valid_inputs) and (new_prompt in valid_inputs):
+        if ((major_prompt in valid_inputs) 
+            and (new_prompt in valid_inputs) 
+            and (detail_prompt in valid_inputs)):
             
             # set major_only param
             if major_prompt.lower() in y_inputs:
@@ -410,9 +445,14 @@ if __name__ == "__main__":
             elif new_prompt.lower() in n_inputs:
                 new_only = False
                 #file_name = "population_"
-        
+
+            if detail_prompt.lower() in y_inputs:
+                rule_detail = True
+            elif detail_prompt.lower() in n_inputs:
+                rule_detail = False
+            
             # call scraper pipeline
-            main(data_path, major_only=major_only, new_only=new_only, path=data_path, file_name=file_name)
+            main(data_path, major_only=major_only, new_only=new_only, path=data_path, rule_detail=rule_detail, file_name=file_name)
             break
 
         else:
