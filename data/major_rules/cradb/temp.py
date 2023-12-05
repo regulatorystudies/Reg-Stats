@@ -54,11 +54,11 @@ for s in test_strings:
 # %%
 
 pop_data["results"] = pop_data_alt
-ps.to_json(pop_data, data_path, file_name = "population_major_alt")
+ps.to_json(pop_data, data_path, file_name = "population_major")
 
 # %%
 
-data_file = "population_major_alt"
+data_file = "population_major"
 data = load_json(data_path, data_file)
 df = json_to_df(data, date_cols=("received", ))
 df, df_dup = find_duplicates(df)
