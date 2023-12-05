@@ -1,4 +1,5 @@
 from collections import Counter
+from copy import deepcopy
 from datetime import date
 import json
 from pathlib import Path
@@ -225,10 +226,10 @@ class PopulationScraper(Scraper):
                 one_page.append(rule_dict)
             
             all_rules.extend(one_page)
-            print_frequency = ((documents) // 10) + 1  # adding 1 ensures no ZeroDivisionError
+            #print_frequency = ((documents) // 10) + 1  # adding 1 ensures no ZeroDivisionError
             #if (page > 1) and (page % print_frequency == 0):
-            if (len(all_rules) > 1) and (len(all_rules) % print_frequency == 0):
-                print(f"Retrieved {len(all_rules)} rules.")
+            #if (len(all_rules) > 1) and (len(all_rules) % print_frequency == 0):
+            #    print(f"Retrieved {len(all_rules)} rules.")
         
         #dup_items = identify_duplicates(all_rules)
         #pprint(dup_items)
@@ -236,11 +237,6 @@ class PopulationScraper(Scraper):
         all_rules_dedup = all_rules
         all_rules_dedup, dups = remove_duplicates(all_rules)
         print(f"Filtered out {dups} duplicates.")
-        
-        type_counts = Counter([rule["type"] for rule in all_rules_dedup])
-        print(f"Retrieved {type_counts.total()} rules from {len(page_range)} page(s).")
-        for k, v in type_counts.items():
-            print(f"{k}s: {v}")
         
         output = {
             "description": "Contains basic records for rules in GAO's CRA Database of Rules.", 
@@ -250,21 +246,20 @@ class PopulationScraper(Scraper):
             "rule_count": len(all_rules_dedup), 
             "results": all_rules_dedup
             }
-        
         return output
     
     def get_missing_documents(self, data: dict | list, params: dict, document_count: int):
         if isinstance(data, dict):
-            validate = len(data.get("rule_count"))
-            data_alt = list(data.get("results"))
+            validate = int(data.get("rule_count"))
+            data_alt = deepcopy(data.get("results"))
         elif isinstance(data, list):
             validate =  len(data)
-            data_alt = list(data)
+            data_alt = deepcopy(data)
         
         # only make additional requests if documents are missing
         # we don't want to waste time :)
         if validate != document_count:
-        
+            #data_alt = []
             test_strings = list("abcdefghijklmnopqrstuvwxyz")  # the alphabet
             for s in test_strings:
                 params.update({"title": s})
@@ -287,7 +282,6 @@ class PopulationScraper(Scraper):
                 "rule_count": len(data_alt), 
                 "results": data_alt
                 }
-            
             return output
         else:
             print("No missing documents.")
@@ -501,17 +495,35 @@ def main(data_path: Path,
     document_count = ps.get_document_count(soup)
     if document_count < 1:
         print("No rules to retrieve.")
-    else:
+    else:  # retrieve rules turned up by database search
         page_count = ps.get_page_count(soup)
         print(f"Requesting {document_count} rules from {page_count + 1} page(s).")
         
         # scrape population data and save
         pop_data = ps.scrape_population(params, page_count, document_count)
+        
+        # check for missing documents
+        print("Checking for missing documents.")
         results = ps.get_missing_documents(pop_data, BASE_PARAMS, document_count)
         if results is not None:
+            print("Retrieved missing documents.")
             pop_data = results
+        
+        # add existing dataset to new documents
+        if new_only:
+            existing_data = ps.from_json(data_path, f"population_{type}").get("results")
+            pop_data["results"].extend(existing_data)
+        
+        # save population data
         ps.to_json(pop_data, data_path, f"population_{type}")
         
+        # summarize rule types retrieved
+        type_counts = Counter([rule["type"] for rule in pop_data["results"]])
+        print(f"Retrieved {type_counts.total()} rules.")
+        for k, v in type_counts.items():
+            print(f"{k}s: {v}")
+        
+        # retrieve rule-level detail data
         if rule_detail:
             # initialize RuleScraper
             rs = RuleScraper(input_data=pop_data)
