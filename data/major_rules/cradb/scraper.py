@@ -2,7 +2,7 @@ from collections import Counter
 from datetime import date
 import json
 from pathlib import Path
-from pprint import pprint
+#from pprint import pprint
 import re
 
 import requests
@@ -80,7 +80,7 @@ class Scraper:
             # only updates parameters when page number is given
             #self.params.update({"page": page})
             params.update({"page": page})
-            print(params)
+            #print(params)
         
         if alt_url is not None:  # makes different request when alt_url is given
             response = requests.get(alt_url)
