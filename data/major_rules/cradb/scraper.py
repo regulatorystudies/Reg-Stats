@@ -2,11 +2,18 @@ from collections import Counter
 from datetime import date
 import json
 from pathlib import Path
-#from pprint import pprint
+from pprint import pprint
 import re
 
 import requests
 from bs4 import BeautifulSoup
+
+
+BASE_PARAMS = {
+    "processed": 1, 
+    "type": "all", 
+    "priority": "all", 
+    }
 
 
 class ParseError(Exception):
@@ -19,12 +26,12 @@ class Scraper:
             self, 
             base_url: str = "https://www.gao.gov/legal/other-legal-work/congressional-review-act", 
             url_stem: str = "https://www.gao.gov", 
-            request_params: dict = {
-                "processed": 1, 
-                "type": "all", 
-                "priority": "all", 
-                "page": 0
-                }, 
+            #request_params: dict = {
+            #    "processed": 1, 
+            #    "type": "all", 
+            #    "priority": "all", 
+            #    "page": 0
+            #    }, 
             major_only: bool = False, 
             new_only: bool = False, **kwargs):
         """Initialize base scraper for CRA database.
@@ -38,16 +45,27 @@ class Scraper:
         """
         self.url = base_url
         self.url_stem = url_stem
-        self.params = request_params
+        #self.params = request_params
         self.major_only = major_only
-        if self.major_only:  # only updates parameters when major_only = True
-            self.params.update({"type": "Major"})
+        #if self.major_only:  # only updates parameters when major_only = True
+        #    self.params.update({"type": "Major"})
         self.new_only = new_only
+        #if self.new_only:
+        #    start_date = get_retrieval_date(kwargs.get("path"), kwargs.get("file_name"))
+        #    self.params.update({"received_start_date": start_date})
+    
+    def set_request_params(self, params: dict, **kwargs):
+        
+        if self.major_only:
+            params.update({"type": "Major"})
+        
         if self.new_only:
             start_date = get_retrieval_date(kwargs.get("path"), kwargs.get("file_name"))
-            self.params.update({"received_start_date": start_date})
+            params.update({"received_start_date": start_date})
+        
+        return params
     
-    def request_soup(self, page: int = None, alt_url: str = None, parser: str = "lxml"):
+    def request_soup(self, params: dict = None, page: int = None, alt_url: str = None, parser: str = "lxml"):
         """Request and parse html using `requests` and `bs4`, returning a processed `BeautifulSoup` object.
 
         Args:
@@ -57,14 +75,17 @@ class Scraper:
 
         Returns:
             BeautifulSoup: Parsed html as a BeautifulSoup object.
-        """        
-        if page is not None:  # only updates parameters when page number is given
-            self.params.update({"page": page})
+        """
+        if (params is not None) and (page is not None):
+            # only updates parameters when page number is given
+            #self.params.update({"page": page})
+            params.update({"page": page})
+            print(params)
         
         if alt_url is not None:  # makes different request when alt_url is given
             response = requests.get(alt_url)
         else:
-            response = requests.get(self.url, params=self.params)
+            response = requests.get(self.url, params=params)
         
         if response.status_code != 200:
             print(f"Status: {response.status_code}", 
@@ -153,7 +174,7 @@ class PopulationScraper(Scraper):
         
         return page_count
     
-    def scrape_population(self, pages: int):
+    def scrape_population(self, params: dict, pages: int | list, documents: int):
         """Scrape html for population of rules in CRA database.
 
         Args:
@@ -162,14 +183,22 @@ class PopulationScraper(Scraper):
         Returns:
             dict[str]: Results of the scraped data and accompanying metadata.
         """
+        if isinstance(pages, int):
+            page_range = range(pages + 1)  # zero-based numbering
+        elif isinstance(pages, list):
+            page_range = pages
+        
         all_rules = []
-        for page in range(pages + 1):  # zero-based numbering
+        for page in page_range:
             # get soup for this page
-            soup_this_page = self.request_soup(page = page)
+            soup_this_page = self.request_soup(params, page = page)
             
             # get rules on this page
             rules_this_page = soup_this_page.find_all("div", class_="views-row")
-            if len(rules_this_page) != 20 and page != pages:
+            if (len(rules_this_page) != 20) and (page != page_range[-1]):
+                print(f"Rules on page: {len(rules_this_page)}", 
+                      f"This page: {page}", 
+                      f"Last page: {page_range[-1]}")
                 raise ParseError("Failed to parse number of rules per page correctly.")
                 
             one_page = []
@@ -196,15 +225,20 @@ class PopulationScraper(Scraper):
                 one_page.append(rule_dict)
             
             all_rules.extend(one_page)
-            print_frequency = ((pages) // 10) + 1  # adding 1 ensures no ZeroDivisionError
-            if (page > 1) and (page % print_frequency == 0):
-                print(f"Retrieved {len(all_rules)} rules from {page + 1} page(s).")
+            print_frequency = ((documents) // 10) + 1  # adding 1 ensures no ZeroDivisionError
+            #if (page > 1) and (page % print_frequency == 0):
+            if (len(all_rules) > 1) and (len(all_rules) % print_frequency == 0):
+                print(f"Retrieved {len(all_rules)} rules.")
         
-        all_rules_dedup, dups = filter_duplicates(all_rules)
+        #dup_items = identify_duplicates(all_rules)
+        #pprint(dup_items)
+        
+        all_rules_dedup = all_rules
+        all_rules_dedup, dups = remove_duplicates(all_rules)
         print(f"Filtered out {dups} duplicates.")
         
         type_counts = Counter([rule["type"] for rule in all_rules_dedup])
-        print(f"Retrieved {type_counts.total()} rules from {page + 1} page(s).")
+        print(f"Retrieved {type_counts.total()} rules from {len(page_range)} page(s).")
         for k, v in type_counts.items():
             print(f"{k}s: {v}")
         
@@ -218,6 +252,45 @@ class PopulationScraper(Scraper):
             }
         
         return output
+    
+    def get_missing_documents(self, data: dict | list, params: dict, document_count: int):
+        if isinstance(data, dict):
+            validate = len(data.get("rule_count"))
+            data_alt = list(data.get("results"))
+        elif isinstance(data, list):
+            validate =  len(data)
+            data_alt = list(data)
+        
+        # only make additional requests if documents are missing
+        # we don't want to waste time :)
+        if validate != document_count:
+        
+            test_strings = list("abcdefghijklmnopqrstuvwxyz")  # the alphabet
+            for s in test_strings:
+                params.update({"title": s})
+                soup = self.request_soup(params, page=0)
+                pages = self.get_page_count(soup)
+                data_temp = self.scrape_population(params, pages, document_count)
+                data_alt.extend(data_temp["results"])
+
+                data_alt, _ = remove_duplicates(data_alt)
+                validate = len(data_alt)
+                print(f"Running total unique: {validate}")
+                if validate == document_count:
+                    break
+            
+            output = {
+                "description": "Contains basic records for rules in GAO's CRA Database of Rules.", 
+                "source": self.url, 
+                "date_retrieved": f"{date.today()}", 
+                "major_only": self.major_only, 
+                "rule_count": len(data_alt), 
+                "results": data_alt
+                }
+            
+            return output
+        else:
+            print("No missing documents.")
 
 
 class RuleScraper(Scraper):
@@ -360,20 +433,48 @@ def get_retrieval_date(path : Path, file_name: str):
     return data["date_retrieved"]
 
 
-def filter_duplicates(results: list):
-    
-    initial_count = len(results)
-    url_counts = Counter([r.get("url") for r in results])
-    dup_urls = [k for k, v in url_counts.items() if v > 1]
-    dup_items = [r for r in results if r.get("url") in dup_urls]
+def identify_duplicates(results: list, key: str = "url") -> list[dict]:
+    """Identify duplicates for further examination.
 
-    for item in dup_items[:]:
-        results.remove(item)
-        dup_items.remove(item)
+    Args:
+        results (list): List of results to check for duplicates.
+        key (str, optional): Key representing the duplicated key: value pair. Defaults to "url".
+
+    Returns:
+        list[dict]: Duplicated items from input list.
+    """    
+    url_list = [r.get(key) for r in results]
+    c = Counter(url_list)
+    dup_items = [r for r in results if r.get(key) in [k for k, v in c.items() if v > 1]]
+    return dup_items
+
+
+def remove_duplicates(results: list, key: str = "url"):
+    """Filter out duplicates from list[dict] based on a key: value pair ([source](https://www.geeksforgeeks.org/python-remove-duplicate-dictionaries-characterized-by-key/)).
+
+    Args:
+        results (list): List of results to filter out duplicates.
+        key (str): Key representing the duplicated key: value pair.
+
+    Returns:
+        tuple[list, int]: deduplicated list, number of duplicates removed
+    """    
+    initial_count = len(results)
     
-    filtered_count = len(results)
+    # remove duplicates
+    unique = set()
+    res = []
+    for r in results:
+
+        # testing for already present value
+        if r.get(key) not in unique:
+            res.append(r)
+            
+            # adding to set if new value
+            unique.add(r[key])
     
-    return results, (initial_count - filtered_count)
+    filtered_count = len(res)
+    return res, (initial_count - filtered_count)
 
 
 def main(data_path: Path, 
@@ -395,16 +496,20 @@ def main(data_path: Path,
         type = "all"
     
     # request and parse html
-    soup = ps.request_soup()
+    params = ps.set_request_params(BASE_PARAMS, **kwargs)
+    soup = ps.request_soup(params, page = 0)
     document_count = ps.get_document_count(soup)
     if document_count < 1:
-        print("No new rules to retrieve.")
+        print("No rules to retrieve.")
     else:
         page_count = ps.get_page_count(soup)
-        print(f"Requesting {document_count} rules from {page_count + 1} pages.")
+        print(f"Requesting {document_count} rules from {page_count + 1} page(s).")
         
         # scrape population data and save
-        pop_data = ps.scrape_population(page_count)
+        pop_data = ps.scrape_population(params, page_count, document_count)
+        results = ps.get_missing_documents(pop_data, BASE_PARAMS, document_count)
+        if results is not None:
+            pop_data = results
         ps.to_json(pop_data, data_path, f"population_{type}")
         
         if rule_detail:

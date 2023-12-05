@@ -189,6 +189,7 @@ if __name__ == "__main__":
             df = json_to_df(data)
             df, df_dup = find_duplicates(df)
             print(f"Removed {len(df_dup)} duplicates.")
+            #print(df_dup)
             timeframe = "received"
             df = convert_to_presidential_year(df, timeframe)
             grouped = groupby_year(df, year_col = "presidential")
