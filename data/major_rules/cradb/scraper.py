@@ -200,7 +200,10 @@ class PopulationScraper(Scraper):
             if (page > 1) and (page % print_frequency == 0):
                 print(f"Retrieved {len(all_rules)} rules from {page + 1} page(s).")
         
-        type_counts = Counter([rule["type"] for rule in all_rules])
+        all_rules_dedup, dups = filter_duplicates(all_rules)
+        print(f"Filtered out {dups} duplicates.")
+        
+        type_counts = Counter([rule["type"] for rule in all_rules_dedup])
         print(f"Retrieved {type_counts.total()} rules from {page + 1} page(s).")
         for k, v in type_counts.items():
             print(f"{k}s: {v}")
@@ -210,8 +213,8 @@ class PopulationScraper(Scraper):
             "source": self.url, 
             "date_retrieved": f"{date.today()}", 
             "major_only": self.major_only, 
-            "rule_count": len(all_rules), 
-            "results": all_rules
+            "rule_count": len(all_rules_dedup), 
+            "results": all_rules_dedup
             }
         
         return output
@@ -358,10 +361,19 @@ def get_retrieval_date(path : Path, file_name: str):
 
 
 def filter_duplicates(results: list):
-    pass
     
+    initial_count = len(results)
+    url_counts = Counter([r.get("url") for r in results])
+    dup_urls = [k for k, v in url_counts.items() if v > 1]
+    dup_items = [r for r in results if r.get("url") in dup_urls]
 
-
+    for item in dup_items[:]:
+        results.remove(item)
+        dup_items.remove(item)
+    
+    filtered_count = len(results)
+    
+    return results, (initial_count - filtered_count)
 
 
 def main(data_path: Path, 

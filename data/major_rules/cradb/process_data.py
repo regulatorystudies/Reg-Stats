@@ -78,6 +78,14 @@ def json_to_df(
     return df
 
 
+def find_duplicates(df: DataFrame):
+    
+    df_copy = df.copy(deep=True)
+    bool_dup = df_copy.duplicated(subset=["url", "fed_reg_number"], keep="first")
+    df_uq, df_dup = df_copy.loc[~bool_dup, :], df_copy.loc[bool_dup, :]
+    return df_uq, df_dup
+
+
 def convert_to_presidential_year(df: DataFrame, date_col: str = "published"):
     """Convert calendar year to presidential year for selected column `date_col`.
 
@@ -179,6 +187,8 @@ if __name__ == "__main__":
             # call processing pipeline
             data = load_json(data_path, data_file)    
             df = json_to_df(data)
+            df, df_dup = find_duplicates(df)
+            print(f"Removed {len(df_dup)} duplicates.")
             timeframe = "received"
             df = convert_to_presidential_year(df, timeframe)
             grouped = groupby_year(df, year_col = "presidential")

@@ -61,9 +61,10 @@ dup_urls = [k for k, v in c.items() if v > 1]
 dup_items = [r for r in results if r.get("url") in dup_urls]
 pop_list = [n for n, v in enumerate(results) if v.get("url") in dup_urls]
 
-for item in dup_items:
-    results.remove(item)
-print(len(results))
+#for item in dup_items:
+#    results.remove(item)
+#    dup_items.remove(item)
+#print(len(results))
 
 #for p in pop_list:
 #    results.pop(p)
