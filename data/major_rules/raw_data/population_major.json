@@ -17,26 +17,6 @@
         },
         {
             "page": 0,
-            "url": "https://www.gao.gov/fedrules/208129",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AV18",
-            "fed_reg_number": "88 FR 77150",
-            "effective_date": "2024-01-01T13:00:00Z",
-            "received": "2023-11-01T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 0,
-            "url": "https://www.gao.gov/fedrules/208146",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AV03",
-            "fed_reg_number": "88 FR 77676",
-            "effective_date": "2024-01-01T13:00:00Z",
-            "received": "2023-11-01T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 0,
             "url": "https://www.gao.gov/fedrules/208147",
             "type": "Major Federal Rule",
             "identifier": "0938-AV07",
@@ -51,6 +31,26 @@
             "type": "Major Federal Rule",
             "identifier": "0938-AV05",
             "fed_reg_number": "88 FR 76344",
+            "effective_date": "2024-01-01T13:00:00Z",
+            "received": "2023-11-01T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 0,
+            "url": "https://www.gao.gov/fedrules/208129",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AV18",
+            "fed_reg_number": "88 FR 77150",
+            "effective_date": "2024-01-01T13:00:00Z",
+            "received": "2023-11-01T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 0,
+            "url": "https://www.gao.gov/fedrules/208146",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AV03",
+            "fed_reg_number": "88 FR 77676",
             "effective_date": "2024-01-01T13:00:00Z",
             "received": "2023-11-01T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -87,20 +87,20 @@
         },
         {
             "page": 0,
-            "url": "https://www.gao.gov/fedrules/208086",
+            "url": "https://www.gao.gov/fedrules/208085",
             "type": "Major Federal Rule",
-            "identifier": "0938-AV11",
-            "fed_reg_number": "88 FR 71551",
+            "identifier": "0938-AV13",
+            "fed_reg_number": "88 FR 71555",
             "effective_date": "2024-01-01T13:00:00Z",
             "received": "2023-10-18T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 0,
-            "url": "https://www.gao.gov/fedrules/208085",
+            "url": "https://www.gao.gov/fedrules/208086",
             "type": "Major Federal Rule",
-            "identifier": "0938-AV13",
-            "fed_reg_number": "88 FR 71555",
+            "identifier": "0938-AV11",
+            "fed_reg_number": "88 FR 71551",
             "effective_date": "2024-01-01T13:00:00Z",
             "received": "2023-10-18T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -146,21 +146,21 @@
         },
         {
             "page": 0,
-            "url": "https://www.gao.gov/fedrules/208077",
-            "type": "Major Federal Rule",
-            "identifier": "1904-AF27",
-            "fed_reg_number": "88 FR 66966",
-            "effective_date": "2023-11-27T13:00:00Z",
-            "received": "2023-10-10T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 0,
             "url": "https://www.gao.gov/fedrules/208126",
             "type": "Major Federal Rule",
             "identifier": "3235-AM93",
             "fed_reg_number": "88 FR 76896",
             "effective_date": "2024-02-05T13:00:00Z",
+            "received": "2023-10-10T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 0,
+            "url": "https://www.gao.gov/fedrules/208077",
+            "type": "Major Federal Rule",
+            "identifier": "1904-AF27",
+            "fed_reg_number": "88 FR 66966",
+            "effective_date": "2023-11-27T13:00:00Z",
             "received": "2023-10-10T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -172,16 +172,6 @@
             "fed_reg_number": "88 FR 69503",
             "effective_date": "2023-12-04T13:00:00Z",
             "received": "2023-10-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 0,
-            "url": "https://www.gao.gov/fedrules/207971",
-            "type": "Major Federal Rule",
-            "identifier": "1018-BF64",
-            "fed_reg_number": "88 FR 60375",
-            "effective_date": "2023-09-01T13:00:00Z",
-            "received": "2023-09-26T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -201,6 +191,16 @@
             "identifier": "1018-BF64",
             "fed_reg_number": "88 FR 56489",
             "effective_date": "2023-08-18T13:00:00Z",
+            "received": "2023-09-26T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 0,
+            "url": "https://www.gao.gov/fedrules/207971",
+            "type": "Major Federal Rule",
+            "identifier": "1018-BF64",
+            "fed_reg_number": "88 FR 60375",
+            "effective_date": "2023-09-01T13:00:00Z",
             "received": "2023-09-26T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -294,16 +294,6 @@
         },
         {
             "page": 1,
-            "url": "https://www.gao.gov/fedrules/207737",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AV02",
-            "fed_reg_number": "88 FR 53200",
-            "effective_date": "2023-10-01T13:00:00Z",
-            "received": "2023-08-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 1,
             "url": "https://www.gao.gov/fedrules/207796",
             "type": "Major Federal Rule",
             "identifier": "0938-AV17",
@@ -319,6 +309,16 @@
             "identifier": "2105-AE89",
             "fed_reg_number": "88 FR 50020",
             "effective_date": "2023-10-02T13:00:00Z",
+            "received": "2023-08-02T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 1,
+            "url": "https://www.gao.gov/fedrules/207737",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AV02",
+            "fed_reg_number": "88 FR 53200",
+            "effective_date": "2023-10-01T13:00:00Z",
             "received": "2023-08-02T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -373,21 +373,21 @@
         },
         {
             "page": 1,
-            "url": "https://www.gao.gov/fedrules/207605",
-            "type": "Major Federal Rule",
-            "identifier": "1840-AD81",
-            "fed_reg_number": "88 FR 43820",
-            "effective_date": "2024-07-01T13:00:00Z",
-            "received": "2023-07-10T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 1,
             "url": "https://www.gao.gov/fedrules/207673",
             "type": "Major Federal Rule",
             "identifier": "2060-AV45",
             "fed_reg_number": "88 FR 46836",
             "effective_date": "2023-09-18T13:00:00Z",
+            "received": "2023-07-10T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 1,
+            "url": "https://www.gao.gov/fedrules/207605",
+            "type": "Major Federal Rule",
+            "identifier": "1840-AD81",
+            "fed_reg_number": "88 FR 43820",
+            "effective_date": "2024-07-01T13:00:00Z",
             "received": "2023-07-10T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -423,16 +423,6 @@
         },
         {
             "page": 2,
-            "url": "https://www.gao.gov/fedrules/207366",
-            "type": "Major Federal Rule",
-            "identifier": "1904-AD97",
-            "fed_reg_number": "88 FR 34298",
-            "effective_date": "2023-07-25T13:00:00Z",
-            "received": "2023-06-08T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 2,
             "url": "https://www.gao.gov/fedrules/207720",
             "type": "Major Federal Rule",
             "identifier": "1904-AE63",
@@ -448,6 +438,16 @@
             "identifier": "1904-AD49",
             "fed_reg_number": "88 FR 34624",
             "effective_date": "2023-07-31T13:00:00Z",
+            "received": "2023-06-08T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 2,
+            "url": "https://www.gao.gov/fedrules/207366",
+            "type": "Major Federal Rule",
+            "identifier": "1904-AD97",
+            "fed_reg_number": "88 FR 34298",
+            "effective_date": "2023-07-25T13:00:00Z",
             "received": "2023-06-08T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -501,17 +501,17 @@
         },
         {
             "page": 2,
-            "url": "https://www.gao.gov/fedrules/207017",
+            "url": "https://www.gao.gov/fedrules/207016",
             "type": "Major Federal Rule",
-            "fed_reg_number": "88 FR 31232",
+            "fed_reg_number": "88 FR 31218",
             "received": "2023-05-17T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 2,
-            "url": "https://www.gao.gov/fedrules/207016",
+            "url": "https://www.gao.gov/fedrules/207017",
             "type": "Major Federal Rule",
-            "fed_reg_number": "88 FR 31218",
+            "fed_reg_number": "88 FR 31232",
             "received": "2023-05-17T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -527,21 +527,21 @@
         },
         {
             "page": 2,
-            "url": "https://www.gao.gov/fedrules/206781",
-            "type": "Major Federal Rule",
-            "identifier": "2590-AB22",
-            "fed_reg_number": "88 FR 23559",
-            "effective_date": "2023-07-01T13:00:00Z",
-            "received": "2023-04-19T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 2,
             "url": "https://www.gao.gov/fedrules/206857",
             "type": "Major Federal Rule",
             "identifier": "0938-AU97",
             "fed_reg_number": "88 FR 25740",
             "effective_date": "2023-06-18T13:00:00Z",
+            "received": "2023-04-19T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 2,
+            "url": "https://www.gao.gov/fedrules/206781",
+            "type": "Major Federal Rule",
+            "identifier": "2590-AB22",
+            "fed_reg_number": "88 FR 23559",
+            "effective_date": "2023-07-01T13:00:00Z",
             "received": "2023-04-19T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -733,6 +733,16 @@
         },
         {
             "page": 3,
+            "url": "https://www.gao.gov/fedrules/205954",
+            "type": "Major Federal Rule",
+            "identifier": "0910-AI44",
+            "fed_reg_number": "87 FR 70910",
+            "effective_date": "2023-01-20T13:00:00Z",
+            "received": "2022-12-14T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 3,
             "url": "https://www.gao.gov/fedrules/206036",
             "type": "Major Federal Rule",
             "identifier": "2590-AB21",
@@ -748,16 +758,6 @@
             "identifier": "3235-AM86",
             "fed_reg_number": "87 FR 80362",
             "effective_date": "2023-02-27T13:00:00Z",
-            "received": "2022-12-14T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 3,
-            "url": "https://www.gao.gov/fedrules/205954",
-            "type": "Major Federal Rule",
-            "identifier": "0910-AI44",
-            "fed_reg_number": "87 FR 70910",
-            "effective_date": "2023-01-20T13:00:00Z",
             "received": "2022-12-14T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -793,16 +793,6 @@
         },
         {
             "page": 4,
-            "url": "https://www.gao.gov/fedrules/205718",
-            "type": "Major Federal Rule",
-            "identifier": "2120-AL41",
-            "fed_reg_number": "87 FR 61452",
-            "effective_date": "2022-11-14T13:00:00Z",
-            "received": "2022-11-07T13:00:00Z",
-            "priority": "Routine/Info/Other"
-        },
-        {
-            "page": 4,
             "url": "https://www.gao.gov/fedrules/205858",
             "type": "Major Federal Rule",
             "identifier": "0938-AU82",
@@ -810,6 +800,16 @@
             "effective_date": "2023-01-01T13:00:00Z",
             "received": "2022-11-07T13:00:00Z",
             "priority": "Significant/Substantive"
+        },
+        {
+            "page": 4,
+            "url": "https://www.gao.gov/fedrules/205718",
+            "type": "Major Federal Rule",
+            "identifier": "2120-AL41",
+            "fed_reg_number": "87 FR 61452",
+            "effective_date": "2022-11-14T13:00:00Z",
+            "received": "2022-11-07T13:00:00Z",
+            "priority": "Routine/Info/Other"
         },
         {
             "page": 4,
@@ -923,18 +923,18 @@
         },
         {
             "page": 4,
-            "url": "https://www.gao.gov/fedrules/205636",
+            "url": "https://www.gao.gov/fedrules/205576",
             "type": "Major Federal Rule",
-            "fed_reg_number": "87 FR 60083",
+            "fed_reg_number": "87 FR 60092",
             "effective_date": "2022-11-03T13:00:00Z",
             "received": "2022-10-13T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 4,
-            "url": "https://www.gao.gov/fedrules/205576",
+            "url": "https://www.gao.gov/fedrules/205636",
             "type": "Major Federal Rule",
-            "fed_reg_number": "87 FR 60092",
+            "fed_reg_number": "87 FR 60083",
             "effective_date": "2022-11-03T13:00:00Z",
             "received": "2022-10-13T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -961,16 +961,6 @@
         },
         {
             "page": 4,
-            "url": "https://www.gao.gov/fedrules/205456",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AU48",
-            "fed_reg_number": "87 FR 59080",
-            "effective_date": "2023-01-01T13:00:00Z",
-            "received": "2022-09-28T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 4,
             "url": "https://www.gao.gov/fedrules/205439",
             "type": "Major Federal Rule",
             "identifier": "0938-AU72",
@@ -985,6 +975,16 @@
             "type": "Major Federal Rule",
             "identifier": "0938-AU71",
             "fed_reg_number": "87 FR 59094",
+            "effective_date": "2023-01-01T13:00:00Z",
+            "received": "2022-09-28T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 4,
+            "url": "https://www.gao.gov/fedrules/205456",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AU48",
+            "fed_reg_number": "87 FR 59080",
             "effective_date": "2023-01-01T13:00:00Z",
             "received": "2022-09-28T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -1128,20 +1128,20 @@
         },
         {
             "page": 5,
-            "url": "https://www.gao.gov/fedrules/205036",
+            "url": "https://www.gao.gov/fedrules/205037",
             "type": "Major Federal Rule",
-            "identifier": "0938-AU83",
-            "fed_reg_number": "87 FR 45669",
+            "identifier": "0938-AU80",
+            "fed_reg_number": "87 FR 46846",
             "effective_date": "2022-10-01T13:00:00Z",
             "received": "2022-07-29T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 5,
-            "url": "https://www.gao.gov/fedrules/205037",
+            "url": "https://www.gao.gov/fedrules/205036",
             "type": "Major Federal Rule",
-            "identifier": "0938-AU80",
-            "fed_reg_number": "87 FR 46846",
+            "identifier": "0938-AU83",
+            "fed_reg_number": "87 FR 45669",
             "effective_date": "2022-10-01T13:00:00Z",
             "received": "2022-07-29T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -1277,16 +1277,6 @@
         },
         {
             "page": 6,
-            "url": "https://www.gao.gov/fedrules/204361",
-            "type": "Major Federal Rule",
-            "identifier": "1904-AF09",
-            "fed_reg_number": "87 FR 27439",
-            "effective_date": "2022-07-25T13:00:00Z",
-            "received": "2022-05-10T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 6,
             "url": "https://www.gao.gov/fedrules/204362",
             "type": "Major Federal Rule",
             "identifier": "1904-AF22",
@@ -1303,6 +1293,16 @@
             "fed_reg_number": "87 FR 27704",
             "effective_date": "2022-06-28T13:00:00Z",
             "received": "2022-05-05T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 6,
+            "url": "https://www.gao.gov/fedrules/204361",
+            "type": "Major Federal Rule",
+            "identifier": "1904-AF09",
+            "fed_reg_number": "87 FR 27439",
+            "effective_date": "2022-07-25T13:00:00Z",
+            "received": "2022-05-10T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -1347,21 +1347,21 @@
         },
         {
             "page": 6,
-            "url": "https://www.gao.gov/fedrules/203877",
-            "type": "Major Federal Rule",
-            "identifier": "0920-ZA38",
-            "fed_reg_number": "87 FR 20405",
-            "effective_date": "2022-04-14T13:00:00Z",
-            "received": "2022-04-07T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 6,
             "url": "https://www.gao.gov/fedrules/203878",
             "type": "Major Federal Rule",
             "identifier": "1904-AE44",
             "fed_reg_number": "87 FR 20267",
             "effective_date": "2022-06-06T13:00:00Z",
+            "received": "2022-04-07T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 6,
+            "url": "https://www.gao.gov/fedrules/203877",
+            "type": "Major Federal Rule",
+            "identifier": "0920-ZA38",
+            "fed_reg_number": "87 FR 20405",
+            "effective_date": "2022-04-14T13:00:00Z",
             "received": "2022-04-07T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -1703,22 +1703,22 @@
         },
         {
             "page": 8,
-            "url": "https://www.gao.gov/fedrules/202991",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AU75",
-            "fed_reg_number": "86 FR 61555",
-            "effective_date": "2021-11-05T13:00:00Z",
-            "received": "2021-11-08T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 8,
             "url": "https://www.gao.gov/fedrules/202989",
             "type": "Major Federal Rule",
             "identifier": "1218-AD42",
             "fed_reg_number": "86 FR 61402",
             "effective_date": "2021-11-05T13:00:00Z",
             "received": "2021-11-05T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 8,
+            "url": "https://www.gao.gov/fedrules/202991",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AU75",
+            "fed_reg_number": "86 FR 61555",
+            "effective_date": "2021-11-05T13:00:00Z",
+            "received": "2021-11-08T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -1920,6 +1920,16 @@
         },
         {
             "page": 9,
+            "url": "https://www.gao.gov/fedrules/202553",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AU41",
+            "fed_reg_number": "86 FR 42528",
+            "effective_date": "2021-10-01T13:00:00Z",
+            "received": "2021-08-02T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 9,
             "url": "https://www.gao.gov/fedrules/202535",
             "type": "Major Federal Rule",
             "identifier": "0938-AU40",
@@ -1944,16 +1954,6 @@
             "type": "Major Federal Rule",
             "identifier": "0938-AU36",
             "fed_reg_number": "86 FR 42424",
-            "effective_date": "2021-10-01T13:00:00Z",
-            "received": "2021-08-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 9,
-            "url": "https://www.gao.gov/fedrules/202553",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AU41",
-            "fed_reg_number": "86 FR 42528",
             "effective_date": "2021-10-01T13:00:00Z",
             "received": "2021-08-02T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -2188,22 +2188,22 @@
         },
         {
             "page": 11,
-            "url": "https://www.gao.gov/fedrules/202331",
-            "type": "Major Federal Rule",
-            "identifier": "3170-AA41",
-            "fed_reg_number": "86 FR 21163",
-            "effective_date": "2021-05-03T13:00:00Z",
-            "received": "2021-04-19T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 11,
             "url": "https://www.gao.gov/fedrules/202332",
             "type": "Major Federal Rule",
             "identifier": "1810-AB64",
             "fed_reg_number": "86 FR 21195",
             "effective_date": "2021-04-22T13:00:00Z",
             "received": "2021-05-06T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 11,
+            "url": "https://www.gao.gov/fedrules/202331",
+            "type": "Major Federal Rule",
+            "identifier": "3170-AA41",
+            "fed_reg_number": "86 FR 21163",
+            "effective_date": "2021-05-03T13:00:00Z",
+            "received": "2021-04-19T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -2218,21 +2218,21 @@
         },
         {
             "page": 11,
-            "url": "https://www.gao.gov/fedrules/202252",
-            "type": "Major Federal Rule",
-            "fed_reg_number": "86 FR 18459",
-            "effective_date": "2021-04-09T13:00:00Z",
-            "received": "2021-04-01T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 11,
             "url": "https://www.gao.gov/fedrules/202254",
             "type": "Major Federal Rule",
             "identifier": "3235-AM61",
             "fed_reg_number": "86 FR 18596",
             "effective_date": "2021-06-08T13:00:00Z",
             "received": "2020-12-10T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 11,
+            "url": "https://www.gao.gov/fedrules/202252",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "86 FR 18459",
+            "effective_date": "2021-04-09T13:00:00Z",
+            "received": "2021-04-01T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -2246,22 +2246,22 @@
         },
         {
             "page": 11,
-            "url": "https://www.gao.gov/fedrules/202249",
-            "type": "Major Federal Rule",
-            "identifier": "3245-AH77",
-            "fed_reg_number": "86 FR 15083",
-            "effective_date": "2021-03-18T13:00:00Z",
-            "received": "2021-03-22T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 11,
             "url": "https://www.gao.gov/fedrules/202250",
             "type": "Major Federal Rule",
             "identifier": "3064-AF73",
             "fed_reg_number": "86 FR 15076",
             "effective_date": "2021-03-22T13:00:00Z",
             "received": "2021-03-26T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 11,
+            "url": "https://www.gao.gov/fedrules/202249",
+            "type": "Major Federal Rule",
+            "identifier": "3245-AH77",
+            "fed_reg_number": "86 FR 15083",
+            "effective_date": "2021-03-18T13:00:00Z",
+            "received": "2021-03-22T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -2306,21 +2306,21 @@
         },
         {
             "page": 11,
+            "url": "https://www.gao.gov/fedrules/202195",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "86 FR 11627",
+            "effective_date": "2021-04-27T13:00:00Z",
+            "received": "2020-12-23T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 11,
             "url": "https://www.gao.gov/fedrules/202306",
             "type": "Major Federal Rule",
             "identifier": "0572-AC51",
             "fed_reg_number": "86 FR 11603",
             "effective_date": "2021-04-27T13:00:00Z",
             "received": "2021-03-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 11,
-            "url": "https://www.gao.gov/fedrules/202195",
-            "type": "Major Federal Rule",
-            "fed_reg_number": "86 FR 11627",
-            "effective_date": "2021-04-27T13:00:00Z",
-            "received": "2020-12-23T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -2371,16 +2371,6 @@
             "fed_reg_number": "86 FR 6742",
             "effective_date": "2021-04-01T13:00:00Z",
             "received": "2021-01-22T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 12,
-            "url": "https://www.gao.gov/fedrules/201820",
-            "type": "Major Federal Rule",
-            "identifier": "0991-AC24",
-            "fed_reg_number": "86 FR 5694",
-            "effective_date": "2021-03-22T13:00:00Z",
-            "received": "2021-01-19T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -2454,6 +2444,16 @@
         },
         {
             "page": 12,
+            "url": "https://www.gao.gov/fedrules/201820",
+            "type": "Major Federal Rule",
+            "identifier": "0991-AC24",
+            "fed_reg_number": "86 FR 5694",
+            "effective_date": "2021-03-22T13:00:00Z",
+            "received": "2021-01-19T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 12,
             "url": "https://www.gao.gov/fedrules/201999",
             "type": "Major Federal Rule",
             "identifier": "2120-AL31",
@@ -2494,16 +2494,6 @@
         },
         {
             "page": 12,
-            "url": "https://www.gao.gov/fedrules/202112",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AM27",
-            "fed_reg_number": "86 FR 3496",
-            "effective_date": "2021-03-15T13:00:00Z",
-            "received": "2020-11-04T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 12,
             "url": "https://www.gao.gov/fedrules/201548",
             "type": "Major Federal Rule",
             "identifier": "0938-AT88",
@@ -2530,6 +2520,16 @@
             "fed_reg_number": "86 FR 3016",
             "effective_date": "2021-01-14T13:00:00Z",
             "received": "2021-02-12T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 12,
+            "url": "https://www.gao.gov/fedrules/202112",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AM27",
+            "fed_reg_number": "86 FR 3496",
+            "effective_date": "2021-03-15T13:00:00Z",
+            "received": "2020-11-04T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -2664,16 +2664,6 @@
         },
         {
             "page": 13,
-            "url": "https://www.gao.gov/fedrules/201494",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AL60",
-            "fed_reg_number": "85 FR 83162",
-            "effective_date": "2021-02-19T13:00:00Z",
-            "received": "2020-12-14T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 13,
             "url": "https://www.gao.gov/fedrules/201519",
             "type": "Major Federal Rule",
             "identifier": "0790-AK85",
@@ -2690,6 +2680,16 @@
             "fed_reg_number": "85 FR 82881",
             "effective_date": "2021-02-19T13:00:00Z",
             "received": "2020-12-17T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 13,
+            "url": "https://www.gao.gov/fedrules/201494",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AL60",
+            "fed_reg_number": "85 FR 83162",
+            "effective_date": "2021-02-19T13:00:00Z",
+            "received": "2020-12-14T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -2804,16 +2804,6 @@
         },
         {
             "page": 14,
-            "url": "https://www.gao.gov/fedrules/201468",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AM29",
-            "fed_reg_number": "85 FR 73924",
-            "effective_date": "2021-01-19T13:00:00Z",
-            "received": "2020-11-09T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 14,
             "url": "https://www.gao.gov/fedrules/201471",
             "type": "Major Federal Rule",
             "identifier": "2060-AM75",
@@ -2824,11 +2814,31 @@
         },
         {
             "page": 14,
+            "url": "https://www.gao.gov/fedrules/201468",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AM29",
+            "fed_reg_number": "85 FR 73924",
+            "effective_date": "2021-01-19T13:00:00Z",
+            "received": "2020-11-09T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 14,
             "url": "https://www.gao.gov/fedrules/201324",
             "type": "Major Federal Rule",
             "identifier": "1210-AB95",
             "fed_reg_number": "85 FR 72846",
             "effective_date": "2021-01-12T13:00:00Z",
+            "received": "2020-11-13T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 14,
+            "url": "https://www.gao.gov/fedrules/201328",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AU16",
+            "fed_reg_number": "85 FR 71904",
+            "effective_date": "2021-01-01T13:00:00Z",
             "received": "2020-11-13T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -2860,16 +2870,6 @@
             "fed_reg_number": "85 FR 71998",
             "effective_date": "2021-01-01T13:00:00Z",
             "received": "2020-11-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 14,
-            "url": "https://www.gao.gov/fedrules/201328",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AU16",
-            "fed_reg_number": "85 FR 71904",
-            "effective_date": "2021-01-01T13:00:00Z",
-            "received": "2020-11-13T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3034,22 +3034,22 @@
         },
         {
             "page": 15,
-            "url": "https://www.gao.gov/fedrules/201297",
-            "type": "Major Federal Rule",
-            "identifier": "1545-BP36",
-            "fed_reg_number": "85 FR 64346",
-            "effective_date": "2020-12-08T13:00:00Z",
-            "received": "2020-10-08T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 15,
             "url": "https://www.gao.gov/fedrules/201295",
             "type": "Major Federal Rule",
             "identifier": "3235-AM19",
             "fed_reg_number": "85 FR 64234",
             "effective_date": "2020-12-08T13:00:00Z",
             "received": "2020-08-31T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 15,
+            "url": "https://www.gao.gov/fedrules/201297",
+            "type": "Major Federal Rule",
+            "identifier": "1545-BP36",
+            "fed_reg_number": "85 FR 64346",
+            "effective_date": "2020-12-08T13:00:00Z",
+            "received": "2020-10-08T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3094,22 +3094,22 @@
         },
         {
             "page": 15,
-            "url": "https://www.gao.gov/fedrules/201977",
-            "type": "Major Federal Rule",
-            "identifier": "0750-AJ81",
-            "fed_reg_number": "85 FR 61505",
-            "effective_date": "2020-11-30T13:00:00Z",
-            "received": "2020-11-25T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 15,
             "url": "https://www.gao.gov/fedrules/201280",
             "type": "Major Federal Rule",
             "identifier": "0938-AT89",
             "fed_reg_number": "85 FR 61114",
             "effective_date": "2020-11-30T13:00:00Z",
             "received": "2020-09-21T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 15,
+            "url": "https://www.gao.gov/fedrules/201977",
+            "type": "Major Federal Rule",
+            "identifier": "0750-AJ81",
+            "fed_reg_number": "85 FR 61505",
+            "effective_date": "2020-11-30T13:00:00Z",
+            "received": "2020-11-25T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3164,15 +3164,6 @@
         },
         {
             "page": 15,
-            "url": "https://www.gao.gov/fedrules/200773",
-            "type": "Major Federal Rule",
-            "fed_reg_number": "85 FR 54483",
-            "effective_date": "2020-08-31T13:00:00Z",
-            "received": "2020-08-31T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 16,
             "url": "https://www.gao.gov/fedrules/200775",
             "type": "Major Federal Rule",
             "identifier": "0938-AU33",
@@ -3193,22 +3184,21 @@
         },
         {
             "page": 16,
+            "url": "https://www.gao.gov/fedrules/200773",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "85 FR 54483",
+            "effective_date": "2020-08-31T13:00:00Z",
+            "received": "2020-08-31T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 16,
             "url": "https://www.gao.gov/fedrules/200774",
             "type": "Major Federal Rule",
             "identifier": "85 FR 54002",
             "fed_reg_number": "85 FR 54002",
             "effective_date": "2021-01-01T13:00:00Z",
             "received": "2020-05-22T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 16,
-            "url": "https://www.gao.gov/fedrules/201271",
-            "type": "Major Federal Rule",
-            "identifier": "1018-BD89",
-            "fed_reg_number": "85 FR 53260",
-            "effective_date": "2020-08-28T13:00:00Z",
-            "received": "2020-09-10T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3229,6 +3219,16 @@
             "fed_reg_number": "85 FR 53189",
             "effective_date": "2020-10-27T13:00:00Z",
             "received": "2020-08-31T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 16,
+            "url": "https://www.gao.gov/fedrules/201271",
+            "type": "Major Federal Rule",
+            "identifier": "1018-BD89",
+            "fed_reg_number": "85 FR 53260",
+            "effective_date": "2020-08-28T13:00:00Z",
+            "received": "2020-09-10T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3283,16 +3283,6 @@
         },
         {
             "page": 16,
-            "url": "https://www.gao.gov/fedrules/200515",
-            "type": "Major Federal Rule",
-            "identifier": "3206-AN96",
-            "fed_reg_number": "85 FR 48075",
-            "effective_date": "2020-10-01T13:00:00Z",
-            "received": "2020-08-12T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 16,
             "url": "https://www.gao.gov/fedrules/200517",
             "type": "Major Federal Rule",
             "identifier": "0938-AU05",
@@ -3309,6 +3299,16 @@
             "fed_reg_number": "84 FR 48113",
             "effective_date": "2020-08-10T13:00:00Z",
             "received": "2020-08-10T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 16,
+            "url": "https://www.gao.gov/fedrules/200515",
+            "type": "Major Federal Rule",
+            "identifier": "3206-AN96",
+            "fed_reg_number": "85 FR 48075",
+            "effective_date": "2020-10-01T13:00:00Z",
+            "received": "2020-08-12T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3443,16 +3443,6 @@
         },
         {
             "page": 17,
-            "url": "https://www.gao.gov/fedrules/199453",
-            "type": "Major Federal Rule",
-            "identifier": "1235-AA36",
-            "fed_reg_number": "85 FR 39782",
-            "effective_date": "2020-07-01T13:00:00Z",
-            "received": "2020-07-01T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 17,
             "url": "https://www.gao.gov/fedrules/199785",
             "type": "Major Federal Rule",
             "identifier": "2590-AB03",
@@ -3473,12 +3463,12 @@
         },
         {
             "page": 17,
-            "url": "https://www.gao.gov/fedrules/199436",
+            "url": "https://www.gao.gov/fedrules/199453",
             "type": "Major Federal Rule",
-            "identifier": "3245-AH54",
-            "fed_reg_number": "85 FR 39066",
-            "effective_date": "2020-06-26T13:00:00Z",
-            "received": "2020-07-02T13:00:00Z",
+            "identifier": "1235-AA36",
+            "fed_reg_number": "85 FR 39782",
+            "effective_date": "2020-07-01T13:00:00Z",
+            "received": "2020-07-01T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3488,6 +3478,16 @@
             "fed_reg_number": "85 FR 39055",
             "effective_date": "2020-07-01T13:00:00Z",
             "received": "2020-06-29T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 17,
+            "url": "https://www.gao.gov/fedrules/199436",
+            "type": "Major Federal Rule",
+            "identifier": "3245-AH54",
+            "fed_reg_number": "85 FR 39066",
+            "effective_date": "2020-06-26T13:00:00Z",
+            "received": "2020-07-02T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3552,22 +3552,32 @@
         },
         {
             "page": 17,
-            "url": "https://www.gao.gov/fedrules/199474",
-            "type": "Major Federal Rule",
-            "identifier": "0945-AA11",
-            "fed_reg_number": "85 FR 37160",
-            "effective_date": "2020-08-18T13:00:00Z",
-            "received": "2020-06-16T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 17,
             "url": "https://www.gao.gov/fedrules/199609",
             "type": "Major Federal Rule",
             "identifier": "3150-AK10",
             "fed_reg_number": "85 FR 37250",
             "effective_date": "2020-08-18T13:00:00Z",
             "received": "2020-06-19T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 17,
+            "url": "https://www.gao.gov/fedrules/199435",
+            "type": "Major Federal Rule",
+            "identifier": "3245-AH51",
+            "fed_reg_number": "85 FR 36997",
+            "effective_date": "2020-03-27T13:00:00Z",
+            "received": "2020-07-01T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 18,
+            "url": "https://www.gao.gov/fedrules/199474",
+            "type": "Major Federal Rule",
+            "identifier": "0945-AA11",
+            "fed_reg_number": "85 FR 37160",
+            "effective_date": "2020-08-18T13:00:00Z",
+            "received": "2020-06-16T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3602,26 +3612,6 @@
         },
         {
             "page": 18,
-            "url": "https://www.gao.gov/fedrules/200618",
-            "type": "Major Federal Rule",
-            "identifier": "2126-AC19",
-            "fed_reg_number": "85 FR 33396",
-            "effective_date": "2020-09-29T13:00:00Z",
-            "received": "2020-05-20T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 18,
-            "url": "https://www.gao.gov/fedrules/201394",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AM31",
-            "fed_reg_number": "85 FR 33290",
-            "effective_date": "2021-08-01T13:00:00Z",
-            "received": "2020-04-15T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 18,
             "url": "https://www.gao.gov/fedrules/199186",
             "type": "Major Federal Rule",
             "identifier": "1505-AC69",
@@ -3652,6 +3642,26 @@
         },
         {
             "page": 18,
+            "url": "https://www.gao.gov/fedrules/200618",
+            "type": "Major Federal Rule",
+            "identifier": "2126-AC19",
+            "fed_reg_number": "85 FR 33396",
+            "effective_date": "2020-09-29T13:00:00Z",
+            "received": "2020-05-20T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 18,
+            "url": "https://www.gao.gov/fedrules/201394",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AM31",
+            "fed_reg_number": "85 FR 33290",
+            "effective_date": "2021-08-01T13:00:00Z",
+            "received": "2020-04-15T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 18,
             "url": "https://www.gao.gov/fedrules/202111",
             "type": "Major Federal Rule",
             "fed_reg_number": "85 FR 31390",
@@ -3667,6 +3677,16 @@
             "fed_reg_number": "85 FR 30790",
             "effective_date": "2020-07-20T13:00:00Z",
             "received": "2020-04-10T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 18,
+            "url": "https://www.gao.gov/fedrules/199121",
+            "type": "Major Federal Rule",
+            "identifier": "1870-AA14",
+            "fed_reg_number": "85 FR 30026",
+            "effective_date": "2020-08-14T13:00:00Z",
+            "received": "2020-05-13T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3687,16 +3707,6 @@
             "fed_reg_number": "85 FR 29847",
             "effective_date": "2020-05-19T13:00:00Z",
             "received": "2020-05-29T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 18,
-            "url": "https://www.gao.gov/fedrules/199121",
-            "type": "Major Federal Rule",
-            "identifier": "1870-AA14",
-            "fed_reg_number": "85 FR 30026",
-            "effective_date": "2020-08-14T13:00:00Z",
-            "received": "2020-05-13T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3740,22 +3750,22 @@
         },
         {
             "page": 18,
-            "url": "https://www.gao.gov/fedrules/201477",
-            "type": "Major Federal Rule",
-            "identifier": "0955-AA01",
-            "fed_reg_number": "85 FR 25642",
-            "effective_date": "2020-06-30T13:00:00Z",
-            "received": "2020-11-23T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 18,
             "url": "https://www.gao.gov/fedrules/199010",
             "type": "Major Federal Rule",
             "identifier": "0938-AT79",
             "fed_reg_number": "85 FR 25510",
             "effective_date": "2020-06-30T13:00:00Z",
             "received": "2020-05-08T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 18,
+            "url": "https://www.gao.gov/fedrules/201477",
+            "type": "Major Federal Rule",
+            "identifier": "0955-AA01",
+            "fed_reg_number": "85 FR 25642",
+            "effective_date": "2020-06-30T13:00:00Z",
+            "received": "2020-11-23T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3780,15 +3790,6 @@
         },
         {
             "page": 19,
-            "url": "https://www.gao.gov/fedrules/199023",
-            "type": "Major Federal Rule",
-            "fed_reg_number": "85 FR 22804",
-            "effective_date": "2020-06-22T13:00:00Z",
-            "received": "2020-03-05T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 19,
             "url": "https://www.gao.gov/fedrules/199084",
             "type": "Major Federal Rule",
             "identifier": "3064-AF47",
@@ -3799,22 +3800,21 @@
         },
         {
             "page": 19,
+            "url": "https://www.gao.gov/fedrules/199023",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "85 FR 22804",
+            "effective_date": "2020-06-22T13:00:00Z",
+            "received": "2020-03-05T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 19,
             "url": "https://www.gao.gov/fedrules/198762",
             "type": "Major Federal Rule",
             "identifier": "3235-AM12",
             "fed_reg_number": "85 FR 21940",
             "effective_date": "2021-01-04T13:00:00Z",
             "received": "2020-03-03T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 19,
-            "url": "https://www.gao.gov/fedrules/198782",
-            "type": "Major Federal Rule",
-            "identifier": "3245-AH34",
-            "fed_reg_number": "85 FR 20811",
-            "effective_date": "2020-04-15T13:00:00Z",
-            "received": "2020-04-22T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3835,6 +3835,16 @@
             "fed_reg_number": "85 FR 20838",
             "effective_date": "2020-04-15T13:00:00Z",
             "received": "2020-04-13T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 19,
+            "url": "https://www.gao.gov/fedrules/198782",
+            "type": "Major Federal Rule",
+            "identifier": "3245-AH34",
+            "fed_reg_number": "85 FR 20811",
+            "effective_date": "2020-04-15T13:00:00Z",
+            "received": "2020-04-22T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3869,22 +3879,22 @@
         },
         {
             "page": 19,
-            "url": "https://www.gao.gov/fedrules/198695",
-            "type": "Major Federal Rule",
-            "identifier": "123-AA35",
-            "fed_reg_number": "85 FR 19326",
-            "effective_date": "2020-04-02T13:00:00Z",
-            "received": "2020-04-06T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 19,
             "url": "https://www.gao.gov/fedrules/198696",
             "type": "Major Federal Rule",
             "identifier": "0938-AU31",
             "fed_reg_number": "85 FR 19230",
             "effective_date": "2020-03-31T13:00:00Z",
             "received": "2020-04-09T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 19,
+            "url": "https://www.gao.gov/fedrules/198695",
+            "type": "Major Federal Rule",
+            "identifier": "123-AA35",
+            "fed_reg_number": "85 FR 19326",
+            "effective_date": "2020-04-02T13:00:00Z",
+            "received": "2020-04-06T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -3949,6 +3959,16 @@
         },
         {
             "page": 19,
+            "url": "https://www.gao.gov/fedrules/200568",
+            "type": "Major Federal Rule",
+            "identifier": "0910-AI39",
+            "fed_reg_number": "85 FR 15638",
+            "effective_date": "2021-06-18T13:00:00Z",
+            "received": "2020-04-06T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 20,
             "url": "https://www.gao.gov/fedrules/199089",
             "type": "Major Federal Rule",
             "identifier": "7100-AF02",
@@ -4029,16 +4049,6 @@
         },
         {
             "page": 20,
-            "url": "https://www.gao.gov/fedrules/197921",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AL83",
-            "fed_reg_number": "85 FR 6359",
-            "effective_date": "2020-04-06T13:00:00Z",
-            "received": "2019-12-20T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 20,
             "url": "https://www.gao.gov/fedrules/197923",
             "type": "Major Federal Rule",
             "identifier": "2126-AC25",
@@ -4053,6 +4063,16 @@
             "type": "Major Federal Rule",
             "identifier": "3235-AM13",
             "fed_reg_number": "85 FR 6270",
+            "effective_date": "2020-04-06T13:00:00Z",
+            "received": "2019-12-20T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 20,
+            "url": "https://www.gao.gov/fedrules/197921",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AL83",
+            "fed_reg_number": "85 FR 6359",
             "effective_date": "2020-04-06T13:00:00Z",
             "received": "2019-12-20T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -4417,20 +4437,20 @@
         },
         {
             "page": 22,
-            "url": "https://www.gao.gov/fedrules/196002",
+            "url": "https://www.gao.gov/fedrules/196011",
             "type": "Major Federal Rule",
-            "identifier": "0938-AT23",
-            "fed_reg_number": "84 FR 51732",
+            "identifier": "0938-AS59",
+            "fed_reg_number": "84 FR 51836",
             "effective_date": "2019-11-29T13:00:00Z",
             "received": "2019-10-01T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 22,
-            "url": "https://www.gao.gov/fedrules/196011",
+            "url": "https://www.gao.gov/fedrules/196002",
             "type": "Major Federal Rule",
-            "identifier": "0938-AS59",
-            "fed_reg_number": "84 FR 51836",
+            "identifier": "0938-AT23",
+            "fed_reg_number": "84 FR 51732",
             "effective_date": "2019-11-29T13:00:00Z",
             "received": "2019-10-01T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -4747,20 +4767,20 @@
         },
         {
             "page": 24,
-            "url": "https://www.gao.gov/fedrules/194763",
+            "url": "https://www.gao.gov/fedrules/194764",
             "type": "Major Federal Rule",
-            "identifier": "2900-AQ47",
-            "fed_reg_number": "84 FR 25998",
+            "identifier": "2900-AQ46",
+            "fed_reg_number": "84 FR 26278",
             "effective_date": "2019-06-06T13:00:00Z",
             "received": "2019-06-06T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 24,
-            "url": "https://www.gao.gov/fedrules/194764",
+            "url": "https://www.gao.gov/fedrules/194763",
             "type": "Major Federal Rule",
-            "identifier": "2900-AQ46",
-            "fed_reg_number": "84 FR 26278",
+            "identifier": "2900-AQ47",
+            "fed_reg_number": "84 FR 25998",
             "effective_date": "2019-06-06T13:00:00Z",
             "received": "2019-06-06T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -5934,6 +5954,16 @@
         },
         {
             "page": 30,
+            "url": "https://www.gao.gov/fedrules/186686",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AG81",
+            "fed_reg_number": "82 FR 4504",
+            "effective_date": "2017-07-13T13:00:00Z",
+            "received": "2017-01-18T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 30,
             "url": "https://www.gao.gov/fedrules/186595",
             "type": "Major Federal Rule",
             "identifier": "2900-AP66",
@@ -6104,6 +6134,16 @@
         },
         {
             "page": 30,
+            "url": "https://www.gao.gov/fedrules/186299",
+            "type": "Major Federal Rule",
+            "identifier": "2577-AC97",
+            "fed_reg_number": "81 FR 87430",
+            "effective_date": "2017-02-03T13:00:00Z",
+            "received": "2016-12-05T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 30,
             "url": "https://www.gao.gov/fedrules/186526",
             "type": "Major Federal Rule",
             "identifier": "3064-AE33",
@@ -6113,7 +6153,7 @@
             "priority": "Significant/Substantive"
         },
         {
-            "page": 30,
+            "page": 31,
             "url": "https://www.gao.gov/fedrules/186403",
             "type": "Major Federal Rule",
             "identifier": "2126-AB18",
@@ -6174,6 +6214,16 @@
         },
         {
             "page": 31,
+            "url": "https://www.gao.gov/fedrules/186267",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AL61",
+            "fed_reg_number": "81 FR 82142",
+            "effective_date": "2017-01-17T13:00:00Z",
+            "received": "2016-10-19T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 31,
             "url": "https://www.gao.gov/fedrules/186290",
             "type": "Major Federal Rule",
             "identifier": "1216-AB80",
@@ -6220,16 +6270,6 @@
             "fed_reg_number": "81 FR 82398",
             "effective_date": "2017-01-17T13:00:00Z",
             "received": "2016-11-18T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 31,
-            "url": "https://www.gao.gov/fedrules/186267",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AL61",
-            "fed_reg_number": "81 FR 82142",
-            "effective_date": "2017-01-17T13:00:00Z",
-            "received": "2016-10-19T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -6324,22 +6364,22 @@
         },
         {
             "page": 32,
-            "url": "https://www.gao.gov/fedrules/185788",
-            "type": "Major Federal Rule",
-            "identifier": "2060-AS05",
-            "fed_reg_number": "81 FR 74504",
-            "effective_date": "2016-12-27T13:00:00Z",
-            "received": "2016-09-30T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 32,
             "url": "https://www.gao.gov/fedrules/186252",
             "type": "Major Federal Rule",
             "identifier": "0938-ZB30",
             "fed_reg_number": "81 FR 74432",
             "effective_date": "2016-11-25T13:00:00Z",
             "received": "2016-11-16T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 32,
+            "url": "https://www.gao.gov/fedrules/185788",
+            "type": "Major Federal Rule",
+            "identifier": "2060-AS05",
+            "fed_reg_number": "81 FR 74504",
+            "effective_date": "2016-12-27T13:00:00Z",
+            "received": "2016-09-30T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -6554,6 +6594,16 @@
         },
         {
             "page": 33,
+            "url": "https://www.gao.gov/fedrules/184741",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AS78",
+            "fed_reg_number": "81 FR 52056",
+            "effective_date": "2016-10-01T13:00:00Z",
+            "received": "2016-08-05T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 33,
             "url": "https://www.gao.gov/fedrules/184742",
             "type": "Major Federal Rule",
             "identifier": "0938-AS79",
@@ -6568,16 +6618,6 @@
             "type": "Major Federal Rule",
             "identifier": "0938-AS75",
             "fed_reg_number": "81 FR 51970",
-            "effective_date": "2016-10-01T13:00:00Z",
-            "received": "2016-08-05T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 33,
-            "url": "https://www.gao.gov/fedrules/184741",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AS78",
-            "fed_reg_number": "81 FR 52056",
             "effective_date": "2016-10-01T13:00:00Z",
             "received": "2016-08-05T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -6604,22 +6644,22 @@
         },
         {
             "page": 33,
-            "url": "https://www.gao.gov/fedrules/184646",
-            "type": "Major Federal Rule",
-            "identifier": "0584-AE09",
-            "fed_reg_number": "81 FR 50132",
-            "effective_date": "2016-09-27T13:00:00Z",
-            "received": "2016-08-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 33,
             "url": "https://www.gao.gov/fedrules/184608",
             "type": "Major Federal Rule",
             "identifier": "3235-AL87",
             "fed_reg_number": "81 FR 50212",
             "effective_date": "2016-09-27T13:00:00Z",
             "received": "2016-07-15T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 33,
+            "url": "https://www.gao.gov/fedrules/184646",
+            "type": "Major Federal Rule",
+            "identifier": "0584-AE09",
+            "fed_reg_number": "81 FR 50132",
+            "effective_date": "2016-09-27T13:00:00Z",
+            "received": "2016-08-02T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -6684,22 +6724,22 @@
         },
         {
             "page": 33,
-            "url": "https://www.gao.gov/fedrules/184354",
-            "type": "Major Federal Rule",
-            "identifier": "0790-AJ17",
-            "fed_reg_number": "81 FR 41803",
-            "effective_date": "2016-09-01T13:00:00Z",
-            "received": "2016-06-24T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 33,
             "url": "https://www.gao.gov/fedrules/184736",
             "type": "Major Federal Rule",
             "identifier": "2120-AJ60",
             "fed_reg_number": "81 FR 42064",
             "effective_date": "2016-08-29T13:00:00Z",
             "received": "2016-08-04T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 33,
+            "url": "https://www.gao.gov/fedrules/184354",
+            "type": "Major Federal Rule",
+            "identifier": "0790-AJ17",
+            "fed_reg_number": "81 FR 41803",
+            "effective_date": "2016-09-01T13:00:00Z",
+            "received": "2016-06-24T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -6744,22 +6784,22 @@
         },
         {
             "page": 34,
-            "url": "https://www.gao.gov/fedrules/184359",
-            "type": "Major Federal Rule",
-            "identifier": "1904-AB57",
-            "fed_reg_number": "81 FR 38266",
-            "effective_date": "2016-08-12T13:00:00Z",
-            "received": "2016-06-27T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 34,
             "url": "https://www.gao.gov/fedrules/184363",
             "type": "Major Federal Rule",
             "identifier": "1904-AC81",
             "fed_reg_number": "81 FR 38338",
             "effective_date": "2016-08-12T13:00:00Z",
             "received": "2016-06-28T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 34,
+            "url": "https://www.gao.gov/fedrules/184359",
+            "type": "Major Federal Rule",
+            "identifier": "1904-AB57",
+            "fed_reg_number": "81 FR 38266",
+            "effective_date": "2016-08-12T13:00:00Z",
+            "received": "2016-06-27T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -7054,22 +7094,22 @@
         },
         {
             "page": 35,
-            "url": "https://www.gao.gov/fedrules/182900",
-            "type": "Major Federal Rule",
-            "identifier": "0938-ZB24",
-            "fed_reg_number": "81 FR 5448",
-            "effective_date": "2016-03-03T13:00:00Z",
-            "received": "2016-02-11T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 35,
             "url": "https://www.gao.gov/fedrules/182800",
             "type": "Major Federal Rule",
             "identifier": "0938-AQ36",
             "fed_reg_number": "81 FR 5530",
             "effective_date": "2016-07-01T13:00:00Z",
             "received": "2016-01-28T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 35,
+            "url": "https://www.gao.gov/fedrules/182900",
+            "type": "Major Federal Rule",
+            "identifier": "0938-ZB24",
+            "fed_reg_number": "81 FR 5448",
+            "effective_date": "2016-03-03T13:00:00Z",
+            "received": "2016-02-11T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -7113,21 +7153,21 @@
         },
         {
             "page": 36,
-            "url": "https://www.gao.gov/fedrules/182704",
-            "type": "Major Federal Rule",
-            "identifier": "1904-AC95",
-            "fed_reg_number": "81 FR 2420",
-            "effective_date": "2016-05-16T13:00:00Z",
-            "received": "2016-01-19T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 36,
             "url": "https://www.gao.gov/fedrules/182701",
             "type": "Major Federal Rule",
             "identifier": "1904-AC88",
             "fed_reg_number": "81 FR 2320",
             "effective_date": "2016-03-15T13:00:00Z",
+            "received": "2016-01-19T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 36,
+            "url": "https://www.gao.gov/fedrules/182704",
+            "type": "Major Federal Rule",
+            "identifier": "1904-AC95",
+            "fed_reg_number": "81 FR 2420",
+            "effective_date": "2016-05-16T13:00:00Z",
             "received": "2016-01-19T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -7282,20 +7322,20 @@
         },
         {
             "page": 36,
-            "url": "https://www.gao.gov/fedrules/182372",
+            "url": "https://www.gao.gov/fedrules/182462",
             "type": "Major Federal Rule",
-            "identifier": "0910-AG64",
-            "fed_reg_number": "80 FR 74226",
+            "identifier": "0910-AG35",
+            "fed_reg_number": "80 FR 74354",
             "effective_date": "2016-01-26T13:00:00Z",
             "received": "2015-12-01T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 36,
-            "url": "https://www.gao.gov/fedrules/182462",
+            "url": "https://www.gao.gov/fedrules/182372",
             "type": "Major Federal Rule",
-            "identifier": "0910-AG35",
-            "fed_reg_number": "80 FR 74354",
+            "identifier": "0910-AG64",
+            "fed_reg_number": "80 FR 74226",
             "effective_date": "2016-01-26T13:00:00Z",
             "received": "2015-12-01T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -7317,6 +7357,16 @@
             "identifier": "1210-AB72",
             "fed_reg_number": "80 FR 72192",
             "effective_date": "2016-01-19T13:00:00Z",
+            "received": "2015-11-13T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 37,
+            "url": "https://www.gao.gov/fedrules/182325",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AS38",
+            "fed_reg_number": "80 FR 70811",
+            "effective_date": "2016-01-01T13:00:00Z",
             "received": "2015-11-13T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -7352,16 +7402,6 @@
         },
         {
             "page": 37,
-            "url": "https://www.gao.gov/fedrules/182325",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AS38",
-            "fed_reg_number": "80 FR 70811",
-            "effective_date": "2016-01-01T13:00:00Z",
-            "received": "2015-11-13T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 37,
             "url": "https://www.gao.gov/fedrules/182205",
             "type": "Major Federal Rule",
             "identifier": "0938-AS42",
@@ -7382,6 +7422,16 @@
         },
         {
             "page": 37,
+            "url": "https://www.gao.gov/fedrules/181990",
+            "type": "Major Federal Rule",
+            "identifier": "0579-AD77",
+            "fed_reg_number": "80 FR 66748",
+            "effective_date": "2015-12-28T13:00:00Z",
+            "received": "2015-10-29T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 37,
             "url": "https://www.gao.gov/fedrules/184257",
             "type": "Major Federal Rule",
             "identifier": "3133-AD77",
@@ -7398,16 +7448,6 @@
             "fed_reg_number": "80 FR 66419",
             "effective_date": "2015-10-29T13:00:00Z",
             "received": "2015-11-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 37,
-            "url": "https://www.gao.gov/fedrules/181990",
-            "type": "Major Federal Rule",
-            "identifier": "0579-AD77",
-            "fed_reg_number": "80 FR 66748",
-            "effective_date": "2015-12-28T13:00:00Z",
-            "received": "2015-10-29T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -7472,20 +7512,20 @@
         },
         {
             "page": 37,
-            "url": "https://www.gao.gov/fedrules/181681",
+            "url": "https://www.gao.gov/fedrules/181680",
             "type": "Major Federal Rule",
             "identifier": "1018-BA67",
-            "fed_reg_number": "80 FR 58166",
+            "fed_reg_number": "80 FR 58158",
             "effective_date": "2015-09-26T13:00:00Z",
             "received": "2015-09-25T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 37,
-            "url": "https://www.gao.gov/fedrules/181680",
+            "url": "https://www.gao.gov/fedrules/181681",
             "type": "Major Federal Rule",
             "identifier": "1018-BA67",
-            "fed_reg_number": "80 FR 58158",
+            "fed_reg_number": "80 FR 58166",
             "effective_date": "2015-09-26T13:00:00Z",
             "received": "2015-09-25T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -7582,22 +7622,22 @@
         },
         {
             "page": 38,
-            "url": "https://www.gao.gov/fedrules/181582",
-            "type": "Major Federal Rule",
-            "identifier": "7100 AE-26",
-            "fed_reg_number": "80 FR 49082",
-            "effective_date": "2015-12-01T13:00:00Z",
-            "received": "2015-09-15T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 38,
             "url": "https://www.gao.gov/fedrules/181322",
             "type": "Major Federal Rule",
             "identifier": "3235-AL05",
             "fed_reg_number": "80 FR 48964",
             "effective_date": "2015-10-13T13:00:00Z",
             "received": "2015-08-07T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 38,
+            "url": "https://www.gao.gov/fedrules/181582",
+            "type": "Major Federal Rule",
+            "identifier": "7100 AE-26",
+            "fed_reg_number": "80 FR 49082",
+            "effective_date": "2015-12-01T13:00:00Z",
+            "received": "2015-09-15T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -7851,20 +7891,20 @@
         },
         {
             "page": 39,
-            "url": "https://www.gao.gov/fedrules/180293",
+            "url": "https://www.gao.gov/fedrules/180294",
             "type": "Major Federal Rule",
-            "identifier": "3235-AK79",
-            "fed_reg_number": "80 FR 14438",
+            "identifier": "3235-AK80",
+            "fed_reg_number": "80 FR 14564",
             "effective_date": "2015-05-18T13:00:00Z",
             "received": "2015-02-12T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 39,
-            "url": "https://www.gao.gov/fedrules/180294",
+            "url": "https://www.gao.gov/fedrules/180293",
             "type": "Major Federal Rule",
-            "identifier": "3235-AK80",
-            "fed_reg_number": "80 FR 14564",
+            "identifier": "3235-AK79",
+            "fed_reg_number": "80 FR 14438",
             "effective_date": "2015-05-18T13:00:00Z",
             "received": "2015-02-12T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -8001,21 +8041,21 @@
         },
         {
             "page": 40,
-            "url": "https://www.gao.gov/fedrules/179594",
-            "type": "Major Federal Rule",
-            "identifier": "0910-AG56",
-            "fed_reg_number": "79 FR 71259",
-            "effective_date": "2016-12-01T13:00:00Z",
-            "received": "2014-11-25T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 40,
             "url": "https://www.gao.gov/fedrules/179593",
             "type": "Major Federal Rule",
             "identifier": "0910-AG57",
             "fed_reg_number": "79 FR 71156",
             "effective_date": "2015-12-01T13:00:00Z",
+            "received": "2014-11-25T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 40,
+            "url": "https://www.gao.gov/fedrules/179594",
+            "type": "Major Federal Rule",
+            "identifier": "0910-AG56",
+            "fed_reg_number": "79 FR 71259",
+            "effective_date": "2016-12-01T13:00:00Z",
             "received": "2014-11-25T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -8091,20 +8131,20 @@
         },
         {
             "page": 40,
-            "url": "https://www.gao.gov/fedrules/178926",
-            "type": "Major Federal Rule",
-            "identifier": "3064-AE04",
-            "fed_reg_number": "79 FR 61440",
-            "effective_date": "2015-01-01T13:00:00Z",
-            "received": "2014-10-06T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 40,
             "url": "https://www.gao.gov/fedrules/178924",
             "type": "Major Federal Rule",
             "identifier": "0938-AR94",
             "fed_reg_number": "79 FR 61309",
+            "effective_date": "2015-01-01T13:00:00Z",
+            "received": "2014-10-09T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 40,
+            "url": "https://www.gao.gov/fedrules/178925",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AR96",
+            "fed_reg_number": "79 FR 61312",
             "effective_date": "2015-01-01T13:00:00Z",
             "received": "2014-10-09T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -8131,16 +8171,6 @@
         },
         {
             "page": 41,
-            "url": "https://www.gao.gov/fedrules/178901",
-            "type": "Major Federal Rule",
-            "identifier": "7100-AD16",
-            "fed_reg_number": "79 FR 57725",
-            "effective_date": "2015-01-01T13:00:00Z",
-            "received": "2014-10-06T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 41,
             "url": "https://www.gao.gov/fedrules/178882",
             "type": "Major Federal Rule",
             "identifier": "0560-AI24",
@@ -8157,6 +8187,16 @@
             "fed_reg_number": "79 FR 58198",
             "effective_date": "2014-09-27T13:00:00Z",
             "received": "2014-09-25T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 41,
+            "url": "https://www.gao.gov/fedrules/178901",
+            "type": "Major Federal Rule",
+            "identifier": "7100-AD16",
+            "fed_reg_number": "79 FR 57725",
+            "effective_date": "2015-01-01T13:00:00Z",
+            "received": "2014-10-06T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -8211,22 +8251,22 @@
         },
         {
             "page": 41,
-            "url": "https://www.gao.gov/fedrules/178544",
-            "type": "Major Federal Rule",
-            "identifier": "1018-AZ80",
-            "fed_reg_number": "79 FR 51712",
-            "effective_date": "2014-08-29T13:00:00Z",
-            "received": "2014-09-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 41,
             "url": "https://www.gao.gov/fedrules/178529",
             "type": "Major Federal Rule",
             "identifier": "0560-AI13",
             "fed_reg_number": "79 FR 51453",
             "effective_date": "2014-08-29T13:00:00Z",
             "received": "2014-08-25T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 41,
+            "url": "https://www.gao.gov/fedrules/178544",
+            "type": "Major Federal Rule",
+            "identifier": "1018-AZ80",
+            "fed_reg_number": "79 FR 51712",
+            "effective_date": "2014-08-29T13:00:00Z",
+            "received": "2014-09-02T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -8320,20 +8360,20 @@
         },
         {
             "page": 42,
-            "url": "https://www.gao.gov/fedrules/178387",
+            "url": "https://www.gao.gov/fedrules/178432",
             "type": "Major Federal Rule",
-            "identifier": "0938-AS09",
-            "fed_reg_number": "79 FR 45872",
+            "identifier": "0938-AS08",
+            "fed_reg_number": "79 FR 45938",
             "effective_date": "2014-10-01T13:00:00Z",
             "received": "2014-07-31T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 42,
-            "url": "https://www.gao.gov/fedrules/178432",
+            "url": "https://www.gao.gov/fedrules/178387",
             "type": "Major Federal Rule",
-            "identifier": "0938-AS08",
-            "fed_reg_number": "79 FR 45938",
+            "identifier": "0938-AS09",
+            "fed_reg_number": "79 FR 45872",
             "effective_date": "2014-10-01T13:00:00Z",
             "received": "2014-07-31T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -8620,7 +8660,7 @@
         },
         {
             "page": 43,
-            "url": "https://www.gao.gov/fedrules/177508",
+            "url": "https://www.gao.gov/fedrules/177590",
             "type": "Major Federal Rule",
             "fed_reg_number": "79 FR 11436",
             "effective_date": "2014-03-31T13:00:00Z",
@@ -8629,7 +8669,7 @@
         },
         {
             "page": 43,
-            "url": "https://www.gao.gov/fedrules/177590",
+            "url": "https://www.gao.gov/fedrules/177508",
             "type": "Major Federal Rule",
             "fed_reg_number": "79 FR 11436",
             "effective_date": "2014-03-31T13:00:00Z",
@@ -8758,20 +8798,20 @@
         },
         {
             "page": 44,
-            "url": "https://www.gao.gov/fedrules/176059",
+            "url": "https://www.gao.gov/fedrules/176060",
             "type": "Major Federal Rule",
-            "identifier": "0938-AR56",
-            "fed_reg_number": "78 FR 74230",
+            "identifier": "0938-AR54",
+            "fed_reg_number": "78 FR 74826",
             "effective_date": "2014-01-01T13:00:00Z",
             "received": "2013-12-06T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 44,
-            "url": "https://www.gao.gov/fedrules/176060",
+            "url": "https://www.gao.gov/fedrules/176059",
             "type": "Major Federal Rule",
-            "identifier": "0938-AR54",
-            "fed_reg_number": "78 FR 74826",
+            "identifier": "0938-AR56",
+            "fed_reg_number": "78 FR 74230",
             "effective_date": "2014-01-01T13:00:00Z",
             "received": "2013-12-06T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -8878,6 +8918,16 @@
         },
         {
             "page": 44,
+            "url": "https://www.gao.gov/fedrules/175858",
+            "type": "Major Federal Rule",
+            "identifier": "038-AR57",
+            "fed_reg_number": "78 FR 64951",
+            "effective_date": "2014-01-01T13:00:00Z",
+            "received": "2013-10-29T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 44,
             "url": "https://www.gao.gov/fedrules/175859",
             "type": "Major Federal Rule",
             "identifier": "0938-AR59",
@@ -8887,7 +8937,7 @@
             "priority": "Significant/Substantive"
         },
         {
-            "page": 44,
+            "page": 45,
             "url": "https://www.gao.gov/fedrules/175886",
             "type": "Major Federal Rule",
             "identifier": "0938-AR74",
@@ -8918,6 +8968,16 @@
         },
         {
             "page": 45,
+            "url": "https://www.gao.gov/fedrules/175758",
+            "type": "Major Federal Rule",
+            "identifier": "1250-AA02",
+            "fed_reg_number": "78 FR 58682",
+            "effective_date": "2014-03-24T13:00:00Z",
+            "received": "2013-10-28T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 45,
             "url": "https://www.gao.gov/fedrules/175594",
             "type": "Major Federal Rule",
             "identifier": "0910-AG31",
@@ -8938,12 +8998,12 @@
         },
         {
             "page": 45,
-            "url": "https://www.gao.gov/fedrules/175758",
+            "url": "https://www.gao.gov/fedrules/175615",
             "type": "Major Federal Rule",
-            "identifier": "1250-AA02",
-            "fed_reg_number": "78 FR 58682",
-            "effective_date": "2014-03-24T13:00:00Z",
-            "received": "2013-10-28T13:00:00Z",
+            "identifier": "1018-AY87",
+            "fed_reg_number": "78 FR 58204",
+            "effective_date": "2013-09-21T13:00:00Z",
+            "received": "2013-09-20T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -8952,16 +9012,6 @@
             "type": "Major Federal Rule",
             "identifier": "1018-AY87",
             "fed_reg_number": "78 FR 58233",
-            "effective_date": "2013-09-21T13:00:00Z",
-            "received": "2013-09-20T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 45,
-            "url": "https://www.gao.gov/fedrules/175615",
-            "type": "Major Federal Rule",
-            "identifier": "1018-AY87",
-            "fed_reg_number": "78 FR 58204",
             "effective_date": "2013-09-21T13:00:00Z",
             "received": "2013-09-20T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -9088,16 +9138,6 @@
         },
         {
             "page": 46,
-            "url": "https://www.gao.gov/fedrules/175442",
-            "type": "Major Federal Rule",
-            "identifier": "1018-AB17",
-            "fed_reg_number": "78 FR 47980",
-            "effective_date": "2013-09-05T13:00:00Z",
-            "received": "2013-09-05T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 46,
             "url": "https://www.gao.gov/fedrules/175151",
             "type": "Major Federal Rule",
             "identifier": "0938-AR66",
@@ -9114,6 +9154,16 @@
             "fed_reg_number": "78 FR 47936",
             "effective_date": "2013-10-01T13:00:00Z",
             "received": "2013-08-02T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 46,
+            "url": "https://www.gao.gov/fedrules/175442",
+            "type": "Major Federal Rule",
+            "identifier": "1018-AB17",
+            "fed_reg_number": "78 FR 47980",
+            "effective_date": "2013-09-05T13:00:00Z",
+            "received": "2013-09-05T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -9536,20 +9586,20 @@
         },
         {
             "page": 48,
-            "url": "https://www.gao.gov/fedrules/173435",
+            "url": "https://www.gao.gov/fedrules/173421",
             "type": "Major Federal Rule",
-            "identifier": "0938-AR16",
-            "fed_reg_number": "77 FR 69850",
+            "identifier": "0938-AR14",
+            "fed_reg_number": "77 FR 69848",
             "effective_date": "2013-01-01T13:00:00Z",
             "received": "2012-11-19T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 48,
-            "url": "https://www.gao.gov/fedrules/173421",
+            "url": "https://www.gao.gov/fedrules/173435",
             "type": "Major Federal Rule",
-            "identifier": "0938-AR14",
-            "fed_reg_number": "77 FR 69848",
+            "identifier": "0938-AR16",
+            "fed_reg_number": "77 FR 69850",
             "effective_date": "2013-01-01T13:00:00Z",
             "received": "2012-11-19T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -9686,22 +9736,22 @@
         },
         {
             "page": 49,
-            "url": "https://www.gao.gov/fedrules/172843",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AQ13",
-            "fed_reg_number": "77 FR 54664",
-            "effective_date": "2012-11-05T13:00:00Z",
-            "received": "2012-09-04T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 49,
             "url": "https://www.gao.gov/fedrules/172842",
             "type": "Major Federal Rule",
             "identifier": "1018-AX97",
             "fed_reg_number": "77 FR 54451",
             "effective_date": "2012-09-01T13:00:00Z",
             "received": "2012-08-31T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 49,
+            "url": "https://www.gao.gov/fedrules/172843",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AQ13",
+            "fed_reg_number": "77 FR 54664",
+            "effective_date": "2012-11-05T13:00:00Z",
+            "received": "2012-09-04T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -9716,22 +9766,22 @@
         },
         {
             "page": 49,
-            "url": "https://www.gao.gov/fedrules/172808",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AR12",
-            "fed_reg_number": "77 FR 53258",
-            "effective_date": "2012-10-01T13:00:00Z",
-            "received": "2012-08-01T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 49,
             "url": "https://www.gao.gov/fedrules/172833",
             "type": "Major Federal Rule",
             "identifier": "1018-AX97",
             "fed_reg_number": "77 FR 53752",
             "effective_date": "2012-09-01T13:00:00Z",
             "received": "2012-08-29T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 49,
+            "url": "https://www.gao.gov/fedrules/172808",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AR12",
+            "fed_reg_number": "77 FR 53258",
+            "effective_date": "2012-10-01T13:00:00Z",
+            "received": "2012-08-01T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -9906,20 +9956,20 @@
         },
         {
             "page": 50,
-            "url": "https://www.gao.gov/fedrules/171729",
+            "url": "https://www.gao.gov/fedrules/171718",
             "type": "Major Federal Rule",
-            "identifier": "0938-AQ89",
-            "fed_reg_number": "77 FR 29034",
+            "identifier": "0938-AQ96",
+            "fed_reg_number": "77 FR 29002",
             "effective_date": "2012-07-16T13:00:00Z",
             "received": "2012-05-15T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 50,
-            "url": "https://www.gao.gov/fedrules/171718",
+            "url": "https://www.gao.gov/fedrules/171729",
             "type": "Major Federal Rule",
-            "identifier": "0938-AQ96",
-            "fed_reg_number": "77 FR 29002",
+            "identifier": "0938-AQ89",
+            "fed_reg_number": "77 FR 29034",
             "effective_date": "2012-07-16T13:00:00Z",
             "received": "2012-05-15T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -9956,16 +10006,6 @@
         },
         {
             "page": 50,
-            "url": "https://www.gao.gov/fedrules/171456",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AQ01",
-            "fed_reg_number": "77 FR 25284",
-            "effective_date": "2012-06-26T13:00:00Z",
-            "received": "2012-04-25T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 50,
             "url": "https://www.gao.gov/fedrules/171471",
             "type": "Major Federal Rule",
             "identifier": "0584-AE15",
@@ -9976,11 +10016,12 @@
         },
         {
             "page": 50,
-            "url": "https://www.gao.gov/fedrules/171484",
+            "url": "https://www.gao.gov/fedrules/171456",
             "type": "Major Federal Rule",
-            "fed_reg_number": "77 FR 23722",
-            "effective_date": "2011-10-01T13:00:00Z",
-            "received": "2012-05-03T13:00:00Z",
+            "identifier": "0938-AQ01",
+            "fed_reg_number": "77 FR 25284",
+            "effective_date": "2012-06-26T13:00:00Z",
+            "received": "2012-04-25T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -9991,6 +10032,15 @@
             "fed_reg_number": "77 FR 24104",
             "effective_date": "2012-05-21T13:00:00Z",
             "received": "2012-05-15T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 50,
+            "url": "https://www.gao.gov/fedrules/171484",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "77 FR 23722",
+            "effective_date": "2011-10-01T13:00:00Z",
+            "received": "2012-05-03T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -10055,16 +10105,6 @@
         },
         {
             "page": 50,
-            "url": "https://www.gao.gov/fedrules/171046",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AR07",
-            "fed_reg_number": "77 FR 17220",
-            "effective_date": "2012-05-22T13:00:00Z",
-            "received": "2012-03-20T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 50,
             "url": "https://www.gao.gov/fedrules/171047",
             "type": "Major Federal Rule",
             "identifier": "1625-AA32",
@@ -10074,7 +10114,7 @@
             "priority": "Significant/Substantive"
         },
         {
-            "page": 51,
+            "page": 50,
             "url": "https://www.gao.gov/fedrules/171045",
             "type": "Major Federal Rule",
             "identifier": "0938-AQ62",
@@ -10444,22 +10484,22 @@
         },
         {
             "page": 52,
-            "url": "https://www.gao.gov/fedrules/168766",
-            "type": "Major Federal Rule",
-            "identifier": "1904-AB79",
-            "fed_reg_number": "76 FR 57516",
-            "effective_date": "2011-11-11T13:00:00Z",
-            "received": "2011-09-15T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 52,
             "url": "https://www.gao.gov/fedrules/168730",
             "type": "Major Federal Rule",
             "identifier": "2127-AK74",
             "fed_reg_number": "76 FR 57106",
             "effective_date": "2011-11-14T13:00:00Z",
             "received": "2011-08-18T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 52,
+            "url": "https://www.gao.gov/fedrules/168766",
+            "type": "Major Federal Rule",
+            "identifier": "1904-AB79",
+            "fed_reg_number": "76 FR 57516",
+            "effective_date": "2011-11-11T13:00:00Z",
+            "received": "2011-09-15T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -10474,6 +10514,26 @@
         },
         {
             "page": 53,
+            "url": "https://www.gao.gov/fedrules/168538",
+            "type": "Major Federal Rule",
+            "identifier": "1018-AX34",
+            "fed_reg_number": "76 FR 54676",
+            "effective_date": "2011-09-01T13:00:00Z",
+            "received": "2011-08-30T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 53,
+            "url": "https://www.gao.gov/fedrules/168542",
+            "type": "Major Federal Rule",
+            "identifier": "3038-AD20",
+            "fed_reg_number": "76 FR 54538",
+            "effective_date": "2011-10-31T13:00:00Z",
+            "received": "2011-08-24T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 53,
             "url": "https://www.gao.gov/fedrules/168558",
             "type": "Major Federal Rule",
             "identifier": "0938-AP24, 0938-AP52",
@@ -10484,11 +10544,11 @@
         },
         {
             "page": 53,
-            "url": "https://www.gao.gov/fedrules/168538",
+            "url": "https://www.gao.gov/fedrules/168559",
             "type": "Major Federal Rule",
-            "identifier": "1018-AX34",
-            "fed_reg_number": "76 FR 54676",
-            "effective_date": "2011-09-01T13:00:00Z",
+            "identifier": "3142-AA07",
+            "fed_reg_number": "76 FR 54006",
+            "effective_date": "2011-11-14T13:00:00Z",
             "received": "2011-08-30T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -10500,16 +10560,6 @@
             "fed_reg_number": "76 FR 54052",
             "effective_date": "2011-08-30T13:00:00Z",
             "received": "2011-08-29T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 53,
-            "url": "https://www.gao.gov/fedrules/168559",
-            "type": "Major Federal Rule",
-            "identifier": "3142-AA07",
-            "fed_reg_number": "76 FR 54006",
-            "effective_date": "2011-11-14T13:00:00Z",
-            "received": "2011-08-30T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -10674,22 +10724,22 @@
         },
         {
             "page": 54,
-            "url": "https://www.gao.gov/fedrules/167346",
-            "type": "Major Federal Rule",
-            "identifier": "3150-AI93",
-            "fed_reg_number": "76 FR 36780",
-            "effective_date": "2011-08-22T13:00:00Z",
-            "received": "2011-07-01T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 54,
             "url": "https://www.gao.gov/fedrules/167458",
             "type": "Major Federal Rule",
             "identifier": "0910-AG41",
             "fed_reg_number": "76 FR 36628",
             "effective_date": "2012-09-22T13:00:00Z",
             "received": "2011-07-12T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 54,
+            "url": "https://www.gao.gov/fedrules/167346",
+            "type": "Major Federal Rule",
+            "identifier": "3150-AI93",
+            "fed_reg_number": "76 FR 36780",
+            "effective_date": "2011-08-22T13:00:00Z",
+            "received": "2011-07-01T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -10704,22 +10754,22 @@
         },
         {
             "page": 54,
-            "url": "https://www.gao.gov/fedrules/167075",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AK78",
-            "fed_reg_number": "76 FR 34300",
-            "effective_date": "2011-08-12T13:00:00Z",
-            "received": "2011-05-27T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 54,
             "url": "https://www.gao.gov/fedrules/167076",
             "type": "Major Federal Rule",
             "identifier": "1840-AD06",
             "fed_reg_number": "76 FR 34386",
             "effective_date": "2012-07-01T13:00:00Z",
             "received": "2011-06-02T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 54,
+            "url": "https://www.gao.gov/fedrules/167075",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AK78",
+            "fed_reg_number": "76 FR 34300",
+            "effective_date": "2011-08-12T13:00:00Z",
+            "received": "2011-05-27T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -10844,22 +10894,32 @@
         },
         {
             "page": 54,
-            "url": "https://www.gao.gov/fedrules/165730",
-            "type": "Major Federal Rule",
-            "identifier": "2060-AQ25",
-            "fed_reg_number": "76 FR 15608",
-            "effective_date": "2011-05-20T13:00:00Z",
-            "received": "2011-02-25T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 54,
             "url": "https://www.gao.gov/fedrules/165785",
             "type": "Major Federal Rule",
             "identifier": "2060-AQ12",
             "fed_reg_number": "76 FR 15704",
             "effective_date": "2011-05-20T13:00:00Z",
             "received": "2011-02-28T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 54,
+            "url": "https://www.gao.gov/fedrules/165729",
+            "type": "Major Federal Rule",
+            "identifier": "2060-AM44",
+            "fed_reg_number": "76 FR 15554",
+            "effective_date": "2011-05-20T13:00:00Z",
+            "received": "2011-02-25T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 55,
+            "url": "https://www.gao.gov/fedrules/165730",
+            "type": "Major Federal Rule",
+            "identifier": "2060-AQ25",
+            "fed_reg_number": "76 FR 15608",
+            "effective_date": "2011-05-20T13:00:00Z",
+            "received": "2011-02-25T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -11073,16 +11133,6 @@
         },
         {
             "page": 56,
-            "url": "https://www.gao.gov/fedrules/164266",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AK35",
-            "fed_reg_number": "75 FR 68702",
-            "effective_date": "2010-03-10T13:00:00Z",
-            "received": "2010-11-08T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 56,
             "url": "https://www.gao.gov/fedrules/164269",
             "type": "Major Federal Rule",
             "identifier": "0938-AP81",
@@ -11099,6 +11149,16 @@
             "fed_reg_number": "75 FR 68799",
             "effective_date": "2011-01-01T13:00:00Z",
             "received": "2010-11-05T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 56,
+            "url": "https://www.gao.gov/fedrules/164266",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AK35",
+            "fed_reg_number": "75 FR 68702",
+            "effective_date": "2010-03-10T13:00:00Z",
+            "received": "2010-11-08T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -11153,22 +11213,22 @@
         },
         {
             "page": 56,
-            "url": "https://www.gao.gov/fedrules/164176",
-            "type": "Major Federal Rule",
-            "identifier": "1210-AB07",
-            "fed_reg_number": "75 FR 64910",
-            "effective_date": "2010-12-20T13:00:00Z",
-            "received": "2010-10-25T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 56,
             "url": "https://www.gao.gov/fedrules/163971",
             "type": "Major Federal Rule",
             "identifier": "3235-AK73",
             "fed_reg_number": "75 FR 64643",
             "effective_date": "2012-01-12T13:00:00Z",
             "received": "2010-10-14T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 56,
+            "url": "https://www.gao.gov/fedrules/164176",
+            "type": "Major Federal Rule",
+            "identifier": "1210-AB07",
+            "fed_reg_number": "75 FR 64910",
+            "effective_date": "2010-12-20T13:00:00Z",
+            "received": "2010-10-25T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -11193,6 +11253,16 @@
         },
         {
             "page": 56,
+            "url": "https://www.gao.gov/fedrules/163771",
+            "type": "Major Federal Rule",
+            "identifier": "1018-AX06",
+            "fed_reg_number": "75 FR 59042",
+            "effective_date": "2010-09-24T13:00:00Z",
+            "received": "2010-09-23T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 56,
             "url": "https://www.gao.gov/fedrules/163769",
             "type": "Major Federal Rule",
             "identifier": "1615-AB80",
@@ -11208,16 +11278,6 @@
             "identifier": "1018-AX06",
             "fed_reg_number": "75 FR 58994",
             "effective_date": "2010-09-25T13:00:00Z",
-            "received": "2010-09-23T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 56,
-            "url": "https://www.gao.gov/fedrules/163771",
-            "type": "Major Federal Rule",
-            "identifier": "1018-AX06",
-            "fed_reg_number": "75 FR 59042",
-            "effective_date": "2010-09-24T13:00:00Z",
             "received": "2010-09-23T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -11283,22 +11343,22 @@
         },
         {
             "page": 57,
-            "url": "https://www.gao.gov/fedrules/163442",
-            "type": "Major Federal Rule",
-            "identifier": "2900-AN54",
-            "fed_reg_number": "75 FR 53202",
-            "effective_date": "2010-08-31T13:00:00Z",
-            "received": "2010-08-25T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 57,
             "url": "https://www.gao.gov/fedrules/163457",
             "type": "Major Federal Rule",
             "identifier": "1018-AX06",
             "fed_reg_number": "75 FR 53226",
             "effective_date": "2010-09-01T13:00:00Z",
             "received": "2010-08-27T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 57,
+            "url": "https://www.gao.gov/fedrules/163442",
+            "type": "Major Federal Rule",
+            "identifier": "2900-AN54",
+            "fed_reg_number": "75 FR 53202",
+            "effective_date": "2010-08-31T13:00:00Z",
+            "received": "2010-08-25T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -11392,16 +11452,6 @@
         },
         {
             "page": 57,
-            "url": "https://www.gao.gov/fedrules/162962",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AP78",
-            "fed_reg_number": "75 FR 44314",
-            "effective_date": "2010-09-27T13:00:00Z",
-            "received": "2010-07-13T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 57,
             "url": "https://www.gao.gov/fedrules/162963",
             "type": "Major Federal Rule",
             "identifier": "1557-AD23",
@@ -11422,12 +11472,32 @@
         },
         {
             "page": 57,
+            "url": "https://www.gao.gov/fedrules/162962",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AP78",
+            "fed_reg_number": "75 FR 44314",
+            "effective_date": "2010-09-27T13:00:00Z",
+            "received": "2010-07-13T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 57,
             "url": "https://www.gao.gov/fedrules/162668",
             "type": "Major Federal Rule",
             "identifier": "1210-AB45",
             "fed_reg_number": "75 FR 43330",
             "effective_date": "2010-09-21T13:00:00Z",
             "received": "2010-07-23T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 57,
+            "url": "https://www.gao.gov/fedrules/162410",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AP87",
+            "fed_reg_number": "75 FR 42886",
+            "effective_date": "2010-10-01T13:00:00Z",
+            "received": "2010-07-22T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -11441,21 +11511,11 @@
             "priority": "Significant/Substantive"
         },
         {
-            "page": 57,
+            "page": 58,
             "url": "https://www.gao.gov/fedrules/162600",
             "type": "Major Federal Rule",
             "identifier": "0938-AP89",
             "fed_reg_number": "75 FR 42836",
-            "effective_date": "2010-10-01T13:00:00Z",
-            "received": "2010-07-22T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 58,
-            "url": "https://www.gao.gov/fedrules/162410",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AP87",
-            "fed_reg_number": "75 FR 42886",
             "effective_date": "2010-10-01T13:00:00Z",
             "received": "2010-07-22T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -11501,22 +11561,22 @@
         },
         {
             "page": 58,
-            "url": "https://www.gao.gov/fedrules/163027",
-            "type": "Major Federal Rule",
-            "identifier": "1400-AC58",
-            "fed_reg_number": "75 FR 36522",
-            "effective_date": "2010-07-13T13:00:00Z",
-            "received": "2010-08-13T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 58,
             "url": "https://www.gao.gov/fedrules/162214",
             "type": "Major Federal Rule",
             "identifier": "0991-AB69",
             "fed_reg_number": "75 FR 37188",
             "effective_date": "2010-08-27T13:00:00Z",
             "received": "2010-06-24T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 58,
+            "url": "https://www.gao.gov/fedrules/163027",
+            "type": "Major Federal Rule",
+            "identifier": "1400-AC58",
+            "fed_reg_number": "75 FR 36522",
+            "effective_date": "2010-07-13T13:00:00Z",
+            "received": "2010-08-13T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -11560,22 +11620,22 @@
         },
         {
             "page": 58,
-            "url": "https://www.gao.gov/fedrules/161898",
-            "type": "Major Federal Rule",
-            "identifier": "2060-AP86",
-            "fed_reg_number": "75 FR 31514",
-            "effective_date": "2010-08-02T13:00:00Z",
-            "received": "2010-05-14T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 58,
             "url": "https://www.gao.gov/fedrules/161900",
             "type": "Major Federal Rule",
             "identifier": "0578-AA43",
             "fed_reg_number": "75 FR 31610",
             "effective_date": "2010-06-03T13:00:00Z",
             "received": "2010-05-28T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 58,
+            "url": "https://www.gao.gov/fedrules/161898",
+            "type": "Major Federal Rule",
+            "identifier": "2060-AP86",
+            "fed_reg_number": "75 FR 31514",
+            "effective_date": "2010-08-02T13:00:00Z",
+            "received": "2010-05-14T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -11690,22 +11750,22 @@
         },
         {
             "page": 59,
-            "url": "https://www.gao.gov/fedrules/161461",
-            "type": "Major Federal Rule",
-            "identifier": "0790-AI59",
-            "fed_reg_number": "75 FR 19878",
-            "effective_date": "2009-10-21T13:00:00Z",
-            "received": "2010-04-22T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 59,
             "url": "https://www.gao.gov/fedrules/161642",
             "type": "Major Federal Rule",
             "identifier": "1904-AA90",
             "fed_reg_number": "75 FR 20112",
             "effective_date": "2010-06-15T13:00:00Z",
             "received": "2010-05-11T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 59,
+            "url": "https://www.gao.gov/fedrules/161461",
+            "type": "Major Federal Rule",
+            "identifier": "0790-AI59",
+            "fed_reg_number": "75 FR 19878",
+            "effective_date": "2009-10-21T13:00:00Z",
+            "received": "2010-04-22T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -12018,6 +12078,16 @@
         },
         {
             "page": 60,
+            "url": "https://www.gao.gov/fedrules/160214",
+            "type": "Major Federal Rule",
+            "identifier": "2137-AE15",
+            "fed_reg_number": "74 FR 63906",
+            "effective_date": "2010-02-02T13:00:00Z",
+            "received": "2009-12-10T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 60,
             "url": "https://www.gao.gov/fedrules/160208",
             "type": "Major Federal Rule",
             "identifier": "3235-AK14",
@@ -12034,16 +12104,6 @@
             "fed_reg_number": "74 FR 63544",
             "effective_date": "2009-12-04T13:00:00Z",
             "received": "2009-12-04T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 60,
-            "url": "https://www.gao.gov/fedrules/160214",
-            "type": "Major Federal Rule",
-            "identifier": "2137-AE15",
-            "fed_reg_number": "74 FR 63906",
-            "effective_date": "2010-02-02T13:00:00Z",
-            "received": "2009-12-10T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -12177,6 +12237,16 @@
         },
         {
             "page": 61,
+            "url": "https://www.gao.gov/fedrules/159565",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AP43",
+            "fed_reg_number": "74 FR 54581",
+            "effective_date": "2010-01-01T13:00:00Z",
+            "received": "2009-10-19T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 61,
             "url": "https://www.gao.gov/fedrules/159564",
             "type": "Major Federal Rule",
             "identifier": "0938-AP48",
@@ -12191,16 +12261,6 @@
             "type": "Major Federal Rule",
             "identifier": "0938-AP42",
             "fed_reg_number": "74 FR 54579",
-            "effective_date": "2010-01-01T13:00:00Z",
-            "received": "2009-10-19T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 61,
-            "url": "https://www.gao.gov/fedrules/159565",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AP43",
-            "fed_reg_number": "74 FR 54581",
             "effective_date": "2010-01-01T13:00:00Z",
             "received": "2009-10-19T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -12387,6 +12447,15 @@
         },
         {
             "page": 62,
+            "url": "https://www.gao.gov/fedrules/158290",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "74 FR 37098",
+            "effective_date": "2009-09-25T13:00:00Z",
+            "received": "2009-07-20T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 62,
             "url": "https://www.gao.gov/fedrules/158409",
             "type": "Major Federal Rule",
             "identifier": "2127-AJ37",
@@ -12397,11 +12466,12 @@
         },
         {
             "page": 62,
-            "url": "https://www.gao.gov/fedrules/158290",
+            "url": "https://www.gao.gov/fedrules/159116",
             "type": "Major Federal Rule",
-            "fed_reg_number": "74 FR 37098",
-            "effective_date": "2009-09-25T13:00:00Z",
-            "received": "2009-07-20T13:00:00Z",
+            "identifier": "1904-AB83",
+            "fed_reg_number": "74 FR 36312",
+            "effective_date": "2009-09-21T13:00:00Z",
+            "received": "2009-09-21T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -12411,16 +12481,6 @@
             "fed_reg_number": "74 FR 36077",
             "effective_date": "2009-08-20T13:00:00Z",
             "received": "2009-07-27T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 62,
-            "url": "https://www.gao.gov/fedrules/159116",
-            "type": "Major Federal Rule",
-            "identifier": "1904-AB83",
-            "fed_reg_number": "74 FR 36312",
-            "effective_date": "2009-09-21T13:00:00Z",
-            "received": "2009-09-21T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -12702,26 +12762,6 @@
         },
         {
             "page": 64,
-            "url": "https://www.gao.gov/fedrules/156810",
-            "type": "Major Federal Rule",
-            "identifier": "0958-AN25",
-            "fed_reg_number": "74 FR 3328",
-            "effective_date": "2009-03-17T13:00:00Z",
-            "received": "2009-01-15T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 64,
-            "url": "https://www.gao.gov/fedrules/156807",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AK16",
-            "fed_reg_number": "74 3138",
-            "effective_date": "2009-05-01T13:00:00Z",
-            "received": "2009-01-09T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 64,
             "url": "https://www.gao.gov/fedrules/156835",
             "type": "Major Federal Rule",
             "identifier": "3206-AL75",
@@ -12748,6 +12788,26 @@
             "fed_reg_number": "74 2881",
             "effective_date": "2009-01-16T13:00:00Z",
             "received": "2009-01-15T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 64,
+            "url": "https://www.gao.gov/fedrules/156810",
+            "type": "Major Federal Rule",
+            "identifier": "0958-AN25",
+            "fed_reg_number": "74 FR 3328",
+            "effective_date": "2009-03-17T13:00:00Z",
+            "received": "2009-01-15T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 64,
+            "url": "https://www.gao.gov/fedrules/156807",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AK16",
+            "fed_reg_number": "74 3138",
+            "effective_date": "2009-05-01T13:00:00Z",
+            "received": "2009-01-09T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -12912,16 +12972,6 @@
         },
         {
             "page": 65,
-            "url": "https://www.gao.gov/fedrules/156670",
-            "type": "Major Federal Rule",
-            "identifier": "1651-AA70",
-            "fed_reg_number": "73 FR 71730",
-            "effective_date": "2009-01-26T13:00:00Z",
-            "received": "2008-11-25T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 65,
             "url": "https://www.gao.gov/fedrules/156675",
             "type": "Major Federal Rule",
             "identifier": "0938-AO47",
@@ -12932,12 +12982,32 @@
         },
         {
             "page": 65,
+            "url": "https://www.gao.gov/fedrules/156670",
+            "type": "Major Federal Rule",
+            "identifier": "1651-AA70",
+            "fed_reg_number": "73 FR 71730",
+            "effective_date": "2009-01-26T13:00:00Z",
+            "received": "2008-11-25T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 65,
             "url": "https://www.gao.gov/fedrules/156645",
             "type": "Major Federal Rule",
             "identifier": "0919-AA01",
             "fed_reg_number": "73 FR 70732",
             "effective_date": "2009-01-19T13:00:00Z",
             "received": "2008-11-20T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 65,
+            "url": "https://www.gao.gov/fedrules/156646",
+            "type": "Major Federal Rule",
+            "identifier": "0910-AF92",
+            "fed_reg_number": "73 FR 69532",
+            "effective_date": "2011-12-31T13:00:00Z",
+            "received": "2008-11-26T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -12962,26 +13032,6 @@
         },
         {
             "page": 65,
-            "url": "https://www.gao.gov/fedrules/156646",
-            "type": "Major Federal Rule",
-            "identifier": "0910-AF92",
-            "fed_reg_number": "73 FR 69532",
-            "effective_date": "2011-12-31T13:00:00Z",
-            "received": "2008-11-26T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 65,
-            "url": "https://www.gao.gov/fedrules/156556",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AL80",
-            "fed_reg_number": "73 FR 68502",
-            "effective_date": "2009-01-01T13:00:00Z",
-            "received": "2008-10-31T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 65,
             "url": "https://www.gao.gov/fedrules/156784",
             "type": "Major Federal Rule",
             "identifier": "1505-AB78",
@@ -12998,6 +13048,16 @@
             "fed_reg_number": "73 FR 69414",
             "effective_date": "2009-01-17T13:00:00Z",
             "received": "2008-11-17T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 65,
+            "url": "https://www.gao.gov/fedrules/156556",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AL80",
+            "fed_reg_number": "73 FR 68502",
+            "effective_date": "2009-01-01T13:00:00Z",
+            "received": "2008-10-31T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -13022,22 +13082,22 @@
         },
         {
             "page": 65,
-            "url": "https://www.gao.gov/fedrules/156437",
-            "type": "Major Federal Rule",
-            "identifier": "9000-AK91",
-            "fed_reg_number": "73 FR 67651",
-            "effective_date": "2009-01-15T13:00:00Z",
-            "received": "2008-11-19T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 65,
             "url": "https://www.gao.gov/fedrules/156517",
             "type": "Major Federal Rule",
             "identifier": "1029-AC56",
             "fed_reg_number": "73 FR 67576",
             "effective_date": "2009-01-13T13:00:00Z",
             "received": "2008-11-13T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 65,
+            "url": "https://www.gao.gov/fedrules/156437",
+            "type": "Major Federal Rule",
+            "identifier": "9000-AK91",
+            "fed_reg_number": "73 FR 67651",
+            "effective_date": "2009-01-15T13:00:00Z",
+            "received": "2008-11-19T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -13211,22 +13271,22 @@
         },
         {
             "page": 66,
-            "url": "https://www.gao.gov/fedrules/156095",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AK03",
-            "fed_reg_number": "73 FR 58300",
-            "effective_date": "2008-12-05T13:00:00Z",
-            "received": "2008-09-24T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 66,
             "url": "https://www.gao.gov/fedrules/156103",
             "type": "Major Federal Rule",
             "identifier": "2580-AA00",
             "fed_reg_number": "73 FR 58418",
             "effective_date": "2008-10-06T13:00:00Z",
             "received": "2008-10-06T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 66,
+            "url": "https://www.gao.gov/fedrules/156095",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AK03",
+            "fed_reg_number": "73 FR 58300",
+            "effective_date": "2008-12-05T13:00:00Z",
+            "received": "2008-09-24T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -13281,16 +13341,6 @@
         },
         {
             "page": 67,
-            "url": "https://www.gao.gov/fedrules/155694",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AP00",
-            "fed_reg_number": "73 FR 55089",
-            "effective_date": "2009-01-01T13:00:00Z",
-            "received": "2008-09-19T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 67,
             "url": "https://www.gao.gov/fedrules/155693",
             "type": "Major Federal Rule",
             "identifier": "0938-AP03",
@@ -13305,6 +13355,16 @@
             "type": "Major Federal Rule",
             "identifier": "0938-AP04",
             "fed_reg_number": "73 FR 55096",
+            "effective_date": "2009-01-01T13:00:00Z",
+            "received": "2008-09-19T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 67,
+            "url": "https://www.gao.gov/fedrules/155694",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AP00",
+            "fed_reg_number": "73 FR 55089",
             "effective_date": "2009-01-01T13:00:00Z",
             "received": "2008-09-19T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -13637,22 +13697,22 @@
         },
         {
             "page": 69,
-            "url": "https://www.gao.gov/fedrules/153896",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AP25",
-            "fed_reg_number": "73 FR 18176",
-            "effective_date": "2008-05-31T13:00:00Z",
-            "received": "2008-03-31T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 69,
             "url": "https://www.gao.gov/fedrules/153931",
             "type": "Major Federal Rule",
             "identifier": "1651-AA69",
             "fed_reg_number": "73 FR 18384",
             "effective_date": "2009-06-01T13:00:00Z",
             "received": "2008-04-04T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 69,
+            "url": "https://www.gao.gov/fedrules/153896",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AP25",
+            "fed_reg_number": "73 FR 18176",
+            "effective_date": "2008-05-31T13:00:00Z",
+            "received": "2008-03-31T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -13764,16 +13824,6 @@
         },
         {
             "page": 69,
-            "url": "https://www.gao.gov/fedrules/153039",
-            "type": "Major Federal Rule",
-            "identifier": "0560-AH72",
-            "fed_reg_number": "72 FR 72878",
-            "effective_date": "2007-12-19T13:00:00Z",
-            "received": "2007-12-28T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 69,
             "url": "https://www.gao.gov/fedrules/153038",
             "type": "Major Federal Rule",
             "identifier": "0560-AH76",
@@ -13784,12 +13834,12 @@
         },
         {
             "page": 69,
-            "url": "https://www.gao.gov/fedrules/152928",
+            "url": "https://www.gao.gov/fedrules/153039",
             "type": "Major Federal Rule",
-            "identifier": "3235-AH13",
-            "fed_reg_number": "72 FR 71546",
-            "effective_date": "2008-02-15T13:00:00Z",
-            "received": "2007-12-06T13:00:00Z",
+            "identifier": "0560-AH72",
+            "fed_reg_number": "72 FR 72878",
+            "effective_date": "2007-12-19T13:00:00Z",
+            "received": "2007-12-28T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -13800,6 +13850,16 @@
             "fed_reg_number": "72 FR 71247",
             "effective_date": "2007-12-27T13:00:00Z",
             "received": "2007-12-20T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 69,
+            "url": "https://www.gao.gov/fedrules/152928",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AH13",
+            "fed_reg_number": "72 FR 71546",
+            "effective_date": "2008-02-15T13:00:00Z",
+            "received": "2007-12-06T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -14033,21 +14093,21 @@
         },
         {
             "page": 71,
+            "url": "https://www.gao.gov/fedrules/151817",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "72 FR 48814",
+            "effective_date": "2007-10-23T13:00:00Z",
+            "received": "2007-08-17T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 71,
             "url": "https://www.gao.gov/fedrules/151902",
             "type": "Major Federal Rule",
             "identifier": "0910-AB76",
             "fed_reg_number": "72 FR 48766",
             "effective_date": "2008-02-20T13:00:00Z",
             "received": "2007-09-05T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 71,
-            "url": "https://www.gao.gov/fedrules/151817",
-            "type": "Major Federal Rule",
-            "fed_reg_number": "72 FR 48814",
-            "effective_date": "2007-10-23T13:00:00Z",
-            "received": "2007-08-17T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -14132,22 +14192,22 @@
         },
         {
             "page": 71,
-            "url": "https://www.gao.gov/fedrules/151717",
-            "type": "Major Federal Rule",
-            "identifier": "0583-AC88",
-            "fed_reg_number": "72 FR 38700",
-            "effective_date": "2007-10-01T13:00:00Z",
-            "received": "2007-08-01T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 71,
             "url": "https://www.gao.gov/fedrules/151602",
             "type": "Major Federal Rule",
             "identifier": "0938-AO51",
             "fed_reg_number": "42 FR 38662",
             "effective_date": "2007-07-13T13:00:00Z",
             "received": "2007-07-09T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 71,
+            "url": "https://www.gao.gov/fedrules/151717",
+            "type": "Major Federal Rule",
+            "identifier": "0583-AC88",
+            "fed_reg_number": "72 FR 38700",
+            "effective_date": "2007-10-01T13:00:00Z",
+            "received": "2007-08-01T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -14351,21 +14411,21 @@
         },
         {
             "page": 72,
+            "url": "https://www.gao.gov/fedrules/150190",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "71 FR 78333",
+            "effective_date": "2007-02-01T13:00:00Z",
+            "received": "2007-01-24T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 72,
             "url": "https://www.gao.gov/fedrules/144968",
             "type": "Major Federal Rule",
             "identifier": "1215-AB51",
             "fed_reg_number": "71 FR 78520",
             "effective_date": "2007-02-27T13:00:00Z",
             "received": "2006-12-29T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 72,
-            "url": "https://www.gao.gov/fedrules/150190",
-            "type": "Major Federal Rule",
-            "fed_reg_number": "71 FR 78333",
-            "effective_date": "2007-02-01T13:00:00Z",
-            "received": "2007-01-24T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -14614,16 +14674,6 @@
             "type": "Major Federal Rule",
             "identifier": "0938-AN58",
             "fed_reg_number": "71 FR 47870",
-            "effective_date": "2006-10-01T13:00:00Z",
-            "received": "2006-08-01T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 74,
-            "url": "https://www.gao.gov/fedrules/143742",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AO16",
-            "fed_reg_number": "71 FR 48354",
             "effective_date": "2006-10-01T13:00:00Z",
             "received": "2006-08-01T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -15018,6 +15068,16 @@
         },
         {
             "page": 76,
+            "url": "https://www.gao.gov/fedrules/139748",
+            "type": "Major Federal Rule",
+            "identifier": "2133-AB62",
+            "fed_reg_number": "70 FR 55581",
+            "effective_date": "2005-11-21T13:00:00Z",
+            "received": "2005-09-23T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 76,
             "url": "https://www.gao.gov/fedrules/139812",
             "type": "Major Federal Rule",
             "identifier": "0938-AO02",
@@ -15058,12 +15118,12 @@
         },
         {
             "page": 76,
-            "url": "https://www.gao.gov/fedrules/139748",
+            "url": "https://www.gao.gov/fedrules/139647",
             "type": "Major Federal Rule",
-            "identifier": "2133-AB62",
-            "fed_reg_number": "70 FR 55581",
-            "effective_date": "2005-11-21T13:00:00Z",
-            "received": "2005-09-23T13:00:00Z",
+            "identifier": "1018-AT76",
+            "fed_reg_number": "70 FR 55666",
+            "effective_date": "2005-09-22T13:00:00Z",
+            "received": "2005-09-19T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -15088,21 +15148,21 @@
         },
         {
             "page": 76,
-            "url": "https://www.gao.gov/fedrules/139647",
-            "type": "Major Federal Rule",
-            "identifier": "1018-AT76",
-            "fed_reg_number": "70 FR 55666",
-            "effective_date": "2005-09-22T13:00:00Z",
-            "received": "2005-09-19T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 76,
             "url": "https://www.gao.gov/fedrules/139532",
             "type": "Major Federal Rule",
             "fed_reg_number": "70 FR 53955",
             "effective_date": "2005-11-14T13:00:00Z",
             "received": "2005-09-08T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 76,
+            "url": "https://www.gao.gov/fedrules/139354",
+            "type": "Major Federal Rule",
+            "identifier": "1018-AT76",
+            "fed_reg_number": "70 FR 51984",
+            "effective_date": "2005-09-01T13:00:00Z",
+            "received": "2005-08-26T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -15121,16 +15181,6 @@
             "type": "Major Federal Rule",
             "identifier": "1018-AT76",
             "fed_reg_number": "70 FR 51946",
-            "effective_date": "2005-09-01T13:00:00Z",
-            "received": "2005-08-26T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 76,
-            "url": "https://www.gao.gov/fedrules/139354",
-            "type": "Major Federal Rule",
-            "identifier": "1018-AT76",
-            "fed_reg_number": "70 FR 51984",
             "effective_date": "2005-09-01T13:00:00Z",
             "received": "2005-08-26T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -15157,20 +15207,20 @@
         },
         {
             "page": 76,
-            "url": "https://www.gao.gov/fedrules/139164",
+            "url": "https://www.gao.gov/fedrules/139170",
             "type": "Major Federal Rule",
-            "identifier": "0938-AN57",
-            "fed_reg_number": "70 FR 47278",
+            "identifier": "0938-AN43",
+            "fed_reg_number": "70 FR 47880",
             "effective_date": "2005-10-01T13:00:00Z",
             "received": "2005-08-01T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 76,
-            "url": "https://www.gao.gov/fedrules/139170",
+            "url": "https://www.gao.gov/fedrules/139164",
             "type": "Major Federal Rule",
-            "identifier": "0938-AN43",
-            "fed_reg_number": "70 FR 47880",
+            "identifier": "0938-AN57",
+            "fed_reg_number": "70 FR 47278",
             "effective_date": "2005-10-01T13:00:00Z",
             "received": "2005-08-01T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -15307,6 +15357,16 @@
         },
         {
             "page": 77,
+            "url": "https://www.gao.gov/fedrules/137395",
+            "type": "Major Federal Rule",
+            "identifier": "0560-AH25",
+            "fed_reg_number": "70 FR 16392",
+            "effective_date": "2005-03-30T13:00:00Z",
+            "received": "2005-04-04T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 77,
             "url": "https://www.gao.gov/fedrules/137390",
             "type": "Major Federal Rule",
             "identifier": "0560-AH24",
@@ -15321,16 +15381,6 @@
             "type": "Major Federal Rule",
             "identifier": "0560-AH30",
             "fed_reg_number": "70 FR 17150",
-            "effective_date": "2005-03-30T13:00:00Z",
-            "received": "2005-04-04T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 77,
-            "url": "https://www.gao.gov/fedrules/137395",
-            "type": "Major Federal Rule",
-            "identifier": "0560-AH25",
-            "fed_reg_number": "70 FR 16392",
             "effective_date": "2005-03-30T13:00:00Z",
             "received": "2005-04-04T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -15407,20 +15457,20 @@
         },
         {
             "page": 78,
-            "url": "https://www.gao.gov/fedrules/136631",
+            "url": "https://www.gao.gov/fedrules/136664",
             "type": "Major Federal Rule",
-            "identifier": "0938-AN06",
-            "fed_reg_number": "70 FR 4588",
+            "identifier": "0938-AN08",
+            "fed_reg_number": "70 FR 4194",
             "effective_date": "2005-03-22T13:00:00Z",
             "received": "2005-01-21T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 78,
-            "url": "https://www.gao.gov/fedrules/136664",
+            "url": "https://www.gao.gov/fedrules/136631",
             "type": "Major Federal Rule",
-            "identifier": "0938-AN08",
-            "fed_reg_number": "70 FR 4194",
+            "identifier": "0938-AN06",
+            "fed_reg_number": "70 FR 4588",
             "effective_date": "2005-03-22T13:00:00Z",
             "received": "2005-01-21T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -15497,20 +15547,20 @@
         },
         {
             "page": 78,
-            "url": "https://www.gao.gov/fedrules/136011",
-            "type": "Major Federal Rule",
-            "fed_reg_number": "69 FR 71660",
-            "effective_date": "2005-01-01T13:00:00Z",
-            "received": "2004-12-09T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 78,
             "url": "https://www.gao.gov/fedrules/136009",
             "type": "Major Federal Rule",
             "identifier": "0910-AC39",
             "fed_reg_number": "69 FR 71562",
             "effective_date": "2005-02-07T13:00:00Z",
+            "received": "2004-12-09T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 78,
+            "url": "https://www.gao.gov/fedrules/136011",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "69 FR 71660",
+            "effective_date": "2005-01-01T13:00:00Z",
             "received": "2004-12-09T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -15545,16 +15595,6 @@
         },
         {
             "page": 78,
-            "url": "https://www.gao.gov/fedrules/135721",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AL50",
-            "fed_reg_number": "69 FR 66922",
-            "effective_date": "2005-01-01T13:00:00Z",
-            "received": "2004-11-03T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 78,
             "url": "https://www.gao.gov/fedrules/135697",
             "type": "Major Federal Rule",
             "identifier": "0938-AN20",
@@ -15585,6 +15625,16 @@
         },
         {
             "page": 78,
+            "url": "https://www.gao.gov/fedrules/135721",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AL50",
+            "fed_reg_number": "69 FR 66922",
+            "effective_date": "2005-01-01T13:00:00Z",
+            "received": "2004-11-03T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 78,
             "url": "https://www.gao.gov/fedrules/135580",
             "type": "Major Federal Rule",
             "identifier": "2501-AC92",
@@ -15605,19 +15655,19 @@
         },
         {
             "page": 79,
-            "url": "https://www.gao.gov/fedrules/135883",
+            "url": "https://www.gao.gov/fedrules/136177",
             "type": "Major Federal Rule",
-            "fed_reg_number": "69 FR 69325",
-            "effective_date": "2005-01-28T13:00:00Z",
+            "fed_reg_number": "69 FR 77522",
+            "effective_date": "2005-02-25T13:00:00Z",
             "received": "2004-10-08T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 79,
-            "url": "https://www.gao.gov/fedrules/136177",
+            "url": "https://www.gao.gov/fedrules/135883",
             "type": "Major Federal Rule",
-            "fed_reg_number": "69 FR 77522",
-            "effective_date": "2005-02-25T13:00:00Z",
+            "fed_reg_number": "69 FR 69325",
+            "effective_date": "2005-01-28T13:00:00Z",
             "received": "2004-10-08T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -15762,16 +15812,6 @@
         },
         {
             "page": 79,
-            "url": "https://www.gao.gov/fedrules/134770",
-            "type": "Major Federal Rule",
-            "identifier": "1018-AT53",
-            "fed_reg_number": "69 FR 52970",
-            "effective_date": "2004-08-30T13:00:00Z",
-            "received": "2004-08-26T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 79,
             "url": "https://www.gao.gov/fedrules/134774",
             "type": "Major Federal Rule",
             "identifier": "1018-AT53",
@@ -15782,11 +15822,12 @@
         },
         {
             "page": 79,
-            "url": "https://www.gao.gov/fedrules/134651",
+            "url": "https://www.gao.gov/fedrules/134770",
             "type": "Major Federal Rule",
-            "fed_reg_number": "69 FR 47290",
-            "effective_date": "2004-10-28T13:00:00Z",
-            "received": "2004-08-02T13:00:00Z",
+            "identifier": "1018-AT53",
+            "fed_reg_number": "69 FR 52970",
+            "effective_date": "2004-08-30T13:00:00Z",
+            "received": "2004-08-26T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -15796,6 +15837,15 @@
             "identifier": "0938-AM80",
             "fed_reg_number": "69 FR 48916",
             "effective_date": "2004-10-01T13:00:00Z",
+            "received": "2004-08-02T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 79,
+            "url": "https://www.gao.gov/fedrules/134651",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "69 FR 47290",
+            "effective_date": "2004-10-28T13:00:00Z",
             "received": "2004-08-02T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -16308,16 +16358,6 @@
         },
         {
             "page": 82,
-            "url": "https://www.gao.gov/fedrules/130221",
-            "type": "Major Federal Rule",
-            "identifier": "1810-AI93",
-            "fed_reg_number": "68 FR 51658",
-            "effective_date": "2003-08-27T13:00:00Z",
-            "received": "2003-08-21T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 82,
             "url": "https://www.gao.gov/fedrules/130222",
             "type": "Major Federal Rule",
             "identifier": "1018-AI93",
@@ -16328,21 +16368,21 @@
         },
         {
             "page": 82,
+            "url": "https://www.gao.gov/fedrules/130221",
+            "type": "Major Federal Rule",
+            "identifier": "1810-AI93",
+            "fed_reg_number": "68 FR 51658",
+            "effective_date": "2003-08-27T13:00:00Z",
+            "received": "2003-08-21T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 82,
             "url": "https://www.gao.gov/fedrules/129707",
             "type": "Major Federal Rule",
             "fed_reg_number": "68 FR 47386",
             "effective_date": "2003-11-28T13:00:00Z",
             "received": "2003-08-05T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 82,
-            "url": "https://www.gao.gov/fedrules/129737",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AL90",
-            "fed_reg_number": "68 FR 46036",
-            "effective_date": "2003-10-01T13:00:00Z",
-            "received": "2003-07-31T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -16361,6 +16401,16 @@
             "type": "Major Federal Rule",
             "identifier": "0938-AL95",
             "fed_reg_number": "68 FR 45674",
+            "effective_date": "2003-10-01T13:00:00Z",
+            "received": "2003-07-31T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 82,
+            "url": "https://www.gao.gov/fedrules/129737",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AL90",
+            "fed_reg_number": "68 FR 46036",
             "effective_date": "2003-10-01T13:00:00Z",
             "received": "2003-07-31T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -16564,21 +16614,21 @@
         },
         {
             "page": 83,
-            "url": "https://www.gao.gov/fedrules/127857",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AI73",
-            "fed_reg_number": "68 FR 6006",
-            "effective_date": "2003-05-06T13:00:00Z",
-            "received": "2003-01-29T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 83,
             "url": "https://www.gao.gov/fedrules/127761",
             "type": "Major Federal Rule",
             "identifier": "3235-AI70",
             "fed_reg_number": "68 FR 5982",
             "effective_date": "2003-04-07T13:00:00Z",
+            "received": "2003-01-29T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 83,
+            "url": "https://www.gao.gov/fedrules/127857",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AI73",
+            "fed_reg_number": "68 FR 6006",
+            "effective_date": "2003-05-06T13:00:00Z",
             "received": "2003-01-29T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -16664,6 +16714,16 @@
         },
         {
             "page": 84,
+            "url": "https://www.gao.gov/fedrules/126534",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AL63",
+            "fed_reg_number": "67 FR 64643",
+            "effective_date": "2003-01-01T13:00:00Z",
+            "received": "2002-10-21T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 84,
             "url": "https://www.gao.gov/fedrules/126536",
             "type": "Major Federal Rule",
             "identifier": "0938-AL56",
@@ -16680,16 +16740,6 @@
             "fed_reg_number": "67 FR 64748",
             "effective_date": "2002-10-16T13:00:00Z",
             "received": "2002-11-05T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 84,
-            "url": "https://www.gao.gov/fedrules/126534",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AL63",
-            "fed_reg_number": "67 FR 64643",
-            "effective_date": "2003-01-01T13:00:00Z",
-            "received": "2002-10-21T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -16784,20 +16834,20 @@
         },
         {
             "page": 85,
-            "url": "https://www.gao.gov/fedrules/126016",
+            "url": "https://www.gao.gov/fedrules/126017",
             "type": "Major Federal Rule",
             "identifier": "1018-AI30",
-            "fed_reg_number": "67 FR 55624",
+            "fed_reg_number": "67 FR 55660",
             "effective_date": "2002-09-01T13:00:00Z",
             "received": "2002-08-27T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 85,
-            "url": "https://www.gao.gov/fedrules/126017",
+            "url": "https://www.gao.gov/fedrules/126016",
             "type": "Major Federal Rule",
             "identifier": "1018-AI30",
-            "fed_reg_number": "67 FR 55660",
+            "fed_reg_number": "67 FR 55624",
             "effective_date": "2002-09-01T13:00:00Z",
             "received": "2002-08-27T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -17109,22 +17159,22 @@
         },
         {
             "page": 86,
-            "url": "https://www.gao.gov/fedrules/123109",
-            "type": "Major Federal Rule",
-            "identifier": "1105-AA79",
-            "fed_reg_number": "66 FR 66274",
-            "effective_date": "2001-12-21T13:00:00Z",
-            "received": "2001-12-21T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 86,
             "url": "https://www.gao.gov/fedrules/123105",
             "type": "Major Federal Rule",
             "identifier": "1115-AF61",
             "fed_reg_number": "66 FR 65811",
             "effective_date": "2002-02-19T13:00:00Z",
             "received": "2001-12-20T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 86,
+            "url": "https://www.gao.gov/fedrules/123109",
+            "type": "Major Federal Rule",
+            "identifier": "1105-AA79",
+            "fed_reg_number": "66 FR 66274",
+            "effective_date": "2001-12-21T13:00:00Z",
+            "received": "2001-12-21T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -17148,22 +17198,22 @@
         },
         {
             "page": 86,
-            "url": "https://www.gao.gov/fedrules/122760",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AH04",
-            "fed_reg_number": "66 FR 55818",
-            "effective_date": "2003-05-02T13:00:00Z",
-            "received": "2001-11-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 86,
             "url": "https://www.gao.gov/fedrules/122761",
             "type": "Major Federal Rule",
             "identifier": "0938-AK54",
             "fed_reg_number": "66 FR 55857",
             "effective_date": "2002-01-01T13:00:00Z",
             "received": "2001-11-05T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 86,
+            "url": "https://www.gao.gov/fedrules/122760",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AH04",
+            "fed_reg_number": "66 FR 55818",
+            "effective_date": "2003-05-02T13:00:00Z",
+            "received": "2001-11-02T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -17495,6 +17545,16 @@
         },
         {
             "page": 88,
+            "url": "https://www.gao.gov/fedrules/120436",
+            "type": "Major Federal Rule",
+            "identifier": "3067-AD21",
+            "fed_reg_number": "66 FR 15968",
+            "effective_date": "2001-03-21T13:00:00Z",
+            "received": "2001-03-29T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 88,
             "url": "https://www.gao.gov/fedrules/120552",
             "type": "Major Federal Rule",
             "identifier": "0560-AG36",
@@ -17509,16 +17569,6 @@
             "type": "Major Federal Rule",
             "identifier": "3067-AD12",
             "fed_reg_number": "66 FR 15948",
-            "effective_date": "2001-03-21T13:00:00Z",
-            "received": "2001-03-29T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 88,
-            "url": "https://www.gao.gov/fedrules/120436",
-            "type": "Major Federal Rule",
-            "identifier": "3067-AD21",
-            "fed_reg_number": "66 FR 15968",
             "effective_date": "2001-03-21T13:00:00Z",
             "received": "2001-03-29T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -17833,22 +17883,22 @@
         },
         {
             "page": 90,
-            "url": "https://www.gao.gov/fedrules/118934",
-            "type": "Major Federal Rule",
-            "identifier": "0910-AB30",
-            "fed_reg_number": "65 FR 76092",
-            "effective_date": "2001-09-04T13:00:00Z",
-            "received": "2000-12-13T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 90,
             "url": "https://www.gao.gov/fedrules/118976",
             "type": "Major Federal Rule",
             "identifier": "3235-AH91",
             "fed_reg_number": "65 FR 76008",
             "effective_date": "2001-02-05T13:00:00Z",
             "received": "2000-11-21T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 90,
+            "url": "https://www.gao.gov/fedrules/118934",
+            "type": "Major Federal Rule",
+            "identifier": "0910-AB30",
+            "fed_reg_number": "65 FR 76092",
+            "effective_date": "2001-09-04T13:00:00Z",
+            "received": "2000-12-13T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -17873,26 +17923,6 @@
         },
         {
             "page": 90,
-            "url": "https://www.gao.gov/fedrules/118898",
-            "type": "Major Federal Rule",
-            "identifier": "0584-AC40",
-            "fed_reg_number": "65 FR 70134",
-            "effective_date": "2001-01-20T13:00:00Z",
-            "received": "2000-11-14T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 90,
-            "url": "https://www.gao.gov/fedrules/118954",
-            "type": "Major Federal Rule",
-            "identifier": "1210-AA55",
-            "fed_reg_number": "65 FR 70226",
-            "effective_date": "2001-01-20T13:00:00Z",
-            "received": "2000-11-21T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 90,
             "url": "https://www.gao.gov/fedrules/118899",
             "type": "Major Federal Rule",
             "identifier": "1004-AD22",
@@ -17907,6 +17937,26 @@
             "type": "Major Federal Rule",
             "identifier": "1210-AA61",
             "fed_reg_number": "65 FR 70246",
+            "effective_date": "2001-01-20T13:00:00Z",
+            "received": "2000-11-21T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 90,
+            "url": "https://www.gao.gov/fedrules/118898",
+            "type": "Major Federal Rule",
+            "identifier": "0584-AC40",
+            "fed_reg_number": "65 FR 70134",
+            "effective_date": "2001-01-20T13:00:00Z",
+            "received": "2000-11-14T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 90,
+            "url": "https://www.gao.gov/fedrules/118954",
+            "type": "Major Federal Rule",
+            "identifier": "1210-AA55",
+            "fed_reg_number": "65 FR 70226",
             "effective_date": "2001-01-20T13:00:00Z",
             "received": "2000-11-21T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -17953,20 +18003,20 @@
         },
         {
             "page": 90,
-            "url": "https://www.gao.gov/fedrules/118654",
+            "url": "https://www.gao.gov/fedrules/118639",
             "type": "Major Federal Rule",
-            "identifier": "0560-AG19",
-            "fed_reg_number": "65 FR 65718",
+            "identifier": "0560-AG18",
+            "fed_reg_number": "65 FR 65709",
             "effective_date": "2000-10-27T13:00:00Z",
             "received": "2000-10-30T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 90,
-            "url": "https://www.gao.gov/fedrules/118639",
+            "url": "https://www.gao.gov/fedrules/118654",
             "type": "Major Federal Rule",
-            "identifier": "0560-AG18",
-            "fed_reg_number": "65 FR 65709",
+            "identifier": "0560-AG19",
+            "fed_reg_number": "65 FR 65718",
             "effective_date": "2000-10-27T13:00:00Z",
             "received": "2000-10-30T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -18003,19 +18053,19 @@
         },
         {
             "page": 91,
-            "url": "https://www.gao.gov/fedrules/119849",
+            "url": "https://www.gao.gov/fedrules/119854",
             "type": "Major Federal Rule",
-            "identifier": "0938-AK27",
-            "fed_reg_number": "65 FR 62725",
+            "fed_reg_number": "65 FR 62727",
             "effective_date": "2001-01-01T13:00:00Z",
             "received": "2001-02-13T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 91,
-            "url": "https://www.gao.gov/fedrules/119854",
+            "url": "https://www.gao.gov/fedrules/119849",
             "type": "Major Federal Rule",
-            "fed_reg_number": "65 FR 62727",
+            "identifier": "0938-AK27",
+            "fed_reg_number": "65 FR 62725",
             "effective_date": "2001-01-01T13:00:00Z",
             "received": "2001-02-13T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -18041,22 +18091,22 @@
         },
         {
             "page": 91,
-            "url": "https://www.gao.gov/fedrules/118322",
-            "type": "Major Federal Rule",
-            "identifier": "2501-AC75",
-            "fed_reg_number": "65 FR 58870",
-            "effective_date": "2000-12-01T13:00:00Z",
-            "received": "2000-10-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 91,
             "url": "https://www.gao.gov/fedrules/118321",
             "type": "Major Federal Rule",
             "identifier": "1018-AG08",
             "fed_reg_number": "65 FR 58664",
             "effective_date": "2000-09-29T13:00:00Z",
             "received": "2000-09-27T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 91,
+            "url": "https://www.gao.gov/fedrules/118322",
+            "type": "Major Federal Rule",
+            "identifier": "2501-AC75",
+            "fed_reg_number": "65 FR 58870",
+            "effective_date": "2000-12-01T13:00:00Z",
+            "received": "2000-10-02T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -18120,20 +18170,20 @@
         },
         {
             "page": 91,
-            "url": "https://www.gao.gov/fedrules/118175",
+            "url": "https://www.gao.gov/fedrules/118176",
             "type": "Major Federal Rule",
             "identifier": "1018-AG08",
-            "fed_reg_number": "65 FR 53492",
+            "fed_reg_number": "65 FR 53190",
             "effective_date": "2000-09-01T13:00:00Z",
             "received": "2000-08-29T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
             "page": 91,
-            "url": "https://www.gao.gov/fedrules/118176",
+            "url": "https://www.gao.gov/fedrules/118175",
             "type": "Major Federal Rule",
             "identifier": "1018-AG08",
-            "fed_reg_number": "65 FR 53190",
+            "fed_reg_number": "65 FR 53492",
             "effective_date": "2000-09-01T13:00:00Z",
             "received": "2000-08-29T13:00:00Z",
             "priority": "Significant/Substantive"
@@ -18179,22 +18229,22 @@
         },
         {
             "page": 92,
-            "url": "https://www.gao.gov/fedrules/117833",
-            "type": "Major Federal Rule",
-            "identifier": "0584-AB52",
-            "fed_reg_number": "65 FR 51213",
-            "effective_date": "2000-10-23T13:00:00Z",
-            "received": "2000-09-01T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 92,
             "url": "https://www.gao.gov/fedrules/118097",
             "type": "Major Federal Rule",
             "identifier": "1018-AG08",
             "fed_reg_number": "65 FR 51496",
             "effective_date": "2000-08-23T13:00:00Z",
             "received": "2000-08-18T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 92,
+            "url": "https://www.gao.gov/fedrules/117833",
+            "type": "Major Federal Rule",
+            "identifier": "0584-AB52",
+            "fed_reg_number": "65 FR 51213",
+            "effective_date": "2000-10-23T13:00:00Z",
+            "received": "2000-09-01T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -18218,21 +18268,21 @@
         },
         {
             "page": 92,
-            "url": "https://www.gao.gov/fedrules/117586",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AK20",
-            "fed_reg_number": "65 FR 47026",
-            "effective_date": "2000-08-01T13:00:00Z",
-            "received": "2000-08-02T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 92,
             "url": "https://www.gao.gov/fedrules/117584",
             "type": "Major Federal Rule",
             "identifier": "0938-AK09",
             "fed_reg_number": "65 FR 47054",
             "effective_date": "2000-10-01T13:00:00Z",
+            "received": "2000-08-02T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 92,
+            "url": "https://www.gao.gov/fedrules/117586",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AK20",
+            "fed_reg_number": "65 FR 47026",
+            "effective_date": "2000-08-01T13:00:00Z",
             "received": "2000-08-02T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -18285,22 +18335,22 @@
         },
         {
             "page": 92,
-            "url": "https://www.gao.gov/fedrules/117506",
-            "type": "Major Federal Rule",
-            "identifier": "0584-AB88",
-            "fed_reg_number": "65 FR 41752",
-            "effective_date": "2000-08-01T13:00:00Z",
-            "received": "2000-07-24T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 92,
             "url": "https://www.gao.gov/fedrules/117315",
             "type": "Major Federal Rule",
             "identifier": "2130-AB26",
             "fed_reg_number": "65 FR 41838",
             "effective_date": "2000-09-05T13:00:00Z",
             "received": "2000-06-29T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 92,
+            "url": "https://www.gao.gov/fedrules/117506",
+            "type": "Major Federal Rule",
+            "identifier": "0584-AB88",
+            "fed_reg_number": "65 FR 41752",
+            "effective_date": "2000-08-01T13:00:00Z",
+            "received": "2000-07-24T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -18345,22 +18395,22 @@
         },
         {
             "page": 92,
-            "url": "https://www.gao.gov/fedrules/117089",
-            "type": "Major Federal Rule",
-            "identifier": "3245-AE23",
-            "fed_reg_number": "65 FR 37689",
-            "effective_date": "2000-07-17T13:00:00Z",
-            "received": "2000-06-29T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 92,
             "url": "https://www.gao.gov/fedrules/117130",
             "type": "Major Federal Rule",
             "identifier": "1076-AD99",
             "fed_reg_number": "65 FR 37697",
             "effective_date": "2000-06-16T13:00:00Z",
             "received": "2000-06-12T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 92,
+            "url": "https://www.gao.gov/fedrules/117089",
+            "type": "Major Federal Rule",
+            "identifier": "3245-AE23",
+            "fed_reg_number": "65 FR 37689",
+            "effective_date": "2000-07-17T13:00:00Z",
+            "received": "2000-06-29T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -18619,6 +18669,15 @@
         },
         {
             "page": 94,
+            "url": "https://www.gao.gov/fedrules/113965",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "64 FR 60126",
+            "effective_date": "2000-03-03T13:00:00Z",
+            "received": "1999-10-29T13:00:00Z",
+            "priority": "Routine/Info/Other"
+        },
+        {
+            "page": 94,
             "url": "https://www.gao.gov/fedrules/113964",
             "type": "Major Federal Rule",
             "identifier": "2070-AD09",
@@ -18629,11 +18688,12 @@
         },
         {
             "page": 94,
-            "url": "https://www.gao.gov/fedrules/113965",
+            "url": "https://www.gao.gov/fedrules/114075",
             "type": "Major Federal Rule",
-            "fed_reg_number": "64 FR 60126",
-            "effective_date": "2000-03-03T13:00:00Z",
-            "received": "1999-10-29T13:00:00Z",
+            "identifier": "3004-ZA00",
+            "fed_reg_number": "64 FR 57932",
+            "effective_date": "1999-12-27T13:00:00Z",
+            "received": "1999-11-09T13:00:00Z",
             "priority": "Routine/Info/Other"
         },
         {
@@ -18642,16 +18702,6 @@
             "type": "Major Federal Rule",
             "identifier": "3003-ZA00",
             "fed_reg_number": "64 FR 57946",
-            "effective_date": "1999-12-27T13:00:00Z",
-            "received": "1999-11-09T13:00:00Z",
-            "priority": "Routine/Info/Other"
-        },
-        {
-            "page": 94,
-            "url": "https://www.gao.gov/fedrules/114075",
-            "type": "Major Federal Rule",
-            "identifier": "3004-ZA00",
-            "fed_reg_number": "64 FR 57932",
             "effective_date": "1999-12-27T13:00:00Z",
             "received": "1999-11-09T13:00:00Z",
             "priority": "Routine/Info/Other"
@@ -18795,20 +18845,20 @@
         },
         {
             "page": 95,
-            "url": "https://www.gao.gov/fedrules/112904",
+            "url": "https://www.gao.gov/fedrules/112732",
             "type": "Major Federal Rule",
-            "identifier": "0938-AJ50",
-            "fed_reg_number": "64 FR 41490",
+            "identifier": "0938-AJ65",
+            "fed_reg_number": "64 FR 41684",
             "effective_date": "1999-10-01T13:00:00Z",
             "received": "1999-08-02T13:00:00Z",
             "priority": "Routine/Info/Other"
         },
         {
             "page": 95,
-            "url": "https://www.gao.gov/fedrules/112732",
+            "url": "https://www.gao.gov/fedrules/112904",
             "type": "Major Federal Rule",
-            "identifier": "0938-AJ65",
-            "fed_reg_number": "64 FR 41684",
+            "identifier": "0938-AJ50",
+            "fed_reg_number": "64 FR 41490",
             "effective_date": "1999-10-01T13:00:00Z",
             "received": "1999-08-02T13:00:00Z",
             "priority": "Routine/Info/Other"
@@ -19082,16 +19132,6 @@
         },
         {
             "page": 96,
-            "url": "https://www.gao.gov/fedrules/109984",
-            "type": "Major Federal Rule",
-            "identifier": "3235-AH41",
-            "fed_reg_number": "63 FR 70844",
-            "effective_date": "1999-04-21T13:00:00Z",
-            "received": "1998-12-10T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 96,
             "url": "https://www.gao.gov/fedrules/109866",
             "type": "Major Federal Rule",
             "fed_reg_number": "63 FR 65087",
@@ -19106,6 +19146,16 @@
             "identifier": "3235-AH39",
             "fed_reg_number": "63 FR 70952",
             "effective_date": "1999-02-22T13:00:00Z",
+            "received": "1998-12-10T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 96,
+            "url": "https://www.gao.gov/fedrules/109984",
+            "type": "Major Federal Rule",
+            "identifier": "3235-AH41",
+            "fed_reg_number": "63 FR 70844",
+            "effective_date": "1999-04-21T13:00:00Z",
             "received": "1998-12-10T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -19357,6 +19407,15 @@
         },
         {
             "page": 98,
+            "url": "https://www.gao.gov/fedrules/108842",
+            "type": "Major Federal Rule",
+            "fed_reg_number": "63 FR 48615",
+            "effective_date": "1998-11-10T13:00:00Z",
+            "received": "1998-08-27T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 98,
             "url": "https://www.gao.gov/fedrules/108606",
             "type": "Major Federal Rule",
             "identifier": "1018-AE93",
@@ -19472,21 +19531,21 @@
         },
         {
             "page": 98,
-            "url": "https://www.gao.gov/fedrules/107589",
-            "type": "Major Federal Rule",
-            "identifier": "9000-AH59",
-            "fed_reg_number": "63 FR 36120",
-            "effective_date": "1999-01-01T13:00:00Z",
-            "received": "1998-06-26T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 98,
             "url": "https://www.gao.gov/fedrules/107590",
             "type": "Major Federal Rule",
             "identifier": "9000-AH59",
             "fed_reg_number": "63 FR 35719",
             "effective_date": "1998-10-01T13:00:00Z",
+            "received": "1998-06-26T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 98,
+            "url": "https://www.gao.gov/fedrules/107589",
+            "type": "Major Federal Rule",
+            "identifier": "9000-AH59",
+            "fed_reg_number": "63 FR 36120",
+            "effective_date": "1999-01-01T13:00:00Z",
             "received": "1998-06-26T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -20087,22 +20146,22 @@
         },
         {
             "page": 101,
-            "url": "https://www.gao.gov/fedrules/102611",
-            "type": "Major Federal Rule",
-            "identifier": "3150-AF55",
-            "fed_reg_number": "62 FR 29194",
-            "effective_date": "1997-07-28T13:00:00Z",
-            "received": "1997-05-22T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 101,
             "url": "https://www.gao.gov/fedrules/102685",
             "type": "Major Federal Rule",
             "identifier": "0578-AA19",
             "fed_reg_number": "62 FR 28258",
             "effective_date": "1997-05-22T13:00:00Z",
             "received": "1997-05-29T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 101,
+            "url": "https://www.gao.gov/fedrules/102611",
+            "type": "Major Federal Rule",
+            "identifier": "3150-AF55",
+            "fed_reg_number": "62 FR 29194",
+            "effective_date": "1997-07-28T13:00:00Z",
+            "received": "1997-05-22T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -20411,9 +20470,9 @@
         },
         {
             "page": 103,
-            "url": "https://www.gao.gov/fedrules/101301",
+            "url": "https://www.gao.gov/fedrules/101302",
             "type": "Major Federal Rule",
-            "identifier": "0938-AH40",
+            "identifier": "0938-AH41",
             "fed_reg_number": "61 FR 59717",
             "effective_date": "1997-01-01T13:00:00Z",
             "received": "1996-11-22T13:00:00Z",
@@ -20421,9 +20480,9 @@
         },
         {
             "page": 103,
-            "url": "https://www.gao.gov/fedrules/101302",
+            "url": "https://www.gao.gov/fedrules/101301",
             "type": "Major Federal Rule",
-            "identifier": "0938-AH41",
+            "identifier": "0938-AH40",
             "fed_reg_number": "61 FR 59717",
             "effective_date": "1997-01-01T13:00:00Z",
             "received": "1996-11-22T13:00:00Z",
@@ -20480,16 +20539,6 @@
         },
         {
             "page": 103,
-            "url": "https://www.gao.gov/fedrules/103030",
-            "type": "Major Federal Rule",
-            "identifier": "0584-AB76",
-            "fed_reg_number": "61 FR 54270",
-            "effective_date": "1996-12-16T13:00:00Z",
-            "received": "1996-10-07T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 103,
             "url": "https://www.gao.gov/fedrules/103029",
             "type": "Major Federal Rule",
             "identifier": "0584-AB58",
@@ -20500,16 +20549,16 @@
         },
         {
             "page": 103,
-            "url": "https://www.gao.gov/fedrules/103364",
+            "url": "https://www.gao.gov/fedrules/103030",
             "type": "Major Federal Rule",
-            "identifier": "1018-AD69",
-            "fed_reg_number": "61 FR 50940",
-            "effective_date": "1996-09-28T13:00:00Z",
-            "received": "1996-09-24T13:00:00Z",
+            "identifier": "0584-AB76",
+            "fed_reg_number": "61 FR 54270",
+            "effective_date": "1996-12-16T13:00:00Z",
+            "received": "1996-10-07T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
-            "page": 104,
+            "page": 103,
             "url": "https://www.gao.gov/fedrules/103729",
             "type": "Major Federal Rule",
             "identifier": "1018-AD69",
@@ -20590,21 +20639,21 @@
         },
         {
             "page": 104,
-            "url": "https://www.gao.gov/fedrules/103285",
-            "type": "Major Federal Rule",
-            "identifier": "2060-AE27",
-            "fed_reg_number": "61 FR 54851",
-            "effective_date": "1996-12-23T13:00:00Z",
-            "received": "1996-08-29T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 104,
             "url": "https://www.gao.gov/fedrules/103284",
             "type": "Major Federal Rule",
             "identifier": "0938-AH34",
             "fed_reg_number": "61 FR 46166",
             "effective_date": "1996-10-29T13:00:00Z",
+            "received": "1996-08-29T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 104,
+            "url": "https://www.gao.gov/fedrules/103285",
+            "type": "Major Federal Rule",
+            "identifier": "2060-AE27",
+            "fed_reg_number": "61 FR 54851",
+            "effective_date": "1996-12-23T13:00:00Z",
             "received": "1996-08-29T13:00:00Z",
             "priority": "Significant/Substantive"
         },
@@ -20837,26 +20886,6 @@
             "priority": "Significant/Substantive"
         },
         {
-            "page": 17,
-            "url": "https://www.gao.gov/fedrules/199435",
-            "type": "Major Federal Rule",
-            "identifier": "3245-AH51",
-            "fed_reg_number": "85 FR 36997",
-            "effective_date": "2020-03-27T13:00:00Z",
-            "received": "2020-07-01T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 19,
-            "url": "https://www.gao.gov/fedrules/200568",
-            "type": "Major Federal Rule",
-            "identifier": "0910-AI39",
-            "fed_reg_number": "85 FR 15638",
-            "effective_date": "2021-06-18T13:00:00Z",
-            "received": "2020-04-06T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
             "page": 21,
             "url": "https://www.gao.gov/fedrules/196722",
             "type": "Major Federal Rule",
@@ -20867,33 +20896,13 @@
             "priority": "Significant/Substantive"
         },
         {
-            "page": 29,
-            "url": "https://www.gao.gov/fedrules/186686",
-            "type": "Major Federal Rule",
-            "identifier": "0938-AG81",
-            "fed_reg_number": "82 FR 4504",
-            "effective_date": "2017-07-13T13:00:00Z",
-            "received": "2017-01-18T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
             "page": 40,
-            "url": "https://www.gao.gov/fedrules/178925",
+            "url": "https://www.gao.gov/fedrules/178926",
             "type": "Major Federal Rule",
-            "identifier": "0938-AR96",
-            "fed_reg_number": "79 FR 61312",
+            "identifier": "3064-AE04",
+            "fed_reg_number": "79 FR 61440",
             "effective_date": "2015-01-01T13:00:00Z",
-            "received": "2014-10-09T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 44,
-            "url": "https://www.gao.gov/fedrules/175858",
-            "type": "Major Federal Rule",
-            "identifier": "038-AR57",
-            "fed_reg_number": "78 FR 64951",
-            "effective_date": "2014-01-01T13:00:00Z",
-            "received": "2013-10-29T13:00:00Z",
+            "received": "2014-10-06T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -20907,23 +20916,13 @@
             "priority": "Significant/Substantive"
         },
         {
-            "page": 52,
-            "url": "https://www.gao.gov/fedrules/168542",
+            "page": 50,
+            "url": "https://www.gao.gov/fedrules/171046",
             "type": "Major Federal Rule",
-            "identifier": "3038-AD20",
-            "fed_reg_number": "76 FR 54538",
-            "effective_date": "2011-10-31T13:00:00Z",
-            "received": "2011-08-24T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 54,
-            "url": "https://www.gao.gov/fedrules/165729",
-            "type": "Major Federal Rule",
-            "identifier": "2060-AM44",
-            "fed_reg_number": "76 FR 15554",
-            "effective_date": "2011-05-20T13:00:00Z",
-            "received": "2011-02-25T13:00:00Z",
+            "identifier": "0938-AR07",
+            "fed_reg_number": "77 FR 17220",
+            "effective_date": "2012-05-22T13:00:00Z",
+            "received": "2012-03-20T13:00:00Z",
             "priority": "Significant/Substantive"
         },
         {
@@ -20947,6 +20946,16 @@
             "priority": "Significant/Substantive"
         },
         {
+            "page": 73,
+            "url": "https://www.gao.gov/fedrules/143742",
+            "type": "Major Federal Rule",
+            "identifier": "0938-AO16",
+            "fed_reg_number": "71 FR 48354",
+            "effective_date": "2006-10-01T13:00:00Z",
+            "received": "2006-08-01T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
             "page": 80,
             "url": "https://www.gao.gov/fedrules/132630",
             "type": "Major Federal Rule",
@@ -20956,22 +20965,13 @@
             "priority": "Significant/Substantive"
         },
         {
-            "page": 97,
-            "url": "https://www.gao.gov/fedrules/108842",
+            "page": 103,
+            "url": "https://www.gao.gov/fedrules/103364",
             "type": "Major Federal Rule",
-            "fed_reg_number": "63 FR 48615",
-            "effective_date": "1998-11-10T13:00:00Z",
-            "received": "1998-08-27T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 16,
-            "url": "https://www.gao.gov/fedrules/186299",
-            "type": "Major Federal Rule",
-            "identifier": "2577-AC97",
-            "fed_reg_number": "81 FR 87430",
-            "effective_date": "2017-02-03T13:00:00Z",
-            "received": "2016-12-05T13:00:00Z",
+            "identifier": "1018-AD69",
+            "fed_reg_number": "61 FR 50940",
+            "effective_date": "1996-09-28T13:00:00Z",
+            "received": "1996-09-24T13:00:00Z",
             "priority": "Significant/Substantive"
         }
     ]
