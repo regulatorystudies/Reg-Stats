@@ -471,11 +471,11 @@ def remove_duplicates(results: list, key: str = "url"):
     return res, (initial_count - filtered_count)
 
 
-def main(data_path: Path, 
-         major_only: bool = False, 
-         new_only: bool = False, 
-         rule_detail: bool = True, 
-         **kwargs):
+def pipeline(data_path: Path, 
+             major_only: bool = False, 
+             new_only: bool = False, 
+             rule_detail: bool = True, 
+             **kwargs):
     """Executes main pipeline for retrieving data from GAO's CRA database.
 
     Args:
@@ -540,18 +540,7 @@ def main(data_path: Path,
                 rule_data["results"].extend(existing_rule_data)
             rs.to_json(rule_data, data_path, f"rule_detail_{type}")
 
-
-if __name__ == "__main__":
-    
-    # profile time elapsed
-    import time
-    start = time.process_time()
-    
-    p = Path(__file__)
-    data_path = p.parents[1].joinpath("raw_data")
-    if not data_path.is_dir():
-        data_path.mkdir(parents=True, exist_ok=True)
-    
+def main(data_path: Path):
     while True:
         
         # print prompts to console
@@ -589,11 +578,25 @@ if __name__ == "__main__":
                 rule_detail = False
             
             # call scraper pipeline
-            main(data_path, major_only=major_only, new_only=new_only, path=data_path, rule_detail=rule_detail, file_name=file_name)
+            pipeline(data_path, major_only=major_only, new_only=new_only, path=data_path, rule_detail=rule_detail, file_name=file_name)
             break
 
         else:
             print(f"Invalid input. Must enter one of the following: {', '.join(valid_inputs)}.")
+
+
+if __name__ == "__main__":
+    
+    # profile time elapsed
+    import time
+    start = time.process_time()
+    
+    p = Path(__file__)
+    data_path = p.parents[1].joinpath("raw_data")
+    if not data_path.is_dir():
+        data_path.mkdir(parents=True, exist_ok=True)
+    
+    main(data_path)
     
     # calculate time elapsed
     stop = time.process_time()
