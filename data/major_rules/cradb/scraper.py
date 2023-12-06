@@ -511,8 +511,9 @@ def main(data_path: Path,
         
         # add existing dataset to new documents
         if new_only:
-            existing_data = ps.from_json(data_path, f"population_{type}").get("results")
-            pop_data["results"].extend(existing_data)
+            new_data = deepcopy(pop_data.get("results"))
+            existing_pop_data = ps.from_json(data_path, f"population_{type}").get("results")
+            pop_data["results"].extend(existing_pop_data)
         
         # save population data
         ps.to_json(pop_data, data_path, f"population_{type}")
@@ -525,11 +526,18 @@ def main(data_path: Path,
         
         # retrieve rule-level detail data
         if rule_detail:
+            
+            if new_only:
+                pop_data = new_data
+                existing_rule_data = ps.from_json(data_path, f"rule_detail_{type}").get("results")
+                
             # initialize RuleScraper
             rs = RuleScraper(input_data=pop_data)
             
             # scrape rule detail data and save
             rule_data = rs.scrape_rules()
+            if new_only:
+                rule_data["results"].extend(existing_rule_data)
             rs.to_json(rule_data, data_path, f"rule_detail_{type}")
 
 
