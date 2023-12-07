@@ -190,12 +190,14 @@ if __name__ == "__main__":
             df, df_dup = find_duplicates(df)
             print(f"Removed {len(df_dup)} duplicates.")
             #print(df_dup)
-            timeframe = "received"
-            df = convert_to_presidential_year(df, timeframe)
-            grouped = groupby_year(df, year_col = "presidential")
-            output = define_presidential_terms(grouped)
-            print("Aggregated data:", output, sep="\n")
-            save_csv(output, major_path, f"major_rules_by_{timeframe}_year")
+            timeframe = ("received", "published")
+            for tf in timeframe:
+                df_pres = df.copy(deep=True)
+                df_pres = convert_to_presidential_year(df_pres, date_col = tf)
+                grouped = groupby_year(df_pres, year_col = "presidential")
+                output = define_presidential_terms(grouped)
+                print("Aggregated data:", output, sep="\n")
+                save_csv(output, major_path, f"major_rules_by_{tf}_year")
             break
 
         else:
