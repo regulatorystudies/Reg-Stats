@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 #from pprint import pprint
 import re
+import time
 
 import requests
 from bs4 import BeautifulSoup
@@ -15,6 +16,31 @@ BASE_PARAMS = {
     "type": "all", 
     "priority": "all", 
     }
+
+
+def sleep_retry(timeout: int, retry: int = 3):
+    """Decorator to sleep and retry request when receiving an error (source: [RealPython](https://realpython.com/python-sleep/#adding-a-python-sleep-call-with-decorators)).
+
+    Args:
+        timeout (int): Number of seconds to sleep after error.
+        retry (int, optional): Number of times to retry. Defaults to 3.
+    """    
+    def the_real_decorator(function):
+        def wrapper(*args, **kwargs):
+            retries = 0
+            while retries < retry:
+                try:
+                    value = function(*args, **kwargs)
+                    if value is not None:
+                        return value
+                    else:
+                        raise ParseError
+                except requests.HTTPError:
+                    print(f'Sleeping for {timeout} seconds')
+                    time.sleep(timeout)
+                    retries += 1
+        return wrapper
+    return the_real_decorator
 
 
 class ParseError(Exception):
@@ -175,11 +201,14 @@ class PopulationScraper(Scraper):
         
         return page_count
     
-    def scrape_population(self, params: dict, pages: int | list, documents: int):
+    @sleep_retry(300, retry=12)
+    def scrape_population(self, params: dict, pages: int | list, documents: int = None, **kwargs):
         """Scrape html for population of rules in CRA database.
 
         Args:
+            params (dict): Parameters to pass to `request_soup()`.
             pages (int): Number of pages containing rule data. In practice, this should be equivalent to the value returned by `get_page_count()`.
+            documents (int, optional): If non-zero `int`, print status updates on number of retrieved documents. Defaults to None.
 
         Returns:
             dict[str]: Results of the scraped data and accompanying metadata.
@@ -226,10 +255,8 @@ class PopulationScraper(Scraper):
                 one_page.append(rule_dict)
             
             all_rules.extend(one_page)
-            #print_frequency = ((documents) // 10) + 1  # adding 1 ensures no ZeroDivisionError
-            #if (page > 1) and (page % print_frequency == 0):
-            #if (len(all_rules) > 1) and (len(all_rules) % print_frequency == 0):
-            #    print(f"Retrieved {len(all_rules)} rules.")
+            if documents is not None:
+                report_retrieval_status(len(all_rules), truncate(documents, places = -3), **kwargs)
         
         #dup_items = identify_duplicates(all_rules)
         #pprint(dup_items)
@@ -259,13 +286,13 @@ class PopulationScraper(Scraper):
         # only make additional requests if documents are missing
         # we don't want to waste time :)
         if validate != document_count:
-            #data_alt = []
             test_strings = list("abcdefghijklmnopqrstuvwxyz")  # the alphabet
-            for s in test_strings:
+            for i, s in enumerate(test_strings):
+                print(f"Trying alternate search #{i + 1}: 'title' = {s}")
                 params.update({"title": s})
                 soup = self.request_soup(params, page=0)
                 pages = self.get_page_count(soup)
-                data_temp = self.scrape_population(params, pages, document_count)
+                data_temp = self.scrape_population(params, pages)
                 data_alt.extend(data_temp["results"])
 
                 data_alt, _ = remove_duplicates(data_alt)
@@ -471,6 +498,31 @@ def remove_duplicates(results: list, key: str = "url"):
     return res, (initial_count - filtered_count)
 
 
+def truncate(n: int | float, places: int = 0):
+    """Truncate a number to a given number of places (positive values -> decimals; negative values -> whole numbers) (source: [RealPython](https://realpython.com/python-rounding/#truncating))
+
+    Args:
+        n (int | float): Input number to truncate.
+        places (int, optional): Number of places to truncate 'n'. Defaults to 0.
+
+    Returns:
+        int | float: Truncated value of 'n'.
+    """
+    multiplier = 10 ** places
+    return int(n * multiplier) / multiplier
+
+
+def report_retrieval_status(retrieved_documents: int, total_documents: int, n_status_updates: int = 10):
+
+    print_frequency = (total_documents // n_status_updates)
+
+    if print_frequency == 0:
+        print_frequency += 1  # adding 1 ensures no ZeroDivisionError
+
+    if (retrieved_documents > 1) and (retrieved_documents % print_frequency == 0):
+        print(f"Retrieved {retrieved_documents} rules.")
+
+
 def pipeline(data_path: Path, 
              major_only: bool = False, 
              new_only: bool = False, 
@@ -540,6 +592,7 @@ def pipeline(data_path: Path,
                 rule_data["results"].extend(existing_rule_data)
             rs.to_json(rule_data, data_path, f"rule_detail_{type}")
 
+
 def main(data_path: Path):
     while True:
         
@@ -588,7 +641,6 @@ def main(data_path: Path):
 if __name__ == "__main__":
     
     # profile time elapsed
-    import time
     start = time.process_time()
     
     p = Path(__file__)
