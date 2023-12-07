@@ -108,3 +108,20 @@ with open(root_path / file_name, "w", encoding="utf-8") as f:
     df.to_csv(f, lineterminator="\n", index=False)
 
 # %%
+
+from scraper import PopulationScraper
+
+ps = PopulationScraper()
+
+data1 = ps.from_json(data_path, "population_major")
+data2 = ps.from_json(data_path, "population_major_")
+
+url1 = [d.get("url") for d in data1["results"]]
+url2 = [d.get("url") for d in data2["results"]]
+combined = (1 if u in url2 else 0 for u in url1)
+if sum(combined) == len(url1) == len(url2):
+    print("Success!")
+else:
+    print("Error.")
+
+# %%
