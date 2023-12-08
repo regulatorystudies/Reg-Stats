@@ -19,8 +19,8 @@ if (!dir_exists(path_chartdata)) {
 # establish location for data subfolder
 path_data <- path(here("data"))
 if (dir_exists(path_data)) {
-  # copy data files within dir
-  copy_all_data(path_data, path_chartdata)
+  # copy data files within dir up to 1 level
+  copy_all_data(path_data, path_chartdata, recurse_levels=1)
   
 } else {
   
