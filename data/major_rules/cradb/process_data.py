@@ -177,10 +177,10 @@ if __name__ == "__main__":
         if major_prompt in valid_inputs:
             
             # set major_only param
-            if major_prompt.lower() in y_inputs:
+            if major_prompt in y_inputs:
                 major_only = True
                 data_file = "rule_detail_major"
-            elif major_prompt.lower() in n_inputs:
+            elif major_prompt in n_inputs:
                 major_only = False
                 data_file = "rule_detail_all"
 
@@ -196,8 +196,8 @@ if __name__ == "__main__":
                 df_pres = convert_to_presidential_year(df_pres, date_col = tf)
                 grouped = groupby_year(df_pres, year_col = "presidential")
                 output = define_presidential_terms(grouped)
-                print("Aggregated data:", output, sep="\n")
-                save_csv(output, major_path, f"major_rules_by_{tf}_year")
+                print(f"\nAggregated data by {tf} date:", output, sep="\n")
+                save_csv(output, major_path, f"major_rules_{tf}_by_presidential_year")
             break
 
         else:
