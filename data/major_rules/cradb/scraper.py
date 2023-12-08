@@ -8,7 +8,7 @@ import re
 import time
 
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 
 
 BASE_PARAMS = {
@@ -92,7 +92,7 @@ class Scraper:
         
         return params
     
-    def request_soup(self, params: dict = None, page: int = None, alt_url: str = None, parser: str = "lxml"):
+    def request_soup(self, params: dict = None, page: int = None, alt_url: str = None, parser: str = "lxml", strainer: SoupStrainer = None):
         """Request and parse html using `requests` and `bs4`, returning a processed `BeautifulSoup` object.
 
         Args:
@@ -118,7 +118,7 @@ class Scraper:
             print(f"Status: {response.status_code}", 
                 f"\nReason: {response.reason}")
             response.raise_for_status()
-        soup = BeautifulSoup(response.content, parser)
+        soup = BeautifulSoup(response.content, parser, parse_only=strainer)
         return soup
     
     def from_json(self, path: Path, file_name: str) -> dict | list:
@@ -221,7 +221,7 @@ class PopulationScraper(Scraper):
         all_rules = []
         for page in page_range:
             # get soup for this page
-            soup_this_page = self.request_soup(params, page = page)
+            soup_this_page = self.request_soup(params, page = page, strainer=create_soup_strainer("scrape_population"))
             
             # get rules on this page
             rules_this_page = soup_this_page.find_all("div", class_="views-row")
@@ -290,7 +290,7 @@ class PopulationScraper(Scraper):
             for i, s in enumerate(test_strings):
                 print(f"Trying alternate search #{i + 1}: 'title' = {s}")
                 params.update({"title": s})
-                soup = self.request_soup(params, page=0)
+                soup = self.request_soup(params, page=0, strainer=create_soup_strainer("scrape_population"))
                 pages = self.get_page_count(soup)
                 data_temp = self.scrape_population(params, pages)
                 data_alt.extend(data_temp["results"])
@@ -338,7 +338,7 @@ class RuleScraper(Scraper):
             dict[str]: Results of the scraped data.
         """        
         rule_data = {"url": url}
-        soup = self.request_soup(alt_url = url)
+        soup = self.request_soup(alt_url = url, strainer=create_soup_strainer("scrape_rule"))
         page_contents = soup.find("div", class_="main-page-content--inner")
         header = page_contents.header
         main = page_contents.main
@@ -413,6 +413,44 @@ class RuleScraper(Scraper):
             }
         
         return output
+
+
+def create_soup_strainer(for_method: str):
+    """Create a soup strainer to improve efficiency when calling `request_soup()`.
+
+    Args:
+        for_method (str): Method that will use the soup strainer. See valid inputs.
+
+    Raises:
+        ValueError: Invalid input. Parameter 'for_method' must be one of ("get_counts", "get_page_count", "get_document_count", "scrape_population").
+        ParseError: Catches other parsing errors.
+
+    Returns:
+        SoupStrainer: Object to pass to `request_soup()` 'strainer' parameter.
+    """
+    valid_inputs = (
+        "get_counts", 
+        "get_page_count", 
+        "get_document_count", 
+        "scrape_population", 
+        "scrape_rule", 
+        "scrape_rules", 
+        )
+    
+    if for_method in ("get_counts", "get_page_count", "get_document_count"):
+        return SoupStrainer("div", class_="views-element-container")
+        
+    elif for_method == "scrape_population":
+        return SoupStrainer("div", class_="views-row")
+    
+    elif for_method in ("scrape_rule", "scrape_rules"):
+        return SoupStrainer("div", class_="main-page-content--inner")
+
+    elif isinstance(for_method, str) and (for_method not in valid_inputs):
+        raise ValueError(f"Invalid input. Parameter 'for_method' must be one of {', '.join(valid_inputs)}.")
+    
+    else:
+        raise ParseError
 
 
 def has_field_name(class_):
@@ -543,7 +581,7 @@ def pipeline(data_path: Path,
     
     # request and parse html
     params = ps.set_request_params(BASE_PARAMS, **kwargs)
-    soup = ps.request_soup(params, page = 0)
+    soup = ps.request_soup(params, page = 0, strainer=create_soup_strainer("get_counts"))
     document_count = ps.get_document_count(soup)
     if document_count < 1:
         print("No rules to retrieve.")
