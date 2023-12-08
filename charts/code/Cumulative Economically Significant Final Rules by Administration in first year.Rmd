@@ -15,7 +15,19 @@ The `i_am` function indicates that `workflow_demo.Rmd` is located within the `co
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-here::i_am("code/Cumulative Economically Significant Final Rules by Administration in first year.Rmd")
+library(here)
+i_am("charts/code/Cumulative Economically Significant Final Rules by Administration in first year.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "cumulative_econ_significant_rules_by_presidential_month.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
 ```
 
 Import the packages required for the remainder of the rmarkdown file. It's easier to keep track of the necessary packages when all imports occur at the top of the file.
@@ -38,21 +50,12 @@ library(gcookbook)
 
 ```
 
-## Load Style
-
-```{r load style}
-# load style
-source(here("code", "style.R"))
-```
-
 ## Load data
-
-
 
 ```{r load_data}
 
 # load csv using here
-cun_sig_first <- read.csv(here("data","Cumulative_ES_rules_published_months_in_office_071023.csv"))
+cun_sig_first <- read.csv(here("data", data_file))
 
 # eventually separate this into another file for reuse, then import/call the function
 get_png <- function(filename) {

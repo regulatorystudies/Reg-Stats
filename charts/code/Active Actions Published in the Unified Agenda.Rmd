@@ -1,0 +1,125 @@
+---
+title: "Active Actions Published in the Unified Agenda"
+author: "Yaxin Zhuang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+## Initialize
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+library(here)
+i_am("charts/code/Active Actions Published in the Unified Agenda.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "active_actions_by_unified_agenda.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
+```
+
+## Load Packages
+
+```{r imports, results='hide', warning=FALSE}
+
+# load packages
+library(ggplot2)
+library(showtext)
+library(png)
+library(ggpattern)
+library(tidyr)
+library(ggrepel)
+library(dplyr)
+library(scales)
+```
+
+## Load data
+
+
+```{r load_data}
+
+# load csv using here
+df1 <- read.csv("/content/Active%20Actions%20Listed%20in%20the%20Unified%20Agenda_071023.csv")
+
+# eventually separate this into another file for reuse, then import/call the function
+get_png <- function(filename) {
+  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE) # adjust logo size dimensions here
+}
+
+l <- get_png(here("code", "RSC_logo.png"))
+
+#load custom font
+font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
+showtext_auto()
+
+```
+
+## Process data
+
+
+```{r clean_data}
+
+df1_1 <- df1[c(3:48),c(0:5)]
+
+colnames(df1_1) <- c("yearseason", "FinalRules", "ProposedRules","Prerules","Total")
+
+df1_1$Total <- as.numeric(df1_1$Total)
+
+df1_1$sort <- seq.int(nrow(df1_1))
+
+#df1_1
+data_new1 <- df1_1 %>% arrange(desc(sort))
+
+data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$yearseason))
+
+#split year and season
+# data_new1[c('year', 'season')] <- str_split_fixed(data_new1$yearseason, ' ', 2) 
+
+```
+
+
+## Plot data
+
+
+```{r plot_data, results='markup'}
+#annotation
+current_date <- format(Sys.Date(), "%B %d, %Y")
+caption_text <- paste("Sources: Office of Information and RedulatoryAffairs \n\nUpdated:", current_date)
+wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
+
+#font
+font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
+showtext_auto()
+
+#plot
+bar2 <-
+  ggplot(data=data_new1, aes(x=yearseason, y=Total)) +
+  geom_bar(stat="identity", fill="#033C5A")+
+
+  ggtitle("Active Actions Published in the Unified Agenda \n(1950-2021)") +
+  ylab("Number of Active Actions") +
+  xlab("") +
+  mytheme+
+  scale_y_continuous(breaks = seq(0, max(data_new1$Total), by = 500), expand = c(0, 0),
+                     limits = c(-2, max(data_new1$Total)),) +
+                     #labels = label_number(suffix = "K", scale = 1e-3)) +
+  # scale_y_continuous()
+  annotation_custom(l, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
+  # logo_y_dim = 0.3logo_y_max, logo_x_dim = 0.12logo_x_max ?
+  coord_cartesian(clip = "off") +
+  labs(caption = wrapped_caption)
+
+
+bar2
+#ggsave("Active Actions Published in the Unified Agenda(1950-2021).pdf", plot = bar2, width = 12, height = 9, dpi = 300)
+
+
+
+```

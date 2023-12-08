@@ -2,8 +2,7 @@
   library(here)
   library(showtext)
   library(magick)
-  library(tidyverse)
-
+  library(ggplot2)
 
 # assigning colors to objects ####
   
@@ -28,14 +27,15 @@
       # this is the color used in the striping on patterned charts
     
 # logo ####
-  logo <- image_read(here("gw_ci_rsc_2cs_pos.png"))
+  logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
     
 # font ####
-  font_add("avenir_lt_pro", here("a-avenir-next-lt-pro.otf"))
+  font_add("avenir_lt_pro", here("charts", "style", "a-avenir-next-lt-pro.otf"))
   showtext_auto()
     # according to documentation, showtext_auto needed for this to work properly 
   
 # custom chart theme for bar plot ####
+  # Should we change this to "bartheme"?
   theme_RSC <- theme_minimal() +
     theme(
       plot.title = element_text(hjust = 0.5, vjust=-2, margin = margin(b = 40, unit = "pt"), size=20),
@@ -46,10 +46,10 @@
       axis.title.y = element_text(size = 12, angle = 90, vjust = 1),
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
       panel.grid.minor = element_blank(),
-      text =element_text(family = "avenir_lt_pro"),
+      text = element_text(family = "avenir_lt_pro"),
       plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 6, unit = "pt"),size=11),
       plot.margin = margin(50, 50, 50, 50),
-      axis.ticks.x = element_line()
+      axis.ticks.x = element_line(color = RSCgray)
     )
   
 # custom chart theme for line plots####
@@ -62,12 +62,12 @@
       panel.grid.major.x = element_blank(),
       axis.text.y = element_text(size=12),
       axis.title.y = element_text(size = 12, angle = 90, vjust = 1),
-      panel.grid.major.y = element_line(color = "#E0E0E0", linetype = "solid"),
+      panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
       panel.grid.minor = element_blank(),
-      text =element_text(family = "avenir_lt_pro"),
+      text = element_text(family = "avenir_lt_pro"),
       plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 6, unit = "pt"),size=11),
       plot.margin = margin(50, 50, 50, 50),
-      axis.ticks.x = element_line()
+      axis.ticks.x = element_line(color = RSCgray)
     )
   
   # thank you to Yaxin for developing this custom theme!

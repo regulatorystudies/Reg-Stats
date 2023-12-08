@@ -15,7 +15,19 @@ The `i_am` function indicates that `workflow_demo.Rmd` is located within the `co
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-here::i_am("code/Number of Final Major Rules Published by Pres year.Rmd")
+library(here)
+i_am("charts/code/Number of Final Major Rules Published by Pres year.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "major_rules_by_presidential_year.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
 ```
 
 Import the packages required for the remainder of the rmarkdown file. It's easier to keep track of the necessary packages when all imports occur at the top of the file.
@@ -50,7 +62,7 @@ source(here("code", "style.R"))
 ```{r load_data}
 
 # load csv using here
-num_fr <- read.csv(here("data","major_rules_presidential_year_03172023.csv"))
+num_fr <- read.csv(here("data", data_file))
 
 # eventually separate this into another file for reuse, then import/call the function
 get_png <- function(filename) {

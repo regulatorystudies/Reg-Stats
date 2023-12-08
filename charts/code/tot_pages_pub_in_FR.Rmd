@@ -14,7 +14,19 @@ rm(list=ls())
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-here::i_am("code/tot_pages_pub_in_FR.Rmd")
+library(here)
+i_am("charts/code/tot_pages_pub_in_FR.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "federal_register_pages_by_calendar_year.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
 ```
 
 ```{r load packages, results='hide', warning=FALSE}
@@ -32,7 +44,7 @@ source(here("code", "style.R"))
 
 ```{r load data}
 # load csv using here
-tot_pages <- read.csv(here("data", "totalpagesfederalregister_03272023.csv"), skip = 4)
+tot_pages <- read.csv(here("charts", "data", data_file), skip = 4)
 
 # eventually separate this into another file for reuse, then import/call the function
 # ^ HOW TO DO THIS?

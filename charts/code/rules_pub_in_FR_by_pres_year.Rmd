@@ -14,7 +14,19 @@ rm(list=ls())
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-here::i_am("code/rules_pub_in_FR_by_pres_year.Rmd")
+library(here)
+i_am("charts/code/rules_pub_in_FR_by_pres_year.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "federal_register_rules_by_presidential_year.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
 ```
 
 ```{r load packages, results='hide', warning=FALSE}
@@ -31,7 +43,7 @@ source(here("code", "style.R"))
 
 ```{r load data}
 # load csv using here
-rules_pub_NA <- read.csv(here("data", "federal_register_rules_presidential_year_0.csv"))
+rules_pub_NA <- read.csv(here("data", data_file))
 
 # eventually separate this into another file for reuse, then import/call the function
 # ^ HOW TO DO THIS?
