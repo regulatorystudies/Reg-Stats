@@ -398,10 +398,7 @@ class RuleScraper(Scraper):
             #soup = self.request_soup(alt_url = rule.get("url"))
             rule_data = self.scrape_rule(url = rule.get("url"))
             all_rule_data.append(rule_data)
-            
-            print_frequency = (len(rules) // 10) + 1
-            if len(rules) % print_frequency == 0:
-                print(f"Retrieved detailed information for {len(all_rule_data)} rules.")
+            report_retrieval_status(len(all_rule_data), truncate(len(rules), places = -3))
         
         print(f"Retrieved detailed information for {len(all_rule_data)} rules.")
         
@@ -568,6 +565,7 @@ def pipeline(data_path: Path,
              major_only: bool = False, 
              new_only: bool = False, 
              rule_detail: bool = True, 
+             use_existing_pop_data: bool = False, 
              **kwargs):
     """Executes main pipeline for retrieving data from GAO's CRA database.
 
@@ -623,7 +621,10 @@ def pipeline(data_path: Path,
             if new_only:
                 pop_data = new_data
                 existing_rule_data = ps.from_json(data_path, f"rule_detail_{type}").get("results")
-                
+            
+            if use_existing_pop_data:
+                pop_data = ps.from_json(data_path, f"population_{type}").get("results")
+            
             # initialize RuleScraper
             rs = RuleScraper(input_data=pop_data)
             
@@ -641,6 +642,7 @@ def main(data_path: Path):
         major_prompt = input("Retrieve only major rules? [yes/no]: ").lower()
         new_prompt = input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
         detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
+        existing_prompt = input("Use existing population data for retrieving rule-level details? [yes/no]: ").lower()
         
         # check user inputs
         y_inputs = ["y", "yes", "true"]
@@ -651,28 +653,39 @@ def main(data_path: Path):
             and (detail_prompt in valid_inputs)):
             
             # set major_only param
-            if major_prompt.lower() in y_inputs:
+            if major_prompt in y_inputs:
                 major_only = True
                 file_name = "population_major"
-            elif major_prompt.lower() in n_inputs:
+            elif major_prompt in n_inputs:
                 major_only = False
                 file_name = "population_all"
             
             # set new_only param
-            if new_prompt.lower() in y_inputs:
+            if new_prompt in y_inputs:
                 new_only = True
-                #file_name = input("Enter file name of existing dataset (i.e., 'population_major'): ")
-            elif new_prompt.lower() in n_inputs:
+            elif new_prompt in n_inputs:
                 new_only = False
-                #file_name = "population_"
 
-            if detail_prompt.lower() in y_inputs:
+            if detail_prompt in y_inputs:
                 rule_detail = True
-            elif detail_prompt.lower() in n_inputs:
+            elif detail_prompt in n_inputs:
                 rule_detail = False
             
+            if existing_prompt in y_inputs:
+                use_existing_pop_data = True
+            elif existing_prompt in n_inputs:
+                use_existing_pop_data = False
+                
             # call scraper pipeline
-            pipeline(data_path, major_only=major_only, new_only=new_only, path=data_path, rule_detail=rule_detail, file_name=file_name)
+            pipeline(
+                data_path, 
+                major_only=major_only, 
+                new_only=new_only, 
+                rule_detail=rule_detail, 
+                use_existing_pop_data=use_existing_pop_data, 
+                path=data_path, 
+                file_name=file_name
+                )
             break
 
         else:
