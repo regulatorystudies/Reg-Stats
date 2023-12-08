@@ -9,7 +9,8 @@ from process_data import *
 p = Path(__file__)
 root_path = p.parents[1]
 data_path = p.parents[1].joinpath("raw_data")
-for this_path in (root_path, data_path):
+val_path = p.parents[1].joinpath("_val")
+for this_path in (root_path, data_path, val_path):
     if not this_path.is_dir():
         this_path.mkdir(parents=True, exist_ok=True)
 
@@ -114,7 +115,7 @@ from scraper import PopulationScraper
 ps = PopulationScraper()
 
 data1 = ps.from_json(data_path, "population_major")
-data2 = ps.from_json(data_path, "population_major_")
+data2 = ps.from_json(val_path, "population_major_")
 
 url1 = [d.get("url") for d in data1["results"]]
 url2 = [d.get("url") for d in data2["results"]]
