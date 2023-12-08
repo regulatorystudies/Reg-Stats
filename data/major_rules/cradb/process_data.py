@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import re
 
-from pandas import DataFrame
+from pandas import DataFrame, merge
 
 
 END_OF_ADMIN = (2000, 2008, 2016, 2020)
@@ -153,18 +153,7 @@ def groupby_year(df: DataFrame,
 # df.groupby(["agency", "subagency"])["control_number"].agg("count")
 
 
-if __name__ == "__main__":
-    
-    # profile time elapsed
-    import time
-    start = time.process_time()
-
-    p = Path(__file__)
-    major_path = p.parents[1]
-    data_path = major_path.joinpath("raw_data")
-    if not data_path.is_dir():
-        print("Cannot locate data.")
-
+def process_data(data_path: Path, root_path: Path):
     while True:
         
         # print prompts to console
@@ -178,10 +167,10 @@ if __name__ == "__main__":
             
             # set major_only param
             if major_prompt in y_inputs:
-                major_only = True
+                #major_only = True
                 data_file = "rule_detail_major"
             elif major_prompt in n_inputs:
-                major_only = False
+                #major_only = False
                 data_file = "rule_detail_all"
 
             # call processing pipeline
@@ -191,18 +180,44 @@ if __name__ == "__main__":
             print(f"Removed {len(df_dup)} duplicates.")
             #print(df_dup)
             timeframe = ("received", "published")
+            dfs = []
             for tf in timeframe:
                 df_pres = df.copy(deep=True)
                 df_pres = convert_to_presidential_year(df_pres, date_col = tf)
                 grouped = groupby_year(df_pres, year_col = "presidential")
-                output = define_presidential_terms(grouped)
-                print(f"\nAggregated data by {tf} date:", output, sep="\n")
-                save_csv(output, major_path, f"major_rules_{tf}_by_presidential_year")
+                output = define_presidential_terms(grouped).rename(columns={"major_rules": f"major_rules_{tf}"})
+                dfs.append(output)
+            output = merge(
+                dfs[0], dfs[1], 
+                on=["presidential_year", "end_of_term", "democratic_admin"], 
+                suffixes=timeframe, 
+                validate="1:1"
+                )
+            sort_cols = ["presidential_year", "end_of_term", "democratic_admin"] + [c for c in output.columns if "major_rules" in f"{c}"]
+            output = output.loc[:, sort_cols]
+            
+            print(f"\nAggregated data by presidential year:", output, sep="\n")
+            save_csv(output, root_path, f"major_rules_by_presidential_year")
             break
 
         else:
             print(f"Invalid input. Must enter one of the following: {', '.join(valid_inputs)}.")
+
+
+if __name__ == "__main__":
     
-        # calculate time elapsed
-        stop = time.process_time()
-        print(f"CPU time: {stop - start:0.1f} seconds")
+    # profile time elapsed
+    import time
+    start = time.process_time()
+
+    p = Path(__file__)
+    major_path = p.parents[1]
+    data_path = major_path.joinpath("raw_data")
+    if not data_path.is_dir():
+        print("Cannot locate data.")
+
+    process_data(data_path, major_path)
+    
+    # calculate time elapsed
+    stop = time.process_time()
+    print(f"CPU time: {stop - start:0.1f} seconds")

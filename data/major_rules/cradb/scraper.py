@@ -585,7 +585,6 @@ def pipeline(data_path: Path,
     else:
         # initialize PopulationScraper
         ps = PopulationScraper(major_only=major_only, new_only=new_only, **kwargs)
-
         
         # request and parse html
         params = ps.set_request_params(BASE_PARAMS, **kwargs)
@@ -593,6 +592,7 @@ def pipeline(data_path: Path,
         document_count = ps.get_document_count(soup)
         if document_count < 1:
             print("No rules to retrieve.")
+            return False
         else:  # retrieve rules turned up by database search
             page_count = ps.get_page_count(soup)
             print(f"Requesting {document_count} rules from {page_count + 1} page(s).")
@@ -638,16 +638,17 @@ def pipeline(data_path: Path,
         if new_only:
             rule_data["results"].extend(existing_rule_data)
         rs.to_json(rule_data, data_path, f"rule_detail_{type}")
+    
+    return True
 
 
-def main(data_path: Path):
+def scraper(data_path: Path):
     while True:
         
         # print prompts to console
         major_prompt = input("Retrieve only major rules? [yes/no]: ").lower()
         new_prompt = input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
         detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
-        existing_prompt = input("Use existing population data for retrieving rule-level details? [yes/no]: ").lower()
         
         # check user inputs
         y_inputs = ["y", "yes", "true"]
@@ -676,13 +677,17 @@ def main(data_path: Path):
             elif detail_prompt in n_inputs:
                 rule_detail = False
             
-            if existing_prompt in y_inputs:
-                use_existing_pop_data = True
-            elif existing_prompt in n_inputs:
+            if rule_detail:
+                existing_prompt = input("Use existing population data for retrieving rule-level details? [yes/no]: ").lower()
+                if existing_prompt in y_inputs:
+                    use_existing_pop_data = True
+                elif existing_prompt in n_inputs:
+                    use_existing_pop_data = False
+            else:
                 use_existing_pop_data = False
                 
             # call scraper pipeline
-            pipeline(
+            status = pipeline(
                 data_path, 
                 major_only=major_only, 
                 new_only=new_only, 
@@ -691,7 +696,7 @@ def main(data_path: Path):
                 path=data_path, 
                 file_name=file_name
                 )
-            break
+            return status
 
         else:
             print(f"Invalid input. Must enter one of the following: {', '.join(valid_inputs)}.")
@@ -707,7 +712,7 @@ if __name__ == "__main__":
     if not data_path.is_dir():
         data_path.mkdir(parents=True, exist_ok=True)
     
-    main(data_path)
+    scraper(data_path)
     
     # calculate time elapsed
     stop = time.process_time()

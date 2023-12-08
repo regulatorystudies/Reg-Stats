@@ -1,7 +1,8 @@
 if __name__ == "__main__":
     
     from pathlib import Path
-    from .scraper import main
+    from .scraper import scraper
+    from .process_data import process_data
 
     # profile time elapsed
     import time
@@ -12,7 +13,9 @@ if __name__ == "__main__":
     if not data_path.is_dir():
         data_path.mkdir(parents=True, exist_ok=True)
 
-    main(data_path)
+    status = scraper(data_path)
+    if status:
+        process_data(data_path)
 
     # calculate time elapsed
     stop = time.process_time()
