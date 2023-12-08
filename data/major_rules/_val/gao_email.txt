@@ -1,0 +1,14 @@
+
+https://www.gao.gov/legal/other-legal-work/congressional-review-act
+https://www.gao.gov/copyright
+
+FedRules@gao.gov
+
+Hello,
+
+I am an academic researcher at the George Washington University Regulatory Studies Center. One of the resources we provide to the public is summaries of regulatory data, located on our Reg Stats webpage.
+
+For awhile, we have used the GAO CRA database to collect summary data on major rules received by GAO. I decided that it could be useful to have an automated way to collect these summary data, as well as a dataset of the underlying rules in the database. So I've been working on a web scraper that collects the rule data from the CRA database.
+
+During this project, I noticed what could be a bug within the CRA database
+
