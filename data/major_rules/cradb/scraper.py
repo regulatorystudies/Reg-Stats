@@ -573,66 +573,71 @@ def pipeline(data_path: Path,
         major_only (bool, optional): Retrieve only major rules. Defaults to False.
         new_only (bool, optional): Retrieve only new rules received by GAO (when True, must pass `path` and `file_name` as **kwargs). Defaults to False.
     """
-    # initialize PopulationScraper
-    ps = PopulationScraper(major_only=major_only, new_only=new_only, **kwargs)
     if major_only:
         type = "major"
     else:
         type = "all"
     
-    # request and parse html
-    params = ps.set_request_params(BASE_PARAMS, **kwargs)
-    soup = ps.request_soup(params, page = 0, strainer=create_soup_strainer())
-    document_count = ps.get_document_count(soup)
-    if document_count < 1:
-        print("No rules to retrieve.")
-    else:  # retrieve rules turned up by database search
-        page_count = ps.get_page_count(soup)
-        print(f"Requesting {document_count} rules from {page_count + 1} page(s).")
+    if use_existing_pop_data and (not new_only):
+        ps = PopulationScraper(major_only=major_only, new_only=new_only)
+        pop_data = ps.from_json(data_path, f"population_{type}").get("results")
+        document_count = len(pop_data)
+    else:
+        # initialize PopulationScraper
+        ps = PopulationScraper(major_only=major_only, new_only=new_only, **kwargs)
+
         
-        # scrape population data and save
-        pop_data = ps.scrape_population(params, page_count, document_count)
+        # request and parse html
+        params = ps.set_request_params(BASE_PARAMS, **kwargs)
+        soup = ps.request_soup(params, page = 0, strainer=create_soup_strainer())
+        document_count = ps.get_document_count(soup)
+        if document_count < 1:
+            print("No rules to retrieve.")
+        else:  # retrieve rules turned up by database search
+            page_count = ps.get_page_count(soup)
+            print(f"Requesting {document_count} rules from {page_count + 1} page(s).")
+            
+            # scrape population data and save
+            pop_data = ps.scrape_population(params, page_count, document_count)
+            
+            # check for missing documents
+            print("Checking for missing documents.")
+            results = ps.get_missing_documents(pop_data, BASE_PARAMS, document_count)
+            if results is not None:
+                print("Retrieved missing documents.")
+                pop_data = results
+            
+            # add existing dataset to new documents
+            if new_only:
+                new_data = deepcopy(pop_data.get("results"))
+                existing_pop_data = ps.from_json(data_path, f"population_{type}").get("results")
+                pop_data["results"].extend(existing_pop_data)
+            
+            # save population data
+            ps.to_json(pop_data, data_path, f"population_{type}")
+            
+            # summarize rule types retrieved
+            type_counts = Counter([rule["type"] for rule in pop_data["results"]])
+            print(f"Retrieved {type_counts.total()} rules.")
+            for k, v in type_counts.items():
+                print(f"{k}s: {v}")
+    
+    # retrieve rule-level detail data
+    if rule_detail:
+        print(f"Requesting {document_count} rules.")
         
-        # check for missing documents
-        print("Checking for missing documents.")
-        results = ps.get_missing_documents(pop_data, BASE_PARAMS, document_count)
-        if results is not None:
-            print("Retrieved missing documents.")
-            pop_data = results
-        
-        # add existing dataset to new documents
         if new_only:
-            new_data = deepcopy(pop_data.get("results"))
-            existing_pop_data = ps.from_json(data_path, f"population_{type}").get("results")
-            pop_data["results"].extend(existing_pop_data)
+            pop_data = new_data
+            existing_rule_data = ps.from_json(data_path, f"rule_detail_{type}").get("results")
+            
+        # initialize RuleScraper
+        rs = RuleScraper(input_data=pop_data)
         
-        # save population data
-        ps.to_json(pop_data, data_path, f"population_{type}")
-        
-        # summarize rule types retrieved
-        type_counts = Counter([rule["type"] for rule in pop_data["results"]])
-        print(f"Retrieved {type_counts.total()} rules.")
-        for k, v in type_counts.items():
-            print(f"{k}s: {v}")
-        
-        # retrieve rule-level detail data
-        if rule_detail:
-            
-            if new_only:
-                pop_data = new_data
-                existing_rule_data = ps.from_json(data_path, f"rule_detail_{type}").get("results")
-            
-            if use_existing_pop_data:
-                pop_data = ps.from_json(data_path, f"population_{type}").get("results")
-            
-            # initialize RuleScraper
-            rs = RuleScraper(input_data=pop_data)
-            
-            # scrape rule detail data and save
-            rule_data = rs.scrape_rules()
-            if new_only:
-                rule_data["results"].extend(existing_rule_data)
-            rs.to_json(rule_data, data_path, f"rule_detail_{type}")
+        # scrape rule detail data and save
+        rule_data = rs.scrape_rules()
+        if new_only:
+            rule_data["results"].extend(existing_rule_data)
+        rs.to_json(rule_data, data_path, f"rule_detail_{type}")
 
 
 def main(data_path: Path):
