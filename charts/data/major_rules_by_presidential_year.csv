@@ -1,37 +1,29 @@
-﻿Number of Major Rules by Presidential Year - GW Regulatory Studies Center,,,,,,
-Presidential Year (Feb 1 - Jan 31),Total Major Rules,"Total Major Rules, excluding non-significant",Party (Democratic=1; Republican=0),Final Admin. Year,,
-1996,51,51,1,0,,
-1997,59,59,1,0,,
-1998,75,75,1,0,,
-1999,52,9,1,0,,
-2000,88,85,1,1,,
-2001,58,58,0,0,,
-2002,52,52,0,0,,
-2003,50,47,0,0,,
-2004,67,67,0,0,,
-2005,53,53,0,0,,
-2006,55,55,0,0,,
-2007,65,65,0,0,,
-2008,102,102,0,1,,
-2009,81,78,1,0,,
-2010,99,99,1,0,,
-2011,77,76,1,0,,
-2012,70,70,1,0,,
-2013,76,74,1,0,,
-2014,81,81,1,0,,
-2015,80,78,1,0,,
-2016,124,123,1,1,,
-2017,42,42,0,0,,
-2018,56,56,0,0,,
-2019,90,90,0,0,,
-2020,172,172,0,1,,
-2021,88,88,1,0,,
-2022,80,79,1,0,,
-Total,"2,043","1,984",,,,
-Average by Year,76,73,,,,
-Average Non-Final Admin. Year,68,65,,,,
-Avg. Final Admin. Year (Midnight Rulemaking),122,121,,,,
-Avg. under Democratic President,79,75,,,,
-Avg. under Republican President,72,72,,,,
-Data source: U.S. Government Accountability Office (GAO) (https://www.gao.gov/legal/other-legal-work/congressional-review-act),,,,,,
-"Date retrieved: March 17, 2023",,,,,,
+presidential_year,end_of_term,democratic_admin,major_rules_received,major_rules_published
+1996,0,1,52,52
+1997,0,1,59,59
+1998,0,1,75,75
+1999,0,1,52,51
+2000,1,1,88,97
+2001,0,0,58,51
+2002,0,0,52,51
+2003,0,0,50,51
+2004,0,0,67,67
+2005,0,0,53,53
+2006,0,0,55,57
+2007,0,0,65,64
+2008,1,0,102,105
+2009,0,1,81,77
+2010,0,1,99,96
+2011,0,1,78,80
+2012,0,1,70,72
+2013,0,1,76,80
+2014,0,1,81,78
+2015,0,1,80,81
+2016,1,1,124,127
+2017,0,0,42,36
+2018,0,0,56,55
+2019,0,0,90,88
+2020,1,0,172,172
+2021,0,1,88,93
+2022,0,1,82,79
+2023,0,1,67,67
