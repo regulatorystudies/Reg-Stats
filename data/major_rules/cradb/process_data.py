@@ -47,8 +47,15 @@ def load_json(path: Path, file_name: str) -> dict | list:
     return data
 
 
-def extract_date(string):
-    
+def extract_date(string: str):
+    """Extract date from a string in a format similar to `datetime.time`.
+
+    Args:
+        string (str): Date represented as a string.
+
+    Returns:
+        datetime.date: Object in `datetime.date` format.
+    """
     res = re.compile("\d{4}-\d{2}-\d{2}", re.I).match(string)
     
     if isinstance(res, re.Match):
@@ -61,7 +68,16 @@ def json_to_df(
         data: dict | list, 
         has_metadata: bool = True, 
         date_cols: list | tuple = ("effective", "received", "published")):
-    
+    """Convert json object to pandas DataFrame and extract date information from select columns.
+
+    Args:
+        data (dict | list): Input data.
+        has_metadata (bool, optional): If object contains metadata, grab data from the "results" key. Defaults to True.
+        date_cols (list | tuple, optional): Columns containing date information. Defaults to ("effective", "received", "published").
+
+    Returns:
+        DataFrame: Output DataFrame containing date information.
+    """
     if has_metadata:
         results = data.get("results")
     else:
@@ -79,7 +95,14 @@ def json_to_df(
 
 
 def find_duplicates(df: DataFrame):
-    
+    """Identify duplicate rules, returning two datasets with unique and duplicated observations.
+
+    Args:
+        df (DataFrame): Input DataFrame.
+
+    Returns:
+        tuple[DataFrame, DataFrame]: DataFrame with unique observations, DataFrame with duplicated observations.
+    """    
     df_copy = df.copy(deep=True)
     bool_dup = df_copy.duplicated(subset=["url", "fed_reg_number"], keep="first")
     df_uq, df_dup = df_copy.loc[~bool_dup, :], df_copy.loc[bool_dup, :]
@@ -108,15 +131,15 @@ def define_presidential_terms(
         df: DataFrame, 
         end_of_term: list | tuple = END_OF_ADMIN, 
         terms: dict = PRESIDENTIAL_ADMINS):
-    """_summary_
+    """Define columsn with each president's party and final year in office (for presidents since Clinton).
 
     Args:
-        df (DataFrame): _description_
-        end_of_term (list | tuple, optional): _description_. Defaults to END_OF_TERM.
-        terms (dict, optional): _description_. Defaults to PRESIDENTIAL_TERMS.
+        df (DataFrame): Input data.
+        end_of_term (list | tuple, optional): List-like of the final year of each presidential administration since Clinton. Defaults to END_OF_ADMIN.
+        terms (dict, optional): Dictionary of each president's party and years in office. Defaults to PRESIDENTIAL_ADMINS.
 
     Returns:
-        _type_: _description_
+        DataFrame: Data with new binary columns for "end_of_term" and "democratic_admin".
     """
     df_copy = df.copy(deep=True)
     df_copy.loc[:, "end_of_term"] = [1 if i in end_of_term else 0 for i in df_copy["presidential_year"]]
@@ -125,16 +148,13 @@ def define_presidential_terms(
     return df_copy
 
 
-def save_csv(df: DataFrame, path: Path, file_name: str):
-    """Save processed data in .csv format.
+def save_csv(df: DataFrame, path: Path, file_name: str) -> None:
+    """Save processed data in .csv format and prints file location.
 
     Args:
         df (DataFrame): .
         path (Path): Path of directory where file is located.
         file_name (str): Name of .json file (without file extension; e.g., "file_name").
-
-    Returns:
-        dict | list: JSON object.
     """        
     with open(path / f"{file_name}.csv", "w", encoding="utf-8") as f:
         df.to_csv(f, index=False, lineterminator="\n")
@@ -145,15 +165,34 @@ def save_csv(df: DataFrame, path: Path, file_name: str):
 def groupby_year(df: DataFrame, 
                  year_col: str = "published", 
                  agg_col: str = "control_number", 
-                 agg_func: str = "nunique"):    
+                 agg_func: str = "nunique"):
+    """Use pandas `groupby()` to produce summaries of unique rules by year.
+
+    Args:
+        df (DataFrame): Input data.
+        year_col (str, optional): Name of year column. Defaults to "published".
+        agg_col (str, optional): Column to aggregate by year. Defaults to "control_number".
+        agg_func (str, optional): Function for aggregating "agg_col" by "year_col". Defaults to "nunique".
+
+    Returns:
+        DataFrame: Grouped data.
+    """
     grouped = df.groupby([f"{year_col}_year"]).agg({agg_col: agg_func}).reset_index()
     return grouped.rename(columns={agg_col: "major_rules"})
 
 
+# TO DO: add groupby_agency() function
 # df.groupby(["agency", "subagency"])["control_number"].agg("count")
 
 
-def process_data(data_path: Path, root_path: Path):
+def process_data(data_path: Path, root_path: Path) -> None:
+    """Text-based interface for running the data processing pipeline. 
+    Operates within a `while True` loop that doesn't break until it receives valid inputs.
+
+    Args:
+        data_path (Path): Path to the data files.
+        root_path (Path): Path to root folder for major rules.
+    """
     while True:
         
         # print prompts to console
