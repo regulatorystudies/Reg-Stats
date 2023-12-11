@@ -77,3 +77,9 @@ conda activate regstats_gao
 ```
 
 See the [Anaconda documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) for more details.
+
+## CRAdb Tutorial
+
+CRAdb is a module created to retrieve data from GAO's [Congressional Review Act (CRA) Database of Rules](https://www.gao.gov/legal/other-legal-work/congressional-review-act) and process the data for summarizing annual trends. The module is set up for running a command line interface that executes a pre-defined pipeline for retrieving and processing the data. However, the module's classes and functions can also be imported to create a customized pipeline. This tutorial briefly explains how to use both approaches.
+
+TO DO: finish tutorial
