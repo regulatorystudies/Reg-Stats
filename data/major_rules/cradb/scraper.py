@@ -18,6 +18,7 @@ BASE_PARAMS = {
     }
 
 
+# seems like this needs to be defined first before using below
 def sleep_retry(timeout: int, retry: int = 3):
     """Decorator to sleep and retry request when receiving an error 
     (source: [RealPython](https://realpython.com/python-sleep/#adding-a-python-sleep-call-with-decorators)).
@@ -49,17 +50,12 @@ class ParseError(Exception):
 
 
 class Scraper:
-    """Base scraper class for retrieving data from GAO's Congressional Review Act (CRA) database."""    
+    """Base scraper class for retrieving data from GAO's Congressional Review Act (CRA) database."""
+    
     def __init__(
             self, 
             base_url: str = "https://www.gao.gov/legal/other-legal-work/congressional-review-act", 
             url_stem: str = "https://www.gao.gov", 
-            #request_params: dict = {
-            #    "processed": 1, 
-            #    "type": "all", 
-            #    "priority": "all", 
-            #    "page": 0
-            #    }, 
             major_only: bool = False, 
             new_only: bool = False, **kwargs):
         """Initialize base scraper for CRA database.
@@ -73,17 +69,18 @@ class Scraper:
         """
         self.url = base_url
         self.url_stem = url_stem
-        #self.params = request_params
         self.major_only = major_only
-        #if self.major_only:  # only updates parameters when major_only = True
-        #    self.params.update({"type": "Major"})
         self.new_only = new_only
-        #if self.new_only:
-        #    start_date = get_retrieval_date(kwargs.get("path"), kwargs.get("file_name"))
-        #    self.params.update({"received_start_date": start_date})
     
     def set_request_params(self, params: dict, **kwargs):
-        
+        """Set the "type" and "received_start_date" parameters for the HTTP request.
+
+        Args:
+            params (dict): Base parameters in key: value format.
+
+        Returns:
+            dict: Updated parameters based on class attributes.
+        """        
         if self.major_only:
             params.update({"type": "Major"})
         
@@ -97,30 +94,32 @@ class Scraper:
         """Request and parse html using `requests` and `bs4`, returning a processed `BeautifulSoup` object.
 
         Args:
+            params (dict, optional): Request parameters. Defaults to None.
             page (int, optional): Page number for updating requests parameters. Defaults to None.
             alt_url (str, optional): Supply an alternate URL for the request, rather than the default `base_url`. Defaults to None.
             parser (str, optional): Parser to pass to `BeautifulSoup()`. Defaults to "lxml".
+            strainer (SoupStrainer, optional): Strainer to selectively parse html (passed to "parse_only" parameter). Defaults to None.
 
         Returns:
             BeautifulSoup: Parsed html as a BeautifulSoup object.
         """
+        # only updates parameters when page number is given
         if (params is not None) and (page is not None):
-            # only updates parameters when page number is given
-            #self.params.update({"page": page})
             params.update({"page": page})
-            #print(params)
         
-        if alt_url is not None:  # makes different request when alt_url is given
+        # makes different request when alt_url is given
+        if alt_url is not None:
             response = requests.get(alt_url)
         else:
             response = requests.get(self.url, params=params)
         
+        # raise status if request fails
         if response.status_code != 200:
             print(f"Status: {response.status_code}", 
                 f"\nReason: {response.reason}")
             response.raise_for_status()
-        soup = BeautifulSoup(response.content, parser, parse_only=strainer)
-        return soup
+        
+        return BeautifulSoup(response.content, parser, parse_only=strainer)
     
     def from_json(self, path: Path, file_name: str) -> dict | list:
         """Import data from .json format.
@@ -152,7 +151,8 @@ class Scraper:
 
 
 class PopulationScraper(Scraper):
-    """Scraper for retrieving basic data on the population of rules in GAO's CRA database, including their url, type, and effective date."""    
+    """Scraper for retrieving basic data on the population of rules in GAO's CRA database, including their url, type, and effective date."""
+    
     def __init__(self, **kwargs):
         """Initialize PopulationScraper, inheriting atrributes and methods from Scraper class."""        
         super().__init__(**kwargs)
@@ -212,7 +212,7 @@ class PopulationScraper(Scraper):
             documents (int, optional): If non-zero `int`, print status updates on number of retrieved documents. Defaults to None.
 
         Returns:
-            dict[str]: Results of the scraped data and accompanying metadata.
+            dict: Results of the scraped data and accompanying metadata.
         """
         if isinstance(pages, int):
             page_range = range(pages + 1)  # zero-based numbering
@@ -277,6 +277,18 @@ class PopulationScraper(Scraper):
         return output
     
     def get_missing_documents(self, data: dict | list, params: dict, document_count: int):
+        """Retrieve missing documents from population data result set. 
+        Handles error with GAO's CRA database where duplicate entries appear and exclude other entries.
+
+        Args:
+            data (dict | list): Results collected from the initial set of requests.
+            params (dict): Request parameters.
+            document_count (int): Number of total documents returned by search.
+
+        Returns:
+            dict: Results of the scraped data and accompanying metadata.
+        """
+        # check type of data input
         if isinstance(data, dict):
             validate = int(data.get("rule_count"))
             data_alt = deepcopy(data.get("results"))
@@ -313,10 +325,12 @@ class PopulationScraper(Scraper):
             return output
         else:
             print("No missing documents.")
+            return
 
 
 class RuleScraper(Scraper):
     """Scraper for retrieving detailed data on rules in GAO's CRA database."""
+    
     def __init__(self, input_data: dict | list = None, **kwargs) -> None:
         """Initialize RuleScraper, inheriting atrributes and methods from Scraper class.
 
@@ -360,10 +374,13 @@ class RuleScraper(Scraper):
             # there is probably a better way to do this but I can't think of it right now
             item_time = item.find("time")
             item_para = item.find("p")
+            item_url = item.find("a")
             if item_time is not None:
                 item_value = item_time["datetime"]
             elif item_para is not None:
                 item_value = item_para.string
+            elif item_url is not None:
+                item_value = item_url["href"]
             else:
                 item_value = item.string
             
@@ -509,7 +526,8 @@ def identify_duplicates(results: list, key: str = "url") -> list[dict]:
 
 
 def remove_duplicates(results: list, key: str = "url"):
-    """Filter out duplicates from list[dict] based on a key: value pair ([source](https://www.geeksforgeeks.org/python-remove-duplicate-dictionaries-characterized-by-key/)).
+    """Filter out duplicates from list[dict] based on a key: value pair 
+    ([source](https://www.geeksforgeeks.org/python-remove-duplicate-dictionaries-characterized-by-key/)).
 
     Args:
         results (list): List of results to filter out duplicates.
@@ -537,7 +555,8 @@ def remove_duplicates(results: list, key: str = "url"):
 
 
 def truncate(n: int | float, places: int = 0):
-    """Truncate a number to a given number of places (positive values -> decimals; negative values -> whole numbers) (source: [RealPython](https://realpython.com/python-rounding/#truncating))
+    """Truncate a number to a given number of places (positive values -> decimals; negative values -> whole numbers) 
+    (source: [RealPython](https://realpython.com/python-rounding/#truncating))
 
     Args:
         n (int | float): Input number to truncate.
@@ -550,8 +569,17 @@ def truncate(n: int | float, places: int = 0):
     return int(n * multiplier) / multiplier
 
 
-def report_retrieval_status(retrieved_documents: int, total_documents: int, n_status_updates: int = 10):
+def report_retrieval_status(retrieved_documents: int, 
+                            total_documents: int, 
+                            n_status_updates: int = 10) -> None:
+    """Reports "n_status_updates" of the documents retrieved so far.
 
+    Args:
+        retrieved_documents (int): Count of documents retrieved.
+        total_documents (int): Count of total documents requested. 
+        n_status_updates (int, optional): Number of status updates to give. Defaults to 10.
+    """
+    # calculate how frequently to print a status update
     print_frequency = (total_documents // n_status_updates)
 
     if print_frequency == 0:
@@ -572,6 +600,11 @@ def pipeline(data_path: Path,
     Args:
         major_only (bool, optional): Retrieve only major rules. Defaults to False.
         new_only (bool, optional): Retrieve only new rules received by GAO (when True, must pass `path` and `file_name` as **kwargs). Defaults to False.
+        rule_detail (bool, optional): Retrieve rule-level details by initializing a `RuleScraper()` instance. Defaults to True.
+        use_existing_pop_data (bool, optional): Use existing population data file to retrieve rule-level details. Defaults to False.
+    
+    Returns:
+        bool: Returns True if ran through retrieval pipeline, False if no rules to retrieve.
     """
     if major_only:
         type = "major"
@@ -643,6 +676,15 @@ def pipeline(data_path: Path,
 
 
 def scraper(data_path: Path):
+    """Text-based interface for running the scraper pipeline. 
+    Operates within a `while True` loop that doesn't break until it receives valid inputs.
+
+    Args:
+        data_path (Path): Path to the data files.
+
+    Returns:
+        bool: Returns True if ran through retrieval pipeline, False if no rules to retrieve.
+    """    
     while True:
         
         # print prompts to console
