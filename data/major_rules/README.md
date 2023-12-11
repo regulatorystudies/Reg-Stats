@@ -15,13 +15,32 @@ Data: 2022-11-03
 2. Ensure whether Python and the relevant packages are installed on your computer's environment (see instructions below on setting up your environment).
 
 3. Run the program (two methods):
-    - In the `cradb/` folder, run scraper.py and process_data.py as scripts from the command line or your preferred IDE.
-      - Follow the prompts that appear
-      - Run the python code in "fr_rules_presidential_year.py" as a script (it can be executed in the IDE or editor of your choice or from the command line)
-      - Ensure that the code is executed correctly; if errors, troubleshoot
-      - Ensure that data saved in json and csv files
-    - Calendar year
-      - In progress (script: "fr_rules_calendar_year.py")
+    - As Python scripts
+      - In the `cradb/` folder, run `scraper.py` and `process_data.py` as scripts from the command line or your preferred IDE.
+      - Follow the prompts that appear.
+        - At a minimum, calling `scraper.py` will produce the following prompts:
+
+          ```{bash}
+          "Retrieve only major rules? [yes/no]: "
+          "Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: "
+          "Retrieve rule-level details? [yes/no]: "
+          ```
+
+        - At a minimum, calling `process_data.py` will produce the following prompts:
+
+          ```{bash}
+          "Process only major rules? [yes/no]: "
+          ```
+
+    - As a module
+      - Run `python -m cradb` from the command line
+      - Follow the prompts that appear, beginning with:
+
+        ```{bash}
+        "Do you want to retrieve data [r], process data [p], or both [b]? Enter selection [r/p/b]: "
+        ```
+
+      - The module will direct you through each step until the program finishes.
 
 ### Manual Process
 
