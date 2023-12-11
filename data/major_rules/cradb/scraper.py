@@ -264,7 +264,8 @@ class PopulationScraper(Scraper):
         
         all_rules_dedup = all_rules
         all_rules_dedup, dups = remove_duplicates(all_rules)
-        print(f"Filtered out {dups} duplicates.")
+        if dups > 0:
+            print(f"Filtered out {dups} duplicates.")
         
         output = {
             "description": "Contains basic records for rules in GAO's CRA Database of Rules.", 
@@ -286,7 +287,7 @@ class PopulationScraper(Scraper):
             document_count (int): Number of total documents returned by search.
 
         Returns:
-            dict: Results of the scraped data and accompanying metadata.
+            dict | None: Results of the scraped data and accompanying metadata, or None if no missing documents.
         """
         # check type of data input
         if isinstance(data, dict):
@@ -305,7 +306,10 @@ class PopulationScraper(Scraper):
                 params.update({"title": s})
                 soup = self.request_soup(params, page=0, strainer=create_soup_strainer())
                 pages = self.get_page_count(soup)
+                
+                # potential efficiency improvement: only scrape documents if missing
                 data_temp = self.scrape_population(params, pages)
+                
                 data_alt.extend(data_temp["results"])
 
                 data_alt, _ = remove_duplicates(data_alt)
@@ -604,7 +608,7 @@ def pipeline(data_path: Path,
         use_existing_pop_data (bool, optional): Use existing population data file to retrieve rule-level details. Defaults to False.
     
     Returns:
-        bool: Returns True if ran through retrieval pipeline, False if no rules to retrieve.
+        bool | None: Returns True if retrieved rule-level details, False if only population data, None if no rules to retrieve.
     """
     if major_only:
         type = "major"
@@ -625,7 +629,7 @@ def pipeline(data_path: Path,
         document_count = ps.get_document_count(soup)
         if document_count < 1:
             print("No rules to retrieve.")
-            return False
+            return
         else:  # retrieve rules turned up by database search
             page_count = ps.get_page_count(soup)
             print(f"Requesting {document_count} rules from {page_count + 1} page(s).")
@@ -672,7 +676,9 @@ def pipeline(data_path: Path,
             rule_data["results"].extend(existing_rule_data)
         rs.to_json(rule_data, data_path, f"rule_detail_{type}")
     
-    return True
+        return True
+    
+    return False
 
 
 def scraper(data_path: Path):
