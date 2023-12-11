@@ -31,14 +31,17 @@ if __name__ == "__main__":
             break
         elif prompt in both:        
             status = scraper(data_path)
-            if status:
+            if status == True:
                 process_data(data_path, root_path)
-            else:
-                print("""
-                      Can't process data without retrieving rule-level details.
-                      \n
-                      Only rule-level webpages contain data on published dates.
-                      """)
+            elif status == False:
+                print(
+                    "Exiting program. Can't process data without retrieving rule-level details.", 
+                    "\n", 
+                    "Only rule-level webpages contain data on published dates.", 
+                    sep=""
+                    )
+            elif status is None:
+                print("Exiting program. To process existing data, run the program again and enter [p/process].")
             break
         else:
             print(f"Invalid input. Must enter one of the following: {', '.join(valid_inputs)}.")
