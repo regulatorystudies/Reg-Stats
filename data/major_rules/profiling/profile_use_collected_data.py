@@ -8,7 +8,6 @@ from cradb.scraper import (
 )
 
 # set up
-data_path = Path(__file__).parents[1].joinpath("raw_data")
 ps = PopulationScraper(major_only=True, new_only=False) 
 params = ps.set_request_params(BASE_PARAMS)
 soup = ps.request_soup(params, page = 0, strainer=create_soup_strainer())
