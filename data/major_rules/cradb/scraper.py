@@ -203,7 +203,7 @@ class PopulationScraper(Scraper):
         return page_count
     
     @sleep_retry(300, retry=12)
-    def scrape_population(self, params: dict, pages: int | list, documents: int = None, **kwargs):
+    def scrape_population(self, params: dict, pages: int | list | range | tuple, documents: int = None, **kwargs):
         """Scrape html for population of rules in CRA database.
 
         Args:
@@ -218,7 +218,7 @@ class PopulationScraper(Scraper):
         if isinstance(pages, int):
             # add 1 because Python uses zero-based numbering
             page_range = range(pages + 1)
-        elif isinstance(pages, list):
+        elif isinstance(pages, (list, range, tuple)):
             page_range = pages
         
         # loop over pages and scrape data from each one
@@ -303,7 +303,7 @@ class PopulationScraper(Scraper):
         
         return one_page
 
-    def get_missing_documents(self, data: dict | list, params: dict, document_count: int):
+    def get_missing_documents(self, data: dict | list, params: dict, document_count: int, use_collected_data: bool = True):
         """Retrieve missing documents from population data result set. 
         Handles error with GAO's CRA database where duplicate entries appear and exclude other entries.
 
@@ -334,7 +334,10 @@ class PopulationScraper(Scraper):
                 pages = self.get_page_count(soup)
                 
                 # potential efficiency improvement: only scrape documents if missing
-                data_temp = self.scrape_population(params, pages, collected_data=data_alt)
+                if use_collected_data:
+                    data_temp = self.scrape_population(params, pages, collected_data=data_alt)
+                else:
+                    data_temp = self.scrape_population(params, pages)
                 
                 data_alt.extend(data_temp["results"])
 
