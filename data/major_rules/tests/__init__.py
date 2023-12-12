@@ -1,3 +1,3 @@
-from tests import *
+#from tests import *
 
 #__all__ = []
