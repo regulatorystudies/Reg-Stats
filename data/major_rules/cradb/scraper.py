@@ -413,7 +413,7 @@ class RuleScraper(Scraper):
             elif item_para is not None:
                 item_value = item_para.string
             elif item_url is not None:
-                item_value = item_url["href"]
+                item_value = f"{self.url_stem}{item_url['href']}"
             else:
                 item_value = item.string
             
