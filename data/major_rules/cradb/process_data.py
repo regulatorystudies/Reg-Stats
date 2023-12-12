@@ -47,6 +47,25 @@ def load_json(path: Path, file_name: str) -> dict | list:
     return data
 
 
+def fix_url_stubs(data: dict | list, url_stem: str = r"https://www.gao.gov", key: str = "major_rule_report"):
+    
+    if isinstance(data, dict):
+        results = data.get("results")
+    elif isinstance(data, list):
+        results = data
+    
+    for rule in results:
+        report = rule.get(key)
+        if url_stem in report:
+            continue
+        else:
+            rule.update({
+                key: f"{url_stem}{report}"
+                })
+    
+    return results
+
+
 def extract_date(string: str):
     """Extract date from a string in a format similar to `datetime.time`.
 
