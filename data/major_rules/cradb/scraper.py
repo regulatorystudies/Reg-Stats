@@ -214,11 +214,14 @@ class PopulationScraper(Scraper):
         Returns:
             dict: Results of the scraped data and accompanying metadata.
         """
+        # check type of pages parameter
         if isinstance(pages, int):
-            page_range = range(pages + 1)  # zero-based numbering
+            # add 1 because Python uses zero-based numbering
+            page_range = range(pages + 1)
         elif isinstance(pages, list):
             page_range = pages
         
+        # loop over pages and scrape data from each one
         all_rules = []
         for page in page_range:
             # get soup for this page
@@ -231,29 +234,9 @@ class PopulationScraper(Scraper):
                       f"This page: {page}", 
                       f"Last page: {page_range[-1]}")
                 raise ParseError("Failed to parse number of rules per page correctly.")
-                
-            one_page = []
-            for rule in rules_this_page:
-                bookmark = rule.find("div", class_="teaser-search--bookmark").a
-                rows = rule.find_all("div", class_="teaser-search--row")
-                rule_dict = {
-                    "page": page, 
-                    "url": f"{self.url_stem}{bookmark['href']}", 
-                    "type": bookmark.string.strip()
-                    }
-                for row in rows:
-                    teasers = row.find_all("div", class_=has_teaser_search)
-                    for t in teasers:
-                        label = clean_label(t.find("label").string.strip(":").lower())
-                        div = t.find("div", class_=has_field_name)
-                        if div.time is not None:
-                            value = div.time["datetime"]
-                        elif div.time is None:
-                            value = div.string.strip()
-                        else:
-                            raise ParseError
-                        rule_dict.update({label: value})
-                one_page.append(rule_dict)
+            
+            # retrieve rules on a single page
+            one_page = self.scrape_page(rules_this_page, page, collected_data=kwargs.get("collected_data"))
             
             all_rules.extend(one_page)
             if documents is not None:
@@ -277,6 +260,49 @@ class PopulationScraper(Scraper):
             }
         return output
     
+    def scrape_page(self, rules_this_page: BeautifulSoup, page: int, collected_data: list = None):
+        
+        if collected_data:
+            #control_num_list = (extract_control_number(r.get("url"), regex=False) for r in collected_data)
+            url_list = (r.get("url") for r in collected_data)
+        
+        # loop over rules on a single page
+        one_page = []
+        for rule in rules_this_page:
+            bookmark = rule.find("div", class_="teaser-search--bookmark").a
+            #control_num = extract_control_number(f"{bookmark['href']}")
+            url = f"{self.url_stem}{bookmark['href']}"
+            if collected_data:
+                #control_num_list = [extract_control_number(r.get("url")) for r in collected_data]
+                #print(control_num)
+                if url in url_list:
+                #if control_num in control_num_list:
+                    #print(url)
+                    continue
+            
+            rows = rule.find_all("div", class_="teaser-search--row")
+            rule_dict = {
+                "page": page, 
+                "url": url, #f"{self.url_stem}{bookmark['href']}", 
+                #"control_num": control_num, 
+                "type": bookmark.string.strip()
+                }
+            for row in rows:
+                teasers = row.find_all("div", class_=has_teaser_search)
+                for t in teasers:
+                    label = clean_label(t.find("label").string.strip(":").lower())
+                    div = t.find("div", class_=has_field_name)
+                    if div.time is not None:
+                        value = div.time["datetime"]
+                    elif div.time is None:
+                        value = div.string.strip()
+                    else:
+                        raise ParseError
+                    rule_dict.update({label: value})
+            one_page.append(rule_dict)
+        
+        return one_page
+
     def get_missing_documents(self, data: dict | list, params: dict, document_count: int):
         """Retrieve missing documents from population data result set. 
         Handles error with GAO's CRA database where duplicate entries appear and exclude other entries.
@@ -308,7 +334,7 @@ class PopulationScraper(Scraper):
                 pages = self.get_page_count(soup)
                 
                 # potential efficiency improvement: only scrape documents if missing
-                data_temp = self.scrape_population(params, pages)
+                data_temp = self.scrape_population(params, pages, collected_data=data_alt)
                 
                 data_alt.extend(data_temp["results"])
 
@@ -556,6 +582,27 @@ def remove_duplicates(results: list, key: str = "url"):
     
     filtered_count = len(res)
     return res, (initial_count - filtered_count)
+
+
+def extract_control_number(string: str, regex: bool = True):
+    """Extract a rule's 6-digit control number from a string.
+
+    Args:
+        string (str): String containing control number.
+        regex (bool, optional): Extract using regular expressions. Defaults to True.
+
+    Returns:
+        str: Control number as string.
+    """
+    if regex:
+        res = re.compile("\d{6}", re.I).search(string)
+        
+        if isinstance(res, re.Match):
+            return res[0]
+        else:
+            return None
+    else:
+        return string.split("/")[-1]
 
 
 def truncate(n: int | float, places: int = 0):
