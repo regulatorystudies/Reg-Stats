@@ -1,10 +1,40 @@
 {
     "description": "Contains basic records for rules in GAO's CRA Database of Rules.",
     "source": "https://www.gao.gov/legal/other-legal-work/congressional-review-act",
-    "date_retrieved": "2023-12-12",
+    "date_retrieved": "2023-12-13",
     "major_only": true,
-    "rule_count": 2114,
+    "rule_count": 2117,
     "results": [
+        {
+            "page": 0,
+            "url": "https://www.gao.gov/fedrules/208205",
+            "type": "Major Federal Rule",
+            "identifier": "0910-AG27",
+            "fed_reg_number": "88 FR 80958",
+            "effective_date": "2024-05-20T13:00:00Z",
+            "received": "2023-11-28T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 0,
+            "url": "https://www.gao.gov/fedrules/208202",
+            "type": "Major Federal Rule",
+            "identifier": "2900-AR76",
+            "fed_reg_number": "88 FR 82261",
+            "effective_date": "2024-01-23T13:00:00Z",
+            "received": "2023-11-24T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 0,
+            "url": "https://www.gao.gov/fedrules/208170",
+            "type": "Major Federal Rule",
+            "identifier": "1615-AC89 & 1205-AC18",
+            "fed_reg_number": "88 FR 80394",
+            "effective_date": "2023-11-17T13:00:00Z",
+            "received": "2023-11-17T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
         {
             "page": 0,
             "url": "https://www.gao.gov/fedrules/208127",
