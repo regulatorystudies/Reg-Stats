@@ -1,6 +1,6 @@
 from collections import Counter
 from copy import deepcopy
-from datetime import date
+from datetime import date, timedelta
 import json
 from pathlib import Path
 import re
@@ -543,14 +543,14 @@ def get_retrieval_date(path : Path, file_name: str):
 
 
 def get_last_received_date(path : Path, file_name: str):
-    """Get most recent received date from existing data.
+    """Get most recent received date plus one day from existing data.
 
     Args:
         path (Path): Path to file.
         file_name (str): File name.
 
     Returns:
-        str: String of last received date in YYYY-MM-DD format.
+        str: String of last received date plus one day in YYYY-MM-DD format.
     """
     with open(path / f"{file_name}.json", "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -558,7 +558,8 @@ def get_last_received_date(path : Path, file_name: str):
     results = data["results"]
     received_dates = (extract_date(r.get("received")) for r in results)
     received_list = sorted(received_dates, reverse=True)
-    return f"{received_list[0]}"
+    last_received_plus_one = received_list[0] + timedelta(days=1)
+    return f"{last_received_plus_one}"
 
 
 def identify_duplicates(results: list, key: str = "url") -> list[dict]:
