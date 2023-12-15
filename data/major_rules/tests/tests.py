@@ -8,6 +8,7 @@ from cradb.scraper import (
     PopulationScraper, 
     RuleScraper,
     BASE_PARAMS, 
+    get_last_received_date, 
 )
 
 
@@ -22,7 +23,7 @@ def cleanup(file: Path = tests_path / "temp.json"):
         file.unlink()
 
 
-# SCRAPER TESTS #
+# SCRAPER CLASS TESTS #
 
 
 def test_get_request_params_type_all(params: dict = BASE_PARAMS):
@@ -93,6 +94,16 @@ def test_scrape_population(params = BASE_PARAMS, pages = 5, documents = 0):
     assert (isinstance(data, dict)) and (len(data.get("results")) == pages * 20)
 
 
+# SCRAPER FUNCTION TESTS #
+
+def test_get_last_received_date(path: Path = tests_path, file_name: str = "population_test"):
+    received = get_last_received_date(path, file_name)
+    #assert (isinstance(received, str)) and (len(received) == 10)
+    assert received == "2023-11-08"
+
+
+# MISC #
+
 def scraper_examples():
     # profile time elapsed
 
@@ -133,7 +144,8 @@ ALL_TESTS = (
     test_get_request_params_type_major, 
     test_from_json,
     #test_to_json, 
-    test_scrape_population, 
+    #test_scrape_population, 
+    test_get_last_received_date, 
     )
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from process_data import *
+from cradb.process_data import *
 
 p = Path(__file__)
 root_path = p.parents[1]
@@ -17,7 +17,7 @@ for this_path in (root_path, data_path, val_path):
 
 # %%
 
-from scraper import PopulationScraper, BASE_PARAMS, remove_duplicates
+from cradb.scraper import PopulationScraper, BASE_PARAMS, remove_duplicates
 
 ps = PopulationScraper(major_only=True)
 

@@ -47,6 +47,25 @@ def load_json(path: Path, file_name: str) -> dict | list:
     return data
 
 
+def fix_url_stubs(data: dict | list, url_stem: str = r"https://www.gao.gov", key: str = "major_rule_report"):
+    
+    if isinstance(data, dict):
+        results = data.get("results")
+    elif isinstance(data, list):
+        results = data
+    
+    for rule in results:
+        report = rule.get(key)
+        if url_stem in report:
+            continue
+        else:
+            rule.update({
+                key: f"{url_stem}{report}"
+                })
+    
+    return results
+
+
 def extract_date(string: str):
     """Extract date from a string in a format similar to `datetime.time`.
 
@@ -185,62 +204,41 @@ def groupby_year(df: DataFrame,
 # df.groupby(["agency", "subagency"])["control_number"].agg("count")
 
 
-def process_data(data_path: Path, root_path: Path) -> None:
+def process_data(data_path: Path, root_path: Path, data_file: str = "rule_detail_major") -> None:
     """Text-based interface for running the data processing pipeline. 
     Operates within a `while True` loop that doesn't break until it receives valid inputs.
 
     Args:
         data_path (Path): Path to the data files.
         root_path (Path): Path to root folder for major rules.
-    """
-    while True:
-        
-        # print prompts to console
-        major_prompt = input("Process only major rules? [yes/no]: ").lower()
-        
-        # check user inputs
-        y_inputs = ["y", "yes", "true"]
-        n_inputs = ["n", "no", "false"]
-        valid_inputs = y_inputs + n_inputs
-        if major_prompt in valid_inputs:
-            
-            # set major_only param
-            if major_prompt in y_inputs:
-                #major_only = True
-                data_file = "rule_detail_major"
-            elif major_prompt in n_inputs:
-                #major_only = False
-                data_file = "rule_detail_all"
-
-            # call processing pipeline
-            data = load_json(data_path, data_file)    
-            df = json_to_df(data)
-            df, df_dup = find_duplicates(df)
-            print(f"Removed {len(df_dup)} duplicates.")
-            #print(df_dup)
-            timeframe = ("received", "published")
-            dfs = []
-            for tf in timeframe:
-                df_pres = df.copy(deep=True)
-                df_pres = convert_to_presidential_year(df_pres, date_col = tf)
-                grouped = groupby_year(df_pres, year_col = "presidential")
-                output = define_presidential_terms(grouped).rename(columns={"major_rules": f"major_rules_{tf}"})
-                dfs.append(output)
-            output = merge(
-                dfs[0], dfs[1], 
-                on=["presidential_year", "end_of_term", "democratic_admin"], 
-                suffixes=timeframe, 
-                validate="1:1"
-                )
-            sort_cols = ["presidential_year", "end_of_term", "democratic_admin"] + [c for c in output.columns if "major_rules" in f"{c}"]
-            output = output.loc[:, sort_cols]
-            
-            print(f"\nAggregated data by presidential year:", output, sep="\n")
-            save_csv(output, root_path, f"major_rules_by_presidential_year")
-            break
-
-        else:
-            print(f"Invalid input. Must enter one of the following: {', '.join(valid_inputs)}.")
+        data_file (str, optional): File containing the rule detail data. Defaults to "rule_detail_major".
+    """    
+    # call processing pipeline
+    print("Processing retrieved data on major rules.")
+    data = load_json(data_path, data_file)    
+    df = json_to_df(data)
+    df, df_dup = find_duplicates(df)
+    print(f"Removed {len(df_dup)} duplicates.")
+    #print(df_dup)
+    timeframe = ("received", "published")
+    dfs = []
+    for tf in timeframe:
+        df_pres = df.copy(deep=True)
+        df_pres = convert_to_presidential_year(df_pres, date_col = tf)
+        grouped = groupby_year(df_pres, year_col = "presidential")
+        output = define_presidential_terms(grouped).rename(columns={"major_rules": f"major_rules_{tf}"})
+        dfs.append(output)
+    output = merge(
+        dfs[0], dfs[1], 
+        on=["presidential_year", "end_of_term", "democratic_admin"], 
+        suffixes=timeframe, 
+        validate="1:1"
+        )
+    sort_cols = ["presidential_year", "end_of_term", "democratic_admin"] + [c for c in output.columns if "major_rules" in f"{c}"]
+    output = output.loc[:, sort_cols]
+    
+    print(f"\nAggregated data by presidential year:", output, sep="\n")
+    save_csv(output, root_path, f"major_rules_by_presidential_year")
 
 
 if __name__ == "__main__":

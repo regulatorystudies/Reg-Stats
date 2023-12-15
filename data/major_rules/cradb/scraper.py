@@ -9,6 +9,7 @@ import time
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 
+from .process_data import extract_date
 
 BASE_PARAMS = {
     "processed": 1, 
@@ -84,7 +85,7 @@ class Scraper:
             params.update({"type": "Major"})
         
         if self.new_only:
-            start_date = get_retrieval_date(kwargs.get("path"), kwargs.get("file_name"))
+            start_date = get_last_received_date(kwargs.get("path"), kwargs.get("file_name"))
             params.update({"received_start_date": start_date})
         
         return params
@@ -202,7 +203,7 @@ class PopulationScraper(Scraper):
         return page_count
     
     @sleep_retry(300, retry=12)
-    def scrape_population(self, params: dict, pages: int | list, documents: int = None, **kwargs):
+    def scrape_population(self, params: dict, pages: int | list | range | tuple, documents: int = None, **kwargs):
         """Scrape html for population of rules in CRA database.
 
         Args:
@@ -217,7 +218,7 @@ class PopulationScraper(Scraper):
         if isinstance(pages, int):
             # add 1 because Python uses zero-based numbering
             page_range = range(pages + 1)
-        elif isinstance(pages, list):
+        elif isinstance(pages, (list, range, tuple)):
             page_range = pages
         
         # loop over pages and scrape data from each one
@@ -302,7 +303,7 @@ class PopulationScraper(Scraper):
         
         return one_page
 
-    def get_missing_documents(self, data: dict | list, params: dict, document_count: int):
+    def get_missing_documents(self, data: dict | list, params: dict, document_count: int, use_collected_data: bool = True):
         """Retrieve missing documents from population data result set. 
         Handles error with GAO's CRA database where duplicate entries appear and exclude other entries.
 
@@ -333,7 +334,10 @@ class PopulationScraper(Scraper):
                 pages = self.get_page_count(soup)
                 
                 # potential efficiency improvement: only scrape documents if missing
-                data_temp = self.scrape_population(params, pages, collected_data=data_alt)
+                if use_collected_data:
+                    data_temp = self.scrape_population(params, pages, collected_data=data_alt)
+                else:
+                    data_temp = self.scrape_population(params, pages)
                 
                 data_alt.extend(data_temp["results"])
 
@@ -409,7 +413,7 @@ class RuleScraper(Scraper):
             elif item_para is not None:
                 item_value = item_para.string
             elif item_url is not None:
-                item_value = item_url["href"]
+                item_value = f"{self.url_stem}{item_url['href']}"
             else:
                 item_value = item.string
             
@@ -536,6 +540,25 @@ def get_retrieval_date(path : Path, file_name: str):
         data = json.load(f)
     
     return data["date_retrieved"]
+
+
+def get_last_received_date(path : Path, file_name: str):
+    """Get most recent received date from existing data.
+
+    Args:
+        path (Path): Path to file.
+        file_name (str): File name.
+
+    Returns:
+        str: String of last received date in YYYY-MM-DD format.
+    """
+    with open(path / f"{file_name}.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
+    
+    results = data["results"]
+    received_dates = (extract_date(r.get("received")) for r in results)
+    received_list = sorted(received_dates, reverse=True)
+    return f"{received_list[0]}"
 
 
 def identify_duplicates(results: list, key: str = "url") -> list[dict]:
@@ -694,14 +717,18 @@ def pipeline(data_path: Path,
             if new_only:
                 new_data = deepcopy(pop_data.get("results"))
                 existing_pop_data = ps.from_json(data_path, f"population_{type}").get("results")
-                pop_data["results"].extend(existing_pop_data)
+                combined_pop = pop_data["results"] + existing_pop_data
+                results_uq, _ = remove_duplicates(combined_pop)
+                pop_data.update({
+                    "rule_count": len(results_uq), 
+                    "results": results_uq
+                                 })
             
             # save population data
             ps.to_json(pop_data, data_path, f"population_{type}")
             
             # summarize rule types retrieved
             type_counts = Counter([rule["type"] for rule in pop_data["results"]])
-            print(f"Retrieved {type_counts.total()} rules.")
             for k, v in type_counts.items():
                 print(f"{k}s: {v}")
     
@@ -719,7 +746,13 @@ def pipeline(data_path: Path,
         # scrape rule detail data and save
         rule_data = rs.scrape_rules()
         if new_only:
-            rule_data["results"].extend(existing_rule_data)
+            #rule_data["results"].extend(existing_rule_data)
+            combined_rules = rule_data["results"] + existing_rule_data
+            rules_uq, _ = remove_duplicates(combined_rules)
+            rule_data.update({
+                "rule_count": len(rules_uq), 
+                "results": rules_uq
+                })
         rs.to_json(rule_data, data_path, f"rule_detail_{type}")
     
         return True
