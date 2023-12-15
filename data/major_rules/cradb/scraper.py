@@ -3,7 +3,6 @@ from copy import deepcopy
 from datetime import date
 import json
 from pathlib import Path
-#from pprint import pprint
 import re
 import time
 
@@ -774,7 +773,6 @@ def scraper(data_path: Path):
     while True:
         
         # print prompts to console
-        major_prompt = input("Retrieve only major rules? [yes/no]: ").lower()
         new_prompt = input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
         detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
         
@@ -782,18 +780,13 @@ def scraper(data_path: Path):
         y_inputs = ["y", "yes", "true"]
         n_inputs = ["n", "no", "false"]
         valid_inputs = y_inputs + n_inputs
-        if ((major_prompt in valid_inputs) 
-            and (new_prompt in valid_inputs) 
+        if ((new_prompt in valid_inputs) 
             and (detail_prompt in valid_inputs)):
             
             # set major_only param
-            if major_prompt in y_inputs:
-                major_only = True
-                file_name = "population_major"
-            elif major_prompt in n_inputs:
-                major_only = False
-                file_name = "population_all"
-            
+            major_only = True
+            file_name = "population_major"
+
             # set new_only param
             if new_prompt in y_inputs:
                 new_only = True
