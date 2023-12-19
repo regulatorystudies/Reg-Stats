@@ -108,7 +108,7 @@ caption_text <- paste("Sources: Office of the Federal Register (federalregister.
 ```{r generate graph}
 # generate line graph
 line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) + 
-  annotate("segment", x = 48, xend = 48, y = 0, yend = 500, linetype = "solid", size = 0.50, color = RSCgray) +
+  annotate(geom = "segment", x = 48, xend = 48, y = 0, yend = max(cum_sig_long$econ_rules) + 10, linetype = "solid", size = 0.50, color = RSCgray) +
   geom_line(linewidth = 0.75) +
   geom_label_repel(data = line_ends, 
                   aes(x = months_in_office_end, y = econ_rules_end, label = president),
@@ -139,6 +139,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   xlab("Number of Months In Office") +
   ylab("Number of Economically Significant Rules Published") +
   ggtitle("Cumulative Economically Significant Final Rules by Administration") +
+  annotate(geom = "text", x = 48, y = max(cum_sig_long$econ_rules) + 12, label = "End of First Presidential Term", size = 4, hjust = 0, vjust = 0) +
   labs(color = "President", caption = caption_text) +
   scale_y_continuous(breaks = seq(0, max(cum_sig_long$econ_rules) + 50, by = 50),
                      expand = c(0, 0), 
