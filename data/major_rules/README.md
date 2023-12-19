@@ -82,4 +82,29 @@ See the [Anaconda documentation](https://docs.conda.io/projects/conda/en/latest/
 
 CRAdb is a module created to retrieve data from GAO's [Congressional Review Act (CRA) Database of Rules](https://www.gao.gov/legal/other-legal-work/congressional-review-act) and process the data for summarizing annual trends. The module is set up for running a command line interface that executes a pre-defined pipeline for retrieving and processing the data. However, the module's classes and functions can also be imported to create a customized pipeline. This tutorial briefly explains how to use both approaches.
 
+Currently, to use the package, you must clone the repository from [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository). Then, set the `data/major_rules/` sub-directory within the repository root as your working directory.
+
 TO DO: finish tutorial
+
+### Basic Usage
+
+After cloning the code, you can run the program as a module from the `data/major_rules/` directory using the `-m` switch from the command line:
+
+```{bash}
+python -m cradb
+```
+
+Calling `cradb` as a module initiaties a pre-defined pipeline in `__main__.py` that prompts the user to enter inputs that guide them through the program.
+
+For example, the program begins by asking, `"Do you want to retrieve data [r], process data [p], or both [b]?"`. After a user enters a selection in the command line, the program will move toward the next stage, whether that retrieving or processing the CRA data. The program moves forward when it receives a valid input, so mistaken entries won't cause the program to exit prematurely.
+
+When retrieving data, the program will offer users the option to "Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
+        detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
+
+### Advanced Usage
+
+Customized by importing and accessing classes and functions
+
+`PopulationScraper` class
+
+`RuleScraper` class
