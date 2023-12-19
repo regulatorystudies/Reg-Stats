@@ -49,7 +49,8 @@ library(dplyr)
 # load csv using here
 df1 <- read.csv(here("charts", "data", data_file))
 
-logo <- get_png(here("charts", "style", "logo.png"))
+# load RSC logo
+logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 
 ```
 

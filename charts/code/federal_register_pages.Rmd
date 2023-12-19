@@ -43,7 +43,8 @@ library(grid)
 # load csv using here
 tot_pages <- read.csv(here("charts", "data", data_file), skip = 4)
 
-logo <- get_png(here("charts", "style", "logo.png"))
+# load RSC logo
+logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 
 ```
 
