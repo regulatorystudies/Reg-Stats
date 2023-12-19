@@ -198,7 +198,7 @@ class PopulationScraper(Scraper):
         elif not results_pages:
             page_count = 0
         else:
-            raise ParseError
+            raise ParseError("Failed to parse page count information from html.")
         
         return page_count
     
@@ -260,7 +260,10 @@ class PopulationScraper(Scraper):
             }
         return output
     
-    def scrape_page(self, rules_this_page: BeautifulSoup, page: int, collected_data: list = None):
+    def scrape_page(self, 
+                    rules_this_page: BeautifulSoup, 
+                    page: int, 
+                    collected_data: list = None):
         
         if collected_data:
             #control_num_list = (extract_control_number(r.get("url"), regex=False) for r in collected_data)
