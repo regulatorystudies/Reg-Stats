@@ -88,7 +88,7 @@ caption_text <- paste("Sources: Office of Information and RedulatoryAffairs \n\n
 wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
 
 #font
-font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
+# font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
 showtext_auto()
 
 #plot

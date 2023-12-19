@@ -168,5 +168,5 @@ if (!dir.exists(out)){
 }
 
 # save line1 as pdf
-ggsave(here("output", "cumulative_econ_significant_rules_by_presidential_month.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "cumulative_econ_significant_rules_by_presidential_month.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
 ```
