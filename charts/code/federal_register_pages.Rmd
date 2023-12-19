@@ -37,13 +37,28 @@ library(grid)
 
 ```
 
+<<<<<<< Updated upstream
 ## Load Data
+=======
+```{r load style, message=FALSE}
+# load style
+source(here("charts/code", "style.R"))
+```
+>>>>>>> Stashed changes
 
 ```{r load data}
 # load csv using here
-tot_pages <- read.csv(here("charts", "data", data_file), skip = 4)
+tot_pages <- read.csv(here("charts/data", data_file), skip = 4)
 
+<<<<<<< Updated upstream
 logo <- get_png(here("charts", "style", "logo.png"))
+=======
+# eventually separate this into another file for reuse, then import/call the function
+# ^ HOW TO DO THIS?
+get_png <- function(filename) {
+  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
+}
+>>>>>>> Stashed changes
 
 ```
 
@@ -91,7 +106,11 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   ) +
   scale_x_discrete(breaks = seq(min(tot_pages$year), max(tot_pages$year), by = 2)) + 
   labs(caption = caption_text) +
+<<<<<<< Updated upstream
   annotation_custom(logo, xmin = -212, xmax = 230, ymin = -19000, ymax = -7000) + # for logo
+=======
+  # annotation_custom(logo, xmin = -212, xmax = 230, ymin = -19000, ymax = -7000) + # for logo
+>>>>>>> Stashed changes
   coord_cartesian(clip = "off") +
   theme_RSC
 
@@ -100,12 +119,20 @@ bar1
 
 ```{r save}
 # create empty output folder if it doesn't already exist
+<<<<<<< Updated upstream
 out = here("charts", "output")
+=======
+out = here("charts/output")
+>>>>>>> Stashed changes
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
 # save line1 as pdf
+<<<<<<< Updated upstream
 ggsave(here("charts", "output", "federal_register_pages_by_calendar_year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
+=======
+ggsave(here("charts/output", "Total Pages Published in the Federal Register.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
+>>>>>>> Stashed changes
 ```
 

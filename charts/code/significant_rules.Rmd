@@ -37,6 +37,7 @@ library(ggpattern)
 
 ```
 
+<<<<<<< Updated upstream
 ## Load data
 
 ```{r load data}
@@ -45,6 +46,22 @@ sig_fin_rules <- read.csv(here("charts", "data", data_file))
 
 logo <- get_png(here("charts", "style", "logo.png"))
 
+=======
+```{r load style, message=FALSE}
+# load style
+source(here("charts/code", "style.R"))
+```
+
+```{r load data}
+# load csv using here
+sig_fin_rules <- read.csv(here("charts/data", data_file))
+
+# eventually separate this into another file for reuse, then import/call the function
+# ^ HOW TO DO THIS?
+get_png <- function(filename) {
+  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
+}
+>>>>>>> Stashed changes
 ```
 
 ## Process data
@@ -108,7 +125,11 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = p
   ) +
   theme_RSC +
   theme(panel.grid.minor = element_blank()) +
+<<<<<<< Updated upstream
   annotation_custom(logo, xmin = -9, xmax = 15, ymin = -70, ymax = -30) + # for logo
+=======
+  # annotation_custom(l, xmin = -9, xmax = 15, ymin = -70, ymax = -30) + # for logo
+>>>>>>> Stashed changes
   coord_cartesian(clip = "off") +
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
@@ -124,11 +145,19 @@ bar1
 
 ```{r save}
 # create empty output folder if it doesn't already exist
+<<<<<<< Updated upstream
 out = here("charts", "output")
+=======
+out = here("charts/output")
+>>>>>>> Stashed changes
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
 # save line1 as pdf
+<<<<<<< Updated upstream
 ggsave(here("charts", "output", "significant_rules_by_presidential_year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
+=======
+ggsave(here("charts/output", "Significant Final Rules Published by Presidential Year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
+>>>>>>> Stashed changes
 ```
