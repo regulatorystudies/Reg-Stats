@@ -5,17 +5,16 @@ date: "2023-11-2"
 output: html_document
 ---
 
-```{r clear environment}
-# clear environment
-rm(list=ls())
-```
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
 library(here)
-i_am("charts/code/tot_pages_pub_in_FR.Rmd")
+i_am("charts/code/federal_register_pages.Rmd")
 
 # import local functions
 source(here("charts", "code", "local_utils.R"))
@@ -29,32 +28,26 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
 
+## Load Packages
+
 ```{r load packages, results='hide', warning=FALSE}
-# load packages
-library(tidyverse)
-library(png)
+
+library(ggplot2)
 library(grid)
-library(here)
+
 ```
 
-```{r load style, message=FALSE}
-# load style
-source(here("code", "style.R"))
-```
+## Load Data
 
 ```{r load data}
 # load csv using here
 tot_pages <- read.csv(here("charts", "data", data_file), skip = 4)
 
-# eventually separate this into another file for reuse, then import/call the function
-# ^ HOW TO DO THIS?
-get_png <- function(filename) {
-  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
-}
-
-l <- get_png(here("code", "RSC_logo.png"))
+logo <- get_png(here("charts", "style", "logo.png"))
 
 ```
+
+# Process Data
 
 ```{r code}
 # current date
@@ -81,6 +74,8 @@ tot_pages$total <- as.integer(gsub(",", "", tot_pages$total))
 
 ```
 
+# Plot Data
+
 ```{r generate graph}
 # generate bar1
 bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
@@ -96,32 +91,21 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   ) +
   scale_x_discrete(breaks = seq(min(tot_pages$year), max(tot_pages$year), by = 2)) + 
   labs(caption = caption_text) +
-  annotation_custom(l, xmin = -212, xmax = 230, ymin = -19000, ymax = -7000) + # for logo
+  annotation_custom(logo, xmin = -212, xmax = 230, ymin = -19000, ymax = -7000) + # for logo
   coord_cartesian(clip = "off") +
-  theme(
-    plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt")),
-    plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
-    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
-    legend.position = "none",
-    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
-    panel.grid.minor.y = element_blank(),
-    panel.grid.major.x = element_blank(),
-    panel.grid.minor.x = element_blank()
-  )
+  theme_RSC
 
 bar1
 ```
 
-```{r output folder}
+```{r save}
 # create empty output folder if it doesn't already exist
-out = here("output")
+out = here("charts", "output")
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
-```
 
-```{r save to output}
 # save line1 as pdf
-ggsave(here("output", "Total Pages Published in the Federal Register.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "federal_register_pages_by_calendar_year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
 ```
 

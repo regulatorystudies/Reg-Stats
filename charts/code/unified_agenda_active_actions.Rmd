@@ -4,14 +4,17 @@ author: "Yaxin Zhuang"
 date: "`r Sys.Date()`"
 output: html_document
 ---
+
 ## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
 library(here)
-i_am("charts/code/Active Actions Published in the Unified Agenda.Rmd")
+i_am("charts/code/unified_agenda_active_actions.Rmd")
 
 # import local functions
 source(here("charts", "code", "local_utils.R"))
@@ -31,13 +34,11 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 # load packages
 library(ggplot2)
-library(showtext)
-library(png)
 library(ggpattern)
 library(tidyr)
 library(ggrepel)
 library(dplyr)
-library(scales)
+
 ```
 
 ## Load data
@@ -46,18 +47,9 @@ library(scales)
 ```{r load_data}
 
 # load csv using here
-df1 <- read.csv("/content/Active%20Actions%20Listed%20in%20the%20Unified%20Agenda_071023.csv")
+df1 <- read.csv(here("charts", "data", data_file))
 
-# eventually separate this into another file for reuse, then import/call the function
-get_png <- function(filename) {
-  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE) # adjust logo size dimensions here
-}
-
-l <- get_png(here("code", "RSC_logo.png"))
-
-#load custom font
-font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
-showtext_auto()
+logo <- get_png(here("charts", "style", "logo.png"))
 
 ```
 
@@ -106,20 +98,28 @@ bar2 <-
   ggtitle("Active Actions Published in the Unified Agenda \n(1950-2021)") +
   ylab("Number of Active Actions") +
   xlab("") +
-  mytheme+
+  theme_RSC +
   scale_y_continuous(breaks = seq(0, max(data_new1$Total), by = 500), expand = c(0, 0),
                      limits = c(-2, max(data_new1$Total)),) +
                      #labels = label_number(suffix = "K", scale = 1e-3)) +
   # scale_y_continuous()
-  annotation_custom(l, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
+  annotation_custom(logo, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
   # logo_y_dim = 0.3logo_y_max, logo_x_dim = 0.12logo_x_max ?
   coord_cartesian(clip = "off") +
   labs(caption = wrapped_caption)
 
 
 bar2
-#ggsave("Active Actions Published in the Unified Agenda(1950-2021).pdf", plot = bar2, width = 12, height = 9, dpi = 300)
 
+```
 
+```{r save}
+# create empty output folder if it doesn't already exist
+out = here("charts", "output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
 
+# save line1 as pdf
+ggsave(here("charts", "output", "active_actions_by_unified_agenda.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
 ```

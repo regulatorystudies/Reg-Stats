@@ -5,17 +5,16 @@ date: "2023-11-2"
 output: html_document
 ---
 
-```{r clear environment}
-# clear environment
-rm(list=ls())
-```
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
 library(here)
-i_am("charts/code/sig_fin_rules_pub_by_pres_year.Rmd")
+i_am("charts/code/significant_rules.Rmd")
 
 # import local functions
 source(here("charts", "code", "local_utils.R"))
@@ -29,33 +28,26 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
 
+## Load packages
+
 ```{r load packages, results='hide', warning=FALSE}
-# load packages
-library(tidyverse)
-library(png)
-# library(grid)
+
+library(ggplot2)
 library(ggpattern)
-library(here)
+
 ```
 
-```{r load style, message=FALSE}
-# load style
-source(here("code", "style.R"))
-```
+## Load data
 
 ```{r load data}
 # load csv using here
-sig_fin_rules <- read.csv(here("data", data_file))
+sig_fin_rules <- read.csv(here("charts", "data", data_file))
 
-# eventually separate this into another file for reuse, then import/call the function
-# ^ HOW TO DO THIS?
-get_png <- function(filename) {
-  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
-}
-
-l <- get_png(here("code", "RSC_logo.png"))
+logo <- get_png(here("charts", "style", "logo.png"))
 
 ```
+
+## Process data
 
 ```{r code}
 # current date
@@ -86,6 +78,8 @@ sig_fin_rules$party <- as.factor(sig_fin_rules$party)
 
 ```
 
+## Plot data
+
 ```{r generate graph}
 # generate bar1
 bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = party)) +
@@ -114,7 +108,7 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = p
   ) +
   theme_RSC +
   theme(panel.grid.minor = element_blank()) +
-  annotation_custom(l, xmin = -9, xmax = 15, ymin = -70, ymax = -30) + # for logo
+  annotation_custom(logo, xmin = -9, xmax = 15, ymin = -70, ymax = -30) + # for logo
   coord_cartesian(clip = "off") +
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
@@ -128,16 +122,13 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = p
 bar1
 ```
 
-```{r output folder}
+```{r save}
 # create empty output folder if it doesn't already exist
-out = here("output")
+out = here("charts", "output")
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
-```
 
-```{r save to output}
 # save line1 as pdf
-ggsave(here("output", "Significant Final Rules Published by Presidential Year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "significant_rules_by_presidential_year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
 ```
-
