@@ -5,17 +5,9 @@ date: "2023-10-26"
 output: html_document
 ---
 
-<<<<<<< Updated upstream
 ## Initialize
 
 The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
-=======
-```{r clear environment}
-# clear environment
-# rm(list=ls())
-# ^ delete?
-```
->>>>>>> Stashed changes
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -50,15 +42,10 @@ library(dplyr)
 
 ```{r load data}
 # load csv using here
-cum_sig <- read.csv(here("charts/data", data_file), skip = 1)
+cum_sig <- read.csv(here("charts", "data", data_file), skip = 1)
 
 # load png image
-<<<<<<< Updated upstream
 logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
-=======
-# l <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
-# ^ delete?
->>>>>>> Stashed changes
 
 ```
 
@@ -113,7 +100,7 @@ line_ends <- cum_sig_long %>%
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
 # set caption text
-caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;\n       Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
 ```
 
 ## Plot Data
@@ -121,13 +108,12 @@ caption_text <- paste("Sources: Office of the Federal Register (federalregister.
 ```{r generate graph}
 # generate line graph
 line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) + 
-  annotate("segment", x = 48, xend = 48, y = 0, yend = 500, linetype = "solid", size = 0.50, color = RSCgray) +
   geom_line(linewidth = 0.75) +
   geom_label_repel(data = line_ends, 
                   aes(x = months_in_office_end, y = econ_rules_end, label = president),
                   nudge_x = 0, nudge_y = 10,
                   segment.size = 0.2,
-                  size = 4,
+                  size = 3,
                   point.size = 1,
                   box.padding = 0,
                   point.padding = 0,
@@ -144,15 +130,22 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                                 lightblue,
                                 darkyellow,
                                 lightgreen)) +
-<<<<<<< Updated upstream
   annotation_custom(logo, xmin = 0, xmax = 18, ymin = -100, ymax = -45) + # for logo (need to play around with these settings)
-=======
-  # annotation_custom(l, xmin = 0, xmax = 18, ymin = -100, ymax = -45) + # for logo (need to play around with these settings)
->>>>>>> Stashed changes
   coord_cartesian(clip = "off") +
   theme_minimal() +
   theme_RSC +
-  theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) +
+  # theme(plot.title = element_text(hjust = 0.5),
+  #       legend.position = "none",
+  #       panel.grid.major.x = element_blank(),
+  #       panel.grid.major.y = element_line(color = "lightgray", linetype = "solid"),
+  #       panel.grid.minor = element_blank(), 
+        #plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 6, unit = "pt")),
+        #axis.ticks.x = element_line(color = "lightgrey"),
+        #axis.title.x = element_text(margin = margin(t = 10), hjust = 0.5),
+        #axis.title.y = element_text(margin = margin(r = 10), vjust = 0.5),
+        #axis.text.x = element_text(angle = 0),
+        #plot.margin = margin(40, 40, 40, 40)
+        #) +
   xlab("Number of Months In Office") +
   ylab("Number of Economically Significant Rules Published") +
   ggtitle("Cumulative Economically Significant Final Rules by Administration") +
@@ -169,19 +162,11 @@ line1
 
 ```{r save}
 # create empty output folder if it doesn't already exist
-<<<<<<< Updated upstream
 out = here("charts", "output")
-=======
-out = here("charts/output")
->>>>>>> Stashed changes
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
 # save line1 as pdf
-<<<<<<< Updated upstream
 ggsave(here("output", "cumulative_econ_significant_rules_by_presidential_month.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
-=======
-ggsave(here("charts/output", "Cumulative Economically Significant Final Rules by Administration.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
->>>>>>> Stashed changes
 ```

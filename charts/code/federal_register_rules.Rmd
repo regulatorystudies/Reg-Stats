@@ -38,7 +38,6 @@ library(tidyr)
 
 ```
 
-<<<<<<< Updated upstream
 ## Load Data
 
 ```{r load data}
@@ -46,22 +45,6 @@ library(tidyr)
 rules_pub_NA <- read.csv(here("charts", "data", data_file))
 
 logo <- get_png(here("charts", "style", "logo.png"))
-=======
-```{r load style, message=FALSE}
-# load style
-source(here("charts/code", "style.R"))
-```
-
-```{r load data}
-# load csv using here
-rules_pub_NA <- read.csv(here("charts/data", data_file))
-
-# eventually separate this into another file for reuse, then import/call the function
-# ^ HOW TO DO THIS?
-get_png <- function(filename) {
-  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
-}
->>>>>>> Stashed changes
 
 ```
 
@@ -108,11 +91,7 @@ line1 <- ggplot(rules_pub_long,
                      guide = "legend") +
   scale_linetype_manual(values = c("solid", "33"),
                         guide = "legend") +
-<<<<<<< Updated upstream
   annotation_custom(logo, xmin = -4, xmax = 10, ymin = -450, ymax = -1050) + # for logo (need to play around with these settings)
-=======
-  # annotation_custom(logo, xmin = -4, xmax = 10, ymin = -450, ymax = -1050) + # for logo (need to play around with these settings)
->>>>>>> Stashed changes
   coord_cartesian(clip = "off") +
   theme_minimal() +
   theme_RSC +
@@ -145,19 +124,11 @@ line1
 
 ```{r save}
 # create empty output folder if it doesn't already exist
-<<<<<<< Updated upstream
 out = here("charts", "output")
-=======
-out = here("charts/output")
->>>>>>> Stashed changes
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
 # save line1 as pdf
-<<<<<<< Updated upstream
 ggsave(here("charts", "output", "federal_register_rules_by_presidential_year.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
-=======
-ggsave(here("charts/output", "Rules Published in the Federal Register by Presidential Year.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
->>>>>>> Stashed changes
 ```
