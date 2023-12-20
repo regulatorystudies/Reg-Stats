@@ -7,16 +7,14 @@ output: html_document
 
 ## Initialize
 
-We begin by initializing the Rmarkdown file. This is where we set relevant parameters and establish where this markdown file is located within the project directory, using the `[here](https://here.r-lib.org/reference/i_am.html)` package.
-
-The `i_am` function indicates that `workflow_demo.Rmd` is located within the `code` folder inside the main project directory. In other words, the project root is located immediately above the `code` folder. All future calls to files are based on their relative location to the project root.
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
 library(here)
-i_am("charts/code/Cumulative Economically Significant Final Rules by Administration in first year.Rmd")
+i_am("charts/code/cumulative_econ_significant_rules_first_year.Rmd")
 
 # import local functions
 source(here("charts", "code", "local_utils.R"))
@@ -30,23 +28,14 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
 
-Import the packages required for the remainder of the rmarkdown file. It's easier to keep track of the necessary packages when all imports occur at the top of the file.
-
 ## Load Packages
 
 ```{r imports, results='hide', warning=FALSE}
 
-# load packages
 library(ggplot2)
-library(showtext)
-library(png)
 library(ggpattern)
-library(tidyr)
 library(ggrepel)
 library(dplyr)
-library(scales)
-library(gcookbook)
-
 
 ```
 
@@ -55,24 +44,13 @@ library(gcookbook)
 ```{r load_data}
 
 # load csv using here
-cun_sig_first <- read.csv(here("data", data_file))
+cun_sig_first <- read.csv(here("charts", "data", data_file))
 
-# eventually separate this into another file for reuse, then import/call the function
-get_png <- function(filename) {
-  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE) # adjust logo size dimensions here
-}
-
-l <- get_png(here("code", "RSC_logo.png"))
-
-#load custom font
-font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
-showtext_auto()
+logo <- get_png(here("charts", "style", "logo.png"))
 
 ```
 
-
 ## Process data
-
 
 ```{r clean_data}
 
@@ -100,9 +78,7 @@ cun_sig_first_long <- cun_sig_first_NA[complete.cases(cun_sig_first_NA), ] # dat
 
 ```
 
-
 ## Plot data
-
 
 ```{r plot_data, results='markup'}
 
@@ -159,7 +135,7 @@ line1 <- ggplot(cun_sig_first_long, aes(x = months_in_office, y = econ_rules, co
                                 "#0190DB",
                                 "#FFC72C",
                                 "#78BE20")) +
-  annotation_custom(l, xmin = -5, xmax = 10, ymin = -10, ymax = -35) + # for logo (need to play around with these settings)
+  annotation_custom(logo, xmin = -5, xmax = 10, ymin = -10, ymax = -35) + # for logo (need to play around with these settings)
   coord_cartesian(clip = "off") +
   linetheme +
   xlab("Number of Months In Office") +
@@ -175,7 +151,15 @@ line1 <- ggplot(cun_sig_first_long, aes(x = months_in_office, y = econ_rules, co
 
 line1
 
-# save line1 as pdf
-#ggsave("Cumulative Economically Significant Final Rules by Administration in First.pdf", plot = line1, width = 12, height = 9, dpi = 300)
+```
 
+```{r save}
+# create empty output folder if it doesn't already exist
+out = here("charts", "output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+# save line1 as pdf
+ggsave(here("charts", "output", "cumulative_econ_significant_rules_by_first_year.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
 ```

@@ -5,17 +5,16 @@ date: "2023-11-2"
 output: html_document
 ---
 
-```{r clear environment}
-# clear environment
-rm(list=ls())
-```
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
 library(here)
-i_am("charts/code/rules_pub_in_FR_by_pres_year.Rmd")
+i_am("charts/code/federal_register_rules.Rmd")
 
 # import local functions
 source(here("charts", "code", "local_utils.R"))
@@ -29,31 +28,28 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
 
+## Load Packages
+
 ```{r load packages, results='hide', warning=FALSE}
-# load packages
-library(tidyverse)
-library(png)
-library(here)
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
 ```
 
-```{r load style, message=FALSE}
-# load style
-source(here("code", "style.R"))
-```
+## Load Data
 
 ```{r load data}
 # load csv using here
-rules_pub_NA <- read.csv(here("data", data_file))
+rules_pub_NA <- read.csv(here("charts", "data", data_file))
 
-# eventually separate this into another file for reuse, then import/call the function
-# ^ HOW TO DO THIS?
-get_png <- function(filename) {
-  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE)
-}
-
-l <- get_png(here("code", "RSC_logo.png"))
+# load RSC logo
+logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 
 ```
+
+## Process Data
 
 ```{r code}
 # modify column names
@@ -82,6 +78,8 @@ caption_text <- paste("Source: Federal Register API;\n excludes corrections to r
 
 ```
 
+## Plot Data
+
 ```{r generate graph}
 line1 <- ggplot(rules_pub_long,
                 aes(x = year,
@@ -94,7 +92,7 @@ line1 <- ggplot(rules_pub_long,
                      guide = "legend") +
   scale_linetype_manual(values = c("solid", "33"),
                         guide = "legend") +
-  annotation_custom(l, xmin = -4, xmax = 10, ymin = -450, ymax = -1050) + # for logo (need to play around with these settings)
+  annotation_custom(logo, xmin = -4, xmax = 10, ymin = -450, ymax = -1050) + # for logo (need to play around with these settings)
   coord_cartesian(clip = "off") +
   theme_minimal() +
   theme_RSC +
@@ -125,16 +123,13 @@ line1 <- ggplot(rules_pub_long,
 line1
 ```
 
-```{r output folder}
+```{r save}
 # create empty output folder if it doesn't already exist
-out = here("output")
+out = here("charts", "output")
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
-```
 
-```{r save to output}
 # save line1 as pdf
-ggsave(here("output", "Rules Published in the Federal Register by Presidential Year.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "federal_register_rules_by_presidential_year.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
 ```
-

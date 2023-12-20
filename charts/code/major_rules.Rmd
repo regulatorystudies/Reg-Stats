@@ -1,0 +1,109 @@
+---
+title: "Number of Final Major Rules Published by Pres Year"
+author: "Yaxin Zhuang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+library(here)
+i_am("charts/code/major_rules.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "major_rules_by_presidential_year.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
+```
+
+## Load Packages
+
+```{r imports, results='hide', warning=FALSE}
+
+# load packages
+library(ggplot2)
+library(ggpattern)
+library(tidyr)
+library(dplyr)
+
+```
+
+## Load data
+
+```{r load_data}
+
+# load csv using here
+num_fr <- read.csv(here("charts", "data", data_file))
+
+# load RSC logo
+logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
+
+```
+
+## Process data
+
+```{r clean_data}
+
+colnames(num_fr) <- c("year", "fay", "party", "rules_received", "rules_published")
+
+num_fr$rules_published<- as.numeric(num_fr$rules_published)
+
+# make party factor variable
+num_fr$party <- as.factor(num_fr$party)
+```
+
+## Plot data
+
+```{r plot_data, results='markup'}
+current_date <- format(Sys.Date(), "%B %d, %Y")
+caption_text <- paste("Sources: Government Accountability Office \n\nUpdated:", current_date)
+wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
+
+bar1 <-
+  ggplot(num_fr, aes(x = year, y = rules_published, fill = party, pattern = party)) +
+  geom_bar_pattern(stat = "identity", width = 0.5,
+                   pattern_color = NA,
+                    pattern_fill = "#B2DDF4",
+                    pattern_angle = 45,
+                    pattern_density = 0.1,
+                    pattern_spacing = 0.03,
+                   # pattern_key_scale_factor = 1
+                   ) +
+  scale_fill_manual(values = c("#C9102F","#033C5A")) +
+  scale_pattern_manual(values = c("1"="stripe", "0"="none")) +
+  ggtitle("Number of Final Major Rules Published by Presidential Year") +
+  ylab("Number of Major Rules") +
+  xlab("") +
+  scale_y_continuous(breaks = seq(0, max(num_fr$rules_published) + 25, by = 25), expand = c(0, 0),
+                     limits = c(-2, max(num_fr$rules_published) + 25)) +
+  #scale_y_continuous() +
+  annotation_custom(logo, xmin = -5, xmax = 10, ymin = -20, ymax = -50) + # for logo
+  coord_cartesian(clip = "off") +
+  theme_RSC +
+  labs(caption = wrapped_caption)
+bar1
+
+```
+
+```{r save}
+# create empty output folder if it doesn't already exist
+out = here("charts", "output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+# save line1 as pdf
+ggsave(here("charts", "output", "major_rules_by_presidential_year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
+```
