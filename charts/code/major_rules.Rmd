@@ -50,6 +50,9 @@ num_fr <- read.csv(here("charts", "data", data_file))
 # load RSC logo
 logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 
+#load custom font
+font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
+showtext_auto()
 ```
 
 ## Process data
@@ -59,7 +62,7 @@ logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 colnames(num_fr) <- c("year", "fay", "party", "rules_received", "rules_published")
 
 num_fr$rules_published<- as.numeric(num_fr$rules_published)
-
+num_fr$rules_received<- as.numeric(num_fr$rules_received)
 # make party factor variable
 num_fr$party <- as.factor(num_fr$party)
 ```
@@ -69,7 +72,7 @@ num_fr$party <- as.factor(num_fr$party)
 ```{r plot_data, results='markup'}
 current_date <- format(Sys.Date(), "%B %d, %Y")
 caption_text <- paste("Sources: Government Accountability Office \n\nUpdated:", current_date)
-wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
+wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 bar1 <-
   ggplot(num_fr, aes(x = year, y = rules_published, fill = party, pattern = party)) +
@@ -84,15 +87,24 @@ bar1 <-
   scale_fill_manual(values = c("#C9102F","#033C5A")) +
   scale_pattern_manual(values = c("1"="stripe", "0"="none")) +
   ggtitle("Number of Final Major Rules Published by Presidential Year") +
+  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
+  theme(panel.grid.minor = element_blank()) +
   ylab("Number of Major Rules") +
   xlab("") +
   scale_y_continuous(breaks = seq(0, max(num_fr$rules_published) + 25, by = 25), expand = c(0, 0),
                      limits = c(-2, max(num_fr$rules_published) + 25)) +
-  #scale_y_continuous() +
   annotation_custom(logo, xmin = -5, xmax = 10, ymin = -20, ymax = -50) + # for logo
   coord_cartesian(clip = "off") +
   theme_RSC +
-  labs(caption = wrapped_caption)
+  labs(caption = wrapped_caption)+
+  theme(
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
+    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
+    panel.grid.minor = element_blank()
+  )
 bar1
 
 ```

@@ -53,6 +53,9 @@ df <- read.csv(here("charts", "data", data_file))
 # load RSC logo
 logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 
+#load custom font
+font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
+showtext_auto()
 ```
 
 ## Process data
@@ -96,7 +99,7 @@ bar2 <-
                      labels = function(x) ifelse(x == 0, "0", scales::label_number(suffix = "k", scale = 1e-3)(x)),) +
 
   scale_x_discrete(breaks = seq(min(df2$year), max(df2$year), by = 2)) + # only display even year
-  annotation_custom(logo, xmin = -5, xmax = 20, ymin = 30000, ymax = -107000) + # for logo
+  annotation_custom(logo, xmin = -5, xmax = 20, ymin = 20000, ymax = -107000) + # for logo
   coord_cartesian(clip = "off") +
   theme_RSC +
   labs(caption = wrapped_caption)

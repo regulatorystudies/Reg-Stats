@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
 library(here)
-i_am("charts/code/Active Actions Published in the Unified Agenda.Rmd")
+i_am("charts/code/unified_agenda_active_actions.Rmd")
 
 # import local functions
 source(here("charts", "code", "local_utils.R"))
@@ -48,12 +48,8 @@ library(scales)
 # load csv using here
 df1 <- read.csv(here("charts","data", data_file), skip = 1)
 
-# eventually separate this into another file for reuse, then import/call the function
-get_png <- function(filename) {
-  grid::rasterGrob(png::readPNG(filename),interpolate = TRUE) # adjust logo size dimensions here
-}
-
-l <- get_png(here("charts","style", "gw_ci_rsc_2cs_pos.png"))
+# load png image
+logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 
 #load custom font
 font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
@@ -66,7 +62,7 @@ showtext_auto()
 
 ```{r clean_data}
 
-df1_1 <- df1[c(3:48),c(0:5)]
+df1_1 <-  df1[c(2:47),c(0:5)]
 
 colnames(df1_1) <- c("yearseason", "FinalRules", "ProposedRules","Prerules","Total")
 
@@ -84,6 +80,12 @@ data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$years
 
 ```
 
+```{r}
+# data processing 2
+#df2 <- 
+```
+
+
 
 ## Plot data
 
@@ -91,35 +93,45 @@ data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$years
 ```{r plot_data, results='markup'}
 #annotation
 current_date <- format(Sys.Date(), "%B %d, %Y")
-caption_text <- paste("Sources: Office of Information and RedulatoryAffairs \n\nUpdated:", current_date)
+caption_text <- paste("* Only one agenda was published in 2012 \n\nSources: Office of Information and Regulatory Affairs \n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
 
-#font
-font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
-showtext_auto()
 
 #plot
 bar2 <-
   ggplot(data=data_new1, aes(x=yearseason, y=Total)) +
   geom_bar(stat="identity", fill="#033C5A")+
 
-  ggtitle("Active Actions Published in the Unified Agenda \n(1950-2021)") +
+  ggtitle("Active Actions Published in the Unified Agenda") +
   ylab("Number of Active Actions") +
   xlab("") +
   theme_RSC+
-  scale_y_continuous(breaks = seq(0, max(data_new1$Total), by = 500), expand = c(0, 0),
-                     limits = c(-2, max(data_new1$Total)),) +
+  scale_y_continuous(breaks = seq(0, max(data_new1$Total)+500, by = 500), expand = c(0, 0),
+                     limits = c(-2, max(data_new1$Total)+500)) +
                      #labels = label_number(suffix = "K", scale = 1e-3)) +
   # scale_y_continuous()
-  annotation_custom(l, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
+  annotation_custom(logo, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
   # logo_y_dim = 0.3logo_y_max, logo_x_dim = 0.12logo_x_max ?
   coord_cartesian(clip = "off") +
   labs(caption = wrapped_caption)
 
 
 bar2
-#ggsave("Active Actions Published in the Unified Agenda(1950-2021).pdf", plot = bar2, width = 12, height = 9, dpi = 300)
 
+
+
+```
+
+
+```{r save}
+# create empty output folder if it doesn't already exist
+out = here("charts", "output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+
+ggsave(here("charts", "output", "active_actions_by_unified_agenda.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
 
 
 ```

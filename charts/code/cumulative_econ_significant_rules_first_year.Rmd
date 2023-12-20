@@ -46,7 +46,11 @@ library(dplyr)
 # load csv using here
 cun_sig_first <- read.csv(here("charts", "data", data_file))
 
-logo <- get_png(here("charts", "style", "logo.png"))
+logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
+#load custom font
+font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
+showtext_auto()
+
 
 ```
 
@@ -108,17 +112,19 @@ line_ends <- cun_sig_first_long %>%
 
 #annotation
 current_date <- format(Sys.Date(), "%B %d, %Y")
-caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
-wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;\n       Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
+
+wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 # generate line graph
 line1 <- ggplot(cun_sig_first_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) +
+  #annotate(geom = "segment", x = 48, xend = 48, y = 0, yend = max(cun_sig_first_long$econ_rules) + 10, linetype = "solid", size = 0.50, color = RSCgray)+
   geom_line(linewidth = 0.75) +
   geom_label_repel(data = line_ends,
                   aes(x = months_in_office_end, y = econ_rules_end, label = president),
                   nudge_x = 0, nudge_y = 10,
                   segment.size = 0.2,
-                  size = 3,
+                  size = 4,
                   point.size = 1,
                   box.padding = 0,
                   point.padding = 0,
@@ -138,8 +144,9 @@ line1 <- ggplot(cun_sig_first_long, aes(x = months_in_office, y = econ_rules, co
   annotation_custom(logo, xmin = -5, xmax = 10, ymin = -10, ymax = -35) + # for logo (need to play around with these settings)
   coord_cartesian(clip = "off") +
   linetheme +
-  xlab("Number of Months In Office") +
-  ylab("Number of Economically Significant Rules Published") +
+  theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) +
+  xlab("Number of Months In Office \n\n") +
+  ylab("Number of Economically Significant Rules Published \n\n") +
   ggtitle("Cumulative Economically Significant Final Rules \nby Administration in First Year") +
   labs(color = "President", caption = wrapped_caption) +
   scale_y_continuous(breaks = seq(0, max(cun_sig_first_long$econ_rules) + 25, by = 25),
