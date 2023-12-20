@@ -46,14 +46,14 @@ library(scales)
 ```{r load_data}
 
 # load csv using here
-df1 <- read.csv("/content/Active%20Actions%20Listed%20in%20the%20Unified%20Agenda_071023.csv")
+df1 <- read.csv(here("charts","data", data_file), skip = 1)
 
 # eventually separate this into another file for reuse, then import/call the function
 get_png <- function(filename) {
   grid::rasterGrob(png::readPNG(filename),interpolate = TRUE) # adjust logo size dimensions here
 }
 
-l <- get_png(here("code", "RSC_logo.png"))
+l <- get_png(here("charts","style", "gw_ci_rsc_2cs_pos.png"))
 
 #load custom font
 font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
@@ -106,7 +106,7 @@ bar2 <-
   ggtitle("Active Actions Published in the Unified Agenda \n(1950-2021)") +
   ylab("Number of Active Actions") +
   xlab("") +
-  mytheme+
+  theme_RSC+
   scale_y_continuous(breaks = seq(0, max(data_new1$Total), by = 500), expand = c(0, 0),
                      limits = c(-2, max(data_new1$Total)),) +
                      #labels = label_number(suffix = "K", scale = 1e-3)) +
