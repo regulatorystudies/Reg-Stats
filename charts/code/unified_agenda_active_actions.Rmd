@@ -50,7 +50,7 @@ library(cowplot)
 df1 <- read.csv(here("charts","data", data_file), skip = 1)
 
 # load png image
-logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
+#logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 
 #load custom font
 font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
@@ -106,7 +106,6 @@ bar2 <-
   ggtitle("Active Actions Published in the Unified Agenda") +
   ylab("Number of Active Actions") +
   xlab("") +
-  theme_RSC+
   scale_y_continuous(breaks = seq(0, max(data_new1$Total)+500, by = 500), expand = c(0, 0),
                      limits = c(-2, max(data_new1$Total)+500)) +
                      #labels = label_number(suffix = "K", scale = 1e-3)) +
@@ -114,13 +113,38 @@ bar2 <-
   #annotation_custom(logo, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
   # logo_y_dim = 0.3logo_y_max, logo_x_dim = 0.12logo_x_max ?
   coord_cartesian(clip = "off") +
-  labs(caption = wrapped_caption)
+  labs(caption = wrapped_caption)+
+  theme_minimal() +
+    theme(
+      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
+      legend.position = "none",
+      panel.grid.major.x = element_blank(),
+      axis.text.x = element_text(angle = 65, hjust = 0.5, vjust = 1, size = 12),
+      axis.title.x = element_text(size = 12, angle = 0, vjust = 0, hjust = 0.5),
+      axis.text.y = element_text(size = 12),
+      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5),
+      panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
+      panel.grid.minor = element_blank(),
+      text = element_text(family = "avenir_lt_pro"),
+      plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
+      plot.margin = margin(50, 50, 50, 50),
+      axis.ticks.x = element_line(color = RSCgray)
+    )
 
 
 bar2
 
 
 
+```
+```{r}
+logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
+new_bar <- ggdraw() +
+      draw_plot(bar2) +
+      draw_image(logo, x = 0.01, y = 0.01, hjust = 0, vjust = 0,
+                 halign = 0, valign = 0, width = 0.18)
+
+new_bar
 ```
 
 
@@ -132,7 +156,7 @@ if (!dir.exists(out)){
 }
 
 
-ggsave(here("charts", "output", "active_actions_by_unified_agenda.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "active_actions_by_unified_agenda.pdf"), plot = new_bar, width = 12, height = 9, dpi = 300)
 
 
 ```
