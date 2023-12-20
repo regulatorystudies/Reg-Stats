@@ -35,7 +35,7 @@
     # according to documentation, showtext_auto needed for this to work properly 
   
 # custom chart theme for bar plot ####
-  # Should we change this to "bartheme"?
+  # Should we change this to "bartheme" or just delete the other theme?
   theme_RSC <- theme_minimal() +
     theme(
       plot.title = element_text(hjust = 0.5, vjust=-2, margin = margin(b = 30, unit = "pt"), size=20),
@@ -69,6 +69,6 @@
       plot.margin = margin(50, 50, 50, 50),
       axis.ticks.x = element_line(color = RSCgray)
     )
-  
+  # ^ delete?
   # thank you to Yaxin for developing this custom theme!
   
