@@ -38,12 +38,12 @@
   # Should we change this to "bartheme"?
   theme_RSC <- theme_minimal() +
     theme(
-      plot.title = element_text(hjust = 0.5, vjust=-2, margin = margin(b = 40, unit = "pt"), size=20),
-      axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1,size=12),
+      plot.title = element_text(hjust = 0.5, vjust=-2, margin = margin(b = 30, unit = "pt"), size=20),
+      axis.text.x = element_text(angle = 65, hjust = 0.5, vjust = 1,size=12),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.y = element_text(size=12),
-      axis.title.y = element_text(size = 12, angle = 90, vjust = 1),
+      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5),
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
       panel.grid.minor = element_blank(),
       text = element_text(family = "avenir_lt_pro"),
