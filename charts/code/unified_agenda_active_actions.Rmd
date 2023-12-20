@@ -38,6 +38,7 @@ library(tidyr)
 library(ggrepel)
 library(dplyr)
 library(scales)
+library(cowplot)
 ```
 
 ## Load data
@@ -110,7 +111,7 @@ bar2 <-
                      limits = c(-2, max(data_new1$Total)+500)) +
                      #labels = label_number(suffix = "K", scale = 1e-3)) +
   # scale_y_continuous()
-  annotation_custom(logo, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
+  #annotation_custom(logo, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
   # logo_y_dim = 0.3logo_y_max, logo_x_dim = 0.12logo_x_max ?
   coord_cartesian(clip = "off") +
   labs(caption = wrapped_caption)
