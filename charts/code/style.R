@@ -38,37 +38,39 @@
   # Should we change this to "bartheme" or just delete the other theme?
   theme_RSC <- theme_minimal() +
     theme(
-      plot.title = element_text(hjust = 0.5, vjust=-2, margin = margin(b = 30, unit = "pt"), size=20),
-      axis.text.x = element_text(angle = 65, hjust = 0.5, vjust = 1,size=12),
+      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
-      axis.text.y = element_text(size=12),
+      axis.text.x = element_text(angle = 65, hjust = 0.5, vjust = 1, size = 12),
+      axis.title.x = element_text(size = 12, angle = 0, vjust = 0, hjust = 0.5),
+      axis.text.y = element_text(size = 12),
       axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5),
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
       panel.grid.minor = element_blank(),
       text = element_text(family = "avenir_lt_pro"),
-      plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 6, unit = "pt"),size=11),
+      plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
       plot.margin = margin(50, 50, 50, 50),
       axis.ticks.x = element_line(color = RSCgray)
     )
   
 # custom chart theme for line plots####
   
-  linetheme <- theme_minimal() +
-    theme(
-      plot.title = element_text(hjust = 0.5, vjust=-2, margin = margin(b = 40, unit = "pt"), size=20),
-      axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1,size=12),
-      legend.position = "right",
-      panel.grid.major.x = element_blank(),
-      axis.text.y = element_text(size=12),
-      axis.title.y = element_text(size = 12, angle = 90, vjust = 1),
-      panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
-      panel.grid.minor = element_blank(),
-      text = element_text(family = "avenir_lt_pro"),
-      plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 6, unit = "pt"),size=11),
-      plot.margin = margin(50, 50, 50, 50),
-      axis.ticks.x = element_line(color = RSCgray)
-    )
+  # linetheme <- theme_minimal() +
+  #   theme(
+  #     plot.title = element_text(hjust = 0.5, vjust=-2, margin = margin(b = 40, unit = "pt"), size=20),
+  #     axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1,size=12),
+  #     legend.position = "right",
+  #     panel.grid.major.x = element_blank(),
+  #     axis.text.y = element_text(size=12),
+  #     axis.title.y = element_text(size = 12, angle = 90, vjust = 1),
+  #     panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
+  #     panel.grid.minor = element_blank(),
+  #     text = element_text(family = "avenir_lt_pro"),
+  #     plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 6, unit = "pt"),size=11),
+  #     plot.margin = margin(50, 50, 50, 50),
+  #     axis.ticks.x = element_line(color = RSCgray)
+  #   )
   # ^ delete?
+  
   # thank you to Yaxin for developing this custom theme!
   
