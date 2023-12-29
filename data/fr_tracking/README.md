@@ -4,12 +4,12 @@
 
 README: 2023-12-01
 
-Data: 2023-11-30
+Data: 2023-12-29
 
 ## Update Instructions
 
 1. Go to https://www.federalregister.gov/ and click on “X Rules” under Current Issue  
-1. This pulls up the day’s (or next day’s) rules, typically 5-25. Click on the rules one by one. Information from each rule will be added to the `fr_tracking.xls` Excel sheet.  
+1. This pulls up the day’s (or next day’s) rules, typically 5-25. Click on the rules one by one. Information from each rule will be added to the `fr_tracking.xlsx` Excel workbook.  
 1. Each rule will be a row in the Excel sheet. Fill in the values based on column titles.  
 1. Many values can be found in the grey box at the top right. Typically, you can find “effective date”, “document citation”, “document number”, “RIN” and “Agency/Docket Number” there.   
 	- RIN is sometimes missing from this box, and Agency/Docket Number often is. It’s often worth a quick scan of the document to look for RIN elsewhere, or worth checking reginfo.gov, but sometimes one just doesn’t exist. Don’t worry if Agency/Docket information is missing. 
