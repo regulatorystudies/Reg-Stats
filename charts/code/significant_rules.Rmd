@@ -13,6 +13,7 @@ The `i_am` function identifies where the Rmd is located within the main project 
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
+library(here)
 i_am("charts/code/significant_rules.Rmd")
 
 # import local functions
@@ -30,7 +31,10 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 ## Load packages
 
 ```{r load packages, results='hide', warning=FALSE}
+
+library(ggplot2)
 library(ggpattern)
+
 ```
 
 ## Load data
@@ -38,6 +42,10 @@ library(ggpattern)
 ```{r load data}
 # load csv using here
 sig_fin_rules <- read.csv(here("charts", "data", data_file))
+
+# load RSC logo
+logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
+
 ```
 
 ## Process data
@@ -46,13 +54,13 @@ sig_fin_rules <- read.csv(here("charts", "data", data_file))
 # current date
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
-# set caption text
+# create caption text
 caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for
-the years 2021 and onwards;\n Office of Information and Regulatory
-Affairs (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
+the years starting 2021;\n Office of Information and Regulatory
+Affairs (OIRA) (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
 
-# set wrapped caption width
-wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
+# format wrapping setting for caption text
+wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
 
 # rename columns
 colnames(sig_fin_rules) <- c("year", "party", "rules", "withdrawn")
@@ -84,18 +92,28 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = p
                    pattern_key_scale_factor = 0.6) +
   scale_fill_manual(values = c(GWblue, red)) +
   scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
+  theme_minimal() +
   ggtitle("Significant Final Rules Published by Presidential Year") +
   ylab("Number of Significant Rules") +
   xlab("") +
-  coord_cartesian(clip = "off") +
   scale_y_continuous(breaks = seq(0, max(sig_fin_rules$rules) + 50, by = 50), expand = c(0, 0.05), limits = c(-2, max(sig_fin_rules$rules) + 50)) +
   labs(caption = wrapped_caption) +
+  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
+  annotate(
+    geom = "segment",
+    x = sig_fin_rules$year,
+    xend = sig_fin_rules$year,
+    y = 0,
+    yend = -2,
+    color = RSCgray
+  ) +
   theme_RSC +
+  theme(panel.grid.minor = element_blank()) +
+  annotation_custom(logo, xmin = -9, xmax = 15, ymin = -70, ymax = -30) + # for logo
+  coord_cartesian(clip = "off") +
   theme(
-    plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
-    plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt")),
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
     axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
-    axis.ticks.x = element_blank(),
     legend.position = "none",
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
@@ -103,12 +121,6 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = p
   )
 
 bar1
-
-# add logo to plot
-bar2 <- ggdraw() + 
-  draw_plot(bar1) + 
-  draw_image(logo, x = 0.1, y = 0.15, halign = 0, valign = 0, width = 0.2)
-bar2
 ```
 
 ```{r save}
@@ -118,6 +130,6 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-# save bar2 as pdf
-ggsave(here("charts", "output", "significant_rules_by_presidential_year.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
+# save line1 as pdf
+ggsave(here("charts", "output", "significant_rules_by_presidential_year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
 ```
