@@ -32,10 +32,6 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```{r load packages, results='hide', warning=FALSE}
 
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-
 ```
 
 ## Load Data
@@ -43,10 +39,6 @@ library(tidyr)
 ```{r load data}
 # load csv using here
 rules_pub_NA <- read.csv(here("charts", "data", data_file))
-
-# load RSC logo
-logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
-
 ```
 
 ## Process Data
@@ -92,9 +84,7 @@ line1 <- ggplot(rules_pub_long,
                      guide = "legend") +
   scale_linetype_manual(values = c("solid", "33"),
                         guide = "legend") +
-  annotation_custom(logo, xmin = -4, xmax = 10, ymin = -450, ymax = -1050) + # for logo (need to play around with these settings)
   coord_cartesian(clip = "off") +
-  theme_minimal() +
   theme_RSC +
   theme(
     plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 0)),
@@ -102,12 +92,8 @@ line1 <- ggplot(rules_pub_long,
     legend.margin = margin(t = 10, b = -50),
     legend.text = element_text(size = 15),
     legend.key.size = unit(2, "lines"),    
-    panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
-    panel.grid.minor = element_blank(), 
-    plot.caption = element_text(hjust = 1, margin = margin(t = 10, l = 0, unit = "pt")),
-    plot.margin = margin(50, 50, 50, 50),
     axis.text.x = element_text(angle = 65, hjust = 1),
+    axis.ticks.x = element_blank(),
     axis.title.y = element_text(size = 15)
   ) +
   xlab(element_blank()) +
@@ -121,6 +107,14 @@ line1 <- ggplot(rules_pub_long,
   )
 
 line1
+
+# add logo to plot
+line2 <- ggdraw() +
+  draw_plot(line1) +
+  draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
+line2
+
+
 ```
 
 ```{r save}
@@ -130,6 +124,6 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-# save line1 as pdf
-ggsave(here("charts", "output", "federal_register_rules_by_presidential_year.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
+# save line2 as pdf
+ggsave(here("charts", "output", "federal_register_rules_by_presidential_year.pdf"), plot = line2, width = 12, height = 9, dpi = 300)
 ```

@@ -25,15 +25,11 @@ data_file = "federal_register_pages_by_calendar_year.csv"
 
 # refresh dataset
 copy_dataset(data_file, here("data"), here("charts", "data"))
-
 ```
 
 ## Load Packages
 
 ```{r load packages, results='hide', warning=FALSE}
-
-library(ggplot2)
-library(grid)
 
 ```
 
@@ -42,10 +38,6 @@ library(grid)
 ```{r load data}
 # load csv using here
 tot_pages <- read.csv(here("charts", "data", data_file), skip = 4)
-
-# load RSC logo
-logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
-
 ```
 
 # Process Data
@@ -71,8 +63,6 @@ colnames(tot_pages) <- c("year", "total")
 
 # make total an integer variable (remove commas and then convert)
 tot_pages$total <- as.integer(gsub(",", "", tot_pages$total))
-
-
 ```
 
 # Plot Data
@@ -92,11 +82,18 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   ) +
   scale_x_discrete(breaks = seq(min(tot_pages$year), max(tot_pages$year), by = 2)) + 
   labs(caption = caption_text) +
-  annotation_custom(logo, xmin = -212, xmax = 230, ymin = -19000, ymax = -7000) + # for logo
   coord_cartesian(clip = "off") +
-  theme_RSC
-
+  theme_RSC +
+  theme(axis.ticks.x = element_blank(),
+         axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
+        axis.line.x = element_line(size = 0.5, color = RSCgray))
 bar1
+
+# add logo to plot
+bar2 <- ggdraw() +
+  draw_plot(bar1) +
+  draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
+bar2
 ```
 
 ```{r save}
@@ -106,7 +103,7 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-# save line1 as pdf
-ggsave(here("charts", "output", "federal_register_pages_by_calendar_year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
+# save bar2 as pdf
+ggsave(here("charts", "output", "federal_register_pages_by_calendar_year.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
 ```
 

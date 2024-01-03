@@ -29,6 +29,7 @@
     
 # logo ####
    logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
+    # ^ didn't do this in cowplot format, used old magick format, seems to work...
     
 # font ####
   font_add("avenir_lt_pro", here("charts", "style", "a-avenir-next-lt-pro.otf"))
