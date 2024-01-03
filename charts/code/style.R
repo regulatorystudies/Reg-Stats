@@ -2,7 +2,6 @@
   library(here)
   library(showtext)
   library(tidyverse)
-  library(ggplot2)
   library(cowplot)
 
 # assigning colors to objects ####
