@@ -13,7 +13,6 @@ The `i_am` function identifies where the Rmd is located within the main project 
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-library(here)
 i_am("charts/code/significant_rules.Rmd")
 
 # import local functions
@@ -31,10 +30,7 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 ## Load packages
 
 ```{r load packages, results='hide', warning=FALSE}
-
-library(ggplot2)
 library(ggpattern)
-
 ```
 
 ## Load data
@@ -42,10 +38,6 @@ library(ggpattern)
 ```{r load data}
 # load csv using here
 sig_fin_rules <- read.csv(here("charts", "data", data_file))
-
-# load RSC logo
-logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
-
 ```
 
 ## Process data
@@ -54,13 +46,13 @@ logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 # current date
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
-# create caption text
+# set caption text
 caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for
-the years starting 2021;\n Office of Information and Regulatory
-Affairs (OIRA) (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
+the years 2021 and onwards;\n Office of Information and Regulatory
+Affairs (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
 
-# format wrapping setting for caption text
-wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
+# set wrapped caption width
+wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
 
 # rename columns
 colnames(sig_fin_rules) <- c("year", "party", "rules", "withdrawn")
@@ -92,7 +84,6 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = p
                    pattern_key_scale_factor = 0.6) +
   scale_fill_manual(values = c(GWblue, red)) +
   scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
-  theme_minimal() +
   ggtitle("Significant Final Rules Published by Presidential Year") +
   ylab("Number of Significant Rules") +
   xlab("") +
@@ -109,7 +100,6 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = p
   ) +
   theme_RSC +
   theme(panel.grid.minor = element_blank()) +
-  annotation_custom(logo, xmin = -9, xmax = 15, ymin = -70, ymax = -30) + # for logo
   coord_cartesian(clip = "off") +
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
