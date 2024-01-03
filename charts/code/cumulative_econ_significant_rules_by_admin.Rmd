@@ -30,12 +30,7 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 ## Load Packages
 
 ```{r load packages, results='hide', warning=FALSE}
-
-library(ggplot2)
 library(ggrepel)
-library(tidyr)
-library(dplyr)
-
 ```
 
 ## Load Data

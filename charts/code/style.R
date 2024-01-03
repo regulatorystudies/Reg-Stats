@@ -1,7 +1,7 @@
 # load packages ####
   library(here)
   library(showtext)
-  library(magick)
+  library(tidyverse)
   library(ggplot2)
   library(cowplot)
 
@@ -43,14 +43,14 @@
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 0.5, vjust = 1, size = 12),
       axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 10)),
+      axis.ticks.x = element_line(color = RSCgray),
       axis.text.y = element_text(size = 12),
       axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 10)),
-      panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
+      panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
       text = element_text(family = "avenir_lt_pro"),
       plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
-      plot.margin = margin(50, 50, 50, 50),
-      axis.ticks.x = element_line(color = RSCgray)
+      plot.margin = margin(50, 50, 50, 50)
     )
   
   # thank you to Yaxin for developing this custom theme!
