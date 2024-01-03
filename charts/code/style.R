@@ -3,6 +3,7 @@
   library(showtext)
   library(tidyverse)
   library(cowplot)
+  library(magick)
 
 # assigning colors to objects ####
   
