@@ -3,6 +3,7 @@
   library(showtext)
   library(magick)
   library(ggplot2)
+  library(cowplot)
 
 # assigning colors to objects ####
   
@@ -27,7 +28,7 @@
       # this is the color used in the striping on patterned charts
     
 # logo ####
-  logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
+   logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
     
 # font ####
   font_add("avenir_lt_pro", here("charts", "style", "a-avenir-next-lt-pro.otf"))

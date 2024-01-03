@@ -43,10 +43,6 @@ library(dplyr)
 ```{r load data}
 # load csv using here
 cum_sig <- read.csv(here("charts", "data", data_file), skip = 1)
-
-# load png image
-logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
-
 ```
 
 # Process Data
@@ -134,7 +130,6 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                                 lightblue,
                                 darkyellow,
                                 lightgreen)) +
-  annotation_custom(logo, xmin = 0, xmax = 18, ymin = -100, ymax = -45) + # for logo (need to play around with these settings)
   coord_cartesian(clip = "off") +
   theme_minimal() +
   theme_RSC +
@@ -152,6 +147,13 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                      limits = c(0, max(cum_sig_long$months_in_office)))
 
 line1
+
+# add logo to plot
+line2 <- ggdraw() + 
+  draw_plot(line1) + 
+  draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
+line2
+
 ```
 
 ```{r save}
@@ -161,6 +163,6 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-# save line1 as pdf
-ggsave(here("charts", "output", "cumulative_econ_significant_rules_by_presidential_month.pdf"), plot = line1, width = 12, height = 9, dpi = 300)
+# save line2 as pdf
+ggsave(here("charts", "output", "cumulative_econ_significant_rules_by_presidential_month.pdf"), plot = line2, width = 12, height = 9, dpi = 300)
 ```
