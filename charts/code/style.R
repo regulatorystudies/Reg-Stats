@@ -4,6 +4,7 @@
   library(tidyverse)
   library(cowplot)
   library(magick)
+  library(extrafont)
 
 # assigning colors to objects ####
   
@@ -32,7 +33,7 @@
     # ^ didn't do this in cowplot format, used old magick format, seems to work...
     
 # font ####
-  font_add("avenir_lt_pro", here("charts", "style", "a-avenir-next-lt-pro.otf"))
+  font_add("Avenir LT Pro", here("charts", "style", "a-avenir-next-lt-pro.otf"))
   showtext_auto()
     # according to documentation, showtext_auto needed for this to work properly 
   
@@ -49,7 +50,7 @@
       axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 10)),
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
-      text = element_text(family = "avenir_lt_pro"),
+      text = element_text(family = "Avenir LT Pro"),
       plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
       plot.margin = margin(50, 50, 50, 50)
     )
