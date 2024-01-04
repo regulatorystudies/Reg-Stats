@@ -63,9 +63,6 @@ sig_fin_rules <- sig_fin_rules[ , c("year", "party", "rules")]
 # get rid of bottom three rows
 sig_fin_rules <- sig_fin_rules[1:(nrow(sig_fin_rules) - 3), ]
 
-# get rid of remaining rows with NA values
-# sig_fin_rules <- sig_fin_rules[complete.cases(sig_fin_rules), ]
-
 # make party factor variable
 sig_fin_rules$party <- as.factor(sig_fin_rules$party)
 
@@ -91,11 +88,12 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = p
   labs(caption = wrapped_caption) +
   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
   theme_RSC +
-  coord_cartesian(clip = "off") +
+  coord_cartesian(ylim = c(0, max(sig_fin_rules$rules) + 50)) +
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
     axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
     axis.ticks.x = element_blank(),
+    axis.line.x = element_line(linewidth = 1, color = RSCgray),
     legend.position = "none",
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),

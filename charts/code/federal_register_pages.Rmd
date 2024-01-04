@@ -79,11 +79,11 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   ) +
   scale_x_discrete(breaks = seq(min(tot_pages$year), max(tot_pages$year), by = 2)) + 
   labs(caption = caption_text) +
-  coord_cartesian(clip = "off") +
+  coord_cartesian(ylim = c(0, max(tot_pages$total) + 10000)) +
   theme_RSC +
   theme(axis.ticks.x = element_blank(),
-         axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
-        axis.line.x = element_line(size = 0.5, color = RSCgray))
+        axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
+        axis.line.x = element_line(linewidth = 1, color = RSCgray))
 bar1
 
 # add logo to plot
