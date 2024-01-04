@@ -100,8 +100,9 @@ wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 ```{r generate graph}
 # generate line graph
-line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) + 
-  annotate(geom = "segment", x = 48, xend = 48, y = 0, yend = max(cum_sig_long$econ_rules) + 10, linetype = "dashed", size = 0.50, color = RSCgray) +
+line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) +
+  annotate(geom = "segment", x = 48, xend = 48, y = 0, yend = max(cum_sig_long$econ_rules) + 10, linetype = "dashed", linewidth = 0.50, color = RSCgray) +
+  annotate(geom = "segment", x = min(cum_sig_long$months_in_office), xend = max(cum_sig_long$months_in_office), y = 0, yend = 0, linetype = "solid", linewidth = 1, color = RSCgray) +
   geom_line(linewidth = 0.75) +
   geom_label_repel(data = line_ends, 
                   aes(x = months_in_office_end, y = econ_rules_end, label = president, family = "avenir_lt_pro"),
