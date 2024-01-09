@@ -47,9 +47,6 @@ library(dplyr)
 # load csv using here
 num_fr <- read.csv(here("charts", "data", data_file))
 
-# load RSC logo
-logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
-
 #load custom font
 font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
 showtext_auto()
@@ -93,20 +90,34 @@ bar1 <-
   xlab("") +
   scale_y_continuous(breaks = seq(0, max(num_fr$rules_published) + 25, by = 25), expand = c(0, 0),
                      limits = c(-2, max(num_fr$rules_published) + 25)) +
-  annotation_custom(logo, xmin = -5, xmax = 10, ymin = -20, ymax = -50) + # for logo
   coord_cartesian(clip = "off") +
-  theme_RSC +
   labs(caption = wrapped_caption)+
+  theme_minimal() +
   theme(
-    plot.title = element_text(hjust = 0.5, margin = margin(b = 10, unit = "pt")),
-    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
-    legend.position = "none",
-    panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
-    panel.grid.minor = element_blank()
-  )
-bar1
+      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
+      legend.position = "none",
+      panel.grid.major.x = element_blank(),
+      axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
+      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 20)),
+      axis.ticks.x = element_line(color = RSCgray),
+      axis.text.y = element_text(size = 12),
+      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 20)),# modified margin to adjust the space between title and y-axis 
+      panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
+      panel.grid.minor = element_blank(),
+      text = element_text(family = "avenir_lt_pro"),
+      plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
+      plot.margin = margin(50, 50, 50, 50)
+    )
 
+
+```
+
+```{r}
+new_bar <- ggdraw() +
+      draw_plot(bar1) +
+      draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
+
+new_bar
 ```
 
 ```{r save}
@@ -117,5 +128,5 @@ if (!dir.exists(out)){
 }
 
 # save line1 as pdf
-ggsave(here("charts", "output", "major_rules_by_presidential_year.pdf"), plot = bar1, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "major_rules_by_presidential_year.pdf"), plot = new_bar, width = 12, height = 9, dpi = 300)
 ```

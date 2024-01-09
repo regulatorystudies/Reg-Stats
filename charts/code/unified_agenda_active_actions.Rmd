@@ -10,7 +10,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-library(here)
+#library(here)
 i_am("charts/code/unified_agenda_active_actions.Rmd")
 
 # import local functions
@@ -24,6 +24,8 @@ data_file = "active_actions_by_unified_agenda.csv"
 copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
+
+
 
 ## Load Packages
 
@@ -39,6 +41,7 @@ library(ggrepel)
 library(dplyr)
 library(scales)
 library(cowplot)
+library(tidyverse)
 ```
 
 ## Load data
@@ -83,7 +86,7 @@ data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$years
 
 ```{r}
 # data processing 2
-#df2 <- 
+
 ```
 
 
@@ -95,7 +98,7 @@ data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$years
 #annotation
 current_date <- format(Sys.Date(), "%B %d, %Y")
 caption_text <- paste("* Only one agenda was published in 2012 \n\nSources: Office of Information and Regulatory Affairs \n\nUpdated:", current_date)
-wrapped_caption <- paste(strwrap(caption_text, width = 95), collapse = "\n")
+wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 
 #plot
@@ -115,34 +118,33 @@ bar2 <-
   coord_cartesian(clip = "off") +
   labs(caption = wrapped_caption)+
   theme_minimal() +
-    theme(
+  theme(
       plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
-      axis.text.x = element_text(angle = 65, hjust = 0.5, vjust = 1, size = 12),
-      axis.title.x = element_text(size = 12, angle = 0, vjust = 0, hjust = 0.5),
+      axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
+      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 20)),
+      axis.ticks.x = element_line(color = RSCgray),
       axis.text.y = element_text(size = 12),
-      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5),
-      panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
+      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 20)),# modified margin to adjust the space between title and y-axis 
+      panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
       text = element_text(family = "avenir_lt_pro"),
       plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
-      plot.margin = margin(50, 50, 50, 50),
-      axis.ticks.x = element_line(color = RSCgray)
+      plot.margin = margin(50, 50, 50, 50)
     )
 
-
-bar2
+#bar2
 
 
 
 ```
+
 ```{r}
-logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
+#logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 new_bar <- ggdraw() +
       draw_plot(bar2) +
-      draw_image(logo, x = 0.01, y = 0.01, hjust = 0, vjust = 0,
-                 halign = 0, valign = 0, width = 0.18)
+      draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
 
 new_bar
 ```
