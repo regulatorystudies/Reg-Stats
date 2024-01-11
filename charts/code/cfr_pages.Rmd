@@ -66,7 +66,7 @@ df1 <- df[c(16:87),c(0:3)]
 colnames(df1) <- c("year", "color", "tolpages")
 
 current_date <- format(Sys.Date(), "%B %d, %Y")
-caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for the years starting 2021;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
+caption_text <- paste("Source: Office of the Federal Register (federalregister.gov) for the years starting 2021;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
 
 df2 = subset(df1, select = -c(color) )
 
@@ -89,12 +89,12 @@ bar2 <-
   geom_bar(stat="identity", fill="#033C5A")+
   #geom_text(aes(label=len), vjust=-0.3, size=3.5)+
 
-  ggtitle("Total Pages Published in the Code of Federal Regulations \n(1950-2021)") +
+  ggtitle("Total Pages Published in the Code of Federal Regulations") +
   ylab("Number of Pages") +
   xlab("") +
   scale_y_continuous(breaks = seq(0, max(df2$tolpages)+20000, by = 20000), expand = c(0, 0),
                      limits = c(-2, max(df2$tolpages)+20000),
-                     labels = function(x) ifelse(x == 0, "0", scales::label_number(suffix = "k", scale = 1e-3)(x)),) +
+                     labels = function(x) ifelse(x == 0, "0", scales::label_number(suffix = "K", scale = 1e-3)(x)),) +
 
   scale_x_discrete(breaks = seq(min(df2$year), max(df2$year), by = 2)) + # only display even year
   coord_cartesian(clip = "off") +

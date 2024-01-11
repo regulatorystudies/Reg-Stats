@@ -68,7 +68,7 @@ num_fr$party <- as.factor(num_fr$party)
 
 ```{r plot_data, results='markup'}
 current_date <- format(Sys.Date(), "%B %d, %Y")
-caption_text <- paste("Sources: Government Accountability Office \n\nUpdated:", current_date)
+caption_text <- paste("Source: Government Accountability Office \n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 bar1 <-

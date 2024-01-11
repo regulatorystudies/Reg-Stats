@@ -97,7 +97,7 @@ data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$years
 ```{r plot_data, results='markup'}
 #annotation
 current_date <- format(Sys.Date(), "%B %d, %Y")
-caption_text <- paste("* Only one agenda was published in 2012 \n\nSources: Office of Information and Regulatory Affairs \n\nUpdated:", current_date)
+caption_text <- paste("* Only one agenda was published in 2012 \n\nSource: Office of Information and Regulatory Affairs \n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 

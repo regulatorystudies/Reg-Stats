@@ -46,6 +46,7 @@ library(dplyr)
 # load csv using here
 cun_sig_first <- read.csv(here("charts", "data", data_file))
 #load custom font
+s
 font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
 showtext_auto()
 
@@ -110,7 +111,7 @@ line_ends <- cum_sig_long %>%
 
 #annotation
 current_date <- format(Sys.Date(), "%B %d, %Y")
-caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;\n       Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
+caption_text <- paste("Source: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;\n       Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
 
 wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
