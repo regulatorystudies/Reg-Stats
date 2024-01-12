@@ -46,7 +46,7 @@ library(dplyr)
 # load csv using here
 cun_sig_first <- read.csv(here("charts", "data", data_file))
 #load custom font
-s
+
 font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
 showtext_auto()
 
@@ -122,7 +122,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   geom_line(linewidth = 0.75) +
   geom_label_repel(data = line_ends,
                   aes(x = months_in_office_end, y = econ_rules_end, label = president),
-                  nudge_x = 0, nudge_y = 10,
+                  nudge_x = 0, nudge_y = 5,
                   segment.size = 0.2,
                   size = 4,
                   point.size = 1,
