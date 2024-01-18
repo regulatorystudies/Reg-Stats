@@ -40,15 +40,18 @@ BASE_PARAMS = {
     }
 BASE_URL = r'https://www.federalregister.gov/api/v1/documents.json?'
 BASE_FIELDS = (
-    'document_number', 
     'publication_date', 
+    'effective_on', 
     'agency_names', 
     'agencies', 
-    'citation', 
-    'html_url', 
     'title', 
+    'abstract', 
     'action', 
+    'citation', 
+    'document_number', 
     'regulation_id_number_info', 
+    'regulations_dot_gov_info', 
+    'html_url', 
     )
 
 
@@ -179,9 +182,6 @@ def query_documents_endpoint(endpoint_url: str, dict_params: dict):
     return results, count
 
 
-# -- retrieve documents using date range -- #
-
-
 def get_documents_by_date(start_date: str, 
                           end_date: str | None = None, 
                           fields: tuple = BASE_FIELDS,
@@ -217,7 +217,7 @@ def get_documents_by_date(start_date: str,
 
 def export_data(df: DataFrame, 
                 path: Path, 
-                file_name: str = f"federal_register_clips_{date.today()}.csv"):
+                file_name: str = "federal_register_tracking.csv"):
     """Save data to file in CSV format.
 
     Args:
@@ -254,7 +254,7 @@ def log_errors(func, filepath: Path = Path(__file__).parent / "error.log"):
 # -- main functions -- #
 
 
-def pipeline(metadata: dict, input_path: Path = None):
+def pipeline(metadata: dict):
     """Main pipeline for retrieving Federal Register documents.
 
     Args:
@@ -285,68 +285,60 @@ def pipeline(metadata: dict, input_path: Path = None):
 
     # create DataFrame; filter out documents; clean agency info; drop unneeded columns
     df = DataFrame(list(results_with_rin_info))
-    df = clean_agency_names(df).set_index("document_number")
+    df = clean_agency_names(df)
     df = clean_agencies_column(df, metadata)
     df = get_parent_agency(df, metadata)
     df = identify_independent_reg_agencies(df)
-    df = df.reset_index()
-    document_numbers = df.loc[:, "document_number"].to_numpy().tolist()
-    df = get_significant_info(df, start_date, document_numbers)
-    df = df.drop(
-        columns=[
-            "regulation_id_number_info", 
-            "correction_of", 
-            "agencies", 
-            "agency_slugs",
-            "agencies_id_uq", 
-            "agencies_slug_uq",
-            "agencies_acronym_uq", 
-            "agencies_name_uq", 
-            ], 
-        errors="ignore"
-        )
+    output_columns = [
+        "publication_date",
+        "effective_on",
+        "department",
+        "agency",
+        "independent_reg_agency",
+        "title",
+        "abstract",
+        "action",
+        "citation",
+        "document_number",
+        "regulation_id_number",
+        "docket_number",
+        "significant",
+        "econ_significant",
+        "3(f)(1) significant",
+        "Major",
+        "html_url",
+        "Notes",
+        ]
     
     # return data
-    return df.set_index("document_number")
+    return df.loc[:, output_columns]
 
 
 @log_errors
-def retrieve_documents():
+def retrieve_rules(base_path: Path = Path(__file__).parent):
     """Command-line interface for retrieving documents.
-    """    
+    """
     # get agency metadata
-    metadata_dir = Path(__file__).parent.joinpath("data") / "agencies_endpoint_metadata.json"
-    if metadata_dir.is_file():  # import metadata from local JSON
-        with open(metadata_dir, "r") as f:
+    metadata_dir = base_path.joinpath("data")
+    metadata_file = metadata_dir / "agencies_endpoint_metadata.json"
+    if metadata_file.is_file():  # import metadata from local JSON
+        with open(metadata_file, "r") as f:
             metadata = json.load(f)["results"]
-    else:  # retrieve from API
+    else:  # retrieve from API and save
         agency_metadata = AgencyMetadata()
         agency_metadata.get_metadata()
         agency_metadata.transform()
+        agency_metadata.save_json(metadata_dir)
         metadata = agency_metadata.transformed_data
-    
-    # loop for getting inputs, calling main pipeline function, and saving data
-    # won't break until it receives valid input
-    while True:
-        # print prompt to console
-        get_input = input("Use input file? [yes/no]: ")
-        
-        # check user inputs
-        if get_input.lower() in ("y", "yes"):
-            output_dir, input_dir = create_paths(input_file=True)
-            df = pipeline(metadata, input_path=input_dir)
-            break
-        elif get_input.lower() in ("n", "no"):
-            output_dir = create_paths()[0]
-            df = pipeline(metadata)
-            break
-        else:
-            print("Invalid input. Must enter 'y' or 'n'.")
-    
+
+    # call pipeline to create dataframe
+    df = pipeline(metadata)
+
+    # export if any data was retrieved
     if df is not None:
-        export_data(df, output_dir)
+        export_data(df, base_path)
 
 
 if __name__ == "__main__":
     
-    retrieve_documents()
+    retrieve_rules()
