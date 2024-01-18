@@ -1,7 +1,7 @@
-# import dependencies
 from datetime import date
 import json
 from pathlib import Path
+
 from pandas import DataFrame
 import requests
 
@@ -604,8 +604,8 @@ def clean_agencies_column(df_input: DataFrame,
     df = df_input.copy(deep=True)
     
     # create list of agencies data
-    agencies_list = df[columns[0]].values.tolist()
-    backup_list = df[columns[1]].values.tolist()
+    agencies_list = df.loc[:, columns[0]].to_numpy().tolist()
+    backup_list = df.loc[:, columns[1]].to_numpy().tolist()
     #print(agencies_list[0:10], backup_list[0:10])
     
     # loop over documents and extract agencies data
