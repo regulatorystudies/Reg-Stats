@@ -15,7 +15,7 @@ import logging
 from pathlib import Path
 import re
 
-from pandas import DataFrame, read_csv, read_excel
+from pandas import DataFrame
 import requests
 
 from preprocessing import (
