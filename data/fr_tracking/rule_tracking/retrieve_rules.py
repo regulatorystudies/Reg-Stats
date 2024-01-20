@@ -344,7 +344,7 @@ def retrieve_rules(base_path: Path = Path(__file__).parents[1]):
     """Command-line interface for retrieving documents.
     """
     # get agency metadata
-    metadata_dir = base_path.joinpath("data")
+    metadata_dir = base_path.joinpath("rule_tracking", "data")
     metadata_file = metadata_dir / "agencies_endpoint_metadata.json"
     if metadata_file.is_file():  # import metadata from local JSON
         with open(metadata_file, "r") as f:
