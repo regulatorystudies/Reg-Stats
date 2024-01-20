@@ -1,5 +1,8 @@
 # ----- Project-specific ----- #
 
+# output
+fr_tracking_*.csv
+
 # logging
 error.log
 
