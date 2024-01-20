@@ -695,213 +695,44 @@ class AgencyData:
         self.data.loc[:, "parent_slug_uq"] = unique_parent_slugs
         self.data.loc[:, "parent_acronym_uq"] = unique_parent_acronyms
         self.data.loc[:, "parent_name_uq"] = unique_parent_names
-        
 
-
-
-
-def clean_agencies_column(df_input: DataFrame, 
-                          metadata: dict, 
-                          columns: tuple[str] = ("agencies", "agency_names"), 
-                          schema: list = DEFAULT_AGENCY_SCHEMA
-                          ):
-    """Clean 'agencies' data from API and return dataframe with new columns.
-    Source for DEFAULT_AGENCY_SCHEMA is Federal Register API [documentation](https://www.federalregister.gov/developers/documentation/api/v1).
-
-    Args:
-        df_input (DataFrame): Input dataframe.
-        metadata (dict): Agency metadata for lookup values.
-        columns (tuple[str], optional): Columns in dataframe to clean. Defaults to ("agencies", "agency_names").
-        schema (list, optional): Schema of federal agencies as array. Defaults to DEFAULT_AGENCY_SCHEMA.
-
-    Raises:
-        PreprocessingError: Error extracting data from 'agencies' column.
-
-    Returns:
-        DataFrame: Dataframe object with new columns extracted from 'agencies'.
-    """
-    # 1) extract slug from 'agencies' column
-    # create deep copy of input dataframe
-    df = df_input.copy(deep=True)
+    def get_independent_reg_agencies(
+            self, 
+            agency_column: str = "agency_slugs", 
+            new_column: str = "independent_reg_agency", 
+            independent_agencies: list | tuple = INDEPENDENT_REG_AGENCIES
+        ):
+        """Based on the definition of independent regulatory agencies defined in [44 U.S.C. 3502(5)](https://www.law.cornell.edu/uscode/text/44/3502)."""
+        agencies = self.data.loc[:, agency_column].to_numpy()
+        ira_list = [any(1 if agency in independent_agencies else 0 for agency in agency_list) for agency_list in agencies]
+        self.data.loc[:, new_column] = [1 if ira else 0 for ira in ira_list]
     
-    # create list of agencies data
-    agencies_list = df.loc[:, columns[0]].to_numpy().tolist()
-    backup_list = df.loc[:, columns[1]].to_numpy().tolist()
-    #print(agencies_list[0:10], backup_list[0:10])
-    
-    # loop over documents and extract agencies data
-    slug_list = []  # empty lists for results
-    for row, backup in zip(agencies_list, backup_list):
-        #print(len(row), len(backup))
-        slug_list.append(r.get("slug", r.get("name", f"{b}").lower().replace(" ","-")) for r, b in zip(row, backup))
-
-    # clean slug list to only include agencies in the schema
-    # there are some bad metadata -- e.g., 'interim-rule', 'formal-comments-that-were-received-in-response-to-the-nprm-regarding'
-    # also ensure no duplicate agencies in each document's list by using set()
-    slug_list_clean = [list(set(i for i in slug if i in schema)) for slug in slug_list]
-    
-    # check if data was extracted correctly; raise error if not
-    if not len(agencies_list) == len(slug_list_clean):
-        raise PreprocessingError("Error extracting data from 'agencies' column.")
-    else:  # create new columns with restructured data
-        df.loc[:, 'agency_slugs'] = slug_list_clean
-    
-    # 2) generate two columns with unique top-level agency metadata:
-    # a. list of unique top-level ids (i.e., parent_id for sub-agencies and agency_id for agencies without a parent)
-    # b. list of slugs and list of acronyms that correspond to the top-level ids
-    
-    # create empty lists for results
-    unique_parent_ids, unique_parent_slugs, unique_parent_acronyms, unique_parent_names = [], [], [], []
-    
-    # iterate over list of clean agency slugs
-    for document in slug_list_clean:
-        # a) create new column: list of unique top-level ids
-        # iterate over parent_ids for each document
-        # return parent_id for sub-agencies and agency_id for agencies with no parent
-        # currently returns intermediate parent for parent agencies with parents
-        ids = []
-        for slug in document:
-            if metadata[slug].get("parent_id") is not None:
-                ids.append(metadata[slug].get("parent_id"))
-            else:
-                ids.append(metadata[slug].get("id"))
-        ids = list(set(ids))  # use set() to keep only unique ids
-        unique_parent_ids.append(ids)  # append to results list (a)
-        
-        # b) create 2 new columns: list of unique top-level slugs; list of unique acronyms
-        # iterate over each document's unique_parent_ids
-        # return slug for corresponding id from FR API's agencies endpoint
-        slugs, acronyms, names = [], [], []
-        for i in ids:
-            # locate slug for each input id from agencies endpoint metadata
-            slugs.extend(k for k, v in metadata.items() if v.get("id") == i)
-            
-            # locate acronym
-            acronyms.extend(v.get("short_name") for v in metadata.values() if v.get("id") == i)
-            
-            # locate name
-            names.extend(v.get("name") for v in metadata.values() if v.get("id") == i)
-            
-        # append to results list (b)
-        unique_parent_slugs.append(slugs)
-        unique_parent_acronyms.append(acronyms)
-        unique_parent_names.append(names)
-    
-    # check if results make sense; raise error if not
-    if not len(unique_parent_ids) == len(unique_parent_slugs) == len(unique_parent_acronyms) == len(unique_parent_names):
-        raise PreprocessingError("Error extracting unique data from 'agencies' column.")
-    else:  # create new columns with extracted data
-        df.loc[:, "parent_id_uq"] = unique_parent_ids
-        df.loc[:, "parent_slug_uq"] = unique_parent_slugs
-        df.loc[:, "parent_acronym_uq"] = unique_parent_acronyms
-        df.loc[:, "parent_name_uq"] = unique_parent_names
-    
-    # 3) reorder columns
-    new_cols = [  # new columns added
-        "parent_slugs", 
-        "parent_id_uq", 
-        "parent_slug_uq", 
-        "parent_acronym_uq", 
-        "parent_name_uq"
-        ]
-    df = reorder_new_columns(
-        df, 
-        original_columns=df_input.columns.tolist(), 
-        new_columns=new_cols, 
-        after_column="agencies"
-        )
-    
-    # return output df with new columns
-    return df
-
-
-def clean_agency_names(df: DataFrame, column: str = "agency_names"):
-    """Convert agency names column from `list` to `str`, with mulitple agencies joined by semi-colons.
-
-    Args:
-        df (DataFrame): Input data.
-        column (str, optional): Column to clean. Defaults to "agency_names".
-
-    Returns:
-        DataFrame: Data with modified column.
-    """    
-    names = ("; ".join(x) for x in df[column].tolist() if x is not None)
-    df.loc[:, column] = list(names)
-    return df
-
-
-def get_parent_agency(df: DataFrame, 
-                      metadata: dict, 
-                      columns = (
-                          "parent_id_uq", 
-                          "parent_slug_uq", 
-                          "parent_acronym_uq", 
-                          "parent_name_uq", 
-                          "parent_slugs", ), 
-                      output_column: str = "parent_agency_names", 
-                      clean_names: bool = True
-                      ):
-    
-    df_copy = df.copy(deep=True)
-    
-    # clean up agencies column from API
-    cols_exist = (True if c in df.columns else False for c in columns)
-    if not any(cols_exist):
-        df_copy = clean_agencies_column(df_copy, metadata=metadata)
-    
-    df_copy = df_copy.rename(columns={"parent_name_uq": output_column})
-    df_copy = reorder_new_columns(
-        df_copy, 
-        original_columns=df.columns.tolist(), 
-        new_columns=[output_column], 
-        after_column="agencies"
-        )
-    
-    if clean_names:
-        df_copy = clean_agency_names(df_copy, column=output_column)
-    
-    return df_copy
-
-
-def identify_independent_reg_agencies(df: DataFrame, 
-                                      agency_column: str = "agency_slugs", 
-                                      new_column: str = "independent_reg_agency", 
-                                      independent_agencies: list | tuple = INDEPENDENT_REG_AGENCIES):
-    """Based on the definition of independent regulatory agencies defined in [44 U.S.C. 3502(5)](https://www.law.cornell.edu/uscode/text/44/3502)."""
-    df_copy = df.copy(deep=True)
-    agencies = df_copy.loc[:, agency_column].values.tolist()
-    
-    ira_list = [any(1 if agency in independent_agencies else 0 for agency in agency_list) for agency_list in agencies]
-    
-    if not len(ira_list) == len(agencies):
-        raise PreprocessingError("Failed to create column.")
-    else:
-        df_copy.loc[:, new_column] = [1 if ira else 0 for ira in ira_list]
-    
-    return df_copy
+    def preprocess_agencies(self, return_format: str = "slug"):
+        self.extract_values()
+        self.get_slugs()
+        self.process_agency_columns(self.get_parents(), self.get_subagencies(), return_format=return_format)
+        self.get_independent_reg_agencies()
 
 
 # only query agencies endpoint when run as script; save that output 
 if __name__ == "__main__":
     
-    #data_dir = Path(__file__).parents[1].joinpath("data")
-    
+    data_dir = Path(__file__).parents[1].joinpath("metadata")
     agencies_metadata = AgencyMetadata()
     agencies_metadata.get_metadata()
     agencies_metadata.transform()
-    #agencies_metadata.save_json(data_dir)
+    agencies_metadata.save_json(data_dir)
     
-    import requests
+    #import requests
     #from pandas import read_csv
     
-    url = "https://www.federalregister.gov/api/v1/documents.json?fields[]=agencies&fields[]=agency_names&fields[]=document_number&fields[]=publication_date&per_page=20&order=oldest&conditions[publication_date][year]=2024&conditions[type][]=RULE"
+    #url = "https://www.federalregister.gov/api/v1/documents.json?fields[]=agencies&fields[]=agency_names&fields[]=document_number&fields[]=publication_date&per_page=20&order=oldest&conditions[publication_date][year]=2024&conditions[type][]=RULE"
     
-    response = requests.get(url)
-    results = response.json()["results"]
+    #response = requests.get(url)
+    #results = response.json()["results"]
     
-    df = DataFrame(results)
+    #df = DataFrame(results)
     
-    agency_data = AgencyData(df, agencies_metadata.transformed_data)
-    agency_data.extract_values()
-    agency_data.get_slugs()
-    agency_data.process_agency_columns(agency_data.get_parents(), agency_data.get_subagencies(), return_format="name")
+    #agency_data = AgencyData(df, agencies_metadata.transformed_data)
+    #agency_data.preprocess_agencies(return_format="name")
+    #print(agency_data.data.head())

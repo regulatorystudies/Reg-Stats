@@ -19,24 +19,24 @@ from pandas import DataFrame
 import requests
 
 from preprocessing import (
-    clean_agency_names, 
-    clean_agencies_column, 
-    get_parent_agency, 
-    extract_rin_info, 
-    create_rin_keys, 
     AgencyMetadata, 
-    identify_independent_reg_agencies, 
+    AgencyData, 
     extract_year, 
     date_in_quarter, 
     greater_than_date, 
-    identify_duplicates
+    extract_docket_info, 
+    create_docket_keys, 
+    identify_duplicates, 
+    extract_rin_info, 
+    create_rin_keys, 
     )
 
 
 BASE_PARAMS = {
     'per_page': 1000, 
     "page": 0, 
-    'order': "oldest"
+    'order': "oldest", 
+    "conditions[type][]": "RULE", 
     }
 BASE_URL = r'https://www.federalregister.gov/api/v1/documents.json?'
 BASE_FIELDS = (
@@ -217,7 +217,9 @@ def get_documents_by_date(start_date: str,
 
 def export_data(df: DataFrame, 
                 path: Path, 
-                file_name: str = "federal_register_tracking.csv"):
+                start_date: str, 
+                end_date: str, 
+                base_file_name: str = "fr_tracking"):
     """Save data to file in CSV format.
 
     Args:
@@ -225,8 +227,8 @@ def export_data(df: DataFrame,
         path (Path): Path to save directory.
         file_name (str, optional): File name. Defaults to f"federal_register_clips_{date.today()}.csv".
     """    
-    with open(path / file_name, "w", encoding = "utf-8") as f:
-        df.to_csv(f, lineterminator="\n")
+    with open(path / f"{base_file_name}_{start_date}_{end_date}.csv", "w", encoding = "utf-8") as f:
+        df.to_csv(f, lineterminator="\n", index=False)
     print(f"Exported data as csv to {path}.")
 
 
@@ -254,12 +256,12 @@ def log_errors(func, filepath: Path = Path(__file__).parent / "error.log"):
 # -- main functions -- #
 
 
-def pipeline(metadata: dict):
+def pipeline(metadata: dict, agency_format: str = "name"):
     """Main pipeline for retrieving Federal Register documents.
 
     Args:
         metadata (dict): Agency metadata for cleaning agency names.
-        input_path (Path, optional): Path to input with documents to retrieve. Defaults to None.
+        agency_format (str): Defaults to None.
 
     Returns:
         DataFrame: Output data.
@@ -283,18 +285,37 @@ def pipeline(metadata: dict):
     # get rin info for documents; returns generator of dict
     results_with_rin_info = (create_rin_keys(doc, extract_rin_info(doc)) for doc in results)
 
-    # create DataFrame; filter out documents; clean agency info; drop unneeded columns
-    df = DataFrame(list(results_with_rin_info))
-    df = clean_agency_names(df)
-    df = clean_agencies_column(df, metadata)
-    df = get_parent_agency(df, metadata)
-    df = identify_independent_reg_agencies(df)
+    # get docket info for documents; returns generator of dict
+    results_with_docket_info = (create_docket_keys(doc, extract_docket_info(doc)) for doc in results_with_rin_info)
+    
+    # create DataFrame; filter out documents; clean agency info
+    df = DataFrame(list(results_with_docket_info))
+    agency_data = AgencyData(df, metadata)
+    agency_format = "name"
+    agency_data.preprocess_agencies(return_format=agency_format)
+    df = agency_data.data
+    
+    # add new columns for coding to df
+    add_columns = [
+        "significant",
+        "econ_significant",
+        "3(f)(1) significant",
+        "Major",
+        "Notes", 
+        ]
+    df = df.reindex(columns = df.columns.tolist() + add_columns)
+    df = df.rename(columns = {
+        f"parent_{agency_format}": "department",
+        f"subagency_{agency_format}": "agency", 
+        "rin": "regulation_id_number", 
+        "docket_id": "docket_number", 
+        })
+    
     output_columns = [
         "publication_date",
         "effective_on",
         "department",
         "agency",
-        "independent_reg_agency",
         "title",
         "abstract",
         "action",
@@ -307,15 +328,19 @@ def pipeline(metadata: dict):
         "3(f)(1) significant",
         "Major",
         "html_url",
+        "independent_reg_agency",
         "Notes",
         ]
     
+    if end_date == "":
+        end_date = f"{date.today()}"
+    
     # return data
-    return df.loc[:, output_columns]
+    return df.loc[:, output_columns], start_date, end_date
 
 
 @log_errors
-def retrieve_rules(base_path: Path = Path(__file__).parent):
+def retrieve_rules(base_path: Path = Path(__file__).parents[1]):
     """Command-line interface for retrieving documents.
     """
     # get agency metadata
@@ -332,11 +357,11 @@ def retrieve_rules(base_path: Path = Path(__file__).parent):
         metadata = agency_metadata.transformed_data
 
     # call pipeline to create dataframe
-    df = pipeline(metadata)
+    df, start_date, end_date = pipeline(metadata)
 
     # export if any data was retrieved
     if df is not None:
-        export_data(df, base_path)
+        export_data(df, base_path, start_date, end_date)
 
 
 if __name__ == "__main__":
