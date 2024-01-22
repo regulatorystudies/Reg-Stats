@@ -303,7 +303,7 @@ def pipeline(metadata: dict, agency_format: str = "name"):
         "Major",
         "Notes", 
         ]
-    df = df.reindex(columns = df.columns.tolist() + add_columns)
+    df = df.reindex(columns = df.columns.to_list() + add_columns)
     df = df.rename(columns = {
         f"parent_{agency_format}": "department",
         f"subagency_{agency_format}": "agency", 
