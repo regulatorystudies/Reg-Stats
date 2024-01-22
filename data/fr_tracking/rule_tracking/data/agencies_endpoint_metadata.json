@@ -1,7 +1,7 @@
 {
     "source": "Federal Register API, https://www.federalregister.gov/reader-aids/developer-resources/rest-api",
     "endpoint": "https://www.federalregister.gov/api/v1/agencies.json",
-    "date_retrieved": "2024-01-19",
+    "date_retrieved": "2024-01-22",
     "count": 461,
     "results": {
         "action": {
