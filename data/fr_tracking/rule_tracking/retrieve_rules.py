@@ -256,7 +256,7 @@ def log_errors(func, filepath: Path = Path(__file__).parent / "error.log"):
 # -- main functions -- #
 
 
-def pipeline(metadata: dict, agency_format: str = "name"):
+def pipeline(metadata: dict, schema: list[str], agency_format: str = "name"):
     """Main pipeline for retrieving Federal Register documents.
 
     Args:
@@ -290,8 +290,7 @@ def pipeline(metadata: dict, agency_format: str = "name"):
     
     # create DataFrame; filter out documents; clean agency info
     df = DataFrame(list(results_with_docket_info))
-    agency_data = AgencyData(df, metadata)
-    agency_format = "name"
+    agency_data = AgencyData(df, metadata, schema)
     agency_data.preprocess_agencies(return_format=agency_format)
     df = agency_data.data
     
@@ -343,21 +342,30 @@ def pipeline(metadata: dict, agency_format: str = "name"):
 def retrieve_rules(base_path: Path = Path(__file__).parents[1]):
     """Command-line interface for retrieving documents.
     """
-    # get agency metadata
+    # get agency metadata and schema
     metadata_dir = base_path.joinpath("rule_tracking", "data")
     metadata_file = metadata_dir / "agencies_endpoint_metadata.json"
     if metadata_file.is_file():  # import metadata from local JSON
         with open(metadata_file, "r") as f:
             metadata = json.load(f)["results"]
+        # if file exists, import from local JSON
+        schema_file = metadata_dir / "agency_schema.json"
+        if schema_file.is_file():
+            with open(schema_file, "r") as f:
+                schema = json.load(f)
+        else:  # create instance and call get_schema()
+            agency_metadata = AgencyMetadata()
+            schema = agency_metadata.get_schema(metadata=metadata)
     else:  # retrieve from API and save
         agency_metadata = AgencyMetadata()
         agency_metadata.get_metadata()
         agency_metadata.transform()
-        agency_metadata.save_json(metadata_dir)
+        agency_metadata.to_json(metadata_dir)
         metadata = agency_metadata.transformed_data
-
+        schema = agency_metadata.get_schema()
+    
     # call pipeline to create dataframe
-    df, start_date, end_date = pipeline(metadata)
+    df, start_date, end_date = pipeline(metadata, schema)
 
     # export if any data was retrieved
     if df is not None:
