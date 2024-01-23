@@ -8,6 +8,7 @@ __all__ = [
     "dockets", 
     "duplicates", 
     "rin", 
+    "utils", 
     ]
 
 from .agencies import *
@@ -19,3 +20,5 @@ from .dockets import *
 from .duplicates import *
 
 from .rin import *
+
+from .utils import *
