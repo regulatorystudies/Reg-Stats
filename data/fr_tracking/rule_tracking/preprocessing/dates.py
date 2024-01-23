@@ -11,7 +11,7 @@ def extract_year(string: str):
     Returns:
         int: Year attribute of `datetime.date` object.
     """
-    res = re.compile("\d{4}-\d{2}-\d{2}", re.I).match(string)
+    res = re.compile(r"\d{4}-\d{2}-\d{2}", re.I).match(string)
     
     if isinstance(res, re.Match):
         return date.fromisoformat(res[0]).year
