@@ -2,6 +2,7 @@ name: regstats_tracking
 channels:
 - defaults
 dependencies:
+- python=3.11
 - git=2.40.1
 - ipython=8.20.0
 - pandas=2.1.4
