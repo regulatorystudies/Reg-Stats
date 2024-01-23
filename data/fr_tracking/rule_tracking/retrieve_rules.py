@@ -360,7 +360,7 @@ def retrieve_rules(base_path: Path = Path(__file__).parents[1]):
         agency_metadata = AgencyMetadata()
         agency_metadata.get_metadata()
         agency_metadata.transform()
-        agency_metadata.to_json(metadata_dir)
+        agency_metadata.save_metadata(metadata_dir)
         metadata = agency_metadata.transformed_data
         schema = agency_metadata.get_schema()
     
