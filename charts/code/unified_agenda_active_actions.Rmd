@@ -97,7 +97,7 @@ data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$years
 ```{r plot_data, results='markup'}
 #annotation
 current_date <- format(Sys.Date(), "%B %d, %Y")
-caption_text <- paste("* Only one agenda was published in 2012 \n\nSource: Office of Information and Regulatory Affairs \n\nUpdated:", current_date)
+caption_text <- paste("Source: Office of Information and Regulatory Affairs \n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 
@@ -108,10 +108,11 @@ bar2 <-
 
   ggtitle("Active Actions Published in the Unified Agenda") +
   ylab("Number of Active Actions") +
-  xlab("") +
+  xlab("* Only one agenda was published in 2012 \n") +
   scale_y_continuous(breaks = seq(0, max(data_new1$Total)+500, by = 500), expand = c(0, 0),
                      limits = c(-2, max(data_new1$Total)+500)) +
                      #labels = label_number(suffix = "K", scale = 1e-3)) +
+                     #labels = label_number(scale = 1e-3) +
   # scale_y_continuous()
   #annotation_custom(logo, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
   # logo_y_dim = 0.3logo_y_max, logo_x_dim = 0.12logo_x_max ?
@@ -123,14 +124,16 @@ bar2 <-
       legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
-      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 20)),
-      axis.ticks.x = element_line(color = RSCgray),
+      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 10)),
+      axis.line.x = element_line(linewidth = 1, color = RSCgray),
+
+      #axis.ticks.x = element_line(color = RSCgray),
       axis.text.y = element_text(size = 12),
-      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 20)),# modified margin to adjust the space between title and y-axis 
+      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 10)),# modified margin to adjust the space between title and y-axis 
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
       text = element_text(family = "avenir_lt_pro"),
-      plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
+      plot.caption = element_text(hjust = 1, vjust = 10, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
       plot.margin = margin(50, 50, 50, 50)
     )
 

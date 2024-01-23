@@ -56,58 +56,71 @@ showtext_auto()
 
 ```{r clean_data}
 
-colnames(num_fr) <- c("year", "fay", "party", "rules_received", "rules_published")
+#colnames(num_fr) <- c("year", "fay", "party", "rules_received", "rules_published")
 
-num_fr$rules_published<- as.numeric(num_fr$rules_published)
-num_fr$rules_received<- as.numeric(num_fr$rules_received)
+num_fr$major_rules_received<- as.numeric(num_fr$major_rules_received)
+num_fr$major_rules_published<- as.numeric(num_fr$major_rules_published)
 # make party factor variable
-num_fr$party <- as.factor(num_fr$party)
+num_fr$democratic_admin <- as.factor(num_fr$democratic_admin)
+num_fr$presidential_year <- as.factor(num_fr$presidential_year)
+
 ```
 
 ## Plot data
 
 ```{r plot_data, results='markup'}
 current_date <- format(Sys.Date(), "%B %d, %Y")
-caption_text <- paste("Source: Government Accountability Office \n\nUpdated:", current_date)
+caption_text <- paste("Source: U.S. Government Accountability Office \n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 bar1 <-
-  ggplot(num_fr, aes(x = year, y = rules_published, fill = party, pattern = party)) +
+  ggplot(num_fr, aes(x = presidential_year, y = major_rules_published, fill = democratic_admin, pattern = democratic_admin,family = "avenir_lt_pro")) +
   geom_bar_pattern(stat = "identity", width = 0.5,
-                   pattern_color = NA,
-                    pattern_fill = "#B2DDF4",
+                    position = position_dodge(preserve = "single"),
+                    pattern_color = NA,
+                    pattern_fill = lightblue,
                     pattern_angle = 45,
                     pattern_density = 0.1,
-                    pattern_spacing = 0.03,
-                   # pattern_key_scale_factor = 1
+                    pattern_spacing = 0.025,
+                   pattern_key_scale_factor = 0.6
                    ) +
-  scale_fill_manual(values = c("#C9102F","#033C5A")) +
+  scale_fill_manual(values = c(red,GWblue)) +
   scale_pattern_manual(values = c("1"="stripe", "0"="none")) +
-  ggtitle("Number of Final Major Rules Published by Presidential Year") +
-  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
-  theme(panel.grid.minor = element_blank()) +
-  ylab("Number of Major Rules") +
-  xlab("") +
-  scale_y_continuous(breaks = seq(0, max(num_fr$rules_published) + 25, by = 25), expand = c(0, 0),
-                     limits = c(-2, max(num_fr$rules_published) + 25)) +
-  coord_cartesian(clip = "off") +
+  ggtitle("Final Major Rules Published by Presidential Year") +
+  #theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
+  #theme(panel.grid.minor = element_blank()) +
+  #ylab("Number of Major Rules") +
+  ylab("Number of Rules") +
+  xlab("Note: This figure reflects the number of major rules that federal agencies submitted to the Government Accountability Office as required by the Congressional \nReview Act during each presidential year. The data may not match the number of major rules published in the Federal Register. \n") +
+  scale_y_continuous(breaks = seq(0, max(num_fr$major_rules_published) + 25, by = 25), expand = c(0, 0),
+                     limits = c(-2, max(num_fr$major_rules_published) + 25)) +
+  coord_cartesian(ylim = c(0, max(num_fr$major_rules_published) + 25)) + # move thicker bottom x-axisx to 0 line
   labs(caption = wrapped_caption)+
   theme_minimal() +
   theme(
       plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
+      plot.title = element_text(hjust = 0.5, vjust = -50,  size = 20),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
-      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 20)),
-      axis.ticks.x = element_line(color = RSCgray),
+      axis.title.x = element_text(size = 10, angle = 0, vjust = 0.5, hjust = 0, margin = margin(t = 10)),
+      #axis.ticks.x = element_line(color = RSCgray),
+      axis.line.x = element_line(linewidth = 1, color = RSCgray),
+      #legend.position = "none",
+
       axis.text.y = element_text(size = 12),
       axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 20)),# modified margin to adjust the space between title and y-axis 
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
       text = element_text(family = "avenir_lt_pro"),
+      
       plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
+
       plot.margin = margin(50, 50, 50, 50)
     )
+  
+  #coord_cartesian(ylim = c(0, max(sig_fin_rules$rules) + 50)) +
+  
 
 
 ```
@@ -115,7 +128,7 @@ bar1 <-
 ```{r}
 new_bar <- ggdraw() +
       draw_plot(bar1) +
-      draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
+      draw_image(logo, x = 0.1, y = 0.03, halign = 0, valign = 0, width = 0.2)
 
 new_bar
 ```
