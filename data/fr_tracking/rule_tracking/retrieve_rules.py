@@ -315,6 +315,7 @@ def pipeline(metadata: dict, schema: list[str], agency_format: str = "name"):
         "effective_on",
         "department",
         "agency",
+        "independent_reg_agency",
         "title",
         "abstract",
         "action",
@@ -327,7 +328,6 @@ def pipeline(metadata: dict, schema: list[str], agency_format: str = "name"):
         "3(f)(1) significant",
         "Major",
         "html_url",
-        "independent_reg_agency",
         "Notes",
         ]
     
