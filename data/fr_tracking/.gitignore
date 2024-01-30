@@ -1,5 +1,9 @@
 # ----- Project-specific ----- #
 
+# nuitka
+retrieve_rules_program/
+*.dist/
+
 # output
 fr_tracking_*.csv
 
