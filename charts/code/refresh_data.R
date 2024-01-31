@@ -21,6 +21,7 @@ path_data <- path(here("data"))
 if (dir_exists(path_data)) {
   # copy data files within dir up to 1 level
   copy_all_data(path_data, path_chartdata, recurse_levels=1)
+  copy_agency_data(path_data, path_chartdata)
   
 } else {
   
