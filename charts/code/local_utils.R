@@ -12,13 +12,14 @@ get_png <- function(filename) {
 }
 
 # function for copying all data recursively within a folder
-copy_all_data <- function(path, new_path, file_type = "*.csv", recurse_levels = TRUE, report = TRUE){
+copy_all_data <- function(path, new_path, file_type = "*.csv", recurse_levels = TRUE, report = TRUE, ignore_pattern = "fr_tracking.*[.]csv"){
   
   file_list <- dir_ls(path, recurse = recurse_levels, type = "file", glob = file_type)
+  file_list <- path_filter(file_list, regexp = ignore_pattern, invert = TRUE)
   file_copy(file_list, new_path, overwrite = T)
   
   if (report){
-    print(paste("Copied", length(file_list), "files"))
+    print(paste("Copied", length(file_list), "files."))
     }
 }
 

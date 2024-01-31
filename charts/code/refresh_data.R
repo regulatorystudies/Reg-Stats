@@ -20,8 +20,12 @@ if (!dir_exists(path_chartdata)) {
 path_data <- path(here("data"))
 if (dir_exists(path_data)) {
   # copy data files within dir up to 1 level
-  copy_all_data(path_data, path_chartdata, recurse_levels=1)
+  copy_all_data(path_data, path_chartdata, recurse_levels=1, report = FALSE)
+  
+  # copy agency-specific data
   copy_agency_data(path_data, path_chartdata)
+  
+  print("Copied files.")
   
 } else {
   
