@@ -117,5 +117,5 @@ if (!dir.exists(out)){
 }
 
 # save bar2 as pdf
-ggsave(here("charts", "output", "econ_significant_final_rules_published_by_presidential_year.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "econ_significant_rules_published_by_presidential_year.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
 ```
