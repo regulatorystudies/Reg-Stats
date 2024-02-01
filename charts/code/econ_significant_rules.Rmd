@@ -1,0 +1,121 @@
+---
+title: "Economically Significant Final Rules Published by Presidential Year"
+author: "Henry Hirsch"
+date: "2024-02-01"
+output: html_document
+---
+
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+i_am("charts/code/econ_significant_rules.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "econ_significant_rules_by_presidential_year.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
+```
+
+## Load packages
+
+```{r load packages, results='hide', warning=FALSE}
+library(ggpattern)
+```
+
+## Load data
+
+```{r load data}
+# load csv using here
+econ_sig_rules <- read.csv(here("charts", "data", data_file))
+```
+
+## Process data
+
+```{r code}
+# current date
+current_date <- format(Sys.Date(), "%B %d, %Y")
+
+# set caption text
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for
+the years 2021 and onwards;\n Office of Information and Regulatory
+Affairs (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
+
+# set wrapped caption width
+wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
+
+# rename columns
+colnames(econ_sig_rules) <- c("year", "party", "rules", "withdrawn")
+
+# get rid of withdrawn column
+econ_sig_rules <- econ_sig_rules[ , c("year", "party", "rules")]
+
+# get rid of bottom three rows
+econ_sig_rules <- econ_sig_rules[1:(nrow(econ_sig_rules) - 5), ]
+
+# make party factor variable
+econ_sig_rules$party <- as.factor(econ_sig_rules$party)
+
+```
+
+## Plot data
+
+```{r generate graph}
+# generate bar1
+bar1 <- ggplot(econ_sig_rules, aes(x = year, y = rules, fill = party, pattern = party)) +
+  geom_bar_pattern(stat = "identity", width = 0.5,
+                   position = position_dodge(preserve = "single"),
+                   pattern_color = NA,
+                   pattern_fill = lightblue, pattern_angle = 45,
+                   pattern_density = 0.1, pattern_spacing = 0.025,
+                   pattern_key_scale_factor = 0.6) +
+  scale_fill_manual(values = c(GWblue, red)) +
+  scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
+  ggtitle("Economically Significant Final Rules Published by Presidential Year") +
+  ylab("Number of Economically Significant Rules") +
+  xlab("") +
+  scale_y_continuous(breaks = seq(0, max(econ_sig_rules$rules) + 25, by = 25), expand = c(0, 0.05), limits = c(-2, max(econ_sig_rules$rules) + 25)) +
+  labs(caption = wrapped_caption) +
+  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
+  theme_RSC +
+  coord_cartesian(ylim = c(0, max(econ_sig_rules$rules) + 25)) +
+  theme(
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
+    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
+    axis.ticks.x = element_blank(),
+    axis.line.x = element_line(linewidth = 1, color = RSCgray),
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
+    panel.grid.minor = element_blank()
+  )
+
+bar1
+
+# add logo to plot
+bar2 <- ggdraw() + 
+  draw_plot(bar1) + 
+  draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
+bar2
+```
+
+```{r save}
+# create empty output folder if it doesn't already exist
+out = here("charts", "output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+# save bar2 as pdf
+ggsave(here("charts", "output", "econ_significant_final_rules_published_by_presidential_year.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
+```
