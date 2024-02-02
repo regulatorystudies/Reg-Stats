@@ -60,29 +60,31 @@ def process_xml(file):
 #%% Function to collect all data and return a dictionary of results
 def collect_ua_data(start_year,start_season,end_year,end_season):
 
+    print(f'Unified Agenda data {start_year} {start_season} - {end_year} {end_season} are being collected...')
     result_dic={}
     sea_option = ['spring','fall']
 
     # Condition 1: one year only
     if (end_year == start_year):
 
-      # Condition 1.1: the year is 2012
-      if start_year == 2012:
-        result_dic[f'{start_year}']=process_xml(download_file(start_year))
+        # Condition 1.1: the year is 2012
+        if start_year == 2012:
+            result_dic[f'{start_year}']=process_xml(download_file(start_year))
 
-      # Condition 1.2: the year is NOT 2012
-      else:
-        # Condition 1.2.1: the year is not 2012 & one season only
-        if (start_season==end_season):
-          result_dic[f'{start_year} {start_season.capitalize()}'] = process_xml(download_file(start_year, start_season))
-
-        # Condition 1.2.2: the year is not 2012 & both seasons
+        # Condition 1.2: the year is NOT 2012
         else:
-          result_dic[f'{start_year} {start_season.capitalize()}'] = process_xml(download_file(start_year, start_season))
-          result_dic[f'{end_year} {end_season.capitalize()}'] = process_xml(download_file(end_year, end_season))
+            # Condition 1.2.1: the year is not 2012 & one season only
+            if (start_season==end_season):
+                result_dic[f'{start_year} {start_season.capitalize()}'] = process_xml(download_file(start_year, start_season))
+
+            # Condition 1.2.2: the year is not 2012 & both seasons
+            else:
+                result_dic[f'{start_year} {start_season.capitalize()}'] = process_xml(download_file(start_year, start_season))
+                result_dic[f'{end_year} {end_season.capitalize()}'] = process_xml(download_file(end_year, end_season))
 
     # Condition 2: Multiple years
-    elif (start_year != end_year): # to indicate specific condition
+    elif (start_year != end_year):  # to indicate specific condition
+
         # For the start year
         if start_year==2012:
             result_dic[f'{start_year}'] = process_xml(download_file(start_year))
@@ -99,7 +101,7 @@ def collect_ua_data(start_year,start_season,end_year,end_season):
                 break
 
             if year==2012:
-                result_dic[f'{start_year}'] = process_xml(download_file(start_year))
+                result_dic[f'{year}'] = process_xml(download_file(year))
             else:
                 for s in sea_option:    # both seasons for the years (other than 2012)
                     result_dic[f'{year} {s.capitalize()}'] = process_xml(download_file(year, s))
@@ -117,21 +119,25 @@ def collect_ua_data(start_year,start_season,end_year,end_season):
     return result_dic
 
 #%% Check the current data
-file_path='data/ua_actions/active_actions_by_unified_agenda.csv'
+dir_path=os.path.dirname(os.path.realpath(__file__))
+file_path=f'{dir_path}/active_actions_by_unified_agenda.csv'
+
 if os.path.exists(file_path):
-    df_updated=pd.read_csv('data/ua_actions/active_actions_by_unified_agenda.csv')
+    df_updated=pd.read_csv(file_path)
+    print('Current dataset:')
     print(df_updated.info())
 
-    ua_updated=df_updated.sort_values('Unified Agenda')['Unified Agenda'][-1]
-    updated_season=ua_updated.split(' ')[0].lower()
-    updated_year=int(ua_updated.split(' ')[1])
+    ua_updated=df_updated['Unified Agenda'].iloc[-1]
+    updated_year = int(ua_updated.split(' ')[0])
+    updated_season=ua_updated.split(' ')[1].lower()
+
 else:   # set before the first available Unified Agenda
+    updated_year = 1995
     updated_season='spring'
-    updated_year=1995
 
 #%% Set start year & season and end year & season for data collection
 if (updated_year==current_year) and (updated_season==current_season):
-    print('The data is up-to-date. No update is needed.')
+    print('The dataset is up-to-date. No update is needed.')
     sys.exit(0)
 elif updated_season=='spring':
     start_year=updated_year
@@ -140,11 +146,21 @@ else:
     start_year=updated_year+1
     start_season='spring'
 
-#%% Update the data
+#%% Update data
 results=collect_ua_data(start_year,start_season,current_year,current_season)
-df_new=pd.DataFrame.from_dict(results,orient='index',columns=df_updated.columns[1:5])
+df_new=pd.DataFrame.from_dict(results,orient='index',
+                              columns=['Final Rules','Proposed Rules','Prerules','Total'])
 df_new=df_new.reset_index().rename(columns={'index': 'Unified Agenda'})
-print(df_new.info())
+
+#%% Append with the old data
+if os.path.exists(file_path):
+    df_updated=pd.concat([df_updated,df_new],ignore_index=True)
+else:
+    df_updated=df_new
+
+print('Updated dataset:')
+print(df_updated.info())
 
 #%% Export the updated data
-df_new.to_csv('data/ua_actions/active_actions_by_unified_agenda.csv',index=False)
+df_updated.to_csv(file_path,index=False)
+print('The updated dataset has been saved. End of execution.')
