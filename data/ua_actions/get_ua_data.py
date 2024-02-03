@@ -19,12 +19,8 @@ current_year = int(current_year_season[1]) # int
 current_season = current_year_season[0].lower() # str
 
 #%% Function to convert season str to int
-def season_transform(season):
-    sea_no_option = ['04', '10']  # season numbers
-    if season.lower() == 'fall':
-        return sea_no_option[1]
-    else:
-        return sea_no_option[0]
+def season_transform(season: str, schema = {"spring": "04", "fall": "10"}) -> str:
+    return schema.get(season.lower(), "")
 
 # Function to download an XML file
 def download_file(year, season='fall'):
@@ -162,5 +158,5 @@ print('Updated dataset:')
 print(df_updated.info())
 
 #%% Export the updated data
-df_updated.to_csv(file_path,index=False)
+df_updated.to_csv(file_path, index=False, lineterminator="\n")
 print('The updated dataset has been saved. End of execution.')
