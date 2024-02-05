@@ -12,7 +12,7 @@ The `i_am` function identifies where the Rmd is located within the main project 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 # set location of this file in project directory
-i_am("charts/code/agency_econ_signifiacnt_rules_by_presidential_year.Rmd")
+i_am("charts/code/agency_econ_significant_rules_by_presidential_year.Rmd")
 
 # import local functions
 source(here("charts", "code", "local_utils.R"))
@@ -169,7 +169,7 @@ graph <- function(dataset, interval, max_add, title){
   scale_fill_manual(values = c(GWblue, red)) +
   scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
   ggtitle(title) +
-  ylab("Number of Significant Rules") +
+  ylab("Number of Economically Significant Final Rules") +
   xlab("") +
   scale_y_continuous(breaks = seq(0, max(dataset$rules) + max_add, by = interval), expand = c(0, 0.05), limits = c(-2, max(dataset$rules) + max_add)) +
   labs(caption = wrapped_caption) +
@@ -197,8 +197,29 @@ graph <- function(dataset, interval, max_add, title){
   return(bar2)
 }
 
-dhs_bar <- graph(dhs_rules1, 1, 1, "Economically Significant Final Rules Published by DHS each Presidential Year") #need to figure out how to call the chart
+dhs_bar <- graph(dhs_rules1, 1, 1, "Economically Significant Final Rules Published by DHS each Presidential Year")
+doe_bar <- graph(doe_rules1, 1, 1, "Economically Significant Final Rules Published by DOE each Presidential Year")
+doi_bar <- graph(doi_rules1, 1, 0, "Economically Significant Final Rules Published by DOI each Presidential Year")
+dol_bar <- graph(dol_rules1, 1, 1, "Economically Significant Final Rules Published by DOL each Presidential Year")
+dot_bar <- graph(dot_rules1, 1, 0, "Economically Significant Final Rules Published by DOT each Presidential Year")
+ed_bar  <- graph(ed_rules1, 1, 1, "Economically Significant Final Rules Published by ED each Presidential Year")
+epa_bar <- graph(epa_rules1, 2, 1, "Economically Significant Final Rules Published by EPA each Presidential Year")
+hhs_bar <- graph(hhs_rules1, 5, 3, "Economically Significant Final Rules Published by HHS each Presidential Year")
+hud_bar <- graph(hud_rules1, 1, 1, "Economically Significant Final Rules Published by HUD each Presidential Year")
+sba_bar <- graph(sba_rules1, 5, 4, "Economically Significant Final Rules Published by SBA each Presidential Year")
+usda_bar <- graph(usda_rules1, 2, 1, "Economically Significant Final Rules Published by USDA each Presidential Year")
 
+dhs_bar
+doe_bar
+doi_bar
+dol_bar
+dot_bar
+ed_bar
+epa_bar
+hhs_bar
+hud_bar
+sba_bar
+usda_bar
 
 ```
 
@@ -212,7 +233,40 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-# save bar2 as pdf
+# save bars as pdfs
 ggsave(here("charts", "output", "by_agency", 
-            "dhs_econ_significant_rules_by_presidential_year.pdf"), plot = bar2_dhs, width = 12, height = 9, dpi = 300)
+            "dhs_econ_significant_rules_by_presidential_year.pdf"), plot = dhs_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "doe_econ_significant_rules_by_presidential_year.pdf"), plot = doe_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "doi_econ_significant_rules_by_presidential_year.pdf"), plot = doi_bar, width = 12, height = 9, dpi = 300) # check gray line at 0, not lining up and internet not forthcoming w/ solutions
+
+ggsave(here("charts", "output", "by_agency", 
+            "dol_econ_significant_rules_by_presidential_year.pdf"), plot = dol_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "dot_econ_significant_rules_by_presidential_year.pdf"), plot = dot_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "ed_econ_significant_rules_by_presidential_year.pdf"), plot = ed_bar, width = 12, height = 9, dpi = 300) # gray line a bit off, better now
+
+ggsave(here("charts", "output", "by_agency", 
+            "epa_econ_significant_rules_by_presidential_year.pdf"), plot = epa_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "hhs_econ_significant_rules_by_presidential_year.pdf"), plot = hhs_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "hud_econ_significant_rules_by_presidential_year.pdf"), plot = hud_bar, width = 12, height = 9, dpi = 300) # gray line way off, i think it has to do with the interval and max
+
+ggsave(here("charts", "output", "by_agency", 
+            "sba_econ_significant_rules_by_presidential_year.pdf"), plot = sba_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "usda_econ_significant_rules_by_presidential_year.pdf"), plot = usda_bar, width = 12, height = 9, dpi = 300)
+
+
+
 ```
