@@ -764,7 +764,11 @@ def pipeline(data_path: Path,
     return False
 
 
-def scraper(data_path: Path):
+def scraper(
+        data_path: Path, 
+        y_inputs = ("y", "yes", "true"), 
+        n_inputs = ("n", "no", "false")
+    ):
     """Text-based interface for running the scraper pipeline. 
     Operates within a `while True` loop that doesn't break until it receives valid inputs.
 
@@ -777,12 +781,10 @@ def scraper(data_path: Path):
     while True:
         
         # print prompts to console
-        new_prompt = input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
+        new_prompt = "no"  #input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
         detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
         
         # check user inputs
-        y_inputs = ["y", "yes", "true"]
-        n_inputs = ["n", "no", "false"]
         valid_inputs = y_inputs + n_inputs
         if ((new_prompt in valid_inputs) 
             and (detail_prompt in valid_inputs)):
@@ -803,7 +805,7 @@ def scraper(data_path: Path):
                 rule_detail = False
             
             if rule_detail:
-                existing_prompt = input("Use existing population data for retrieving rule-level details? [yes/no]: ").lower()
+                existing_prompt = input("Use existing population data for retrieving rule-level details?\n(Select this if you previously retrieved population data and only want to retrieve rule-level details.) [yes/no]: ").lower()
                 if existing_prompt in y_inputs:
                     use_existing_pop_data = True
                 elif existing_prompt in n_inputs:
