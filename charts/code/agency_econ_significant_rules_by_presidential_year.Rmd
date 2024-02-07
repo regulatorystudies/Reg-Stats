@@ -34,21 +34,24 @@ data_file_usda = "usda_econ_significant_rules_by_presidential_year.csv"
 #for president party merging
 data_file_party = "president_party_year.csv"
 
-# refresh dataset
-copy_dataset(data_file_dhs, here("data"), here("charts", "data"))
-copy_dataset(data_file_doe, here("data"), here("charts", "data"))
-copy_dataset(data_file_doi, here("data"), here("charts", "data"))
-copy_dataset(data_file_dol, here("data"), here("charts", "data"))
-copy_dataset(data_file_dot, here("data"), here("charts", "data"))
-copy_dataset(data_file_ed, here("data"), here("charts", "data"))
-copy_dataset(data_file_epa, here("data"), here("charts", "data"))
-copy_dataset(data_file_hhs, here("data"), here("charts", "data"))
-copy_dataset(data_file_hud, here("data"), here("charts", "data"))
-copy_dataset(data_file_sba, here("data"), here("charts", "data"))
-copy_dataset(data_file_usda, here("data"), here("charts", "data"))
-copy_dataset(data_file_party, here("data"), here("charts", "data"))
+
+# # WIP to load and name all CSV's at once - works to import data, but imported data uses long, tedious names from file names.  Not sure it is any more efficient that what is already used.
+# file_names <- gsub(".csv", "", 
+#                    list.files(path = here("data", "es_rules", "by_agency")))
+# 
+# names <- gsub(" ", "", paste("data_file_", sub("\\_.*","",file_names)))
+# 
+# for(i in file_names){
+#   filepath <- file.path(path = here("data", "es_rules", "by_agency"), 
+#                         paste(i, ".csv", sep=""))
+#   assign(i, read.csv(filepath))
+# }
+
+# refresh datasets
+copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
 
 ```
+
 ## Load packages
 
 ```{r load packages, results='hide', warning=FALSE}
@@ -114,51 +117,10 @@ usda_rules1 <- clean(usda_rules)
 
 ```
 
-## Plot data DHS
-
-```{r generate graph}
-# generate bar1
-bar1_dhs <- ggplot(dhs_rules1, aes(x = year, y = rules, fill = party, pattern = party)) +
-  geom_bar_pattern(stat = "identity", width = 0.5,
-                   position = position_dodge(preserve = "single"),
-                   pattern_color = NA,
-                   pattern_fill = lightblue, pattern_angle = 45,
-                   pattern_density = 0.1, pattern_spacing = 0.025,
-                   pattern_key_scale_factor = 0.6) +
-  scale_fill_manual(values = c(GWblue, red)) +
-  scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
-  ggtitle("Economically Significant Final Rules Published by DHS each Presidential Year") +
-  ylab("Number of Significant Rules") +
-  xlab("") +
-  scale_y_continuous(breaks = seq(0, max(dhs_rules1$rules) + 1, by = 1), expand = c(0, 0.05), limits = c(-2, max(dhs_rules1$rules) + 1)) +
-  labs(caption = wrapped_caption) +
-  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
-  theme_RSC +
-  coord_cartesian(ylim = c(0, max(dhs_rules1$rules) + 1)) +
-  theme(
-    plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
-    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
-    axis.ticks.x = element_blank(),
-    axis.line.x = element_line(linewidth = 1, color = RSCgray),
-    legend.position = "none",
-    panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
-    panel.grid.minor = element_blank()
-  )
-
-bar1_dhs
-
-# add logo to plot
-bar2_dhs <- ggdraw() + 
-  draw_plot(bar1_dhs) + 
-  draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
-bar2_dhs 
-```
-
 #Charting function
 
 ```{r}
-graph <- function(dataset, interval, max_add, title){
+graph <- function(dataset, interval, max_add, width, title){
   bar1 <- ggplot(dataset, aes(x = year, y = rules, fill = party, pattern = party)) +
   geom_bar_pattern(stat = "identity", width = 0.5,
                    position = position_dodge(preserve = "single"),
@@ -180,7 +142,7 @@ graph <- function(dataset, interval, max_add, title){
     plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
     axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
     axis.ticks.x = element_blank(),
-    axis.line.x = element_line(linewidth = 1, color = RSCgray),
+    axis.line.x = element_line(linewidth = width, color = RSCgray),  # Change linewidth to eliminate white space b/t gray line and y-intercept line
     legend.position = "none",
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
@@ -197,17 +159,24 @@ graph <- function(dataset, interval, max_add, title){
   return(bar2)
 }
 
-dhs_bar <- graph(dhs_rules1, 1, 1, "Economically Significant Final Rules Published by DHS each Presidential Year")
-doe_bar <- graph(doe_rules1, 1, 1, "Economically Significant Final Rules Published by DOE each Presidential Year")
-doi_bar <- graph(doi_rules1, 1, 0, "Economically Significant Final Rules Published by DOI each Presidential Year")
-dol_bar <- graph(dol_rules1, 1, 1, "Economically Significant Final Rules Published by DOL each Presidential Year")
-dot_bar <- graph(dot_rules1, 1, 0, "Economically Significant Final Rules Published by DOT each Presidential Year")
-ed_bar  <- graph(ed_rules1, 1, 1, "Economically Significant Final Rules Published by ED each Presidential Year")
-epa_bar <- graph(epa_rules1, 2, 1, "Economically Significant Final Rules Published by EPA each Presidential Year")
-hhs_bar <- graph(hhs_rules1, 5, 3, "Economically Significant Final Rules Published by HHS each Presidential Year")
-hud_bar <- graph(hud_rules1, 1, 1, "Economically Significant Final Rules Published by HUD each Presidential Year")
-sba_bar <- graph(sba_rules1, 5, 4, "Economically Significant Final Rules Published by SBA each Presidential Year")
-usda_bar <- graph(usda_rules1, 2, 1, "Economically Significant Final Rules Published by USDA each Presidential Year")
+
+
+```
+
+#Create Charts
+
+```{r}
+dhs_bar <- graph(dhs_rules1, 1, 1, 1, "Economically Significant Final Rules Published by DHS each Presidential Year")
+doe_bar <- graph(doe_rules1, 1, 1, 1, "Economically Significant Final Rules Published by DOE each Presidential Year")
+doi_bar <- graph(doi_rules1, 1, 0, 2.5, "Economically Significant Final Rules Published by DOI each Presidential Year")
+dol_bar <- graph(dol_rules1, 1, 1, 1, "Economically Significant Final Rules Published by DOL each Presidential Year")
+dot_bar <- graph(dot_rules1, 1, 0, 1, "Economically Significant Final Rules Published by DOT each Presidential Year")
+ed_bar  <- graph(ed_rules1, 1, 1, 1.5, "Economically Significant Final Rules Published by ED each Presidential Year")
+epa_bar <- graph(epa_rules1, 2, 1, 1, "Economically Significant Final Rules Published by EPA each Presidential Year")
+hhs_bar <- graph(hhs_rules1, 5, 3, 1, "Economically Significant Final Rules Published by HHS each Presidential Year")
+hud_bar <- graph(hud_rules1, 1, 1, 2.5, "Economically Significant Final Rules Published by HUD each Presidential Year")
+sba_bar <- graph(sba_rules1, 5, 4, 1, "Economically Significant Final Rules Published by SBA each Presidential Year")
+usda_bar <- graph(usda_rules1, 2, 1, 1, "Economically Significant Final Rules Published by USDA each Presidential Year")
 
 dhs_bar
 doe_bar
@@ -220,7 +189,6 @@ hhs_bar
 hud_bar
 sba_bar
 usda_bar
-
 ```
 
 
