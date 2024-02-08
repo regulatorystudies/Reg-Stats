@@ -96,7 +96,7 @@ line1 <- ggplot(rules_pub_long,
     axis.title.y = element_text(size = 15)
   ) +
   xlab(element_blank()) +
-  ylab("Number of Rules") +
+  ylab("Rules Published") +
   ggtitle("Rules Published in the Federal Register by Presidential Year") +
   labs(color = NULL, linetype = NULL, caption = caption_text) +
   scale_y_continuous(
