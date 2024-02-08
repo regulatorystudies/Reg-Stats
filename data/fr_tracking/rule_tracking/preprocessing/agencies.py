@@ -198,7 +198,7 @@ class AgencyData:
         # clean slug list to only include agencies in the schema
         # there are some bad metadata -- e.g., 'interim-rule', 'formal-comments-that-were-received-in-response-to-the-nprm-regarding'
         # also ensure no duplicate agencies in each document's list by using set()
-        slug_list_clean = [list(set(i for i in slug if i in self.schema)) for slug in slug_list]
+        slug_list_clean = [list(set(i for i in slug if i in self.schema)) if slug is not None else None for slug in slug_list]
         
         self.data.loc[:, "agency_slugs"] = slug_list_clean
         self.agency_slug_values = slug_list_clean

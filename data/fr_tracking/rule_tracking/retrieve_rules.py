@@ -232,10 +232,10 @@ def export_data(df: DataFrame,
     print(f"Exported data as csv to {path}.")
 
 
-def log_errors(func, filepath: Path = Path(__file__).parent / "error.log"):
+def log_errors(func, filepath: Path = Path(__file__).parents[1], filename: str = "error.log"):
     """Decorator for logging errors in given file.
-    Supply a value for 'filepath' to change the default name or location of the error log.
-    Defaults to filepath = Path(__file__).parent/"error.log".
+    Supply a value for 'filepath' or 'filename' to change location or the default name of the error log.
+    Defaults to filepath = Path(__file__).parents[1], filename = "error.log".
     """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -243,7 +243,7 @@ def log_errors(func, filepath: Path = Path(__file__).parent / "error.log"):
             func(*args, **kwargs)
         except Exception as err:
             logging.basicConfig(
-                filename=filepath, 
+                filename=filepath/filename, 
                 encoding="utf-8", 
                 format= "-----\n%(asctime)s -- %(levelname)s", 
                 datefmt="%Y-%m-%d %H:%M:%S"
@@ -339,11 +339,11 @@ def pipeline(metadata: dict, schema: list[str], agency_format: str = "name"):
 
 
 @log_errors
-def retrieve_rules(base_path: Path = Path(__file__).parents[1]):
+def retrieve_rules(base_path: Path = Path(__file__).parent):
     """Command-line interface for retrieving documents.
     """
     # get agency metadata and schema
-    metadata_dir = base_path.joinpath("rule_tracking", "data")
+    metadata_dir = base_path.joinpath("data")
     metadata_file = metadata_dir / "agencies_endpoint_metadata.json"
     if metadata_file.is_file():  # import metadata from local JSON
         with open(metadata_file, "r") as f:
@@ -369,7 +369,7 @@ def retrieve_rules(base_path: Path = Path(__file__).parents[1]):
 
     # export if any data was retrieved
     if df is not None:
-        export_data(df, base_path, start_date, end_date)
+        export_data(df, base_path.parent, start_date, end_date)
 
 
 if __name__ == "__main__":

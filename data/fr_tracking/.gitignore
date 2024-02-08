@@ -2,8 +2,10 @@
 
 # nuitka
 retrieve_rules_program/
+retrieve_rules_program_*.zip
 *.dist/
 *.build/
+
 
 # output
 fr_tracking_*.csv
