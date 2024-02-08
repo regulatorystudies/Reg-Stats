@@ -24,6 +24,7 @@
     
     RSCgray <- "#E0E0E0"
       # saw we used this gray a few times for grid lines, so added it as a color!
+    RSCdarkgray <- "#bdbdbd"
     fill <- "#B2DDF4"
       # this is the color used in the striping on patterned charts
     
