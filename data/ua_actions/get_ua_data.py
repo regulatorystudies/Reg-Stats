@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import re
 import sys
 import os
+from lxml import etree
 
 #%% Fetch the latest year & season from Reginfo.gov
 # Make a request
@@ -32,18 +33,19 @@ def download_file(year, season='fall'):
         file_name = f'REGINFO_RIN_DATA_{year}{season_no}.xml'
         file_url = f'https://www.reginfo.gov/public/do/XMLViewFileAction?f=REGINFO_RIN_DATA_{year}{season_no}.xml'
 
-    file=requests.get(file_url, allow_redirects=True).text
+    xml_string=requests.get(file_url, allow_redirects=True).content
 
-    return file
+    return xml_string
 
 #%% Function to get rule numbers from an XML
-def process_xml(file):
+def process_xml(xml_string):
 
     # Parse XML
-    soup = BeautifulSoup(file, 'xml')
+    parser = etree.XMLParser(encoding="UTF-8", recover=True)
+    root = etree.fromstring(xml_string, parser)
 
     # Rule stages
-    rule_stage_list = [r.text for r in soup.find_all('RULE_STAGE')]
+    rule_stage_list = [child.find('RULE_STAGE').text for child in root]
 
     # Count rule numbers
     final=len([r for r in rule_stage_list if r=='Final Rule Stage'])
@@ -158,5 +160,5 @@ print('Updated dataset:')
 print(df_updated.info())
 
 #%% Export the updated data
-df_updated.to_csv(file_path, index=False, lineterminator="\n")
+df_updated.to_csv(file_path, index=False)
 print('The updated dataset has been saved. End of execution.')
