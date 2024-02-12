@@ -1,12 +1,3 @@
-# load packages
-
-```{r}
-  library(here)
-  library(showtext)
-  library(magick)
-  library(tidyverse)
-```
-
 # Reg Stats Style Guide
 
 ## Purpose of Reg Stats

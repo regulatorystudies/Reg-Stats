@@ -1,0 +1,8 @@
+# ignore main data directory
+/data/
+
+# ignore style directory
+style/
+
+# ignore archive folders
+_archive/

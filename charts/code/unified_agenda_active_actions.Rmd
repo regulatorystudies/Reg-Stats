@@ -1,0 +1,167 @@
+---
+title: "Active Actions Published in the Unified Agenda"
+author: "Yaxin Zhuang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+## Initialize
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+#library(here)
+i_am("charts/code/unified_agenda_active_actions.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "active_actions_by_unified_agenda.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
+```
+
+
+
+## Load Packages
+
+```{r imports, results='hide', warning=FALSE}
+
+# load packages
+library(ggplot2)
+library(showtext)
+library(png)
+library(ggpattern)
+library(tidyr)
+library(ggrepel)
+library(dplyr)
+library(scales)
+library(cowplot)
+library(tidyverse)
+```
+
+## Load data
+
+
+```{r load_data}
+
+# load csv using here
+df1 <- read.csv(here("charts","data", data_file), skip = 1)
+
+# load png image
+#logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
+
+#load custom font
+font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
+showtext_auto()
+
+```
+
+## Process data
+
+
+```{r clean_data}
+
+df1_1 <-  df1[c(2:47),c(0:5)]
+
+colnames(df1_1) <- c("yearseason", "FinalRules", "ProposedRules","Prerules","Total")
+
+df1_1$Total <- as.numeric(df1_1$Total)
+
+df1_1$sort <- seq.int(nrow(df1_1))
+
+#df1_1
+data_new1 <- df1_1 %>% arrange(desc(sort))
+
+data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$yearseason))
+
+#split year and season
+# data_new1[c('year', 'season')] <- str_split_fixed(data_new1$yearseason, ' ', 2) 
+
+```
+
+```{r}
+# data processing 2
+
+```
+
+
+
+## Plot data
+
+
+```{r plot_data, results='markup'}
+#annotation
+current_date <- format(Sys.Date(), "%B %d, %Y")
+caption_text <- paste("Source: Office of Information and Regulatory Affairs \n\nUpdated:", current_date)
+wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
+
+
+#plot
+bar2 <-
+  ggplot(data=data_new1, aes(x=yearseason, y=Total)) +
+  geom_bar(stat="identity", fill="#033C5A")+
+
+  ggtitle("Active Actions Published in the Unified Agenda") +
+  ylab("Number of Active Actions") +
+  xlab("* Only one agenda was published in 2012 \n") +
+  scale_y_continuous(breaks = seq(0, max(data_new1$Total)+500, by = 500), expand = c(0, 0),
+                     limits = c(-2, max(data_new1$Total)+500)) +
+                     #labels = label_number(suffix = "K", scale = 1e-3)) +
+                     #labels = label_number(scale = 1e-3) +
+  # scale_y_continuous()
+  #annotation_custom(logo, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
+  # logo_y_dim = 0.3logo_y_max, logo_x_dim = 0.12logo_x_max ?
+  coord_cartesian(clip = "off") +
+  labs(caption = wrapped_caption)+
+  theme_minimal() +
+  theme(
+      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
+      legend.position = "none",
+      panel.grid.major.x = element_blank(),
+      axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
+      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 10)),
+      axis.line.x = element_line(linewidth = 1, color = RSCgray),
+
+      #axis.ticks.x = element_line(color = RSCgray),
+      axis.text.y = element_text(size = 12),
+      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 10)),# modified margin to adjust the space between title and y-axis 
+      panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
+      panel.grid.minor = element_blank(),
+      text = element_text(family = "avenir_lt_pro"),
+      plot.caption = element_text(hjust = 1, vjust = 10, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
+      plot.margin = margin(50, 50, 50, 50)
+    )
+
+#bar2
+
+
+
+```
+
+```{r}
+#logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
+new_bar <- ggdraw() +
+      draw_plot(bar2) +
+      draw_image(logo, x = 0.1, y = 0.03, halign = 0, valign = 0, width = 0.2)
+
+new_bar
+```
+
+
+```{r save}
+# create empty output folder if it doesn't already exist
+out = here("charts", "output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+
+ggsave(here("charts", "output", "active_actions_by_unified_agenda.pdf"), plot = new_bar, width = 12, height = 9, dpi = 300)
+
+
+```

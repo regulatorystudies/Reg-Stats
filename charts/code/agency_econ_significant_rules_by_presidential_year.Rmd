@@ -1,0 +1,240 @@
+---
+title: "Agency Econonmically Significant Final Rules by Presidential Year"
+author: "Deven Patel"
+date: "2024-02-01"
+output: html_document
+---
+
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# set location of this file in project directory
+i_am("charts/code/agency_econ_significant_rules_by_presidential_year.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to datasets
+data_file_dhs = "dhs_econ_significant_rules_by_presidential_year.csv"
+data_file_doe = "doe_econ_significant_rules_by_presidential_year.csv"
+data_file_doi = "doi_econ_significant_rules_by_presidential_year.csv"
+data_file_dol = "dol_econ_significant_rules_by_presidential_year.csv"
+data_file_dot = "dot_econ_significant_rules_by_presidential_year.csv"
+data_file_ed  = "ed_econ_significant_rules_by_presidential_year.csv"
+data_file_epa = "epa_econ_significant_rules_by_presidential_year.csv"
+data_file_hhs = "hhs_econ_significant_rules_by_presidential_year.csv"
+data_file_hud = "hud_econ_significant_rules_by_presidential_year.csv"
+data_file_sba = "sba_econ_significant_rules_by_presidential_year.csv"
+data_file_usda = "usda_econ_significant_rules_by_presidential_year.csv"
+
+#for president party merging
+data_file_party = "president_party_year.csv"
+
+
+# # WIP to load and name all CSV's at once - works to import data, but imported data uses long, tedious names from file names.  Not sure it is any more efficient that what is already used.
+# file_names <- gsub(".csv", "", 
+#                    list.files(path = here("data", "es_rules", "by_agency")))
+# 
+# names <- gsub(" ", "", paste("data_file_", sub("\\_.*","",file_names)))
+# 
+# for(i in file_names){
+#   filepath <- file.path(path = here("data", "es_rules", "by_agency"), 
+#                         paste(i, ".csv", sep=""))
+#   assign(i, read.csv(filepath))
+# }
+
+# refresh datasets
+copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
+
+```
+
+## Load packages
+
+```{r load packages, results='hide', warning=FALSE}
+library(ggpattern)
+```
+
+## Load data
+
+```{r load data}
+# load csv using here
+dhs_rules <- read.csv(here("charts", "data", data_file_dhs))
+doe_rules <- read.csv(here("charts", "data", data_file_doe))
+doi_rules <- read.csv(here("charts", "data", data_file_doi))
+dol_rules <- read.csv(here("charts", "data", data_file_dol))
+dot_rules <- read.csv(here("charts", "data", data_file_dot))
+ed_rules <- read.csv(here("charts", "data", data_file_ed))
+epa_rules <- read.csv(here("charts", "data", data_file_epa))
+hhs_rules <- read.csv(here("charts", "data", data_file_hhs))
+hud_rules <- read.csv(here("charts", "data", data_file_hud))
+sba_rules <- read.csv(here("charts", "data", data_file_sba))
+usda_rules <- read.csv(here("charts", "data", data_file_usda))
+party_year <- read.csv(here("charts", "data", data_file_party))
+```
+
+## Process data
+
+```{r code}
+# current date
+current_date <- format(Sys.Date(), "%B %d, %Y")
+
+# set caption text
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for
+the years 2021 and onwards;\n Office of Information and Regulatory
+Affairs (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
+
+# set wrapped caption width
+wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
+
+# data cleaning and merging function
+party_year$Presidential.Year <- as.character(party_year$Presidential.Year)
+party_year$Party <- as.factor(party_year$Party)
+
+clean <- function(data_0){
+  data_0 <- left_join(data_0, party_year, by = "Presidential.Year")
+  colnames(data_0) <- c("year", "rules", "party")
+  data_0 <- data_0[1:(nrow(data_0) - 3), ]
+  data_0$party <- as.factor(data_0$party)
+  return(data_0)
+}
+
+dhs_rules1 <- clean(dhs_rules)
+doe_rules1 <- clean(doe_rules)
+doi_rules1 <- clean(doi_rules)
+dol_rules1 <- clean(dol_rules)
+dot_rules1 <- clean(dot_rules)
+ed_rules1  <- clean(ed_rules)
+epa_rules1 <- clean(epa_rules)
+hhs_rules1 <- clean(hhs_rules)
+hud_rules1 <- clean(hud_rules)
+sba_rules1 <- clean(sba_rules)
+usda_rules1 <- clean(usda_rules)
+
+
+```
+
+#Charting function
+
+```{r}
+graph <- function(dataset, interval, max_add, title){
+  bar1 <- ggplot(dataset, aes(x = year, y = rules, fill = party, pattern = party)) +
+  geom_bar_pattern(stat = "identity", width = 0.5,
+                   position = position_dodge(preserve = "single"),
+                   pattern_color = NA,
+                   pattern_fill = lightblue, pattern_angle = 45,
+                   pattern_density = 0.1, pattern_spacing = 0.025,
+                   pattern_key_scale_factor = 0.6) +
+  scale_fill_manual(values = c(GWblue, red)) +
+  scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
+  ggtitle(title) +
+  ylab("Number of Economically Significant Final Rules") +
+  xlab("") +
+  scale_y_continuous(breaks = seq(0, max(dataset$rules) + max_add, by = interval), expand = c(0, 0.0), limits = c(-2, max(dataset$rules) + max_add)) +
+  labs(caption = wrapped_caption) +
+  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
+  theme_RSC +
+  coord_cartesian(ylim = c(0, max(dataset$rules) + max_add)) +
+  theme(
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
+    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
+    axis.ticks.x = element_blank(),
+    axis.line.x = element_line(linewidth = 1, color = RSCgray),
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
+    panel.grid.minor = element_blank()
+  )
+  
+  bar1
+  
+  bar2 <- ggdraw() + 
+  draw_plot(bar1) + 
+  draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
+  
+  bar2 
+  return(bar2)
+}
+
+
+
+```
+
+#Create Charts
+
+```{r}
+dhs_bar <- graph(dhs_rules1, 1, 1, "Economically Significant Final Rules Published by DHS each Presidential Year")
+doe_bar <- graph(doe_rules1, 1, 1, "Economically Significant Final Rules Published by DOE each Presidential Year")
+doi_bar <- graph(doi_rules1, 1, 0, "Economically Significant Final Rules Published by DOI each Presidential Year")
+dol_bar <- graph(dol_rules1, 1, 1, "Economically Significant Final Rules Published by DOL each Presidential Year")
+dot_bar <- graph(dot_rules1, 1, 0, "Economically Significant Final Rules Published by DOT each Presidential Year")
+ed_bar  <- graph(ed_rules1, 1, 1, "Economically Significant Final Rules Published by ED each Presidential Year")
+epa_bar <- graph(epa_rules1, 2, 1, "Economically Significant Final Rules Published by EPA each Presidential Year")
+hhs_bar <- graph(hhs_rules1, 5, 3, "Economically Significant Final Rules Published by HHS each Presidential Year")
+hud_bar <- graph(hud_rules1, 1, 1, "Economically Significant Final Rules Published by HUD each Presidential Year")
+sba_bar <- graph(sba_rules1, 5, 4, "Economically Significant Final Rules Published by SBA each Presidential Year")
+usda_bar <- graph(usda_rules1, 2, 1, "Economically Significant Final Rules Published by USDA each Presidential Year")
+
+dhs_bar
+doe_bar
+doi_bar
+dol_bar
+dot_bar
+ed_bar
+epa_bar
+hhs_bar
+hud_bar
+sba_bar
+usda_bar
+```
+
+
+
+
+```{r save}
+# create empty output folder if it doesn't already exist
+out = here("charts", "output", "by_agency")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+# save bars as pdfs
+ggsave(here("charts", "output", "by_agency", 
+            "dhs_econ_significant_rules_by_presidential_year.pdf"), plot = dhs_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "doe_econ_significant_rules_by_presidential_year.pdf"), plot = doe_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "doi_econ_significant_rules_by_presidential_year.pdf"), plot = doi_bar, width = 12, height = 9, dpi = 300) # check gray line at 0, not lining up and internet not forthcoming w/ solutions
+
+ggsave(here("charts", "output", "by_agency", 
+            "dol_econ_significant_rules_by_presidential_year.pdf"), plot = dol_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "dot_econ_significant_rules_by_presidential_year.pdf"), plot = dot_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "ed_econ_significant_rules_by_presidential_year.pdf"), plot = ed_bar, width = 12, height = 9, dpi = 300) # gray line a bit off, better now
+
+ggsave(here("charts", "output", "by_agency", 
+            "epa_econ_significant_rules_by_presidential_year.pdf"), plot = epa_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "hhs_econ_significant_rules_by_presidential_year.pdf"), plot = hhs_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "hud_econ_significant_rules_by_presidential_year.pdf"), plot = hud_bar, width = 12, height = 9, dpi = 300) # gray line way off, i think it has to do with the interval and max
+
+ggsave(here("charts", "output", "by_agency", 
+            "sba_econ_significant_rules_by_presidential_year.pdf"), plot = sba_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", "by_agency", 
+            "usda_econ_significant_rules_by_presidential_year.pdf"), plot = usda_bar, width = 12, height = 9, dpi = 300)
+
+
+
+```

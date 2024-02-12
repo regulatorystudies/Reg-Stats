@@ -5,3 +5,6 @@ lock/
 python/
 sandbox/
 staging/
+
+# don't track profile file
+profile

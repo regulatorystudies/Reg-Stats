@@ -2,8 +2,6 @@
 
 This repository hosts the code to collect data and generate charts for [Reg Stats](https://regulatorystudies.columbian.gwu.edu/reg-stats).
 
-Here's the link to the [Google Doc](https://docs.google.com/document/d/1pQQu7yoeK4lwNrdivAv0leKfLfZNB6z1LC54mNkv92c/edit?usp=sharing) for refining the Reg Stats graphs produced using the R code.
-
 ## Repository Structure
 
 The project root contains several files, including an RStudio project (.Rproj), an .Rprofile configuration file, and a renv.lock file (the lockfile establishes the R environment packages used).

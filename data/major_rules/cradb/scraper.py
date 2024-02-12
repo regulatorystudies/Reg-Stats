@@ -1,6 +1,6 @@
 from collections import Counter
 from copy import deepcopy
-from datetime import date
+from datetime import date, timedelta
 import json
 from pathlib import Path
 import re
@@ -198,7 +198,7 @@ class PopulationScraper(Scraper):
         elif not results_pages:
             page_count = 0
         else:
-            raise ParseError
+            raise ParseError("Failed to parse page count information from html.")
         
         return page_count
     
@@ -260,7 +260,10 @@ class PopulationScraper(Scraper):
             }
         return output
     
-    def scrape_page(self, rules_this_page: BeautifulSoup, page: int, collected_data: list = None):
+    def scrape_page(self, 
+                    rules_this_page: BeautifulSoup, 
+                    page: int, 
+                    collected_data: list = None):
         
         if collected_data:
             #control_num_list = (extract_control_number(r.get("url"), regex=False) for r in collected_data)
@@ -543,14 +546,14 @@ def get_retrieval_date(path : Path, file_name: str):
 
 
 def get_last_received_date(path : Path, file_name: str):
-    """Get most recent received date from existing data.
+    """Get most recent received date plus one day from existing data.
 
     Args:
         path (Path): Path to file.
         file_name (str): File name.
 
     Returns:
-        str: String of last received date in YYYY-MM-DD format.
+        str: String of last received date plus one day in YYYY-MM-DD format.
     """
     with open(path / f"{file_name}.json", "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -558,7 +561,8 @@ def get_last_received_date(path : Path, file_name: str):
     results = data["results"]
     received_dates = (extract_date(r.get("received")) for r in results)
     received_list = sorted(received_dates, reverse=True)
-    return f"{received_list[0]}"
+    last_received_plus_one = received_list[0] + timedelta(days=1)
+    return f"{last_received_plus_one}"
 
 
 def identify_duplicates(results: list, key: str = "url") -> list[dict]:
@@ -760,7 +764,11 @@ def pipeline(data_path: Path,
     return False
 
 
-def scraper(data_path: Path):
+def scraper(
+        data_path: Path, 
+        y_inputs = ("y", "yes", "true"), 
+        n_inputs = ("n", "no", "false")
+    ):
     """Text-based interface for running the scraper pipeline. 
     Operates within a `while True` loop that doesn't break until it receives valid inputs.
 
@@ -773,12 +781,10 @@ def scraper(data_path: Path):
     while True:
         
         # print prompts to console
-        new_prompt = input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
+        new_prompt = "no"  #input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
         detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
         
         # check user inputs
-        y_inputs = ["y", "yes", "true"]
-        n_inputs = ["n", "no", "false"]
         valid_inputs = y_inputs + n_inputs
         if ((new_prompt in valid_inputs) 
             and (detail_prompt in valid_inputs)):
@@ -799,7 +805,7 @@ def scraper(data_path: Path):
                 rule_detail = False
             
             if rule_detail:
-                existing_prompt = input("Use existing population data for retrieving rule-level details? [yes/no]: ").lower()
+                existing_prompt = input("Use existing population data for retrieving rule-level details?\n(Select this if you previously retrieved population data and only want to retrieve rule-level details.) [yes/no]: ").lower()
                 if existing_prompt in y_inputs:
                     use_existing_pop_data = True
                 elif existing_prompt in n_inputs:

@@ -1,21 +1,21 @@
-if __name__ == "__main__":
-    
-    from pathlib import Path
-    from .scraper import scraper
-    from .process_data import process_data
+from pathlib import Path
+from .scraper import scraper
+from .process_data import process_data
 
-    # profile time elapsed
-    import time
-    start = time.process_time()
 
+def create_paths():
     p = Path(__file__)
     root_path = p.parents[1]
     data_path = p.parents[1].joinpath("raw_data")
     if not data_path.is_dir():
         data_path.mkdir(parents=True, exist_ok=True)
+    return root_path, data_path
 
+
+def main(root_path: Path, data_path: Path):
+    
     while True:
-        
+    
         prompt = input("Do you want to retrieve data [r], process data [p], or both [b]? Enter selection [r/p/b]: ").lower()
 
         retrieve = ("r", "retrieve")
@@ -46,6 +46,16 @@ if __name__ == "__main__":
         else:
             print(f"Invalid input. Must enter one of the following: {', '.join(valid_inputs)}.")
 
+
+if __name__ == "__main__":
+    
+    # profile time elapsed
+    import time
+    start = time.process_time()
+
+    root_path, data_path = create_paths()
+    main(root_path, data_path)
+    
     # calculate time elapsed
     stop = time.process_time()
     print(f"CPU time: {stop - start:0.1f} seconds")

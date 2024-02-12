@@ -1,0 +1,12 @@
+name: regstats_reginfo
+channels:
+  - defaults
+dependencies:
+  - beautifulsoup4
+  - pandas
+  - python=3.11
+  - requests
+  - ipykernel
+  - ipython
+  - lxml
+prefix: C:\Users\mfebrizio\Anaconda3\envs\regstats_reginfo
