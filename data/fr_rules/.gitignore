@@ -5,6 +5,7 @@ _api
 
 # VS Code
 .vscode/
+Interactive-*.txt
 
 # ----- Python ----- #
 
