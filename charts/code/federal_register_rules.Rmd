@@ -71,7 +71,14 @@ caption_text <- paste("Source: Federal Register API;\n excludes corrections to r
 
 ## Plot Data
 
-```{r generate graph}
+```{r create graphing function}
+
+graph <- function(interval){
+  upper <- case_when(
+    interval == 1 ~ max(rules_pub_long$rule_num) + interval,
+    interval != 1 ~ ceiling(max(rules_pub_long$rule_num)/interval)*interval)
+
+
 line1 <- ggplot(rules_pub_long,
                 aes(x = year,
                     y = rule_num,
@@ -100,7 +107,7 @@ line1 <- ggplot(rules_pub_long,
   ggtitle("Rules Published in the Federal Register by Presidential Year") +
   labs(color = NULL, linetype = NULL, caption = caption_text) +
   scale_y_continuous(
-    breaks = seq(0, max(rules_pub_long$rule_num) + 1000, by = 1000),
+    breaks = seq(0, upper, by = interval),
     expand = c(0, 0), 
     limits = c(0, max(rules_pub_long$rule_num) + 1000)
   )
@@ -113,7 +120,11 @@ line2 <- ggdraw() +
   draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
 line2
 
-
+return(line2)
+}
+```
+```{r create graph}
+line3 <- graph(1000)
 ```
 
 ```{r save}
@@ -124,5 +135,5 @@ if (!dir.exists(out)){
 }
 
 # save line2 as pdf
-ggsave(here("charts", "output", "federal_register_rules_by_presidential_year.pdf"), plot = line2, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "federal_register_rules_by_presidential_year.pdf"), plot = line3, width = 12, height = 9, dpi = 300)
 ```

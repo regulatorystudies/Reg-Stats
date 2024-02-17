@@ -66,7 +66,13 @@ tot_pages$total <- as.integer(gsub(",", "", tot_pages$total))
 
 # Plot Data
 
-```{r generate graph}
+```{r ceate graphing function}
+
+graph <- function(interval){
+  upper <- case_when(
+    interval == 1 ~ max(tot_pages$total) + interval,
+    interval != 1 ~ ceiling(max(tot_pages$total)/interval)*interval)
+
 # generate bar1
 bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   geom_bar(stat = "identity", fill = GWblue) +
@@ -91,6 +97,12 @@ bar2 <- ggdraw() +
   draw_plot(bar1) +
   draw_image(logo, x = 0.1, y = 0.06, halign = 0, valign = 0, width = 0.2)
 bar2
+
+return(bar2)
+}
+```
+```{r create graph}
+bar3 <- graph(10)
 ```
 
 ```{r save}
@@ -101,6 +113,6 @@ if (!dir.exists(out)){
 }
 
 # save bar2 as pdf
-ggsave(here("charts", "output", "federal_register_pages_by_calendar_year.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "federal_register_pages_by_calendar_year.pdf"), plot = bar3, width = 12, height = 9, dpi = 300)
 ```
 
