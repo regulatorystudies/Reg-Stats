@@ -5,8 +5,11 @@ from pathlib import Path
 
 from pandas import DataFrame, to_datetime, concat
 from numpy import array
-
 from fr_toolbelt.api_requests import get_documents_by_date
+
+# source: https://github.com/verigak/progress/issues/58#issuecomment-471718558
+from patch_progress import getpatchedprogress
+progress = getpatchedprogress()
 
 #from federal_register_api import query_endpoint_documents
 from search_columns import search_columns
@@ -16,6 +19,8 @@ from search_columns import search_columns
 p = Path(__file__)
 MAIN_DIR = p.parents[1]  # main folder for Reg Stats chart; store output data here
 API_DIR = p.parents[1].joinpath("_api")  # folder for storing retrieved API data
+if not API_DIR.exists():
+    API_DIR.mkdir(parents=True, exist_ok=True)
 
 # set constants
 YEAR_RANGE = [f"{yr}" for yr in range(1995, date.today().year)]
@@ -188,12 +193,11 @@ def main(years: list, fields: list, raw_path: Path, processed_path: Path, proces
         df = format_documents(documents)
         df, corrections = filter_documents(df)
         corrections.loc[:, "type"] = doctype
-        df_grouped = group_documents(df, fieldname)
+        df_grouped = group_documents(df, return_column=fieldname)
         df_list.append(df_grouped)
         corrections_list.append(corrections)
     
     # join dataframes: non-corrections
-    print(df_list[0], df_list[1])
     dfPrez = df_list[0].join(df_list[1])
     dfPrez = dfPrez.drop(index=1994, errors='ignore')  # drop partial data from 1994 presidential year
     dfPrez = dfPrez.rename_axis('presidential_year', axis=0)  # rename axis
