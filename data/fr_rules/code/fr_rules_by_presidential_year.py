@@ -34,6 +34,11 @@ SAVE_NAME_CSV = "federal_register_rules_by_presidential_year.csv"
 # define functions
 
 
+class SearchError(Exception):
+    """Search returned misaligned results."""
+    pass
+
+
 def retrieve_documents(years: list, doctype: str, fields: list, save_path: Path, replace_existing: bool = True):
     """Retrieve documents from Federal Register API; save JSON; return results.
 
@@ -47,7 +52,7 @@ def retrieve_documents(years: list, doctype: str, fields: list, save_path: Path,
         list[dict]: List of retrieved documents.
     """
     # set file names
-    file_name = save_path / f"documents_endpoint_{doctype}_{years[0]}_{years[-1]}.json"
+    file_name = save_path / f"documents_endpoint_{doctype}_{years[0]}_{years[-1]}_new.json"
     last_year = int(years[-1]) + 1
     
     # check if file already exists
@@ -116,7 +121,7 @@ def filter_documents(df: DataFrame):
         df (DataFrame): Federal Register data.
 
     Returns:
-        DataFrame: Federal Register data with corrections removed.
+        tuple: DataFrame with corrections removed, DataFrame of corrections
     """
     # get original column names
     cols = df.columns.tolist()
@@ -129,7 +134,7 @@ def filter_documents(df: DataFrame):
     #print(f"correction_of missing: {sum(bool_na)}")
     
     # 2. Searching other fields
-    search_1 = search_columns(df, [r"^[a-z][\d]-[\w]{2,4}-"], ["document_number"], 
+    search_1 = search_columns(df, [r"^[crxz][\d]{1,2}-(?:[\w]{2,4}-)?[\d]+"], ["document_number"], 
                                  return_column="indicator1")
     search_2 = search_columns(df, [r"(?:;\scorrection\b)|(?:\bcorrecting\samend[\w]+\b)"], ["title", "action"], 
                                  return_column="indicator2")
@@ -145,10 +150,7 @@ def filter_documents(df: DataFrame):
     if len(df) == len(df_no_corrections) + len(df_corrections):
         return df_no_corrections, df_corrections
     else:
-        print(f"Total: {len(df)}", 
-              f"Non-corrections: {len(df_no_corrections)}", 
-              f"Corrections: {len(df_corrections)}", 
-              sep="\n")
+        raise SearchError(f"{len(df)} != {len(df_no_corrections)} + {len(df_corrections)}")
 
 
 def group_documents(df: DataFrame, group_column: str = 'presidential_year', value_column: str = 'document_number', return_column: str = None):
