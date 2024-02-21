@@ -13,7 +13,7 @@ from search_columns import search_columns
 # set file paths
 p = Path(__file__)
 MAIN_DIR = p.parents[1]  # main folder for Reg Stats chart; store output data here
-API_DIR = p.parents[1].joinpath("API")  # folder for storing retrieved API data
+API_DIR = p.parents[1].joinpath("_api")  # folder for storing retrieved API data
 
 # set constants
 YEAR_RANGE = list(map(str, range(1995, date.today().year)))
