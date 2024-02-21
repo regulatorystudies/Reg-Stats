@@ -50,7 +50,7 @@ def retrieve_documents(years: list, doctype: str, fields: list, save_path: Path,
         list[dict]: List of retrieved documents.
     """
     # set file names
-    file_name = save_path / f"documents_endpoint_{doctype}_{years[0]}_{years[-1]}_new.json"
+    file_name = save_path / f"documents_endpoint_{doctype}_{years[0]}_{years[-1]}.json"
     last_year = int(years[-1]) + 1
     
     # check if file already exists
