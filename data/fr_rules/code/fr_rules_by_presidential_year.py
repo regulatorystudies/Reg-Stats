@@ -21,7 +21,7 @@ FIELDS = ['action', 'agencies', 'agency_names', 'citation', 'correction_of', 'co
           'docket_ids', 'document_number', 'json_url', 'page_length', 'president', 'publication_date', 
           'regulation_id_numbers', 'significant', 'title', 'type'
           ]
-SAVE_NAME_CSV = "federal_register_rules_presidential_year.csv"
+SAVE_NAME_CSV = "federal_register_rules_by_presidential_year.csv"
 #REPLACE_EXISTING = True
 
 
