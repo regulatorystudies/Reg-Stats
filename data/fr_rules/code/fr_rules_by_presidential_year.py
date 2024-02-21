@@ -11,7 +11,6 @@ from fr_toolbelt.api_requests import get_documents_by_date
 from patch_progress import getpatchedprogress
 progress = getpatchedprogress()
 
-#from federal_register_api import query_endpoint_documents
 from search_columns import search_columns
 
 
@@ -24,8 +23,8 @@ if not API_DIR.exists():
 
 # set constants
 YEAR_RANGE = [f"{yr}" for yr in range(1995, date.today().year)]
-FIELDS = ['action', 'agencies', 'agency_names', 'citation', 'correction_of', 'corrections', 
-          'document_number', 'json_url', 'president', 'publication_date', 'title', 'type', 
+FIELDS = ["action", "agencies", "agency_names", "citation", "correction_of", "corrections", 
+          "document_number", "json_url", "president", "publication_date", "title", "type", 
           ]
 SAVE_NAME_CSV = "federal_register_rules_by_presidential_year.csv"
 
@@ -77,7 +76,7 @@ def retrieve_documents(years: list, doctype: str, fields: list, save_path: Path,
             print(f"Flagged {dups} duplicate documents.")
         
         # save json file
-        with open(file_name, 'w', encoding='utf-8') as f:
+        with open(file_name, "w", encoding="utf-8") as f:
             json.dump(documents, f, indent=4)
         
         # return list of documents
@@ -98,16 +97,16 @@ def format_documents(documents: list[dict]):
     df = DataFrame(documents)
 
     # convert publication date to datetime format
-    df['publication_dt'] = to_datetime(df['publication_date'])
+    df["publication_dt"] = to_datetime(df["publication_date"])
 
     # create year column
-    df['publication_year'] = df.apply(lambda x: x['publication_dt'].year, axis=1)
-    df['publication_month'] = df.apply(lambda x: x['publication_dt'].month, axis=1)
+    df["publication_year"] = df.apply(lambda x: x["publication_dt"].year, axis=1)
+    df["publication_month"] = df.apply(lambda x: x["publication_dt"].month, axis=1)
 
     # create presidential year column
-    df['presidential_year'] = df['publication_year']
-    bool_jan = array(df['publication_month'] == 1)
-    df.loc[bool_jan, 'presidential_year'] = df.loc[bool_jan, 'publication_year'] - 1
+    df["presidential_year"] = df["publication_year"]
+    bool_jan = array(df["publication_month"] == 1)
+    df.loc[bool_jan, "presidential_year"] = df.loc[bool_jan, "publication_year"] - 1
     
     # return dataframe
     return df
@@ -130,18 +129,14 @@ def filter_documents(df: DataFrame):
     # filter out corrections
     # 1. Using correction fields
     bool_na = array(df["correction_of"].isna())
-    #df_filtered = df.loc[bool_na, :]  # keep when correction_of is missing
-    #print(f"correction_of missing: {sum(bool_na)}")
-    
+
     # 2. Searching other fields
     search_1 = search_columns(df, [r"^[crxz][\d]{1,2}-(?:[\w]{2,4}-)?[\d]+"], ["document_number"], 
                                  return_column="indicator1")
     search_2 = search_columns(df, [r"(?:;\scorrection\b)|(?:\bcorrecting\samend[\w]+\b)"], ["title", "action"], 
                                  return_column="indicator2")
     bool_search = array(search_1["indicator1"] == 1) | array(search_2["indicator2"] == 1)
-    #print(f"Flagged documents: {sum(bool_search)}")
-    #bool_search = array(search_2["indicator2"] == 1)
-    
+
     # separate corrections from non-corrections
     df_no_corrections = df.loc[(bool_na & ~bool_search), cols]  # remove flagged documents
     df_corrections = df.loc[(~bool_na | bool_search), cols]
@@ -153,7 +148,7 @@ def filter_documents(df: DataFrame):
         raise SearchError(f"{len(df)} != {len(df_no_corrections)} + {len(df_corrections)}")
 
 
-def group_documents(df: DataFrame, group_column: str = 'presidential_year', value_column: str = 'document_number', return_column: str = None):
+def group_documents(df: DataFrame, group_column: str = "presidential_year", value_column: str = "document_number", return_column: str = None):
     """Group Federal Register documents by presidential year. 
     A [presidential year](https://regulatorystudies.columbian.gwu.edu/reg-stats) is defined as Feb. 1 to Jan. 31.
 
@@ -167,7 +162,7 @@ def group_documents(df: DataFrame, group_column: str = 'presidential_year', valu
     grouped_df = df.loc[:, [
         group_column, 
         value_column, 
-        ]].groupby(group_column).agg('count')  #['count', 'nunique'])
+        ]].groupby(group_column).agg("count")
     if return_column is not None:
         grouped_df = grouped_df.rename(columns = {value_column: return_column})
     return grouped_df
@@ -201,15 +196,15 @@ def main(years: list, fields: list, raw_path: Path, processed_path: Path, proces
     
     # join dataframes: non-corrections
     dfPrez = df_list[0].join(df_list[1])
-    dfPrez = dfPrez.drop(index=1994, errors='ignore')  # drop partial data from 1994 presidential year
-    dfPrez = dfPrez.rename_axis('presidential_year', axis=0)  # rename axis
+    dfPrez = dfPrez.drop(index=1994, errors="ignore")  # drop partial data from 1994 presidential year
+    dfPrez = dfPrez.rename_axis("presidential_year", axis=0)  # rename axis
     dfPrez = dfPrez.reset_index()  # reset index so presidential year becomes a column
     print(dfPrez)
 
     # save csv file
     file_name = processed_path / processed_file_name
-    with open(file_name, 'w', encoding='utf-8') as f:
-        dfPrez.to_csv(f, index=False, lineterminator='\n')
+    with open(file_name, "w", encoding="utf-8") as f:
+        dfPrez.to_csv(f, index=False, lineterminator="\n")
 
     # append dataframes: corrections
     dfCorrections = concat(
@@ -221,8 +216,8 @@ def main(years: list, fields: list, raw_path: Path, processed_path: Path, proces
 
     # save csv file
     file_name = processed_path / "federal_register_corrections.csv"
-    with open(file_name, 'w', encoding='utf-8') as f:
-        dfCorrections.to_csv(f, index=False, lineterminator='\n')
+    with open(file_name, "w", encoding="utf-8") as f:
+        dfCorrections.to_csv(f, index=False, lineterminator="\n")
 
 
 if __name__ == "__main__":
