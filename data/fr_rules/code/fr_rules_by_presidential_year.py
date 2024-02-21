@@ -70,7 +70,8 @@ def retrieve_documents(years: list, doctype: str, fields: list, save_path: Path,
             handle_duplicates="flag"
             )
 
-        dups = len(list(r for r in documents if r.get("duplicate") == True))
+        # check for duplicates; use False as default value
+        dups = len(list(r for r in documents if r.get("duplicate", False) == True))
         if dups > 0:
             print(f"Flagged {dups} duplicate documents.")
         
