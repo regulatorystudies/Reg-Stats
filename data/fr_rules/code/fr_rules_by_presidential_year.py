@@ -13,7 +13,6 @@ progress = getpatchedprogress()
 
 from search_columns import search_columns
 
-
 # set file paths
 p = Path(__file__)
 MAIN_DIR = p.parents[1]  # main folder for Reg Stats chart; store output data here
@@ -37,7 +36,7 @@ class SearchError(Exception):
     """Search returned misaligned results."""
     pass
 
-
+  
 def retrieve_documents(years: list, doctype: str, fields: list, save_path: Path, replace_existing: bool = True):
     """Retrieve documents from Federal Register API; save JSON; return results.
 
@@ -95,7 +94,7 @@ def format_documents(documents: list[dict]):
     """
     # create dataframe
     df = DataFrame(documents)
-
+    
     # convert publication date to datetime format
     df["publication_dt"] = to_datetime(df["publication_date"])
 
@@ -124,7 +123,6 @@ def filter_documents(df: DataFrame):
     """
     # get original column names
     cols = df.columns.tolist()
-    #print(cols)
     
     # filter out corrections
     # 1. Using correction fields
