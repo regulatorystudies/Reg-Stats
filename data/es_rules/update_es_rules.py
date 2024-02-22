@@ -28,6 +28,7 @@ if last_year_with_data<current_year-1:
     print(f'Updating data for presidential year {first_year_to_update}-{last_year_to_update}...')
 else:
     print('The dataset is up-to-date. No update is needed.')
+    sys.exit(0)
 
 #%% FR tracking data
 df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
