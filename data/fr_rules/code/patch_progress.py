@@ -142,8 +142,8 @@ def getpatchedprogress():
         progress.HIDE_CURSOR = ''
         progress.SHOW_CURSOR = ''
     
-    # Copy over the patched Infinite class into the imported class.
-    progress.Infinite = PatchedInfinite
+        # Copy over the patched Infinite class into the imported class.
+        progress.Infinite = PatchedInfinite
     
     # Return the modified version of the entire package.
     return progress
