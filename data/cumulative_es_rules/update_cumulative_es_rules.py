@@ -7,7 +7,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 #%% Define administrations and their start & end years
-# If there is a new administration, add president name and start year to the dictionary below.
+# If there is a new administration, add {president name: [start year, end year]} to the dictionary below.
 admin_year={'Reagan':[1981,1989],
             'Bush 41':[1989,1993],
             'Clinton':[1993,2001],
@@ -21,7 +21,6 @@ print(f"The current dataset covers the {list(admin_year.keys())} administrations
 #%% Import the current dataset
 dir_path=os.path.dirname(os.path.realpath(__file__))
 file_path=f'{dir_path}/cumulative_econ_significant_rules_by_presidential_month.csv'
-# file_path='data/cumulative_es_rules/cumulative_econ_significant_rules_by_presidential_month.csv'
 
 if os.path.exists(file_path):
     df=pd.read_csv(file_path)
