@@ -10,7 +10,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-#library(here)
+library(here)
 i_am("charts/code/unified_agenda_active_actions.Rmd")
 
 # import local functions
@@ -42,6 +42,7 @@ library(dplyr)
 library(scales)
 library(cowplot)
 library(tidyverse)
+library(stringr)
 ```
 
 ## Load data
@@ -85,8 +86,17 @@ data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$years
 ```
 
 ```{r}
-# data processing 2
+# data processing
+# replace spring to s, fall to f
+data_new1$yearseason <- str_replace(data_new1$yearseason, "Spring", "S")
+data_new1$yearseason <- str_replace(data_test$yearseason, "Fall", "F")
+```
 
+
+```{r}
+#scale_modification <- function(max_value){
+#  if(max_value > )
+#}
 ```
 
 
@@ -103,7 +113,7 @@ wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 #plot
 bar2 <-
-  ggplot(data=data_new1, aes(x=yearseason, y=Total)) +
+  ggplot(data=data_new1, aes(x=yearseason, y=Total), family = "avenir_lt_pro") +
   geom_bar(stat="identity", fill="#033C5A")+
 
   ggtitle("Active Actions Published in the Unified Agenda") +

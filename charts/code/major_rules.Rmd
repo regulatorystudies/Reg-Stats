@@ -127,8 +127,8 @@ bar1 <-
 ```{r}
 new_bar <- ggdraw() +
       draw_plot(bar1) +
-      #draw_image(logo, x = 0.1, y = 0.03, halign = 0, valign = 0, width = 0.2)
-       draw_image(logo,x = 0.1, y = 0.025, halign = 0, valign = 0, width = 0.2)
+      
+       draw_image(logo,x = 0.1, y = 0.04, halign = 0, valign = 0, width = 0.2)
 
 new_bar
 ```
