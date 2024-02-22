@@ -1,10 +1,14 @@
 # ----- Project-specific ----- #
 
 # API data
-_api
+_api/
+
+# validation attempts
+_val/
 
 # VS Code
 .vscode/
+Interactive-*.*
 
 # ----- Python ----- #
 
