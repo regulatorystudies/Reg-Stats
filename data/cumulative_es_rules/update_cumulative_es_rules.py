@@ -15,7 +15,7 @@ admin_year={'Reagan':[1981,1989],
             'Obama':[2009,2017],
             'Trump':[2017,2021],
             'Biden':[2021,]}
-print(f"The current dataset covers the {", ".join(list(admin_year.keys()))} administrations.\n"
+print(f"The current dataset covers the {list(admin_year.keys())} administrations.\n"
       f"If there is a new administration, revise the admin_year dictionary and re-run the code.")
 
 #%% Import the current dataset
@@ -46,7 +46,7 @@ def update_admin(admin,update_start_date,update_end_date):
     df_fr = pd.concat([df_fr, pd.DataFrame(data={'publication_date': ['1/21/2021']})], ignore_index=True)
 
     # Change data type
-    df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
+    df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date']).dt.date
     df_fr['publication_year'] = pd.to_datetime(df_fr['publication_date']).dt.year
     df_fr['publication_month'] = pd.to_datetime(df_fr['publication_date']).dt.month
     df_fr['econ_significant'] = pd.to_numeric(df_fr['econ_significant'], errors='coerce')
