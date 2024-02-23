@@ -17,7 +17,7 @@ else:
 
 #%% Find years to be updated
 # The latest data-year in the current dataset
-last_year_with_data=df['Presidential Year (February 1 - January 31)'].iloc[-1]
+last_year_with_data=int(df['Presidential Year (February 1 - January 31)'].iloc[-1])
 
 # Years to be updated
 current_year = date.today().year
