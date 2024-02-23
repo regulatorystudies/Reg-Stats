@@ -46,7 +46,7 @@ def update_admin(admin,update_start_date,update_end_date):
     df_fr = pd.concat([df_fr, pd.DataFrame(data={'publication_date': ['1/21/2021']})], ignore_index=True)
 
     # Change data type
-    df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date']).dt.date
+    df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
     df_fr['publication_year'] = pd.to_datetime(df_fr['publication_date']).dt.year
     df_fr['publication_month'] = pd.to_datetime(df_fr['publication_date']).dt.month
     df_fr['econ_significant'] = pd.to_numeric(df_fr['econ_significant'], errors='coerce')
