@@ -3,7 +3,7 @@ print('NOTE: The current code can only update data for presidential years 2021 a
 import pandas as pd
 import os
 import sys
-from datetime import date
+from datetime import datetime
 
 #%% Import the current dataset
 dir_path=os.path.dirname(os.path.realpath(__file__))
@@ -20,7 +20,7 @@ else:
 last_year_with_data=df['Presidential Year (February 1 - January 31)'].iloc[-1]
 
 # Years to be updated
-current_year = date.today().year
+current_year=datetime.now().year
 
 if last_year_with_data<current_year-1:
     first_year_to_update=last_year_with_data+1
@@ -33,14 +33,14 @@ else:
 #%% FR tracking data
 df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
 
-df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
+df_fr['publication_date']=df_fr['publication_date'].astype('datetime64[ns]')
 df_fr['significant'] = pd.to_numeric(df_fr['significant'], errors='coerce')
 
 #%% Get user input pn presidential party
 def input_party(year):
     party_option = ['democratic','d','republican','r']
     while True:
-        party=input(f'Is presidential year {year} Democratic (d) or Republican (r)? >>> ').lower()
+        party=input(f'Is presidential year {year} Democratic (D) or Republican (R)?').lower()
         if party in party_option:
             output='Democratic' if (party in ['democratic','d']) else 'Republican'
             return output
@@ -51,8 +51,8 @@ def input_party(year):
 #%% Count annual economically/section 3(f)(1) significant rules
 update_data=[]
 for year in range(first_year_to_update,last_year_to_update+1):
-    count=df_fr[(df_fr['publication_date'] >= date(year,2,1)) & \
-                (df_fr['publication_date'] <= date(year+1,1,31))]['significant'].sum()
+    count=df_fr[(df_fr['publication_date']>=datetime(year,2,1)) & \
+                (df_fr['publication_date']<=datetime(year+1,1,31))]['significant'].sum()
     party=input_party(year)
     update_data.append([year,party,count])
     print(f'Presidential year {year} has been updated.')
