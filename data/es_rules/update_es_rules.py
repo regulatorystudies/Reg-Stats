@@ -3,7 +3,7 @@ print('NOTE: The current code can only update data for presidential years 2021 a
 import pandas as pd
 import os
 import sys
-from datetime import datetime, date
+from datetime import date
 
 #%% Import the current dataset
 dir_path=os.path.dirname(os.path.realpath(__file__))
@@ -20,7 +20,7 @@ else:
 last_year_with_data=df['Presidential Year (February 1 - January 31)'].iloc[-1]
 
 # Years to be updated
-current_year=datetime.now().year
+current_year = date.today().year
 
 if last_year_with_data<current_year-1:
     first_year_to_update=last_year_with_data+1
