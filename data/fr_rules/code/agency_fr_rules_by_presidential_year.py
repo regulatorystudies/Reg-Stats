@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import re
 
-from pandas import DataFrame, Categorical, to_datetime
+from pandas import DataFrame, Categorical, to_datetime, merge, merge_ordered
 from numpy import array
 from fr_toolbelt.preprocessing import process_documents, INDEPENDENT_REG_AGENCIES, AgencyMetadata
 
@@ -19,18 +19,12 @@ KEEP_AGENCIES = (
     'national-credit-union-administration', 
     'general-services-administration', 
     'management-and-budget-office', 
-    'federal-financial-institutions-examination-council', 
     'equal-employment-opportunity-commission', 
-    'international-trade-commission', 
     'social-security-administration', 
     'federal-housing-finance-board', 
-    'executive-office-of-the-president', 
     'personnel-management-office', 
-    'science-and-technology-policy-office', 
     'small-business-administration', 
     'environmental-protection-agency', 
-    'federal-acquisition-regulation-system', 
-    'agency-for-international-development', 
     'national-aeronautics-and-space-administration', 
     )
 
@@ -44,7 +38,7 @@ def read_json(path: Path, file: str):
         return documents
 
 
-def format_documents(documents: list[dict], as_categorical: bool = False):
+def format_documents(documents: list[dict], agency_column: str, as_categorical: bool = False):
     # process
     results = process_documents(
         documents, 
@@ -68,12 +62,12 @@ def format_documents(documents: list[dict], as_categorical: bool = False):
     bool_jan = array(df["publication_month"] == 1)
     df.loc[bool_jan, "presidential_year"] = df.loc[bool_jan, "publication_year"] - 1
     
-    # explode parent agency column
-    df_long = df.explode(column="parent_slug", ignore_index=True)
+    # explode agency column
+    df_long = df.explode(column=agency_column, ignore_index=True)
     
     # agencies as categorical
     if as_categorical:
-        cat_col = "parent_slug"
+        cat_col = agency_column
         cats = sorted(set(a for a in df_long.loc[:, cat_col].to_numpy() if isinstance(a, str)))
         df_long.loc[:, cat_col] = Categorical(df_long.loc[:, cat_col], categories=cats)
     
@@ -99,9 +93,31 @@ def filter_agencies(df: DataFrame, schema: list, agency_column: str = "parent_sl
     return df.loc[bool_filter]
 
 
-def get_agency_acronyms(df: DataFrame, metadata: dict, agency_column: str = "parent_slug"):
+def get_agency_acronyms(df: DataFrame, metadata: dict, agency_column: str):
     return df.loc[:, agency_column].apply(lambda x: metadata.get(x, {}).get("short_name"))
-    
+
+
+def _get_agency_id(slug, metadata: dict):
+    return metadata.get(slug, {}).get("id")
+
+
+def _get_parent_id(slug, metadata: dict):
+    return metadata.get(slug, {}).get("parent_id")
+
+
+def _get_slug(id: int, metadata: dict) -> str | None:
+    return next((k for k in metadata.keys() if f"{metadata.get(k).get('id')}" == f"{id}"), None)
+
+
+def get_parent_agency(df: DataFrame, metadata: dict, agency_column: str):
+    parent_ids = [
+        _get_parent_id(x, metadata) 
+        if _get_parent_id(x, metadata) is not None 
+        else _get_agency_id(x, metadata) 
+        for x in df.loc[:, agency_column].to_numpy()
+        ]
+    return [_get_slug(id, metadata) for id in parent_ids]
+
 
 def group_documents(
         df: DataFrame, 
@@ -133,8 +149,14 @@ def group_documents(
 
 def main(
         path: Path, 
-        final_year = int,
+        final_year = int, 
+        agency_column: str = "agency_slugs", 
+        group_columns: list = None,
+        filter_agencies: bool = False, 
     ) -> DataFrame:
+    
+    if group_columns is None:
+        group_columns = [agency_column, "presidential_year"]
     
     api_dir = path.joinpath("_api")
     metadata, schema = get_agency_schema(keep_list=list(KEEP_AGENCIES) + list(INDEPENDENT_REG_AGENCIES), keep_pattern=r"department")
@@ -144,39 +166,37 @@ def main(
     for doctype, fieldname in doctypes.items():
         file = f"documents_endpoint_{doctype}_1995_{final_year}.json"
         documents = read_json(api_dir, file)
-        df = format_documents(documents)
+        df = format_documents(documents, agency_column="agency_slugs")
         df, _ = filter_corrections(df)
-        df = filter_agencies(df, schema)
-        df = group_documents(df, group_columns=["parent_slug", "presidential_year"], return_column=fieldname)
+        if filter_agencies:
+            df = filter_agencies(df, schema)
+        df = group_documents(df, group_columns=group_columns, return_column=fieldname)
         df_list.append(df)
     
     # join dataframes: non-corrections
-    dfPrez: DataFrame = df_list[0].merge(df_list[1], on=["parent_slug", "presidential_year"], how="outer", validate="1:1")
+    dfPrez = merge(df_list[0], df_list[1], on=group_columns, how="outer", validate="1:1")
     bool_1994 = dfPrez.loc[:, "presidential_year"] == 1994
     dfPrez = dfPrez.loc[~bool_1994]  # drop partial data from 1994 presidential year
-    df_years = DataFrame({
-        "presidential_year": list(range(1995, final_year + 1)), 
-        "placeholder": 0, 
-        })
-    dfPrez = dfPrez.merge(
-        df_years, 
-        on="presidential_year", 
-        how="outer", 
-        validate="m:1").sort_values(
-            ["parent_slug", "presidential_year"], 
-            ignore_index=True, 
-            kind="stable"
-            ).drop(columns="placeholder")
-    dfPrez.loc[:, "acronym"] = get_agency_acronyms(dfPrez, metadata)
+    dfPrez = dfPrez.sort_values(group_columns, ignore_index=True, kind="stable")
+    dfPrez.loc[:, "acronym"] = get_agency_acronyms(dfPrez, metadata, agency_column)
+    dfPrez.loc[:, "parent_agency"] = get_parent_agency(dfPrez, metadata, agency_column)
     value_cols = list(doctypes.values())
     dfPrez[value_cols] = dfPrez[value_cols].fillna(0).astype("int64")
-    dfPrez = dfPrez.rename(columns={"parent_slug": "agency"})
-    cols = ["agency", "acronym", "presidential_year", "final_rules", "proposed_rules"]
-    return dfPrez.loc[:, cols]
+    dfPrez = dfPrez.rename(
+        columns={
+            "parent_slug": "parent_agency", 
+            "subagency_slug": "subagency", 
+            "agency_slugs": "agencies", 
+            }, 
+        errors="ignore")
+    cols = ("parent_agency", "subagency", "agencies", "acronym", "presidential_year", "final_rules", "proposed_rules")
+    return dfPrez.loc[:, [c for c in cols if c in dfPrez.columns]]
 
 
 if __name__ == "__main__":
 
-    df = main(MAIN_DIR, FINAL_YEAR)
-    print(df.loc[df["acronym"] == "OSHRC", :].head(20))
+    df = main(MAIN_DIR, FINAL_YEAR, group_columns=["agency_slugs", "presidential_year"])
     df.to_csv(MAIN_DIR / "agency_federal_register_rules_by_presidential_year.csv", index=False)
+    #bool_filter = df["acronym"] == "OSHRC"
+    #print(df.loc[bool_filter, :].head(20))
+    print(df.head(20))
