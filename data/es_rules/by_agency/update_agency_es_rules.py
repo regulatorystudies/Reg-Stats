@@ -32,30 +32,10 @@ df_fr['3(f)(1) significant']=pd.to_numeric(df_fr['3(f)(1) significant'], errors=
 df_es=pd.read_csv(f'{dir_path}/../econ_significant_rules_by_presidential_year.csv')
 party_dict=dict(zip(df_es['Presidential Year (February 1 - January 31)'],df_es['Presidential Party']))
 
-#%% Re-organize existing datasets: delete notes and add Presidential Party column
-# for agency in agencies:
-#     file_path = f'data/es_rules/by_agency/{agency[1]}_econ_significant_rules_by_presidential_year.csv'
-#
-#     if os.path.exists(file_path):
-#         df = pd.read_csv(file_path)
-#
-#     df=df[df[df.columns[1]].notnull()]
-#     parties=[]
-#     for y in df['Presidential Year']:
-#         parties.append(party_dict[int(y)])
-#     df['Presidential Party']=parties
-#
-#     df=df[[df.columns[0],'Presidential Party',df.columns[1]]]
-#
-#     df.to_csv(file_path,index=False)
-
 #%% Retrieve data for an agency over a specified timeframe
-
-
 def find_agency(text, agency_pattern):
     out = True if len(re.findall(agency_pattern, str(text))) > 0 else False
     return out
-
 
 def update_data(agency,df_fr,first_year_to_update,last_year_to_update):
     # Refine FR tracking data to the agency
@@ -121,7 +101,6 @@ def update_agency(agency,df_fr):
 
     else:
         print(f'Error: no existing dataset for {agency[1].upper()}.')
-
 
 #%% Update all agencies
 for agency in agencies:
