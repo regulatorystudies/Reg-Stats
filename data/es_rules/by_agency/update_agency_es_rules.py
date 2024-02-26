@@ -2,7 +2,6 @@ print('NOTE: The current code can only update data for presidential years 2021 a
 
 import pandas as pd
 import os
-import sys
 from datetime import date
 import re
 
@@ -10,17 +9,17 @@ import re
 dir_path=os.path.dirname(os.path.realpath(__file__))
 
 #%% Define agencies: ([full names], acronym)
-agencies=[(['homeland security department','department of homeland security'],'dhs'),
-          (['energy department','department of energy'],'doe'),
-          (['interior department','department of interior'],'doi'),
-          (['labor department','department of labor'],'dol'),
-          (['transportation department','department of transportation'],'dot'),
-          (['education department','department of education'],'ed'),
-          (['environmental protection agency'],'epa'),
-          (['health and human services department','department of health and human services'],'hhs'),
-          (['housing and urban development department','department of housing and urban development'],'hud'),
-          (['small business administration'],'sba'),
-          (['agriculture department','department of agriculture'],'usda')]
+agencies=[([r'homeland\s+security\s+department',r'department\s+of\s+homeland\s+security'],'dhs'),
+          ([r'energy\s+department', r'department\s+of\s+energy'],'doe'),
+          ([r'interior\s+department', r'department\s+of\s+interior'],'doi'),
+          ([r'labor\s+department', r'department\s+of\s+labor'],'dol'),
+          ([r'transportation\s+department', r'department\s+of\s+transportation'],'dot'),
+          ([r'education\s+department', r'department\s+of\s+education'],'ed'),
+          ([r'environmental\s+protection\s+agency'],'epa'),
+          ([r'health\s+and\s+human\s+services\s+department', r'department\s+of\s+health\s+and\s+human\s+services'],'hhs'),
+          ([r'housing\s+and\s+urban\s+development\s+department', r'department\s+of\s+housing\s+and\s+urban\s+development'],'hud'),
+          ([r'small\s+business\s+administration'],'sba'),
+          ([r'agriculture\s+department', r'department\s+of\s+agriculture'],'usda')]
 
 #%% Import FR tracking data
 df_fr = pd.read_csv(f'{dir_path}/../../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
@@ -51,15 +50,18 @@ party_dict=dict(zip(df_es['Presidential Year (February 1 - January 31)'],df_es['
 #     df.to_csv(file_path,index=False)
 
 #%% Retrieve data for an agency over a specified timeframe
+
+
+def find_agency(text, agency_pattern):
+    out = True if len(re.findall(agency_pattern, str(text))) > 0 else False
+    return out
+
+
 def update_data(agency,df_fr,first_year_to_update,last_year_to_update):
     # Refine FR tracking data to the agency
     agency_pattern = re.compile('|'.join(agency[0]), re.IGNORECASE)
 
-    def find_agency(text):
-        out = True if len(re.findall(agency_pattern, str(text))) > 0 else False
-        return out
-
-    df_fr['find_agency'] = df_fr['department'].apply(find_agency)
+    df_fr['find_agency'] = df_fr['department'].apply(find_agency, agency_pattern=agency_pattern)
     df_fr = df_fr[df_fr['find_agency'] == True].reset_index(drop=True)
 
     # Count annual economically/section 3(f)(1) significant rules
@@ -120,7 +122,6 @@ def update_agency(agency,df_fr):
     else:
         print(f'Error: no existing dataset for {agency[1].upper()}.')
 
-    return
 
 #%% Update all agencies
 for agency in agencies:
