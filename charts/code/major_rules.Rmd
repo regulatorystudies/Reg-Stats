@@ -86,11 +86,11 @@ bar1 <-
                    ) +
   scale_fill_manual(values = c(red,GWblue)) +
   scale_pattern_manual(values = c("1"="stripe", "0"="none")) +
-  ggtitle("Final Major Rules Published by Presidential Year") +
+  ggtitle("Final Major Rules by Presidential Year") +
   #theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
   #theme(panel.grid.minor = element_blank()) +
-  #ylab("Number of Major Rules") +
-  ylab("Number of Rules") +
+  #ylab("Major Rules Published") +
+  ylab("Major Rules Published") +
   xlab("Note: This figure reflects the number of major rules that federal agencies submitted to the Government Accountability Office as required by the Congressional \nReview Act during each presidential year. The data may not match the number of major rules published in the Federal Register. \n") +
   scale_y_continuous(breaks = seq(0, max(num_fr$major_rules_published) + 25, by = 25), expand = c(0, 0),
                      limits = c(-2, max(num_fr$major_rules_published) + 25)) +
