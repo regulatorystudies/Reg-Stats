@@ -17,13 +17,13 @@ else:
 
 #%% Find years to be updated
 # The latest data-year in the current dataset
-last_year_with_data=df['Presidential Year (February 1 - January 31)'].iloc[-1]
+last_year_with_data=int(df['Presidential Year (February 1 - January 31)'].iloc[-1])
 
 # Years to be updated
 current_year = date.today().year
 
 if last_year_with_data<current_year-1:
-    first_year_to_update=last_year_with_data+1
+    first_year_to_update=max(last_year_with_data+1,2021)
     last_year_to_update=current_year-1
     print(f'Updating data for presidential year {first_year_to_update}-{last_year_to_update}...')
 else:
@@ -36,7 +36,7 @@ df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-
 df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
 df_fr['significant'] = pd.to_numeric(df_fr['significant'], errors='coerce')
 
-#%% Get user input pn presidential party
+#%% Get user input on presidential party
 def input_party(year):
     party_option = ['democratic','d','republican','r']
     while True:
