@@ -147,6 +147,8 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   theme_RSC +
   theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
         axis.line.x = element_line(linewidth = 1, color = RSCgray),
+        plot.title = element_text(margin = margin(b = -50))
+
        
 ) +
 

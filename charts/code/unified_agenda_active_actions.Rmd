@@ -117,7 +117,7 @@ wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 #plot
 bar2 <-
-  ggplot(data=df1_1, aes(x=yearseason, y=Total), family = "avenir_lt_pro") +
+  ggplot(data=df1_1, aes(x=yearseason, y=Total,family = "avenir_lt_pro")) +
   geom_bar(stat="identity", fill="#033C5A")+
 
   ggtitle("Active Actions in the Unified Agenda") +
