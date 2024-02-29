@@ -121,7 +121,7 @@ bar2 <-
   geom_bar(stat="identity", fill="#033C5A")+
 
   ggtitle("Active Actions in the Unified Agenda") +
-  ylab("Active Actions Published") +
+  ylab("Active Actions Published \n") +
   xlab("* Only one agenda was published in 2012. 'S' indicates Spring, and 'F' indicates Fall in the x-axis.\n") +
   scale_y_continuous(breaks = seq(0, max(df1_1$Total)+500, by = 500), expand = c(0, 0),
                      limits = c(-2, max(df1_1$Total)+500)) +
@@ -134,7 +134,7 @@ bar2 <-
   labs(caption = wrapped_caption)+
   theme_minimal() +
   theme(
-      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
+      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 30), size = 20),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),

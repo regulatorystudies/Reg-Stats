@@ -153,9 +153,9 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 ) +
 
 
-  xlab("Number of Months In Office \n\n") +
+  xlab("Number of Months In Office") +
   #ylab("Number of Economically Significant Rules \n\n") +
-  ylab("Economically Significant Rules Published \n\n") +
+  ylab("Economically Significant Rules Published \n") +
   ggtitle("Cumulative Economically Significant Final Rules \nby Administration in First Year") +
   labs(color = "President", caption = wrapped_caption) +
   scale_y_continuous(breaks = seq(0, max(cun_sig_first_long$econ_rules) + 25, by = 25),
