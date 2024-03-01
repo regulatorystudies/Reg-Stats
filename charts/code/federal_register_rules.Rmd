@@ -96,14 +96,18 @@ line1 <- ggplot(rules_pub_long,
     axis.title.y = element_text(size = 15)
   ) +
   xlab(element_blank()) +
-  ylab("Rules Published") +
+  ylab("Number of Rules Published") +
   ggtitle("Rules Published in the Federal Register by Presidential Year") +
   labs(color = NULL, linetype = NULL, caption = caption_text) +
   scale_y_continuous(
     breaks = seq(0, max(rules_pub_long$rule_num) + 1000, by = 1000),
     expand = c(0, 0), 
-    limits = c(0, max(rules_pub_long$rule_num) + 1000)
-  )
+    limits = c(0, max(rules_pub_long$rule_num) + 1000)) +
+  scale_x_continuous(breaks = seq(min(rules_pub_long$year), 
+                                  max(rules_pub_long$year), by = 1), 
+                     limits = c(min(rules_pub_long$year) - 1, 
+                                max(rules_pub_long$year) + 1), 
+                     expand = c(0, 0))
 
 line1
 
