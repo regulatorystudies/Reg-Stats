@@ -121,8 +121,8 @@ bar2 <-
   geom_bar(stat="identity", fill="#033C5A")+
 
   ggtitle("Active Actions in the Unified Agenda") +
-  ylab("Active Actions Published \n") +
-  xlab("* Only one agenda was published in 2012. 'S' indicates Spring, and 'F' indicates Fall in the x-axis.\n") +
+  ylab("Number of Active Actions \n") +
+  xlab("Note: 'S' indicates Spring, and 'F' indicates Fall in the x-axis. Only one agenda was published in 2012. \n") +
   scale_y_continuous(breaks = seq(0, max(df1_1$Total)+500, by = 500), expand = c(0, 0),
                      limits = c(-2, max(df1_1$Total)+500)) +
                      #labels = label_number(suffix = "K", scale = 1e-3)) +
