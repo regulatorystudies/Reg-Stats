@@ -10,7 +10,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-
+library(here)
 i_am("charts/code/unified_agenda_active_actions.Rmd")
 
 # import local functions
@@ -52,7 +52,7 @@ library(stringr)
 ```{r load_data}
 
 # load csv using here
-df1 <- read.csv(here("charts","data", data_file), skip = 1)
+df1 <- read.csv(here("charts","data", data_file))
 
 # load png image
 #logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
@@ -68,7 +68,7 @@ showtext_auto()
 
 ```{r clean_data}
 
-df1_1 <-  df1[c(2:55),c(0:5)]
+df1_1 <-  df1
 
 colnames(df1_1) <- c("yearseason", "FinalRules", "ProposedRules","Prerules","Total")
 
@@ -79,7 +79,7 @@ df1_1$sort <- seq.int(nrow(df1_1))
 #df1_1
 #data_new1 <- df1_1 %>% arrange(desc(sort))
 #data_new1 <- df1_1 %>% arrange(acs(sort))
-data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$yearseason))
+#data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$yearseason))
 
 #split year and season
 # data_new1[c('year', 'season')] <- str_split_fixed(data_new1$yearseason, ' ', 2) 
@@ -89,8 +89,11 @@ data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$years
 ```{r}
 # data processing
 # replace spring to s, fall to f
-data_new1$yearseason <- str_replace(data_new1$yearseason, "Spring", "S")
-data_new1$yearseason <- str_replace(data_new1$yearseason, "Fall", "F")
+
+df1_1$yearseason <- str_replace(df1_1$yearseason, "Fall", "F")
+df1_1$yearseason <- str_replace(df1_1$yearseason, "Spring", "S")
+df1_1$yearseason <-factor(df1_1$yearseason,levels=unique(df1_1$yearseason))
+#df1_1
 ```
 
 
@@ -114,14 +117,14 @@ wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 #plot
 bar2 <-
-  ggplot(data=data_new1, aes(x=yearseason, y=Total), family = "avenir_lt_pro") +
+  ggplot(data=df1_1, aes(x=yearseason, y=Total), family = "avenir_lt_pro") +
   geom_bar(stat="identity", fill="#033C5A")+
 
-  ggtitle("Active Actions Published in the Unified Agenda") +
-  ylab("Number of Active Actions") +
+  ggtitle("Active Actions in the Unified Agenda") +
+  ylab("Active Actions Published") +
   xlab("* Only one agenda was published in 2012. 'S' indicates Spring, and 'F' indicates Fall in the x-axis.\n") +
-  scale_y_continuous(breaks = seq(0, max(data_new1$Total)+500, by = 500), expand = c(0, 0),
-                     limits = c(-2, max(data_new1$Total)+500)) +
+  scale_y_continuous(breaks = seq(0, max(df1_1$Total)+500, by = 500), expand = c(0, 0),
+                     limits = c(-2, max(df1_1$Total)+500)) +
                      #labels = label_number(suffix = "K", scale = 1e-3)) +
                      #labels = label_number(scale = 1e-3) +
   # scale_y_continuous()
