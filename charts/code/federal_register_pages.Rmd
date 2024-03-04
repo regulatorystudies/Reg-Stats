@@ -12,6 +12,8 @@ The `i_am` function identifies where the Rmd is located within the main project 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+library(here)
+
 # set location of this file in project directory
 i_am("charts/code/federal_register_pages.Rmd")
 
@@ -20,21 +22,15 @@ source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
 
 # point to dataset
-data_file = "federal_register_pages_by_calendar_year.csv"
+data_file <- "federal_register_pages_by_calendar_year.csv"
 
 # refresh dataset
 copy_dataset(data_file, here("data"), here("charts", "data"))
 ```
 
-## Load Packages
-
-```{r load packages, results='hide', warning=FALSE}
-
-```
-
 ## Load Data
 
-```{r load data}
+```{r load_data}
 # load csv using here
 tot_pages <- read.csv(here("charts", "data", data_file), skip = 4)
 ```
@@ -69,7 +65,7 @@ tot_pages$year <- as.integer(tot_pages$year)
 
 # Plot Data
 
-```{r generate graph}
+```{r generate_graph}
 # generate bar1
 bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   geom_bar(stat = "identity", fill = GWblue) +
@@ -80,10 +76,11 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
                      expand = c(0, 0),
                      limits = c(0, max(tot_pages$total) + 10000),
                      labels = function(x) ifelse(x == 0, "0", scales::label_number(scale = 1e-3)(x))) +
-  scale_x_discrete(breaks = seq(min(tot_pages$year), max(tot_pages$year), by = 2), 
-                     limits = c(min(tot_pages$year) - 1, 
-                                max(tot_pages$year) + 1), 
-                     expand = c(0, 0)) +
+  scale_x_continuous(breaks = seq(min(tot_pages$year), max(tot_pages$year), by = 2), 
+                   limits = c(min(tot_pages$year) - 1, 
+                              max(tot_pages$year) + 1), 
+                   expand = c(0, 0)
+                   ) +
   labs(caption = caption_text) +
   coord_cartesian(clip = "off") +
   theme_RSC +
@@ -101,8 +98,8 @@ bar2
 
 ```{r save}
 # create empty output folder if it doesn't already exist
-out = here("charts", "output")
-if (!dir.exists(out)){
+out <- here("charts", "output")
+if (!dir.exists(out)) {
   dir.create(out, showWarnings = FALSE)
 }
 
