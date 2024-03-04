@@ -59,52 +59,6 @@ sba_rules <- read.csv(here("charts", "data", data_file_sba))
 usda_rules <- read.csv(here("charts", "data", data_file_usda))
 ```
 
-# Import testing
-```{r}
-knitr::opts_chunk$set(echo = TRUE)
-# set location of this file in project directory
-i_am("charts/code/agency_econ_significant_rules_by_presidential_year.Rmd")
-
-# import local functions
-source(here("charts", "code", "local_utils.R"))
-source(here("charts", "code", "style.R"))
-
-# refresh datasets
-copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
-
-# Create dataframe for importing and naming
-agencies <- c("dhs", "doe", "doi", "dol", "dot", "ed", "epa", "hhs", "hud", "sba", "usda")
-csv <- paste(agencies, "_econ_significant_rules_by_presidential_year.csv", sep = "")
-call_names <- paste("data_file_", agencies, sep = "")
-import_list0 <- as.data.frame(list(agencies = agencies, csv = csv, call_names = call_names))
-import_list1 <- import_list0 %>% 
-  mutate(csv1 = paste("/", csv, sep = "")) %>% 
-  mutate(filepaths = paste(here("charts", "data"), csv1, sep = "")) %>% 
-  select(-csv1)
-
-# Import loop
-filenames <- list.files(here("charts", "data"),
-                        pattern = "*_econ_significant_rules_by_presidential_year.csv")
-names <- paste(agencies, "_econ_significant_rules_by_presidential_year", sep = "")
-
-for(i in names){
-    filepath <- file.path(here("charts", "data"), paste(i, ".csv", sep = ""))
-    assign(i, read.delim(filepath,
-                         colClasses = c("character","numeric")))
-}
-
-
-
-#for president party merging
-data_file_party = "president_party_year.csv"
-
-
-
-
-```
-
-
-
 ## Process data
 
 ```{r code}
@@ -161,7 +115,7 @@ graph <- function(dataset, interval, title){
   scale_fill_manual(values = c(GWblue, red)) +
   scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
   ggtitle(title) +
-  ylab("Number of Rules Published") +
+  ylab("Number of Rules") +
   xlab("") +
   scale_y_continuous(breaks = seq(0, upper, by = interval), 
                      expand = c(0, 0.0), 
