@@ -117,12 +117,12 @@ wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 #plot
 bar2 <-
-  ggplot(data=df1_1, aes(x=yearseason, y=Total), family = "avenir_lt_pro") +
+  ggplot(data=df1_1, aes(x=yearseason, y=Total,family = "avenir_lt_pro")) +
   geom_bar(stat="identity", fill="#033C5A")+
 
   ggtitle("Active Actions in the Unified Agenda") +
-  ylab("Active Actions Published") +
-  xlab("* Only one agenda was published in 2012. 'S' indicates Spring, and 'F' indicates Fall in the x-axis.\n") +
+  ylab("Number of Actions \n") +
+  xlab("Note: 'S' indicates Spring, and 'F' indicates Fall in the x-axis. Only one agenda was published in 2012. \n") +
   scale_y_continuous(breaks = seq(0, max(df1_1$Total)+500, by = 500), expand = c(0, 0),
                      limits = c(-2, max(df1_1$Total)+500)) +
                      #labels = label_number(suffix = "K", scale = 1e-3)) +
@@ -134,7 +134,7 @@ bar2 <-
   labs(caption = wrapped_caption)+
   theme_minimal() +
   theme(
-      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
+      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 30), size = 20),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
@@ -161,7 +161,7 @@ bar2 <-
 #logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
 new_bar <- ggdraw() +
       draw_plot(bar2) +
-      draw_image(logo, x = 0.1, y = 0.03, halign = 0, valign = 0, width = 0.2)
+      draw_image(logo, x = 0.125, y = 0.03, halign = 0, valign = 0, width = 0.2)
 
 new_bar
 ```

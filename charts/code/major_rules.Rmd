@@ -48,8 +48,8 @@ library(dplyr)
 num_fr <- read.csv(here("charts", "data", data_file))
 
 #load custom font
-font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
-showtext_auto()
+# font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
+# showtext_auto()
 ```
 
 ## Process data
@@ -86,11 +86,11 @@ bar1 <-
                    ) +
   scale_fill_manual(values = c(red,GWblue)) +
   scale_pattern_manual(values = c("1"="stripe", "0"="none")) +
-  ggtitle("Final Major Rules by Presidential Year") +
+  ggtitle("Major Final Rules Published by Presidential Year") +
   #theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
   #theme(panel.grid.minor = element_blank()) +
   #ylab("Major Rules Published") +
-  ylab("Major Rules Published") +
+  ylab("Number of Rules") +
   xlab("Note: This figure reflects the number of major rules that federal agencies submitted to the Government Accountability Office as required by the Congressional \nReview Act during each presidential year. The data may not match the number of major rules published in the Federal Register. \n") +
   scale_y_continuous(breaks = seq(0, max(num_fr$major_rules_published) + 25, by = 25), expand = c(0, 0),
                      limits = c(-2, max(num_fr$major_rules_published) + 25)) +
@@ -98,7 +98,7 @@ bar1 <-
   labs(caption = wrapped_caption)+
   theme_minimal() +
   theme(
-      plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt"), size = 20),
+      plot.title = element_text(hjust = 0.5, margin = margin(b = -10), size = 20),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),

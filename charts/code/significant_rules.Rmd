@@ -61,7 +61,7 @@ colnames(sig_fin_rules) <- c("year", "party", "rules", "withdrawn")
 sig_fin_rules <- sig_fin_rules[ , c("year", "party", "rules")]
 
 # get rid of bottom three rows
-sig_fin_rules <- sig_fin_rules[1:(nrow(sig_fin_rules) - 3), ]
+sig_fin_rules <- sig_fin_rules[1:(nrow(sig_fin_rules)), ]
 
 # make party factor variable
 sig_fin_rules$party <- as.factor(sig_fin_rules$party)
@@ -82,9 +82,14 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = p
   scale_fill_manual(values = c(GWblue, red)) +
   scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
   ggtitle("Significant Final Rules Published by Presidential Year") +
-  ylab("Significant Final Rules Published") +
+  ylab("Number of Rules") +
   xlab("") +
   scale_y_continuous(breaks = seq(0, max(sig_fin_rules$rules) + 50, by = 50), expand = c(0, 0.05), limits = c(-2, max(sig_fin_rules$rules) + 50)) +
+  scale_x_continuous(breaks = seq(min(sig_fin_rules$year), 
+                                  max(sig_fin_rules$year), by = 1), 
+                     limits = c(min(sig_fin_rules$year) - 1, 
+                                max(sig_fin_rules$year) + 1), 
+                     expand = c(0, 0))+
   labs(caption = wrapped_caption) +
   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
   theme_RSC +
