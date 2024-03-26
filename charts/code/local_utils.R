@@ -5,18 +5,18 @@ library(here)
 library(png)
 library(dplyr)
 
-
+# function to drop partial data from current presidential year
 filter_partial_year <- function(df, year_column = "presidential_year", cutoff_mmdd = "02-01") {
   # only keep most recent presidential year
   today <- Sys.Date()
   this_year <- year(today)
   presidential_year_cutoff <- paste0(year(Sys.Date()), "-", cutoff_mmdd)
   if (today >= presidential_year_cutoff) {
-    df <- df %>% filter(subset(select = year_column) != this_year)
+    df <- df %>% dplyr::filter(df[[year_column]] != this_year)
   } else {
-    df <- df %>% filter(subset(select = year_column) != (this_year - 1))
+    df <- df %>% dplyr::filter(df[[year_column]] != (this_year - 1))
   }
-  return(df)
+  df
 }
 
 # function to load png file
