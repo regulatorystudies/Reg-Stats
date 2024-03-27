@@ -47,9 +47,6 @@ library(dplyr)
 # load csv using here
 num_fr <- read.csv(here("charts", "data", data_file))
 
-#load custom font
-# font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
-# showtext_auto()
 ```
 
 ## Process data
@@ -58,11 +55,15 @@ num_fr <- read.csv(here("charts", "data", data_file))
 
 #colnames(num_fr) <- c("year", "fay", "party", "rules_received", "rules_published")
 
-num_fr$major_rules_received<- as.numeric(num_fr$major_rules_received)
-num_fr$major_rules_published<- as.numeric(num_fr$major_rules_published)
+num_fr$major_rules_received <- as.numeric(num_fr$major_rules_received)
+num_fr$major_rules_published <- as.numeric(num_fr$major_rules_published)
+
 # make party factor variable
 num_fr$democratic_admin <- as.factor(num_fr$democratic_admin)
 num_fr$presidential_year <- as.factor(num_fr$presidential_year)
+
+# remove partial year at end of time series
+num_fr <- filter_partial_year(num_fr, year_column = "presidential_year")
 
 ```
 
