@@ -71,8 +71,21 @@ caption_text <- paste("Source: Office of the Federal Register (federalregister.g
 df2 = subset(df1, select = -c(color) )
 
 df2$tolpages <- as.numeric(gsub(",","",df2$tolpages))
+df2$year <- as.numeric(df2$year) #new
 
 ```
+
+# x-axis breaks function
+```{r}
+# column_number must be the column on which the x-axis label will be based
+xbreaks <- function(dataset, column_number){
+  round(seq(min(dataset[column_number]), max(dataset[column_number]),
+            by = (max(dataset[column_number])-min(dataset[column_number]))/11),0)
+}
+
+x_spacing <- xbreaks(df2, 1) # testing
+```
+
 
 ## Plot data
 
@@ -96,8 +109,10 @@ bar2 <-
                      limits = c(-2, max(df2$tolpages)+20000),
                      #labels = function(x) ifelse(x == 0, "0", scales::label_number(suffix = "K", scale = 1e-3)(x)),) +
                      labels = function(x) ifelse(x == 0, "0", scales::label_number( scale = 1e-3)(x)),) +
-
-  scale_x_discrete(breaks = seq(min(df2$year), max(df2$year), by = 2)) + # only display even year
+# replace scale_x_discrete w/ scale_x_continuous and add relevant commands
+  scale_x_continuous(breaks = xbreaks(df2, 1),
+                     limits = c(min(df2$year)-1, max(df2$year)+1),
+                     expand = c(0,0)) + # only display even year
   coord_cartesian(clip = "off") +
   #theme_RSC +
   labs(caption = wrapped_caption)+
