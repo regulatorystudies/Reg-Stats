@@ -100,11 +100,10 @@ usda_rules1 <- clean(usda_rules)
 #Charting function
 
 ```{r}
+col_number <- 3
+
 graph <- function(dataset, interval, title){
-  upper <- case_when(
-    interval == 1 ~ max(dataset$rules) + interval,
-    interval != 1 ~ ceiling(max(dataset$rules)/interval)*interval)
-  
+  upper <- ydynam(dataset, interval, col_number)
   bar1 <- ggplot(dataset, aes(x = year, y = rules, fill = party, pattern = party)) +
   geom_bar_pattern(stat = "identity", width = 0.5,
                    position = position_dodge(preserve = "single"),

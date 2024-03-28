@@ -76,7 +76,7 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
                      expand = c(0, 0),
                      limits = c(0, max(tot_pages$total) + 10000),
                      labels = function(x) ifelse(x == 0, "0", scales::label_number(scale = 1e-3)(x))) +
-  scale_x_continuous(breaks = seq(min(tot_pages$year), max(tot_pages$year), by = 2), 
+  scale_x_continuous(breaks = xbreaks(tot_pages, 1), 
                    limits = c(min(tot_pages$year) - 1, 
                               max(tot_pages$year) + 1), 
                    expand = c(0, 0)

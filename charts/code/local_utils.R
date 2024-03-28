@@ -64,7 +64,14 @@ copy_agency_data <- function(path, new_path, re = ".+by_agency$", recurse_levels
 
 # function for dynamic breaks on x-axis
 xbreaks <- function(dataset, column_num){
-    round(seq(min(dataset[column_number]), max(dataset[column_number]),
-              by = (max(dataset[column_number])-min(dataset[column_number]))/11),0)
+    round(seq(min(dataset[column_num]), max(dataset[column_num]),
+              by = (max(dataset[column_num])-min(dataset[column_num]))/11),0)
   }
+
+# function for dynamic y-axis
+ydynam <- function(dataset, interval, col_number){
+  upper <- case_when(
+    interval == 1 ~ max(dataset[col_number]) + interval,
+    interval != 1 ~ ceiling(max(dataset[col_number])/interval)*interval)
+}
 
