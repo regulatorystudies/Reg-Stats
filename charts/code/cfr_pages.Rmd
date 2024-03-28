@@ -71,6 +71,7 @@ caption_text <- paste("Source: Office of the Federal Register (federalregister.g
 df2 = subset(df1, select = -c(color) )
 
 df2$tolpages <- as.numeric(gsub(",","",df2$tolpages))
+df2$year <- as.numeric(df2$year)
 
 ```
 
@@ -97,7 +98,9 @@ bar2 <-
                      #labels = function(x) ifelse(x == 0, "0", scales::label_number(suffix = "K", scale = 1e-3)(x)),) +
                      labels = function(x) ifelse(x == 0, "0", scales::label_number( scale = 1e-3)(x)),) +
 
-  scale_x_discrete(breaks = seq(min(df2$year), max(df2$year), by = 2)) + # only display even year
+  scale_x_continuous(breaks = xbreaks(df2, 1),
+                     limits = c(min(df2$year)-1, max(df2$year)+1),
+                     expand = c(0,0)) + 
   coord_cartesian(clip = "off") +
   #theme_RSC +
   labs(caption = wrapped_caption)+
@@ -124,7 +127,7 @@ bar2 <-
 #logo 
 new_bar <- ggdraw() +
       draw_plot(bar2) +
-      draw_image(logo, x = 0.1, y = 0.03, halign = 0, valign = 0, width = 0.2)
+      draw_image(logo, x = 0.1, y = 0.05, halign = 0, valign = 0, width = 0.2)
 
 new_bar
 

@@ -61,7 +61,7 @@ colnames(econ_sig_rules) <- c("year", "party", "rules", "withdrawn")
 econ_sig_rules <- econ_sig_rules[ , c("year", "party", "rules")]
 
 # get rid of bottom three rows
-econ_sig_rules <- econ_sig_rules[1:(nrow(econ_sig_rules) - 5), ]
+#econ_sig_rules <- econ_sig_rules[1:(nrow(econ_sig_rules) - 5), ]
 
 # make party factor variable
 econ_sig_rules$party <- as.factor(econ_sig_rules$party)
@@ -70,13 +70,8 @@ econ_sig_rules$party <- as.factor(econ_sig_rules$party)
 
 ## Plot data
 
-```{r create graphing function}
-
-graph <- function(interval){
-  upper <- case_when(
-    interval == 1 ~ max(econ_sig_rules$rules) + interval,
-    interval != 1 ~ ceiling(max(econ_sig_rules$rules)/interval)*interval)
-
+```{r generate graph}
+# generate bar1
 # generate bar1
 bar1 <- ggplot(econ_sig_rules, aes(x = year, y = rules, fill = party, pattern = party)) +
   geom_bar_pattern(stat = "identity", width = 0.5,
@@ -85,18 +80,25 @@ bar1 <- ggplot(econ_sig_rules, aes(x = year, y = rules, fill = party, pattern = 
                    pattern_fill = lightblue, pattern_angle = 45,
                    pattern_density = 0.1, pattern_spacing = 0.025,
                    pattern_key_scale_factor = 0.6) +
+#  geom_text(aes(label = rules), position = position_dodge(width = 0.5), vjust = -0.5, size = 3) +
   scale_fill_manual(values = c(GWblue, red)) +
   scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
   ggtitle("Economically Significant Final Rules Published by Presidential Year") +
-  ylab("Economically Significant Final Rules Published") +
+  ylab("Number of Rules") +
   xlab("") +
-  scale_y_continuous(breaks = seq(0, upper, by = interval), 
-                     expand = c(0, 0.05), 
-                     limits = c(-2, upper)) +
+  scale_y_continuous(breaks = seq(0, max(econ_sig_rules$rules) + 25, by = 25), 
+                     expand = c(0, 0.0),
+                     limits = c(-2, max(econ_sig_rules$rules) + 25)) +
+  scale_x_continuous(breaks = seq(min(econ_sig_rules$year), 
+                                  max(econ_sig_rules$year), by = 1), 
+                     limits = c(min(econ_sig_rules$year) - 1, 
+                                max(econ_sig_rules$year) + 1), 
+                     expand = c(0, 0))+
   labs(caption = wrapped_caption) +
   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
   theme_RSC +
-  coord_cartesian(ylim = c(0, upper)) +
+  coord_cartesian(ylim = c(0, max(econ_sig_rules$rules) + 25), 
+                  xlim = c(1980, max(econ_sig_rules$year) + 1)) +
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
     axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
@@ -111,17 +113,10 @@ bar1 <- ggplot(econ_sig_rules, aes(x = year, y = rules, fill = party, pattern = 
 bar1
 
 # add logo to plot
- bar2 <- ggdraw() + 
+bar2 <- ggdraw() + 
   draw_plot(bar1) + 
   draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
-  
-  bar2 
-  return(bar2)
-}
-```
-
-```{r create graph}
-bar3 <- graph(25)
+bar2
 ```
 
 ```{r save}
@@ -132,5 +127,5 @@ if (!dir.exists(out)){
 }
 
 # save bar2 as pdf
-ggsave(here("charts", "output", "econ_significant_rules_published_by_presidential_year.pdf"), plot = bar3, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "econ_significant_rules_published_by_presidential_year.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
 ```
