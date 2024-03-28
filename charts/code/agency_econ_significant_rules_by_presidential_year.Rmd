@@ -288,4 +288,67 @@ ggsave(here("charts", "output", "by_agency",
 
 ```
 
+# More Testing
+```{r}
+ dataset <- hhs_rules1
+ title <- "Economically Significant Final Rules Published by HHS Each Presidential Year"
+ interval <- 5
+ 
+ ydynam <- function(dataset, interval, col_number){
+   upper <- case_when(
+     interval == 1 ~ max(dataset[col_number]) + interval,
+     interval != 1 ~ ceiling(max(dataset[col_number])/interval)*interval)
+ }
+
+ upper <- ydynam(hhs_rules1, interval, 3)
+  
+  bar1 <- ggplot(dataset, aes(x = year, y = rules, fill = party, pattern = party)) +
+  geom_bar_pattern(stat = "identity", width = 0.5,
+                   position = position_dodge(preserve = "single"),
+                   pattern_color = NA,
+                   pattern_fill = lightblue, pattern_angle = 45,
+                   pattern_density = 0.1, pattern_spacing = 0.025,
+                   pattern_key_scale_factor = 0.6) +
+  scale_fill_manual(values = c(GWblue, red)) +
+  scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
+  ggtitle(title) +
+  ylab("Number of Rules") +
+  xlab("") +
+  scale_y_continuous(breaks = seq(0, upper, by = interval), 
+                     expand = c(0, 0.0), 
+                     limits = c(-2, upper)) +
+  scale_x_continuous(breaks = seq(min(dataset$year),
+                                  max(dataset$year))
+                     ) +
+  labs(caption = wrapped_caption) +
+  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
+  theme_RSC +
+  coord_cartesian(ylim = c(0, upper),
+                  xlim = c(min(dataset$year)-0.5,
+                                max(dataset$year)+0.5),
+                  expand = FALSE) +
+  theme(
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
+    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
+    axis.ticks.x = element_blank(),
+    axis.line.x = element_line(linewidth = 1, color = RSCgray),
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
+    panel.grid.minor = element_blank()
+  )
+  
+  bar1
+  
+  bar2 <- ggdraw() + 
+  draw_plot(bar1) + 
+  draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
+  
+  bar2 
+  return(bar2)
+
+
+
+```
+
 
