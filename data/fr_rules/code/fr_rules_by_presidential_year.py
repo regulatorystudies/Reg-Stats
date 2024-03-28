@@ -7,10 +7,6 @@ from pandas import DataFrame, to_datetime, concat
 from numpy import array
 from fr_toolbelt.api_requests import get_documents_by_date
 
-# source: https://github.com/verigak/progress/issues/58#issuecomment-471718558
-from patch_progress import getpatchedprogress
-progress = getpatchedprogress()
-
 from filter_documents import filter_corrections
 
 # set file paths
