@@ -63,9 +63,9 @@ copy_agency_data <- function(path, new_path, re = ".+by_agency$", recurse_levels
 }
 
 # function for dynamic breaks on x-axis
-xbreaks <- function(dataset, column_num){
+xbreaks <- function(dataset, column_num, denom){
     round(seq(min(dataset[column_num]), max(dataset[column_num]),
-              by = (max(dataset[column_num])-min(dataset[column_num]))/11),0)
+              by = (max(dataset[column_num])-min(dataset[column_num]))/denom),0)
   }
 
 # function for dynamic y-axis
