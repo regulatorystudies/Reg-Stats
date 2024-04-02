@@ -8,9 +8,9 @@ Data: 2024-04-02
 
 ## Update Instructions
 
-The cumulative economically significant rules data are on a monthly basis and should be updated **once a month**. Use either the automated process (preferred) or the manual process below to update the dataset.
+The cumulative economically significant rules data are on a monthly frequency and should be updated **once a month**. Use either the automated process (preferred) or the manual process below to update the dataset.
 
-*Note: We rely on the Federal Register for the data starting the Biden administration and Reginfo.gov for all the prior administrations. This is because there is a data update lag in Published Date on Reginfo.gov, which makes the data for recent years incomplete on Reginfo.gov.*
+*Note: We rely on the Federal Register for the data starting the Biden administration and Reginfo.gov for all the prior administrations. This is because there is a data update lag in the Published Date on Reginfo.gov, which makes the data for recent years incomplete on Reginfo.gov.*
 
 ### Automated Process
 
