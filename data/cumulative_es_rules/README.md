@@ -2,14 +2,38 @@
 
 ## Last Updated
 
-README: 2023-11-21
+README: 2024-04-02
 
-Data: 2023-07-10
+Data: 2024-04-02
 
 ## Update Instructions
 
-We rely on the Federal Register for the data starting the Biden administration and Reginfo.gov for all the prior administrations. This is because there is a data update lag in Published Date on Reginfo.gov, which makes the data for recent years incomplete on Reginfo.gov.
+The cumulative economically significant rules data are on a monthly basis and should be updated **once a month**. Use either the automated process (preferred) or the manual process below to update the dataset.
 
+*Note: We rely on the Federal Register for the data starting the Biden administration and Reginfo.gov for all the prior administrations. This is because there is a data update lag in Published Date on Reginfo.gov, which makes the data for recent years incomplete on Reginfo.gov.*
+
+### Automated Process
+
+1. Ensure whether Python and the relevant packages are installed on your computer's environment (see instructions below on setting up your environment).
+1. In the beginning of each month, run the Python script `update_cumulative_es_rules.py` in your preferred IDE to update the dataset.
+
+#### Environment Set Up
+
+If your computer's environment is set up with [Python 3.11](https://www.python.org/downloads/) and the necessary packages, you should be able to run the code.
+
+Using [Anaconda](https://www.anaconda.com/products/distribution), the environment can be created and activated using the environment.yml file with the following commands in the terminal:
+
+```{bash}
+cd "NAVIGATE TO DIRECTORY WHERE YML IS STORED"
+
+conda env create -f environment.yml
+
+conda activate regstats_gao
+```
+
+See the [Anaconda documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) for more details.
+
+### Manual Process
 To update the number of cumulative economically significant rules for a new month during or after the Biden administration, follow these steps:
 
 1. Access/open the CSV file `cumulative_econ_significant_rules_by_presidential_month.csv` in this directory.
