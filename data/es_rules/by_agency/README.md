@@ -11,7 +11,7 @@ The economically significant rules by agency data are on a yearly frequency and 
 To update the datasets for a new presidential year after 2021, follow these steps:
 
 1. Ensure whether Python and the relevant packages are installed on your computer's environment (see instructions below on setting up your environment).
-1. In the beginning of each year, run the Python script `update_agency_es_rules.py` in your preferred IDE to update the datasets.
+1. Run the Python script `update_agency_es_rules.py` in your preferred IDE to update the datasets.
 
 #### Environment Set Up
 
@@ -39,7 +39,7 @@ To update the number of economically significant rules for an agency for a new p
    - Note: there are rules issued jointly by multiple departments (e.g., Justice Department, Homeland Security Department); in that case, also select the joint departments if it applies to the department you are updating.
 4. Select the publication_date = the presidential year you are updating (e.g., Feb 2021 – Jan 2022).
 5. The number of records found indicates the number of significant rules published during the selected presidential year.
-6. Enter the number for the corresponding year in the Excel file `[agency]_econ_significant_rules_by_presidential_year.csv`.
+6. Enter the number for the corresponding year in the `[agency]_econ_significant_rules_by_presidential_year.csv` file.
 
 To verify the data for years prior to 2021 (i.e., 1981-2020) from Reginfo.gov, follow these steps:
 
@@ -53,5 +53,4 @@ To verify the data for years prior to 2021 (i.e., 1981-2020) from Reginfo.gov, f
    - Economically Significant = Yes
    - Published Date Range = From 02/01/YYYY To 01/31/YYYY (start and end of a presidential year)
 3. Click on Search.
-4. On the Search Results page, the “Number Of Records Found” indicates the total number of significant rules published during the selected presidential year; enter the number into for the corresponding year in the csv file.
-5. Save the csv file.
+4. On the Search Results page, the “Number Of Records Found” indicates the total number of significant rules published during the selected presidential year; enter the number into for the corresponding year in the `[agency]_econ_significant_rules_by_presidential_year.csv` file.
