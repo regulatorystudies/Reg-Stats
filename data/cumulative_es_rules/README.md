@@ -9,7 +9,7 @@ The cumulative economically significant rules data are on a monthly frequency an
 ### Automated Process
 
 1. Ensure whether Python and the relevant packages are installed on your computer's environment (see instructions below on setting up your environment).
-1. In the beginning of each month, run the Python script `update_cumulative_es_rules.py` in your preferred IDE to update the dataset.
+1. Run the Python script `update_cumulative_es_rules.py` in your preferred IDE to update the dataset.
 
 #### Environment Set Up
 
@@ -36,7 +36,7 @@ To update the number of cumulative economically significant rules for a new mont
    - Select `econ_significant = 1` (for rules published before April 6, 2023) or `3(f)(1) significant = 1` (for rules published on or after April 6, 2023).
    - Select publication_date to include the months you are counting. For example, Feb 2021 for one month Biden in office; Feb 2021-Mar 2021 for two months Biden in office; Feb 2021-Jan 2022 for 12 months Biden in office.
    - The number of records found indicates the cumulative number of economically significant rules for the X months the president in office.
-1. Enter the number into the `cumulative_econ_significant_rules_by_presidential_month.csv` file and push the updates to Github.
+1. Enter the number into the `cumulative_econ_significant_rules_by_presidential_month.csv` file.
 
 To check the number of cumulative economically significant rules for the prior administrations:
 
