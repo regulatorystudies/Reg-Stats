@@ -28,7 +28,7 @@ cd "NAVIGATE TO DIRECTORY WHERE YML IS STORED"
 
 conda env create -f environment.yml
 
-conda activate regstats_gao
+conda activate regstats_sig
 ```
 
 See the [Anaconda documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) for more details.
@@ -48,6 +48,8 @@ To update the number of cumulative economically significant rules for a new mont
 1. Save and upload the CSV file to Github.
 
 To check the number of cumulative economically significant rules for the prior administrations:
+
+*Note: The data on Reginfo.gov may been updated since the last update of Reg Stats, which occurs more often for more recent years. By using the Reginfo.gov data, we are assuming that the Regulatory Review database reflects all the significant rules published in the Federal Register.*
 
 1. Go to Reginfo.gov; under the Regulatory Review tab, click on Search.  
 1. On the Search of Regulatory Review page, set the following search criteria:  
