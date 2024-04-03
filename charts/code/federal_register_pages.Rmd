@@ -78,7 +78,7 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
                      expand = c(0, 0),
                      limits = c(0, upper),
                      labels = function(x) ifelse(x == 0, "0", scales::label_number(scale = 1e-3)(x))) +
-  scale_x_continuous(breaks = xbreaks(tot_pages, 1, 19), 
+  scale_x_continuous(breaks = xbreaks(tot_pages, 1, 29), 
                    limits = c(min(tot_pages$year) - 1, 
                               max(tot_pages$year) + 1), 
                    expand = c(0, 0)
@@ -106,6 +106,6 @@ if (!dir.exists(out)) {
 }
 
 # save bar2 as pdf
-ggsave(here("charts", "output", "federal_register_pages_by_calendar_year_19.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "federal_register_pages_by_calendar_year_29.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
 ```
 

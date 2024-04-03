@@ -98,7 +98,7 @@ line1 <- ggplot(rules_pub_long,
   ggtitle("Rules Published in the Federal Register by Presidential Year") +
   labs(color = NULL, linetype = NULL, caption = caption_text) +
   scale_y_continuous(
-    breaks = seq(0, max(rules_pub_long$rule_num) + 1000, by = 1000),
+    breaks = seq(0, ydynam(rules_pub_long, 1000, 3), by = 1000),
     expand = c(0, 0), 
     limits = c(0, max(rules_pub_long$rule_num) + 1000)) +
   scale_x_continuous(breaks = seq(min(rules_pub_long$year), 
@@ -126,5 +126,5 @@ if (!dir.exists(out)){
 }
 
 # save line2 as pdf
-ggsave(here("charts", "output", "federal_register_rules_by_presidential_year.pdf"), plot = line2, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "federal_register_rules_by_presidential_year2.pdf"), plot = line2, width = 12, height = 9, dpi = 300)
 ```
