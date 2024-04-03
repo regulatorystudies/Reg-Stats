@@ -39,7 +39,7 @@ To update the number of economically significant rules for an agency for a new p
    - Note: there are rules issued jointly by multiple departments (e.g., Justice Department, Homeland Security Department); in that case, also select the joint departments if it applies to the department you are updating.
 4. Select the publication_date = the presidential year you are updating (e.g., Feb 2021 – Jan 2022).
 5. The number of records found indicates the number of significant rules published during the selected presidential year.
-6. Enter the number for the corresponding year in the Excel file `[agency]_ES_rules_published_presidential_year.csv`.
+6. Enter the number for the corresponding year in the Excel file `[agency]_econ_significant_rules_by_presidential_year.csv`.
 
 To verify the data for years prior to 2021 (i.e., 1981-2020) from Reginfo.gov, follow these steps:
 
