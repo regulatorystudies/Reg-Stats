@@ -36,7 +36,7 @@ copy_all_data <- function(path, new_path, file_type = "*.csv", recurse_levels = 
   
   if (report){
     print(paste("Copied", length(file_list), "files."))
-    }
+  }
 }
 
 # function for copying the specified dataset
@@ -64,9 +64,9 @@ copy_agency_data <- function(path, new_path, re = ".+by_agency$", recurse_levels
 
 # function for dynamic breaks on x-axis
 xbreaks <- function(dataset, column_num, denom){
-    round(seq(min(dataset[column_num]), max(dataset[column_num]),
-              by = (max(dataset[column_num])-min(dataset[column_num]))/denom),0)
-  }
+  round(seq(min(dataset[column_num]), max(dataset[column_num]),
+            by = (max(dataset[column_num])-min(dataset[column_num]))/denom),0)
+}
 
 # function for dynamic y-axis
 ydynam <- function(dataset, interval, col_number){
