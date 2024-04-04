@@ -189,7 +189,12 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-# save line1 as pdf
-ggsave(here("charts", "output", "cumulative_econ_significant_rules_by_first_year.pdf"), plot = new_bar, width = 12, height = 9, dpi = 300)
-```
+image_name = "cumulative_econ_significant_rules_by_first_year"
 
+# save as pdf
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = new_bar, width = 12, height = 9, dpi = 300)
+
+# save as png
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = new_bar, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+
+```

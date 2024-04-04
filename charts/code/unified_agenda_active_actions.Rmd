@@ -54,13 +54,6 @@ library(stringr)
 # load csv using here
 df1 <- read.csv(here("charts","data", data_file))
 
-# load png image
-#logo <- get_png(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
-
-#load custom font
-font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
-showtext_auto()
-
 ```
 
 ## Process data
@@ -174,8 +167,10 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
+image_name = "active_actions_by_unified_agenda"
 
-ggsave(here("charts", "output", "active_actions_by_unified_agenda.pdf"), plot = new_bar, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = new_bar, width = 12, height = 9, dpi = 300)
 
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = new_bar, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
 
 ```

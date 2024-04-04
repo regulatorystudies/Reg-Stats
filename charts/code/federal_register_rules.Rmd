@@ -120,6 +120,12 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-# save line2 as pdf
-ggsave(here("charts", "output", "federal_register_rules_by_presidential_year.pdf"), plot = line2, width = 12, height = 9, dpi = 300)
+image_name = "federal_register_rules_by_presidential_year"
+
+# save as pdf
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = line2, width = 12, height = 9, dpi = 300)
+
+# save as png
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = line2, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+
 ```
