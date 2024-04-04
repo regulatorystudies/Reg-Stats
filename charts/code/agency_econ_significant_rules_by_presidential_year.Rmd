@@ -11,7 +11,9 @@ The `i_am` function identifies where the Rmd is located within the main project 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 # set location of this file in project directory
+library(here)
 i_am("charts/code/agency_econ_significant_rules_by_presidential_year.Rmd")
 
 # import local functions
