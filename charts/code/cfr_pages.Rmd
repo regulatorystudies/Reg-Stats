@@ -99,8 +99,7 @@ bar2 <-
   scale_y_continuous(breaks = seq(0, upper, by = 20000), expand = c(0, 0),
                      limits = c(-2, upper),
                      labels = function(x) ifelse(x == 0, "0", scales::label_number( scale = 1e-3)(x)),) +
-
-    scale_x_continuous(breaks = breaks4,
+  scale_x_continuous(breaks = breaks4,
                      limits = c(min(df2$year)-1, max(df2$year)+1),
                      expand = c(0,0)) + 
   coord_cartesian(clip = "off") +

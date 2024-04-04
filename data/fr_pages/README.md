@@ -1,16 +1,10 @@
-# Federal Register Pages
-
-## Last Updated
-
-README: 2024-02-23
-
-Data: 2024-02-23
+# Federal Register Pages Data
 
 ## Update Instructions
 
-The data and graph of Federal Register pages should be updated annually. Since the date when the data for the latest year becomes available is unclear, check frequently in the first a few months of each calendar year to see if the latest data have been updated.
+The Federal Register pages data should be updated **once a year**. Since the date when the data for the latest year becomes available is unclear, check frequently during the first few months of each calendar year to see if the latest data have been updated.
 
-Follow these procedures to update the data:
+Follow these steps to update the dataset:
 
 1. Check for updated data from the [Federal Register Statistics](https://www.federalregister.gov/reader-aids/federal-register-statistics) page.
 2. Under "Federal Register & CFR Publication Statistics – Aggregated Charts," download the XLS file.
