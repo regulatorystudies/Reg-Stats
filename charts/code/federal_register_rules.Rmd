@@ -126,5 +126,5 @@ if (!dir.exists(out)){
 }
 
 # save line2 as pdf
-ggsave(here("charts", "output", "federal_register_rules_by_presidential_year2.pdf"), plot = line2, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "federal_register_rules_by_presidential_year.pdf"), plot = line2, width = 12, height = 9, dpi = 300)
 ```

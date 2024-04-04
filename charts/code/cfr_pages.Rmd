@@ -144,5 +144,5 @@ if (!dir.exists(out)){
 }
 
 # save as pdf
-ggsave(here("charts", "output", "cfr_pages_by_calendar_year_6.pdf"), plot = new_bar, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", "cfr_pages_by_calendar_year.pdf"), plot = new_bar, width = 12, height = 9, dpi = 300)
 ```
