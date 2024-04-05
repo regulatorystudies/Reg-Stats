@@ -45,11 +45,6 @@ library(dplyr)
 
 # load csv using here
 cun_sig_first <- read.csv(here("charts", "data", data_file))
-#load custom font
-
-font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
-showtext_auto()
-
 
 ```
 
