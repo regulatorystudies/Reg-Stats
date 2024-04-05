@@ -37,7 +37,7 @@
   showtext_auto()
     # according to documentation, showtext_auto needed for this to work properly 
   
-# custom theme for RSC Reg Stats plots
+# custom theme for RSC Reg Stats plots #### 
   theme_RSC <- theme_minimal() +
     theme(
       plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
@@ -57,3 +57,6 @@
   
   # thank you to Yaxin for developing this custom theme!
   
+# y-axis captions ####
+  number_ylab <- "Number of Rules"
+  pages_ylab <- "Thousands of Pages"
