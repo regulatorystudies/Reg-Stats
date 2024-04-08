@@ -215,3 +215,63 @@ for (agency in agencies) {
 }
 
 ```
+
+# all inclusive loop
+```{r}
+agencies = c("dhs", "doe", "doi", "dol", "dot", "ed", "epa", "hhs", "hud", "sba", "usda")
+intervals = c(1,1,1,1,1,1,2,5,1,5,2)
+
+for(agency in agencies){
+  
+  data_file = paste0(agency, "_econ_significant_rules_by_presidential_year.csv")
+  copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
+  rules <- read.csv(here("charts", "data", data_file))
+  rules1 <- clean(rules)
+  title <- paste0("Economically Significant Final Rules Published by ", 
+                  toupper(agency),
+                  " Each Presidential Year")
+  
+  for (interval in intervals) {
+    bar1 <- graph(rules1, interval, title)
+    bar2 <-   bar2 <- ggdraw() + 
+      draw_plot(bar1) + 
+      draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
+      
+      bar2 
+      return(bar2)
+  }
+  
+  ggsave(
+    here("charts", "output", "by_agency", 
+         paste0(agency, "_econ_significant_rules_by_presidential_year.pdf")
+         ), 
+    plot = get(bar2), 
+    width = 12, 
+    height = 9, 
+    dpi = 300
+    )
+  
+  # save plots as png
+  out = here("charts", "output", "by_agency2")
+  if (!dir.exists(out)){
+    dir.create(out, showWarnings = FALSE)
+    }
+  
+  ggsave(
+    here("charts", "output", "by_agency", 
+         paste0(agency, "_econ_significant_rules_by_presidential_year.png")
+         ), 
+    device = "png", 
+    plot = get(bar2), 
+    width = 1200, 
+    height = 900, 
+    units = "px", 
+    dpi = 96, 
+    bg = "white"
+    )
+  }
+
+
+
+```
+
