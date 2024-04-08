@@ -11,6 +11,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
+library(here)
 here::i_am("code/demo_style_script.Rmd")
 
 ```
@@ -21,7 +22,7 @@ Import packages for the remainder of the file here.
 library(tidyverse)
 library(ggpattern)
 library(ggrepel)
-library(here)
+
 ```
 I'll note that I (personally) only load in the tidyverse package - it contains ggplot2, tidyr, dplyr, and any other tidy packages you use. I think it helps tidy things up a bit!
 

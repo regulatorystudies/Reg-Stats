@@ -13,6 +13,7 @@ The `i_am` function identifies where the Rmd is located within the main project 
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
+library(here)
 i_am("charts/code/econ_significant_rules.Rmd")
 
 # import local functions
@@ -86,9 +87,9 @@ bar1 <- ggplot(econ_sig_rules, aes(x = year, y = rules, fill = party, pattern = 
   ggtitle("Economically Significant Final Rules Published by Presidential Year") +
   ylab("Number of Rules") +
   xlab("") +
-  scale_y_continuous(breaks = seq(0, max(econ_sig_rules$rules) + 25, by = 25), 
+  scale_y_continuous(breaks = seq(0, ydynam(econ_sig_rules, 25, 3), by = 25), 
                      expand = c(0, 0.0),
-                     limits = c(-2, max(econ_sig_rules$rules) + 25)) +
+                     limits = c(-2, ydynam(econ_sig_rules, 25, 3))) +
   scale_x_continuous(breaks = seq(min(econ_sig_rules$year), 
                                   max(econ_sig_rules$year), by = 1), 
                      limits = c(min(econ_sig_rules$year) - 1, 
@@ -97,7 +98,7 @@ bar1 <- ggplot(econ_sig_rules, aes(x = year, y = rules, fill = party, pattern = 
   labs(caption = wrapped_caption) +
   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
   theme_RSC +
-  coord_cartesian(ylim = c(0, max(econ_sig_rules$rules) + 25), 
+  coord_cartesian(ylim = c(0, ydynam(econ_sig_rules, 25, 3)), 
                   xlim = c(1980, max(econ_sig_rules$year) + 1)) +
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
