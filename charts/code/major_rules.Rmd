@@ -62,9 +62,6 @@ num_fr$major_rules_published <- as.numeric(num_fr$major_rules_published)
 num_fr$democratic_admin <- as.factor(num_fr$democratic_admin)
 num_fr$presidential_year <- as.factor(num_fr$presidential_year)
 
-# remove partial year at end of time series
-num_fr <- filter_partial_year(num_fr, year_column = "presidential_year")
-
 ```
 
 ## Plot data
