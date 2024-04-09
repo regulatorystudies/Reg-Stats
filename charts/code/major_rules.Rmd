@@ -62,9 +62,6 @@ num_fr$major_rules_published <- as.numeric(num_fr$major_rules_published)
 num_fr$democratic_admin <- as.factor(num_fr$democratic_admin)
 num_fr$presidential_year <- as.factor(num_fr$presidential_year)
 
-# remove partial year at end of time series
-num_fr <- filter_partial_year(num_fr, year_column = "presidential_year")
-
 ```
 
 ## Plot data
@@ -141,6 +138,11 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
+image_name = "major_rules_by_presidential_year"
+
 # save line1 as pdf
-ggsave(here("charts", "output", "major_rules_by_presidential_year.pdf"), plot = new_bar, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = new_bar, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = new_bar, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+
 ```

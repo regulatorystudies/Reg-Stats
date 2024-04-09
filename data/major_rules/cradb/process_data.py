@@ -149,8 +149,9 @@ def convert_to_presidential_year(df: DataFrame, date_col: str = "published"):
 def define_presidential_terms(
         df: DataFrame, 
         end_of_term: list | tuple = END_OF_ADMIN, 
-        terms: dict = PRESIDENTIAL_ADMINS):
-    """Define columsn with each president's party and final year in office (for presidents since Clinton).
+        terms: dict = PRESIDENTIAL_ADMINS
+    ):
+    """Define columns with each president's party and final year in office (for presidents since Clinton).
 
     Args:
         df (DataFrame): Input data.
@@ -181,10 +182,12 @@ def save_csv(df: DataFrame, path: Path, file_name: str) -> None:
     print(f"Saved data to {path}.")
 
 
-def groupby_year(df: DataFrame, 
-                 year_col: str = "published", 
-                 agg_col: str = "control_number", 
-                 agg_func: str = "nunique"):
+def groupby_year(
+        df: DataFrame, 
+        year_col: str = "published", 
+        agg_col: str = "control_number", 
+        agg_func: str = "nunique"
+    ):
     """Use pandas `groupby()` to produce summaries of unique rules by year.
 
     Args:
@@ -204,7 +207,36 @@ def groupby_year(df: DataFrame,
 # df.groupby(["agency", "subagency"])["control_number"].agg("count")
 
 
-def process_data(data_path: Path, root_path: Path, data_file: str = "rule_detail_major") -> None:
+def filter_partial_years(
+        df: DataFrame, 
+        year_column: str, 
+        cutoff_presidential: str = "02-01", 
+        cutoff_calendar: str = "01-01"
+    ):
+    this_day = date.today()
+    this_year = this_day.year
+    presidential_year_cutoff = date.fromisoformat(f"{this_year}-{cutoff_presidential}")
+    calendar_year_cutoff = date.fromisoformat(f"{this_year}-{cutoff_calendar}")
+    exclude_years = []
+    if this_day >= presidential_year_cutoff:
+        # drop this_year
+        exclude_years.append(this_year)
+    elif calendar_year_cutoff <= this_day < presidential_year_cutoff:
+        # drop this_year - 1
+        exclude_years.extend([this_year, this_year - 1])
+    else:
+        # don't drop anything
+        pass
+    bool_ = [True if f"{i}" not in (f"{y}" for y in exclude_years) else False for i in df.loc[:, year_column].to_list()]
+    return df.loc[bool_]
+
+
+def process_data(
+        data_path: Path, 
+        root_path: Path, 
+        data_file: str = "rule_detail_major", 
+        filter_partial_year: bool = True, 
+    ) -> None:
     """Text-based interface for running the data processing pipeline. 
     Operates within a `while True` loop that doesn't break until it receives valid inputs.
 
@@ -237,6 +269,8 @@ def process_data(data_path: Path, root_path: Path, data_file: str = "rule_detail
     sort_cols = ["presidential_year", "end_of_term", "democratic_admin"] + [c for c in output.columns if "major_rules" in f"{c}"]
     output = output.loc[:, sort_cols]
     
+    if filter_partial_year:
+        output = filter_partial_years(output, "presidential_year")
     print(f"\nAggregated data by presidential year:", output, sep="\n")
     save_csv(output, root_path, f"major_rules_by_presidential_year")
 

@@ -11,7 +11,9 @@ The `i_am` function identifies where the Rmd is located within the main project 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 # set location of this file in project directory
+library(here)
 i_am("charts/code/agency_econ_significant_rules_by_presidential_year.Rmd")
 
 # import local functions
@@ -97,7 +99,7 @@ usda_rules1 <- clean(usda_rules)
 
 ```
 
-#Charting function
+## Charting function
 
 ```{r}
 col_number <- 3
@@ -153,9 +155,10 @@ graph <- function(dataset, interval, title){
 
 ```
 
-#Create Charts
+## Create Charts
 
 ```{r}
+
 dhs_bar <- graph(dhs_rules1, 1, "Economically Significant Final Rules Published by DHS Each Presidential Year")
 doe_bar <- graph(doe_rules1, 1, "Economically Significant Final Rules Published by DOE Each Presidential Year")
 doi_bar <- graph(doi_rules1, 1, "Economically Significant Final Rules Published by DOI Each Presidential Year")
@@ -168,123 +171,47 @@ hud_bar <- graph(hud_rules1, 1, "Economically Significant Final Rules Published 
 sba_bar <- graph(sba_rules1, 5, "Economically Significant Final Rules Published by SBA Each Presidential Year")
 usda_bar <- graph(usda_rules1, 2, "Economically Significant Final Rules Published by USDA Each Presidential Year")
 
-dhs_bar
-doe_bar
-doi_bar
-dol_bar
-dot_bar
-ed_bar
-epa_bar
-hhs_bar
-hud_bar
-sba_bar
-usda_bar
+#plots = list(dhs_bar, doe_bar, doi_bar, dol_bar, dot_bar, ed_bar, epa_bar, hhs_bar, hud_bar, sba_bar, usda_bar)
+
 ```
 
-
-
-
-```{r save}
+```{r save_alt}
 # create empty output folder if it doesn't already exist
 out = here("charts", "output", "by_agency")
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-# save bars as pdfs
-ggsave(here("charts", "output", "by_agency", 
-            "dhs_econ_significant_rules_by_presidential_year.pdf"), plot = dhs_bar, width = 12, height = 9, dpi = 300)
+# vector of agency acronyms
+agencies = c("dhs", "doe", "doi", "dol", "dot", "ed", "epa", "hhs", "hud", "sba", "usda")
 
-ggsave(here("charts", "output", "by_agency", 
-            "doe_econ_significant_rules_by_presidential_year.pdf"), plot = doe_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "doi_econ_significant_rules_by_presidential_year.pdf"), plot = doi_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "dol_econ_significant_rules_by_presidential_year.pdf"), plot = dol_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "dot_econ_significant_rules_by_presidential_year.pdf"), plot = dot_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "ed_econ_significant_rules_by_presidential_year.pdf"), plot = ed_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "epa_econ_significant_rules_by_presidential_year.pdf"), plot = epa_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "hhs_econ_significant_rules_by_presidential_year.pdf"), plot = hhs_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "hud_econ_significant_rules_by_presidential_year.pdf"), plot = hud_bar, width = 12, height = 9, dpi = 300) 
-
-ggsave(here("charts", "output", "by_agency", 
-            "sba_econ_significant_rules_by_presidential_year.pdf"), plot = sba_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "usda_econ_significant_rules_by_presidential_year.pdf"), plot = usda_bar, width = 12, height = 9, dpi = 300)
+# loop over strings and use get to return the value of each named object
+# e.g. get("dhs_bar") returns object dhs_bar
+for (agency in agencies) {
+  # save plots as pdf
+  ggsave(
+    here("charts", "output", "by_agency", 
+         paste0(agency, "_econ_significant_rules_by_presidential_year.pdf")
+         ), 
+    plot = get(paste0(agency, "_bar")), 
+    width = 12, 
+    height = 9, 
+    dpi = 300
+    )
+  
+  # save plots as png
+  ggsave(
+    here("charts", "output", "by_agency", 
+         paste0(agency, "_econ_significant_rules_by_presidential_year.png")
+         ), 
+    device = "png", 
+    plot = get(paste0(agency, "_bar")), 
+    width = 1200, 
+    height = 900, 
+    units = "px", 
+    dpi = 96, 
+    bg = "white"
+    )
+}
 
 ```
-
-# Testing
-```{r}
- interval <- 1
- dataset <- dhs_rules1
- title <- "Economically Significant Final Rules Published by DHS Each Presidential Year"
-
-
- upper <- case_when(
-    interval == 1 ~ max(dhs_rules1$rules) + interval,
-    interval != 1 ~ ceiling(max(dataset$rules)/interval)*interval)
-  
-  bar1 <- ggplot(dataset, aes(x = year, y = rules, fill = party, pattern = party)) +
-  geom_bar_pattern(stat = "identity", width = 0.5,
-                   position = position_dodge(preserve = "single"),
-                   pattern_color = NA,
-                   pattern_fill = lightblue, pattern_angle = 45,
-                   pattern_density = 0.1, pattern_spacing = 0.025,
-                   pattern_key_scale_factor = 0.6) +
-  scale_fill_manual(values = c(GWblue, red)) +
-  scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
-  ggtitle(title) +
-  ylab("Number of Rules Published") +
-  xlab("") +
-  scale_y_continuous(breaks = seq(0, upper, by = interval), 
-                     expand = c(0, 0.0), 
-                     limits = c(-2, upper)) +
-  scale_x_continuous(breaks = seq(min(dataset$year),
-                                  max(dataset$year))#,
-                     # expand = C(0, 0),
-                     # limits = c(min(dataset$year)-1,
-                     #            max(dataset$year)+1)
-                      ) +
-  labs(caption = wrapped_caption) +
-  theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
-  theme_RSC +
-  coord_cartesian(ylim = c(0, upper),
-                  xlim = c(min(dataset$year)-0.5,
-                                max(dataset$year)+0.5),
-                  expand = FALSE) + # expand does not work for some reason with scale_x_continuous, but adding this here and putting buffers on xlim seem to do the trick aesthetically.  Unable to figure out a solution to the contrasts & factor issue
-  theme(
-    plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
-    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
-    axis.ticks.x = element_blank(),
-    axis.line.x = element_line(linewidth = 1, color = RSCgray),
-    legend.position = "none",
-    panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
-    panel.grid.minor = element_blank()
-  )
-  
-  bar1
-  
-  bar2 <- ggdraw() + 
-  draw_plot(bar1) + 
-  draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
-  
-  bar2 
-
-```
-
-

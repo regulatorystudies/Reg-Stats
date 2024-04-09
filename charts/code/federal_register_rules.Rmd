@@ -13,6 +13,7 @@ The `i_am` function identifies where the Rmd is located within the main project 
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
+library(here)
 i_am("charts/code/federal_register_rules.Rmd")
 
 # import local functions
@@ -24,12 +25,6 @@ data_file = "federal_register_rules_by_presidential_year.csv"
 
 # refresh dataset
 copy_dataset(data_file, here("data"), here("charts", "data"))
-
-```
-
-## Load Packages
-
-```{r load packages, results='hide', warning=FALSE}
 
 ```
 
@@ -98,7 +93,7 @@ line1 <- ggplot(rules_pub_long,
   ggtitle("Rules Published in the Federal Register by Presidential Year") +
   labs(color = NULL, linetype = NULL, caption = caption_text) +
   scale_y_continuous(
-    breaks = seq(0, max(rules_pub_long$rule_num) + 1000, by = 1000),
+    breaks = seq(0, ydynam(rules_pub_long, 1000, 3), by = 1000),
     expand = c(0, 0), 
     limits = c(0, max(rules_pub_long$rule_num) + 1000)) +
   scale_x_continuous(breaks = seq(min(rules_pub_long$year), 
@@ -125,6 +120,12 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-# save line2 as pdf
-ggsave(here("charts", "output", "federal_register_rules_by_presidential_year.pdf"), plot = line2, width = 12, height = 9, dpi = 300)
+image_name = "federal_register_rules_by_presidential_year"
+
+# save as pdf
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = line2, width = 12, height = 9, dpi = 300)
+
+# save as png
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = line2, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+
 ```

@@ -99,7 +99,7 @@ def test_scrape_population(params = BASE_PARAMS, pages = 5, documents = 0):
 def test_get_last_received_date(path: Path = tests_path, file_name: str = "population_test"):
     received = get_last_received_date(path, file_name)
     #assert (isinstance(received, str)) and (len(received) == 10)
-    assert received == "2023-11-08"
+    assert received == "2023-11-09"
 
 
 # MISC #

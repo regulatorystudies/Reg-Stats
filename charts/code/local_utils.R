@@ -4,21 +4,6 @@ library(grid)
 library(here)
 library(png)
 library(dplyr)
-library(lubridate)
-
-# function to drop partial data from current presidential year
-filter_partial_year <- function(df, year_column = "presidential_year", cutoff_date = "02-01") {
-  # only keep most recent presidential year
-  today <- Sys.Date()
-  this_year <- lubridate::year(today)
-  presidential_year_cutoff <- paste0(this_year, "-", cutoff_date)
-  if (today >= presidential_year_cutoff) {
-    df <- df %>% dplyr::filter(df[[year_column]] != this_year)
-  } else {
-    df <- df %>% dplyr::filter(df[[year_column]] != (this_year - 1))
-  }
-  df
-}
 
 # function to load png file
 get_png <- function(filename) {
@@ -36,7 +21,7 @@ copy_all_data <- function(path, new_path, file_type = "*.csv", recurse_levels = 
   
   if (report){
     print(paste("Copied", length(file_list), "files."))
-    }
+  }
 }
 
 # function for copying the specified dataset
@@ -63,10 +48,10 @@ copy_agency_data <- function(path, new_path, re = ".+by_agency$", recurse_levels
 }
 
 # function for dynamic breaks on x-axis
-xbreaks <- function(dataset, column_num){
-    round(seq(min(dataset[column_num]), max(dataset[column_num]),
-              by = (max(dataset[column_num])-min(dataset[column_num]))/11),0)
-  }
+xbreaks <- function(dataset, column_num, denom){
+  round(seq(min(dataset[column_num]), max(dataset[column_num]),
+            by = (max(dataset[column_num])-min(dataset[column_num]))/denom),0)
+}
 
 # function for dynamic y-axis
 ydynam <- function(dataset, interval, col_number){

@@ -1,4 +1,4 @@
-name: regstats_reginfo
+name: regstats_ua
 channels:
   - defaults
 dependencies:
