@@ -105,7 +105,13 @@ if (!dir.exists(out)) {
   dir.create(out, showWarnings = FALSE)
 }
 
-# save bar2 as pdf
-ggsave(here("charts", "output", "federal_register_pages_by_calendar_year.pdf"), plot = bar2, width = 12, height = 9, dpi = 300)
+image_name = "federal_register_pages_by_calendar_year"
+
+# save as pdf
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = bar2, width = 12, height = 9, dpi = 300)
+
+# save as png
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = bar2, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+
 ```
 
