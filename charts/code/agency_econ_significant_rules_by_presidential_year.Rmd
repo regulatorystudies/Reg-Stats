@@ -20,6 +20,8 @@ i_am("charts/code/agency_econ_significant_rules_by_presidential_year.Rmd")
 source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
 
+copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
+
 ```
 
 ## Load packages
@@ -59,6 +61,7 @@ clean <- function(data_0){
   return(data_0)
 }
 
+# charting function
 col_number <- 3
 
 graph <- function(dataset, interval, title){
@@ -122,7 +125,6 @@ if (!dir.exists(out)){
 
 chart_n_save <- function(agency){
   data_file = paste0(agency, "_econ_significant_rules_by_presidential_year.csv")
-  copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
   rules <- read.csv(here("charts", "data", data_file))
   rules1 <- clean(rules)
   interval <- chart_ref[which(chart_ref$agency==agency), 2]
