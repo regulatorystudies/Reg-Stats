@@ -20,22 +20,6 @@ i_am("charts/code/agency_econ_significant_rules_by_presidential_year.Rmd")
 source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
 
-# point to datasets
-data_file_dhs = "dhs_econ_significant_rules_by_presidential_year.csv"
-data_file_doe = "doe_econ_significant_rules_by_presidential_year.csv"
-data_file_doi = "doi_econ_significant_rules_by_presidential_year.csv"
-data_file_dol = "dol_econ_significant_rules_by_presidential_year.csv"
-data_file_dot = "dot_econ_significant_rules_by_presidential_year.csv"
-data_file_ed  = "ed_econ_significant_rules_by_presidential_year.csv"
-data_file_epa = "epa_econ_significant_rules_by_presidential_year.csv"
-data_file_hhs = "hhs_econ_significant_rules_by_presidential_year.csv"
-data_file_hud = "hud_econ_significant_rules_by_presidential_year.csv"
-data_file_sba = "sba_econ_significant_rules_by_presidential_year.csv"
-data_file_usda = "usda_econ_significant_rules_by_presidential_year.csv"
-
-# refresh datasets
-copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
-
 ```
 
 ## Load packages
@@ -44,24 +28,7 @@ copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
 library(ggpattern)
 ```
 
-## Load data
-
-```{r load data}
-# load csv using here
-dhs_rules <- read.csv(here("charts", "data", data_file_dhs))
-doe_rules <- read.csv(here("charts", "data", data_file_doe))
-doi_rules <- read.csv(here("charts", "data", data_file_doi))
-dol_rules <- read.csv(here("charts", "data", data_file_dol))
-dot_rules <- read.csv(here("charts", "data", data_file_dot))
-ed_rules <- read.csv(here("charts", "data", data_file_ed))
-epa_rules <- read.csv(here("charts", "data", data_file_epa))
-hhs_rules <- read.csv(here("charts", "data", data_file_hhs))
-hud_rules <- read.csv(here("charts", "data", data_file_hud))
-sba_rules <- read.csv(here("charts", "data", data_file_sba))
-usda_rules <- read.csv(here("charts", "data", data_file_usda))
-```
-
-## Process data
+## Universal values and functions
 
 ```{r code}
 # current date
@@ -75,6 +42,14 @@ Affairs (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
 # set wrapped caption width
 wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
 
+# define agencies, intervals, and titles
+agencies = c("dhs", "doe", "doi", "dol", "dot", "ed", "epa", "hhs", "hud", "sba", "usda")
+intervals = c(1,1,1,1,1,1,2,5,1,5,2)
+chart_ref <- as.data.frame(list(agency = agencies, interval = intervals)) %>% 
+  mutate(title = paste0("Economically Significant Final Rules Published by ", 
+                  toupper(agency),
+                  " Each Presidential Year"))
+
 # data cleaning
 
 clean <- function(data_0){
@@ -84,24 +59,6 @@ clean <- function(data_0){
   return(data_0)
 }
 
-dhs_rules1 <- clean(dhs_rules)
-doe_rules1 <- clean(doe_rules)
-doi_rules1 <- clean(doi_rules)
-dol_rules1 <- clean(dol_rules)
-dot_rules1 <- clean(dot_rules)
-ed_rules1  <- clean(ed_rules)
-epa_rules1 <- clean(epa_rules)
-hhs_rules1 <- clean(hhs_rules)
-hud_rules1 <- clean(hud_rules)
-sba_rules1 <- clean(sba_rules)
-usda_rules1 <- clean(usda_rules)
-
-
-```
-
-## Charting function
-
-```{r}
 col_number <- 3
 
 graph <- function(dataset, interval, title){
@@ -155,114 +112,38 @@ graph <- function(dataset, interval, title){
 
 ```
 
-## Create Charts
-
+# all inclusive loop for data import, cleaning, charting, and saving
 ```{r}
 
-dhs_bar <- graph(dhs_rules1, 1, "Economically Significant Final Rules Published by DHS Each Presidential Year")
-doe_bar <- graph(doe_rules1, 1, "Economically Significant Final Rules Published by DOE Each Presidential Year")
-doi_bar <- graph(doi_rules1, 1, "Economically Significant Final Rules Published by DOI Each Presidential Year")
-dol_bar <- graph(dol_rules1, 1, "Economically Significant Final Rules Published by DOL Each Presidential Year")
-dot_bar <- graph(dot_rules1, 1, "Economically Significant Final Rules Published by DOT Each Presidential Year")
-ed_bar  <- graph(ed_rules1, 1, "Economically Significant Final Rules Published by ED Each Presidential Year")
-epa_bar <- graph(epa_rules1, 2, "Economically Significant Final Rules Published by EPA Each Presidential Year")
-hhs_bar <- graph(hhs_rules1, 5, "Economically Significant Final Rules Published by HHS Each Presidential Year")
-hud_bar <- graph(hud_rules1, 1, "Economically Significant Final Rules Published by HUD Each Presidential Year")
-sba_bar <- graph(sba_rules1, 5, "Economically Significant Final Rules Published by SBA Each Presidential Year")
-usda_bar <- graph(usda_rules1, 2, "Economically Significant Final Rules Published by USDA Each Presidential Year")
-
-#plots = list(dhs_bar, doe_bar, doi_bar, dol_bar, dot_bar, ed_bar, epa_bar, hhs_bar, hud_bar, sba_bar, usda_bar)
-
-```
-
-```{r save_alt}
-# create empty output folder if it doesn't already exist
 out = here("charts", "output", "by_agency")
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
-}
+  }
 
-# vector of agency acronyms
-agencies = c("dhs", "doe", "doi", "dol", "dot", "ed", "epa", "hhs", "hud", "sba", "usda")
-
-# loop over strings and use get to return the value of each named object
-# e.g. get("dhs_bar") returns object dhs_bar
-for (agency in agencies) {
-  # save plots as pdf
-  ggsave(
-    here("charts", "output", "by_agency", 
-         paste0(agency, "_econ_significant_rules_by_presidential_year.pdf")
-         ), 
-    plot = get(paste0(agency, "_bar")), 
-    width = 12, 
-    height = 9, 
-    dpi = 300
-    )
-  
-  # save plots as png
-  ggsave(
-    here("charts", "output", "by_agency", 
-         paste0(agency, "_econ_significant_rules_by_presidential_year.png")
-         ), 
-    device = "png", 
-    plot = get(paste0(agency, "_bar")), 
-    width = 1200, 
-    height = 900, 
-    units = "px", 
-    dpi = 96, 
-    bg = "white"
-    )
-}
-
-```
-
-# all inclusive loop
-```{r}
-agencies = c("dhs", "doe", "doi", "dol", "dot", "ed", "epa", "hhs", "hud", "sba", "usda")
-intervals = c(1,1,1,1,1,1,2,5,1,5,2)
-
-for(agency in agencies){
-  
+chart_n_save <- function(agency){
   data_file = paste0(agency, "_econ_significant_rules_by_presidential_year.csv")
   copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
   rules <- read.csv(here("charts", "data", data_file))
   rules1 <- clean(rules)
-  title <- paste0("Economically Significant Final Rules Published by ", 
-                  toupper(agency),
-                  " Each Presidential Year")
-  
-  for (interval in intervals) {
-    bar1 <- graph(rules1, interval, title)
-    bar2 <-   bar2 <- ggdraw() + 
-      draw_plot(bar1) + 
-      draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
-      
-      bar2 
-      return(bar2)
-  }
-  
+  interval <- chart_ref[which(chart_ref$agency==agency), 2]
+  title <- chart_ref[which(chart_ref$agency==agency), 3]
+  bar <- graph(rules1, interval, title)
+  print(bar)
   ggsave(
     here("charts", "output", "by_agency", 
          paste0(agency, "_econ_significant_rules_by_presidential_year.pdf")
          ), 
-    plot = get(bar2), 
+    plot = get("bar"), 
     width = 12, 
     height = 9, 
     dpi = 300
     )
-  
-  # save plots as png
-  out = here("charts", "output", "by_agency2")
-  if (!dir.exists(out)){
-    dir.create(out, showWarnings = FALSE)
-    }
-  
   ggsave(
     here("charts", "output", "by_agency", 
          paste0(agency, "_econ_significant_rules_by_presidential_year.png")
          ), 
     device = "png", 
-    plot = get(bar2), 
+    plot = get("bar"), 
     width = 1200, 
     height = 900, 
     units = "px", 
@@ -271,7 +152,9 @@ for(agency in agencies){
     )
   }
 
-
+for (agency in agencies) {
+  chart_n_save(agency)
+ }
 
 ```
 
