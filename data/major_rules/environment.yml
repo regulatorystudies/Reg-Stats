@@ -5,6 +5,7 @@ dependencies:
   - beautifulsoup4=4.12.2
   - ipykernel=6.25.0
   - ipython=8.15.0
+  - lxml=4.9
   - pandas=2.1.1
   - pip=23.3
   - python=3.11.7

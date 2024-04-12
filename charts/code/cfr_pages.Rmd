@@ -50,11 +50,6 @@ library(gcookbook)
 # load csv using here
 df <- read.csv(here("charts", "data", data_file))
 
-
-
-#load custom font
-font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
-showtext_auto()
 ```
 
 ## Process data
@@ -141,6 +136,12 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
+image_name = "cfr_pages_by_calendar_year"
+
 # save as pdf
-ggsave(here("charts", "output", "cfr_pages_by_calendar_year.pdf"), plot = new_bar, width = 12, height = 9, dpi = 300)
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = new_bar, width = 12, height = 9, dpi = 300)
+
+# save as png
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = new_bar, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+
 ```

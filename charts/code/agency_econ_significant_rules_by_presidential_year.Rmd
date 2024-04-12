@@ -99,7 +99,7 @@ usda_rules1 <- clean(usda_rules)
 
 ```
 
-#Charting function
+## Charting function
 
 ```{r}
 col_number <- 3
@@ -155,9 +155,10 @@ graph <- function(dataset, interval, title){
 
 ```
 
-#Create Charts
+## Create Charts
 
 ```{r}
+
 dhs_bar <- graph(dhs_rules1, 1, "Economically Significant Final Rules Published by DHS Each Presidential Year")
 doe_bar <- graph(doe_rules1, 1, "Economically Significant Final Rules Published by DOE Each Presidential Year")
 doi_bar <- graph(doi_rules1, 1, "Economically Significant Final Rules Published by DOI Each Presidential Year")
@@ -170,61 +171,47 @@ hud_bar <- graph(hud_rules1, 1, "Economically Significant Final Rules Published 
 sba_bar <- graph(sba_rules1, 5, "Economically Significant Final Rules Published by SBA Each Presidential Year")
 usda_bar <- graph(usda_rules1, 2, "Economically Significant Final Rules Published by USDA Each Presidential Year")
 
-dhs_bar
-doe_bar
-doi_bar
-dol_bar
-dot_bar
-ed_bar
-epa_bar
-hhs_bar
-hud_bar
-sba_bar
-usda_bar
+#plots = list(dhs_bar, doe_bar, doi_bar, dol_bar, dot_bar, ed_bar, epa_bar, hhs_bar, hud_bar, sba_bar, usda_bar)
+
 ```
 
-
-
-
-```{r save}
+```{r save_alt}
 # create empty output folder if it doesn't already exist
 out = here("charts", "output", "by_agency")
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-# save bars as pdfs
-ggsave(here("charts", "output", "by_agency", 
-            "dhs_econ_significant_rules_by_presidential_year.pdf"), plot = dhs_bar, width = 12, height = 9, dpi = 300)
+# vector of agency acronyms
+agencies = c("dhs", "doe", "doi", "dol", "dot", "ed", "epa", "hhs", "hud", "sba", "usda")
 
-ggsave(here("charts", "output", "by_agency", 
-            "doe_econ_significant_rules_by_presidential_year.pdf"), plot = doe_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "doi_econ_significant_rules_by_presidential_year.pdf"), plot = doi_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "dol_econ_significant_rules_by_presidential_year.pdf"), plot = dol_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "dot_econ_significant_rules_by_presidential_year.pdf"), plot = dot_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "ed_econ_significant_rules_by_presidential_year.pdf"), plot = ed_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "epa_econ_significant_rules_by_presidential_year.pdf"), plot = epa_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "hhs_econ_significant_rules_by_presidential_year.pdf"), plot = hhs_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "hud_econ_significant_rules_by_presidential_year.pdf"), plot = hud_bar, width = 12, height = 9, dpi = 300) 
-
-ggsave(here("charts", "output", "by_agency", 
-            "sba_econ_significant_rules_by_presidential_year.pdf"), plot = sba_bar, width = 12, height = 9, dpi = 300)
-
-ggsave(here("charts", "output", "by_agency", 
-            "usda_econ_significant_rules_by_presidential_year.pdf"), plot = usda_bar, width = 12, height = 9, dpi = 300)
+# loop over strings and use get to return the value of each named object
+# e.g. get("dhs_bar") returns object dhs_bar
+for (agency in agencies) {
+  # save plots as pdf
+  ggsave(
+    here("charts", "output", "by_agency", 
+         paste0(agency, "_econ_significant_rules_by_presidential_year.pdf")
+         ), 
+    plot = get(paste0(agency, "_bar")), 
+    width = 12, 
+    height = 9, 
+    dpi = 300
+    )
+  
+  # save plots as png
+  ggsave(
+    here("charts", "output", "by_agency", 
+         paste0(agency, "_econ_significant_rules_by_presidential_year.png")
+         ), 
+    device = "png", 
+    plot = get(paste0(agency, "_bar")), 
+    width = 1200, 
+    height = 900, 
+    units = "px", 
+    dpi = 96, 
+    bg = "white"
+    )
+}
 
 ```

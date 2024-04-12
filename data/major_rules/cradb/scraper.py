@@ -9,7 +9,11 @@ import time
 import requests
 from bs4 import BeautifulSoup, SoupStrainer
 
-from .process_data import extract_date
+try:
+    from .process_data import extract_date
+except ImportError:
+    from process_data import extract_date
+
 
 BASE_PARAMS = {
     "processed": 1, 
