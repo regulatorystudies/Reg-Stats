@@ -84,7 +84,7 @@ upper <- ydynam(df2, 20000, 2)
 breaks4 <- c(seq(min(df2$year), max(df2$year), 4), 2021)
 
 bar2 <-
-  ggplot(data=df2, aes(x=year, y=tolpages)) +
+  ggplot(data=df2, aes(x=year, y=tolpages,family = "avenir_lt_pro")) +
   geom_bar(stat="identity", fill="#033C5A")+
   #geom_text(aes(label=len), vjust=-0.3, size=3.5)+
 
