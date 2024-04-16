@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import re
 
-from pandas import DataFrame, Categorical, to_datetime, merge, merge_ordered
+from pandas import DataFrame, Categorical, to_datetime, merge, merge_ordered, MultiIndex
 from numpy import array
 from fr_toolbelt.preprocessing import process_documents, INDEPENDENT_REG_AGENCIES, AgencyMetadata
 
@@ -75,6 +75,34 @@ def format_documents(documents: list[dict], agency_column: str, as_categorical: 
     return df_long
 
 
+def group_documents(
+        df: DataFrame, 
+        group_columns: list, 
+        value_column: str = "document_number", 
+        return_column: str = None):
+    """Group Federal Register documents by presidential year. 
+    A [presidential year](https://regulatorystudies.columbian.gwu.edu/reg-stats) is defined as Feb. 1 to Jan. 31.
+
+    Args:
+        df (DataFrame): Input data for grouping.
+        return_column (str): Name of grouped column to return.
+
+    Returns:
+        DataFrame: Documents grouped by presidential year.
+    """
+    grouped_df = df.loc[:, 
+        group_columns + [value_column], 
+        ].groupby(
+            group_columns, 
+            as_index=False, 
+            observed=False, 
+            dropna=True, 
+            ).agg("count")  #.reset_index()
+    if return_column is not None:
+        grouped_df = grouped_df.rename(columns = {value_column: return_column})
+    return grouped_df
+
+
 def get_agency_schema(keep_list: list[str] = None, keep_pattern: str = None):
     if keep_list is None:
         keep_list = []
@@ -87,11 +115,6 @@ def get_agency_schema(keep_list: list[str] = None, keep_pattern: str = None):
     metadata, schema = agency_metadata.get_agency_metadata()
     schema = [a for a in schema if (a in keep_list) or (re_pattern.search(a) is not None)]
     return metadata, schema
-
-
-def _filter_agencies(df: DataFrame, schema: list, agency_column: str = "parent_slug"):
-    bool_filter = [True if a in schema else False for a in df.loc[:, agency_column].to_numpy()]
-    return df.loc[bool_filter]
 
 
 def get_agency_acronyms(df: DataFrame, metadata: dict, agency_column: str):
@@ -116,32 +139,18 @@ def get_parent_agency(df: DataFrame, metadata: dict, agency_column: str):
     return [_get_slug(id, metadata) for id in parent_ids]
 
 
-def group_documents(
-        df: DataFrame, 
-        group_columns: list, 
-        value_column: str = "document_number", 
-        return_column: str = None):
-    """Group Federal Register documents by presidential year. 
-    A [presidential year](https://regulatorystudies.columbian.gwu.edu/reg-stats) is defined as Feb. 1 to Jan. 31.
+def _filter_agencies(df: DataFrame, schema: list, agency_column: str = "parent_slug"):
+    bool_filter = [True if a in schema else False for a in df.loc[:, agency_column].to_numpy()]
+    return df.loc[bool_filter]
 
-    Args:
-        df (DataFrame): Input data for grouping.
-        return_column (str): Name of grouped column to return.
 
-    Returns:
-        DataFrame: Documents grouped by presidential year.
-    """
-    grouped_df = df.loc[:, 
-        group_columns + [value_column], 
-        ].groupby(
-            group_columns, 
-            as_index=False, 
-            #observed=False, 
-            dropna=True, 
-            ).agg("count")  #.reset_index()
-    if return_column is not None:
-        grouped_df = grouped_df.rename(columns = {value_column: return_column})
-    return grouped_df
+def ensure_all_years_in_index(df: DataFrame, agency_column: str, year_column: str = "presidential_year"):    
+    # reference: https://stackoverflow.com/a/43816881
+    mux = MultiIndex.from_product([
+        df[agency_column].unique(),
+        range(df["presidential_year"].min(), df["presidential_year"].max() + 1)
+    ], names=[agency_column, year_column])
+    return df.set_index([agency_column, year_column]).reindex(mux).reset_index()
 
 
 def main(
@@ -150,6 +159,7 @@ def main(
         agency_column: str, 
         group_columns: list = None,
         filter_agencies: bool = False, 
+        **kwargs
     ) -> DataFrame:
     
     if group_columns is None:
@@ -163,7 +173,7 @@ def main(
     for doctype, fieldname in doctypes.items():
         file = f"documents_endpoint_{doctype}_1995_{final_year}.json"
         documents = read_json(api_dir, file)
-        df = format_documents(documents, agency_column=agency_column)
+        df = format_documents(documents, agency_column=agency_column, **kwargs)
         df, _ = filter_corrections(df)
         if filter_agencies:
             df = _filter_agencies(df, schema)
@@ -174,7 +184,7 @@ def main(
     dfPrez = merge(df_list[0], df_list[1], on=group_columns, how="outer", validate="1:1")
     bool_1994 = dfPrez.loc[:, "presidential_year"] == 1994
     dfPrez = dfPrez.loc[~bool_1994]  # drop partial data from 1994 presidential year
-    dfPrez = dfPrez.sort_values(group_columns, ignore_index=True, kind="stable")
+    dfPrez = ensure_all_years_in_index(dfPrez, agency_column=agency_column)
     dfPrez.loc[:, "acronym"] = get_agency_acronyms(dfPrez, metadata, agency_column)
     if "parent_" not in agency_column:
         dfPrez.loc[:, "parent_agency"] = get_parent_agency(dfPrez, metadata, agency_column)
@@ -184,28 +194,21 @@ def main(
         columns={
             "parent_slug": "parent_agency", 
             "subagency_slug": "subagency", 
-            "agency_slugs": "agencies", 
+            "agency_slugs": "agency", 
             }, 
         errors="ignore")
-    cols = ("parent_agency", "subagency", "agencies", "acronym", "presidential_year", "final_rules", "proposed_rules")
+    sort_columns = ["parent_agency", "agency", "presidential_year"]
+    dfPrez = dfPrez.sort_values([c for c in sort_columns if c in dfPrez.columns], ignore_index=True, kind="stable")
+    cols = ("parent_agency", "subagency", "agency", "acronym", "presidential_year", "final_rules", "proposed_rules")
     return dfPrez.loc[:, [c for c in cols if c in dfPrez.columns]]
 
 
 if __name__ == "__main__":
 
-    #api_dir = MAIN_DIR.joinpath("_api")
-    #metadata, schema = get_agency_schema(keep_list=list(KEEP_AGENCIES) + list(INDEPENDENT_REG_AGENCIES), keep_pattern=r"department")
-    
-    #doctypes = {"RULE": "final_rules"}
-    #for doctype, fieldname in doctypes.items():
-    #    file = f"documents_endpoint_{doctype}_1995_{2023}.json"
-    #    documents = read_json(api_dir, file)
-    #    df = format_documents(documents, agency_column="agency_slugs")
-    
     df = main(MAIN_DIR, FINAL_YEAR, agency_column="agency_slugs")
     df.to_csv(MAIN_DIR / "agency_federal_register_rules_by_presidential_year_ALL.csv", index=False)
-    bool_filter = df["acronym"] == "OSHRC"
-    print(df.loc[bool_filter, :].head(20))
+    #bool_filter = df["acronym"] == "OSHRC"
+    #print(df.loc[bool_filter, "presidential_year"].to_numpy())
     
     df2 = main(MAIN_DIR, FINAL_YEAR, agency_column="parent_slug", filter_agencies=True)
     df2.to_csv(MAIN_DIR / "agency_federal_register_rules_by_presidential_year_PARENTS.csv", index=False)
