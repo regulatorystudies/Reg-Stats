@@ -18,9 +18,10 @@ if not API_DIR.exists():
 
 # set constants
 YEAR_RANGE = [f"{yr}" for yr in range(1995, date.today().year)]
-FIELDS = ["action", "agencies", "agency_names", "citation", "correction_of", "corrections", 
-          "document_number", "json_url", "president", "publication_date", "title", "type", 
-          ]
+FIELDS = [
+    "action", "agencies", "agency_names", "citation", "correction_of", "corrections", 
+    "document_number", "json_url", "president", "publication_date", "title", "type", 
+    ]
 SAVE_NAME_CSV = "federal_register_rules_by_presidential_year.csv"
 
 
