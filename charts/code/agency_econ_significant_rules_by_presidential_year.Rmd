@@ -160,3 +160,47 @@ for (agency in agencies) {
 
 ```
 
+# Outputting individual charts as needed
+```{r}
+# define agency
+agency <- "hhs"
+
+# run each step of the loop
+data_file = paste0(agency, "_econ_significant_rules_by_presidential_year.csv")
+rules <- read.csv(here("charts", "data", data_file))
+rules1 <- clean(rules)
+
+# Interval can be replaced with any number
+interval <- chart_ref[which(chart_ref$agency==agency), 2]
+title <- chart_ref[which(chart_ref$agency==agency), 3]
+bar <- graph(rules1, interval, title)
+print(bar)
+
+```
+# Save individual charts as needed
+```{r}
+ggsave(
+  here("charts", "output", "by_agency", 
+       paste0(agency, "_econ_significant_rules_by_presidential_year.pdf")
+       ), 
+  plot = get("bar"), 
+  width = 12, 
+  height = 9, 
+  dpi = 300
+  )
+ggsave(
+  here("charts", "output", "by_agency", 
+       paste0(agency, "_econ_significant_rules_by_presidential_year.png")
+       ), 
+  device = "png", 
+  plot = get("bar"), 
+  width = 1200, 
+  height = 900, 
+  units = "px", 
+  dpi = 96, 
+  bg = "white"
+  )
+```
+
+
+

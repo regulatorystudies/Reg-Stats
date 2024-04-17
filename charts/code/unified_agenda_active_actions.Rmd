@@ -86,6 +86,14 @@ df1_1$sort <- seq.int(nrow(df1_1))
 df1_1$yearseason <- str_replace(df1_1$yearseason, "Fall", "F")
 df1_1$yearseason <- str_replace(df1_1$yearseason, "Spring", "S")
 df1_1$yearseason <-factor(df1_1$yearseason,levels=unique(df1_1$yearseason))
+
+df1_1 <- df1_1 %>% 
+  mutate(year = as.numeric(substr(yearseason, 1, 4))) %>% 
+  mutate(season = factor(substr(yearseason, 6,7))) %>% 
+  mutate(season2 = case_when(season == "" ~ "2012",
+                             TRUE ~ season)) %>% 
+  select(-season, season = season2)
+  
 #df1_1
 ```
 
@@ -110,8 +118,10 @@ wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 #plot
 bar2 <-
-  ggplot(data=df1_1, aes(x=yearseason, y=Total,family = "avenir_lt_pro")) +
+  ggplot(data=df1_1, aes(x=yearseason, y=Total,family = "avenir_lt_pro",
+                         fill = season)) +
   geom_bar(stat="identity", fill="#033C5A")+
+  scale_fill_manual(values = c(GWblue, GWbuff)) +
 
   ggtitle("Active Actions in the Unified Agenda") +
   ylab("Number of Actions \n") +
@@ -144,7 +154,7 @@ bar2 <-
       plot.margin = margin(50, 50, 50, 50)
     )
 
-#bar2
+bar2
 
 
 
@@ -174,3 +184,33 @@ ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = new_bar, wid
 ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = new_bar, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
 
 ```
+
+# charting testing
+```{r}
+bar3 <- ggplot(data = df1_1,
+               aes(x = yearseason,
+                   y = Total,
+                   group = year,
+                   fill = season)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c(red, GWblue, GWbuff)) +
+ scale_x_discrete(labels = df1_1$year) 
+  
+bar3
+
+# this one probably isn't going anywhere)
+bar4 <- ggplot(data = df1_1,
+               aes(x = interaction(year, season, lex.order = TRUE),
+                   y = Total,
+                   group = year,
+                   fill = season)) +
+  geom_bar(stat = "identity") +
+  annotate(geom = "text", x = seq_len(nrow(df1_1)), y = 34,
+           label = df1_1$season, size = 4) +
+  annotate(geom = "text", y = 32,
+           label = unique(df1_1$year), size = 6)
+
+bar4
+
+```
+
