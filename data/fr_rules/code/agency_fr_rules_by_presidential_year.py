@@ -3,30 +3,17 @@ import json
 from pathlib import Path
 import re
 
-from pandas import DataFrame, Categorical, to_datetime, merge, merge_ordered, MultiIndex
+from pandas import DataFrame, to_datetime, merge, MultiIndex
 from numpy import array
 from fr_toolbelt.preprocessing import process_documents, INDEPENDENT_REG_AGENCIES, AgencyMetadata
 
 from filter_documents import filter_corrections
 
-# set file paths
+# set constants
 p = Path(__file__)
 MAIN_DIR = p.parents[1]  # main folder for Reg Stats chart; store output data here
 FINAL_YEAR = date.today().year - 1
-DOC_TYPES = ("RULE", "PRORULE")
-KEEP_AGENCIES = (
-    'financial-stability-oversight-council', 
-    'national-credit-union-administration', 
-    'general-services-administration', 
-    'management-and-budget-office', 
-    'equal-employment-opportunity-commission', 
-    'social-security-administration', 
-    'federal-housing-finance-board', 
-    'personnel-management-office', 
-    'small-business-administration', 
-    'environmental-protection-agency', 
-    'national-aeronautics-and-space-administration', 
-    )
+DOC_TYPES = ("RULE", "PRORULE", )
 
 
 def read_json(path: Path, file: str):
@@ -38,7 +25,7 @@ def read_json(path: Path, file: str):
         return documents
 
 
-def format_documents(documents: list[dict], agency_column: str, as_categorical: bool = False):
+def format_documents(documents: list[dict], agency_column: str):
     # process
     results = process_documents(
         documents, 
@@ -64,12 +51,6 @@ def format_documents(documents: list[dict], agency_column: str, as_categorical: 
     
     # explode agency column
     df_long = df.explode(column=agency_column, ignore_index=True)
-    
-    # agencies as categorical
-    if as_categorical:
-        cat_col = agency_column
-        cats = sorted(set(a for a in df_long.loc[:, cat_col].to_numpy() if isinstance(a, str)))
-        df_long.loc[:, cat_col] = Categorical(df_long.loc[:, cat_col], categories=cats)
     
     #print(df_long.columns)
     return df_long
@@ -103,18 +84,15 @@ def group_documents(
     return grouped_df
 
 
-def get_agency_schema(keep_list: list[str] = None, keep_pattern: str = None):
-    if keep_list is None:
-        keep_list = []
-    
+def get_agencies_by_pattern(keep_pattern: str = None):
     if keep_pattern is None:
         keep_pattern = r".*"
     
     re_pattern = re.compile(keep_pattern, re.I)
     agency_metadata = AgencyMetadata()
-    metadata, schema = agency_metadata.get_agency_metadata()
-    schema = [a for a in schema if (a in keep_list) or (re_pattern.search(a) is not None)]
-    return metadata, schema
+    _, schema = agency_metadata.get_agency_metadata()
+    filtered = [a for a in schema if (re_pattern.search(a) is not None)]
+    return filtered
 
 
 def get_agency_acronyms(df: DataFrame, metadata: dict, agency_column: str):
@@ -139,8 +117,10 @@ def get_parent_agency(df: DataFrame, metadata: dict, agency_column: str):
     return [_get_slug(id, metadata) for id in parent_ids]
 
 
-def _filter_agencies(df: DataFrame, schema: list, agency_column: str = "parent_slug"):
-    bool_filter = [True if a in schema else False for a in df.loc[:, agency_column].to_numpy()]
+def filter_agencies(df: DataFrame, keep: list | tuple | str, agency_column: str = "parent_slug"):
+    if isinstance(keep, str):
+        keep = [keep]
+    bool_filter = [True if a in keep else False for a in df.loc[:, agency_column].to_numpy()]
     return df.loc[bool_filter]
 
 
@@ -157,26 +137,27 @@ def main(
         path: Path, 
         final_year: int, 
         agency_column: str, 
-        group_columns: list = None,
-        filter_agencies: bool = False, 
-        **kwargs
+        group_columns: list | None = None,
+        keep_agencies: list | tuple | str | None = None, 
     ) -> DataFrame:
     
     if group_columns is None:
         group_columns = [agency_column, "presidential_year"]
     
     api_dir = path.joinpath("_api")
-    metadata, schema = get_agency_schema(keep_list=list(KEEP_AGENCIES) + list(INDEPENDENT_REG_AGENCIES), keep_pattern=r"department")
+    
+    agency_metadata = AgencyMetadata()
+    metadata, _ = agency_metadata.get_agency_metadata()
     
     df_list = []
     doctypes = {"RULE": "final_rules", "PRORULE": "proposed_rules"}
     for doctype, fieldname in doctypes.items():
         file = f"documents_endpoint_{doctype}_1995_{final_year}.json"
         documents = read_json(api_dir, file)
-        df = format_documents(documents, agency_column=agency_column, **kwargs)
+        df = format_documents(documents, agency_column=agency_column)
         df, _ = filter_corrections(df)
-        if filter_agencies:
-            df = _filter_agencies(df, schema)
+        if keep_agencies is not None:
+            df = filter_agencies(df, keep_agencies, agency_column=agency_column)
         df = group_documents(df, group_columns=group_columns, return_column=fieldname)
         df_list.append(df)
     
@@ -205,11 +186,19 @@ def main(
 
 if __name__ == "__main__":
 
-    df = main(MAIN_DIR, FINAL_YEAR, agency_column="agency_slugs")
-    df.to_csv(MAIN_DIR / "agency_federal_register_rules_by_presidential_year_ALL.csv", index=False)
-    #bool_filter = df["acronym"] == "OSHRC"
-    #print(df.loc[bool_filter, "presidential_year"].to_numpy())
-    
-    df2 = main(MAIN_DIR, FINAL_YEAR, agency_column="parent_slug", filter_agencies=True)
-    df2.to_csv(MAIN_DIR / "agency_federal_register_rules_by_presidential_year_PARENTS.csv", index=False)
-    #print(df.head(20))
+    keep_agencies = (
+        'financial-stability-oversight-council', 
+        'national-credit-union-administration', 
+        'general-services-administration', 
+        'management-and-budget-office', 
+        'equal-employment-opportunity-commission', 
+        'social-security-administration', 
+        'federal-housing-finance-board', 
+        'personnel-management-office', 
+        'small-business-administration', 
+        'environmental-protection-agency', 
+        'national-aeronautics-and-space-administration', 
+        )
+
+    df = main(MAIN_DIR, FINAL_YEAR, agency_column="parent_slug")
+    df.to_csv(MAIN_DIR / "agency_federal_register_rules_by_presidential_year.csv", index=False)
