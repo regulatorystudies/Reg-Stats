@@ -45,6 +45,7 @@ library(scales)
 library(cowplot)
 library(tidyverse)
 library(stringr)
+library(knitr) 
 ```
 
 ## Load data
@@ -130,12 +131,12 @@ bar1 <-
 ```
 
 ```{r}
-new_bar <- ggdraw() +
+suppressWarnings({new_bar <- ggdraw() +
       draw_plot(bar1) +
       
        draw_image(logo,x = 0.1, y = 0.04, halign = 0, valign = 0, width = 0.2)
 
-new_bar
+new_bar})
 ```
 
 ```{r save}

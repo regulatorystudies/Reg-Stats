@@ -32,6 +32,7 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```{r load packages, results='hide', warning=FALSE}
 library(ggpattern)
+library(knitr)
 ```
 
 ## Load data
@@ -111,10 +112,10 @@ bar1 <- ggplot(sig_fin_rules, aes(x = year, y = rules, fill = party, pattern = p
 bar1
 
 # add logo to plot
-bar2 <- ggdraw() + 
+suppressWarnings({bar2 <- ggdraw() + 
   draw_plot(bar1) + 
   draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
-bar2
+bar2})
 ```
 
 ```{r save}

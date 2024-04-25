@@ -36,7 +36,7 @@ library(ggplot2)
 library(ggpattern)
 library(ggrepel)
 library(dplyr)
-
+library(knitr) 
 ```
 
 ## Load data
@@ -170,11 +170,11 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 
 
 ```{r}
-new_bar <- ggdraw() +
+suppressWarnings({new_bar <- ggdraw() +
       draw_plot(line1) +
       draw_image(logo, x = 0.13, y = 0.076, halign = 0, valign = 0, width = 0.2)
 
-new_bar
+new_bar})
 ```
 
 ```{r save}

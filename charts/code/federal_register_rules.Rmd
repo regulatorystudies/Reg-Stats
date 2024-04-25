@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
 library(here)
+library(knitr)
 i_am("charts/code/federal_register_rules.Rmd")
 
 # import local functions
@@ -105,10 +106,10 @@ line1 <- ggplot(rules_pub_long,
 line1
 
 # add logo to plot
-line2 <- ggdraw() +
+suppressWarnings({line2 <- ggdraw() +
   draw_plot(line1) +
   draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
-line2
+line2})
 
 
 ```
