@@ -44,6 +44,8 @@ library(scales)
 library(cowplot)
 library(tidyverse)
 library(stringr)
+library(knitr) 
+
 ```
 
 ## Load data
