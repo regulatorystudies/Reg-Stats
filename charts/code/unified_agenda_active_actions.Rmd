@@ -154,11 +154,11 @@ bar2 <-
 
 ```{r}
 #logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
-new_bar <- ggdraw() +
+suppressWarnings({new_bar <- ggdraw() +
       draw_plot(bar2) +
       draw_image(logo, x = 0.125, y = 0.03, halign = 0, valign = 0, width = 0.2)
 
-new_bar
+new_bar})
 ```
 
 
