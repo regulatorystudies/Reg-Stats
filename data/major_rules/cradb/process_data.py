@@ -75,7 +75,7 @@ def extract_date(string: str):
     Returns:
         datetime.date: Object in `datetime.date` format.
     """
-    res = re.compile("\d{4}-\d{2}-\d{2}", re.I).match(string)
+    res = re.compile(r"\d{4}-\d{2}-\d{2}", re.I).match(string)
     
     if isinstance(res, re.Match):
         return date.fromisoformat(res[0])
