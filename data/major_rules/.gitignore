@@ -6,6 +6,9 @@ profiling/
 # VS Code
 .vscode/
 
+# ad hoc data output
+major_rules_by_month_after_*.csv
+
 # ----- Python ----- #
 
 # Byte-compiled / optimized / DLL files
