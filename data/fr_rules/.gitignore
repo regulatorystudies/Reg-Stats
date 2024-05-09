@@ -1,5 +1,8 @@
 # ----- Project-specific ----- #
 
+# archive
+_archive/
+
 # API data
 _api/
 
