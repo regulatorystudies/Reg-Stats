@@ -5,7 +5,7 @@ import re
 
 from pandas import DataFrame, to_datetime, merge, MultiIndex
 from numpy import array
-from fr_toolbelt.preprocessing import process_documents, INDEPENDENT_REG_AGENCIES, AgencyMetadata
+from fr_toolbelt.preprocessing import process_documents, AgencyMetadata
 
 from filter_documents import filter_corrections
 
@@ -185,20 +185,6 @@ def main(
 
 
 if __name__ == "__main__":
-
-    keep_agencies = (
-        'financial-stability-oversight-council', 
-        'national-credit-union-administration', 
-        'general-services-administration', 
-        'management-and-budget-office', 
-        'equal-employment-opportunity-commission', 
-        'social-security-administration', 
-        'federal-housing-finance-board', 
-        'personnel-management-office', 
-        'small-business-administration', 
-        'environmental-protection-agency', 
-        'national-aeronautics-and-space-administration', 
-        )
-
+    
     df = main(MAIN_DIR, FINAL_YEAR, agency_column="parent_slug")
     df.to_csv(MAIN_DIR / "agency_federal_register_rules_by_presidential_year.csv", index=False)
