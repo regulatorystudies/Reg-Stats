@@ -20,7 +20,7 @@ print(f"The current dataset covers the {', '.join(list(admin_year.keys()))} admi
 
 #%% Import the current dataset
 dir_path=os.path.dirname(os.path.realpath(__file__))
-file_path=f'{dir_path}/cumulative_econ_significant_rules_by_presidential_month.csv'
+file_path=f'{dir_path}/monthly_econ_significant_rules_by_presidential_month.csv'
 
 if os.path.exists(file_path):
     df=pd.read_csv(file_path)
@@ -78,10 +78,8 @@ def update_admin(df_fr,admin,update_start_date,update_end_date):
 
     # Append new data to the current dataset
     first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
-    cum_count=0 if first_month_no_data==0 else df[df[admin].notnull()][admin].iloc[-1]
     for x in df_fr_update['count']:
-        cum_count = cum_count + x
-        df.loc[df['Months in Office'] == first_month_no_data, admin] = cum_count
+        df.loc[df['Months in Office'] == first_month_no_data, admin] = x
         first_month_no_data += 1
 
     return df
