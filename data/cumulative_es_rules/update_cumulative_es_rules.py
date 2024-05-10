@@ -36,21 +36,21 @@ if len(new_admin)>0:
 else:
     pass
 
+#%% Import FR tracking data
+df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
+
+# Add a row to account for missing data
+df_fr = pd.concat([df_fr, pd.DataFrame(data={'publication_date': ['1/21/2021']})], ignore_index=True)
+
+# Change data type
+df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
+df_fr['publication_year'] = pd.to_datetime(df_fr['publication_date']).dt.year
+df_fr['publication_month'] = pd.to_datetime(df_fr['publication_date']).dt.month
+df_fr['econ_significant'] = pd.to_numeric(df_fr['econ_significant'], errors='coerce')
+df_fr['3(f)(1) significant'] = pd.to_numeric(df_fr['3(f)(1) significant'], errors='coerce')
+
 # %% A function to update data for an administration
-def update_admin(admin,update_start_date,update_end_date):
-
-    # Import FR tracking data
-    df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
-
-    # Add a row to account for missing data
-    df_fr = pd.concat([df_fr, pd.DataFrame(data={'publication_date': ['1/21/2021']})], ignore_index=True)
-
-    # Change data type
-    df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
-    df_fr['publication_year'] = pd.to_datetime(df_fr['publication_date']).dt.year
-    df_fr['publication_month'] = pd.to_datetime(df_fr['publication_date']).dt.month
-    df_fr['econ_significant'] = pd.to_numeric(df_fr['econ_significant'], errors='coerce')
-    df_fr['3(f)(1) significant'] = pd.to_numeric(df_fr['3(f)(1) significant'], errors='coerce')
+def update_admin(df_fr,admin,update_start_date,update_end_date):
 
     # Refine FR tracking data
     df_fr = df_fr[(df_fr['publication_date'] >= update_start_date) & (df_fr['publication_date'] <= update_end_date)]
@@ -86,6 +86,17 @@ def update_admin(admin,update_start_date,update_end_date):
 
     return df
 
+#%% A function to check for partial data
+# (in case the data collection for the most recent month has not been completed)
+def check_partial_month(df_fr,update_end_date):
+    if max(df_fr['publication_date'])>=update_end_date:
+        pass
+    else:
+        print(f'WARNING: The data for {update_end_date.year}-{update_end_date.month} is not complete.')
+        update_end_date=update_end_date.replace(day=1) - relativedelta(days=1)
+
+    return update_end_date
+
 #%% Check previous administrations (starting from Biden)
 for admin in df.columns[8:-1]:
     first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
@@ -101,8 +112,9 @@ for admin in df.columns[8:-1]:
         # update end date
         update_end_date = date(admin_year[admin][1],1,20)
 
+        # update data
         print(f'Updating data from {update_start_date} to {update_end_date}...')
-        df=update_admin(admin, update_start_date,update_end_date)
+        df=update_admin(df_fr,admin, update_start_date,update_end_date)
         print(f'The {admin} administration data has been updated.')
 
 #%% Check current administration (starting from Biden)
@@ -118,12 +130,16 @@ if len(admin_year[admin])>1:
     if (update_end_date.year==admin_year[admin][1]) and (update_end_date.month==1):
         update_end_date=update_end_date.replace(day=20)
 
+# check for partial month
+update_end_date=check_partial_month(df_fr,update_end_date)
+
+# update data
 if update_start_date>update_end_date:
     print(f'The {admin} administration data is up-to-date.')
     pass
 else:
     print(f'Updating data from {update_start_date} to {update_end_date}...')
-    df=update_admin(admin,update_start_date,update_end_date)
+    df=update_admin(df_fr,admin,update_start_date,update_end_date)
     print(f'The {admin} administration data has been updated.')
 
 #%% Export
