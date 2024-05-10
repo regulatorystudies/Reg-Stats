@@ -28,6 +28,9 @@ def check_input_against_agency_schema(input_slugs: list, schema: list):
 
 if __name__ == "__main__":
     
+    save_path = MAIN_DIR.joinpath("_select_agencies")
+    if not save_path.exists():
+        save_path.mkdir(parents=True, exist_ok=True)
     SCHEMA = get_agency_schema()    
     keep_agencies = []
     while True:
@@ -54,4 +57,4 @@ if __name__ == "__main__":
     elif len(keep_agencies) == 0:
         raise InputError("No valid inputs received.")
     cols = [c for c in df.columns if c != "parent_agency"]
-    df.loc[:, cols].to_csv(MAIN_DIR / f"{agency}_federal_register_rules_by_presidential_year.csv", index=False)
+    df.loc[:, cols].to_csv(save_path / f"{agency}_federal_register_rules_by_presidential_year.csv", index=False)

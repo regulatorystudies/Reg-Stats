@@ -14,7 +14,10 @@ _val/
 Interactive-*.*
 
 # ad hoc agency data output
+_select_agencies/
 *_federal_register_rules_by_presidential_year.csv
+
+# track these data
 !federal_register_rules_by_presidential_year.csv
 !federal_register_corrections.csv
 !agency_federal_register_rules_by_presidential_year.csv
