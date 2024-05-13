@@ -33,7 +33,7 @@
     # ^ didn't do this in cowplot format, used old magick format, seems to work...
     
 # font ####
-  font_add("avenir_lt_pro", here("charts", "style", "a-avenir-next-lt-pro.otf"))
+  font_add("avenir_lt_pro","a-avenir-next-lt-pro.otf")
   showtext_auto()
     # according to documentation, showtext_auto needed for this to work properly 
   

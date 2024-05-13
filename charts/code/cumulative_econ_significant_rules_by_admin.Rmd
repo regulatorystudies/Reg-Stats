@@ -23,8 +23,8 @@ source(here("charts", "code", "style.R"))
 
 # point to dataset
 data_file = "cumulative_econ_significant_rules_by_presidential_month.csv"
-font_add("avenir_lt_pro", here("charts", "style", "a-avenir-next-lt-pro.otf"))
-showtext_auto()
+#font_add("avenir_lt_pro", here("charts", "style", "a-avenir-next-lt-pro.otf"))
+#showtext_auto()
 # refresh dataset
 copy_dataset(data_file, here("data"), here("charts", "data"))
 ```
@@ -146,15 +146,10 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 line1
 
 # add logo to plot
-#suppressWarnings({line2 <- ggdraw() + 
-#  draw_plot(line1) + 
-#  draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
-#line2})
-
-line2 <- ggdraw() + 
+suppressWarnings({line2 <- ggdraw() + 
   draw_plot(line1) + 
   draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
-line2
+line2})
 
 ```
 
