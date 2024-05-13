@@ -68,8 +68,20 @@ caption_text <- paste("Source: Federal Register API;\n excludes corrections to r
 
 ```{r graph}
 
-plot_data <- function(df, agency_acronym, interval) {
+get_interval <- function(integer_vector) {
+  max_value <- max(integer_vector)/5
+  if (max_value < 50) {
+    interval <- round(max_value)
+  } else {
+    interval <- round(max_value, -1)
+  }
+  return(interval)
+  }
+
+plot_data <- function(df, agency_acronym) {
+  interval <- get_interval(df_agency[["rule_num"]])
   upper <- ydynam(df, interval, 5)
+  #print(paste0(agency_acronym, ": ", upper))
   line1 <- ggplot(df, 
                   aes(x = year,
                    y = rule_num,
@@ -93,7 +105,7 @@ plot_data <- function(df, agency_acronym, interval) {
               axis.ticks.x = element_blank()) +
             xlab(element_blank()) +
             ylab("Number of Rules") +
-            ggtitle(paste(agency_acronym, "Rules Published in the Federal Register by Presidential Year")) +
+            ggtitle(paste(toupper(agency_acronym), "Rules Published in the Federal Register by Presidential Year")) +
             labs(color = NULL, linetype = NULL, caption = caption_text) +
             scale_y_continuous(
               breaks = seq(0, upper, by = interval),
@@ -133,13 +145,35 @@ if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
 }
 
-agencies <- c("DHS", "DOJ", "EPA", "SBA", "CFPB", "FCC", "FERC", "FTC", "SEC")
+# notes:
+# FRS = federal-reserve-system; excluded because notice and comment not primary manner of regulation
+# ind reg agencies: https://www.law.cornell.edu/uscode/text/44/3502#5
+
+agencies <- c(
+  "cfpb", "cftc", "cpsc", 
+  "dhs", "doc", "dod", "doe", "doi", "doj", "dol", "dos", "dot", 
+  "ed", "epa", 
+  "fcc", "fdic", "ferc", "fhfa", "fmc", "ftc", 
+  "hhs", "hud", 
+  "icc",
+  "mshfrc", 
+  "nlrb", 
+  "nrc",
+  "occ", 
+  "oshrc", 
+  "prc", 
+  "sba", "sec", 
+  "treas", 
+  "usda", 
+  "va"
+  )
 
 for (agency_ in agencies) {
-  df_agency <- rules_pub_long %>% filter(acronym == agency_)
-  plot <- plot_data(df_agency, agency_, 50)
-  save_plot_png_pdf(plot, out, agency_)
-  
+  df_agency <- rules_pub_long %>% filter(acronym == toupper(agency_))
+  if ((nrow(df_agency) != 0) & (max(df_agency$rule_num) >= 10)) {
+    plot <- plot_data(df_agency, agency_)
+    save_plot_png_pdf(plot, out, agency_)
+    }
   }
 
 ```
