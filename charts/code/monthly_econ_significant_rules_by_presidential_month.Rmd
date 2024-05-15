@@ -1,0 +1,105 @@
+---
+title: "Monthly Economically Significant Rules by Presidential Month"
+author: "Deven Patel"
+date: "2024-05-15"
+output: html_notebook
+---
+
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+library(here)
+i_am("charts/code/monthly_econ_significant_rules_by_presidential_month.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "monthly_econ_significant_rules_by_presidential_month.csv"
+
+# refresh dataset
+copy_all_data(here("data", "monthly_es_rules"), here("charts", "data"))
+
+```
+
+## Load packages
+
+```{r load packages, results='hide', warning=FALSE}
+library(ggpattern)
+```
+
+# Read data
+
+```{r}
+monthly_es0 <- read.csv(here("charts","data", data_file))
+
+
+```
+
+# Clean data
+```{r}
+monthly_es1 <- monthly_es0 %>% 
+  add_row(Month = "Jan", Months.in.Office = 0, Reagan = 0, Bush.41 = 0, 
+          Clinton = 0, Bush.43 = 0, Obama = 0, Trump = 0, Biden = 0)
+
+# create term start dates Month Year
+president <- c("Reagan", "Bush.41", "Clinton", "Bush.43", "Obama", "Trump", "Biden")
+month <- c("1981-01-01", "1989-01-01", "1993-01-01", "2001-01-01", 
+           "2009-01-01", "2017-01-01","2021-01-01")
+
+start0 <- data.frame(president, month) %>% 
+  mutate(Month = "Jan") %>% 
+  mutate(month = as.Date(month)) %>% 
+  mutate(Months.in.Office = 0)
+
+st <- as.Date("1981-02-01")
+en <- as.Date("2024-04-01")
+
+monthly_es2 <- pivot_longer(monthly_es1,
+                            cols = Reagan:Biden,
+                            names_to = "president",
+                            values_to = "rules"
+                            ) %>% 
+  group_by(president) %>% 
+  arrange(president, Months.in.Office)
+
+monthly_es3 <- left_join(monthly_es2, start0, by = c("Month", "Months.in.Office", "president"))
+
+monthly_es4 <- monthly_es3 %>% 
+  group_by(president) %>% 
+  fill(month, .direction = c("down")) %>% 
+  arrange(month) %>% 
+  ungroup() %>% 
+  filter(!is.na(rules),
+         Months.in.Office != 0) %>% 
+  mutate(date = seq.Date(st, en, by = "1 month"))
+
+start1 <- start0 %>% 
+  mutate(rules = 0,
+         date = month) %>% 
+  select(Month, Months.in.Office, president, rules, month, date)
+
+monthly_es5 <- rbind(monthly_es4, start1) %>% 
+  arrange(date) %>% 
+  select( -Month, -month)
+
+```
+
+# Plotting
+```{r}
+# current date
+current_date <- format(Sys.Date(), "%B %d, %Y")
+
+# set caption text
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov)", current_date)
+
+# set wrapped caption width
+wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
+```
+
