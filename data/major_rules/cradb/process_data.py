@@ -113,7 +113,7 @@ def json_to_df(
     return df
 
 
-def find_duplicates(df: DataFrame):
+def find_duplicates(df: DataFrame, subset: tuple | list = ("url", "fed_reg_number")):
     """Identify duplicate rules, returning two datasets with unique and duplicated observations.
 
     Args:
@@ -123,7 +123,7 @@ def find_duplicates(df: DataFrame):
         tuple[DataFrame, DataFrame]: DataFrame with unique observations, DataFrame with duplicated observations.
     """    
     df_copy = df.copy(deep=True)
-    bool_dup = df_copy.duplicated(subset=["url", "fed_reg_number"], keep="first")
+    bool_dup = df_copy.duplicated(subset=list(subset), keep="first")
     df_uq, df_dup = df_copy.loc[~bool_dup, :], df_copy.loc[bool_dup, :]
     return df_uq, df_dup
 
