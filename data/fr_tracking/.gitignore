@@ -6,6 +6,8 @@ retrieve_rules_program_*.zip
 *.dist/
 *.build/
 
+# shinyapps
+rsconnect-python/
 
 # output
 fr_tracking_*.csv
