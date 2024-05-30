@@ -18,13 +18,6 @@ from fr_toolbelt.preprocessing import process_documents
 from pandas import DataFrame
 
 
-BASE_PARAMS = {
-    'per_page': 1000, 
-    "page": 0, 
-    'order': "oldest", 
-    "conditions[type][]": "RULE", 
-    }
-BASE_URL = r'https://www.federalregister.gov/api/v1/documents.json?'
 BASE_FIELDS = (
     'publication_date', 
     'effective_on', 
@@ -85,7 +78,7 @@ def log_errors(func, filepath: Path = Path(__file__).parents[1], filename: str =
 # -- main functions -- #
 
 
-def retrieve_rules(start_date: str, end_date: str, agency_format: str = "name"):
+def retrieve_rules(start_date: str | date, end_date: str | date, agency_format: str = "name"):
     """Main pipeline for retrieving Federal Register documents.
 
     Args:
@@ -96,7 +89,7 @@ def retrieve_rules(start_date: str, end_date: str, agency_format: str = "name"):
     Returns:
         DataFrame: Output data.
     """
-    results, count = get_documents_by_date(start_date, end_date=end_date, fields=BASE_FIELDS)
+    results, count = get_documents_by_date(start_date, end_date=end_date, document_types=("RULE", ), fields=BASE_FIELDS)
     if count == 0:
         print("No documents returned.")
         return None
