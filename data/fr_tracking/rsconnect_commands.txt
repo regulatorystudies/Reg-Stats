@@ -1,0 +1,3 @@
+rsconnect deploy shiny "C:\Users\mark\Documents\Projects\GW\Reg-Stats\data\fr_tracking\rule_tracking" --name regulatorystudies --title fr-tracking --force-generate
+
+--app-id 12098443
