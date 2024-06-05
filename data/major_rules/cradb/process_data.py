@@ -31,6 +31,10 @@ PRESIDENTIAL_ADMINS = {
     }
 
 
+class ProcessingError(Exception):
+    """Error processing documents."""
+
+
 def load_json(path: Path, file_name: str) -> dict | list:
     """Import data from .json format.
 
@@ -105,7 +109,9 @@ def json_to_df(
     df = DataFrame(results)
     
     bool_na = df.loc[:, "date_published_in_federal_register"].isna()
-    print(sum(bool_na))
+    print(f"Number of rules without publication date in Federal Register: {sum(bool_na)}")
+    print("Note: This generally means the rule was not published in the Federal Register, so we use GAO's received date for such rules.")
+    df.loc[bool_na, "date_published_in_federal_register"] = df["received"]
     
     # convert date columns to datetime.date format
     for col in date_cols:
@@ -257,8 +263,7 @@ def process_data(
     data = load_json(data_path, data_file)    
     df = json_to_df(data)
     df, df_dup = find_duplicates(df)
-    print(f"Removed {len(df_dup)} duplicates.")
-    #print(df_dup)
+    print(f"\nRemoved {len(df_dup)} duplicates.")
     timeframe = ("received", "published")
     dfs = []
     for tf in timeframe:
@@ -275,6 +280,10 @@ def process_data(
         )
     sort_cols = ["presidential_year", "end_of_term", "democratic_admin"] + [c for c in output.columns if "major_rules" in f"{c}"]
     output = output.loc[:, sort_cols]
+    received_sum = output["major_rules_received"].sum()
+    published_sum = output["major_rules_published"].sum()
+    if received_sum != published_sum:
+        raise ProcessingError(f"Sum of documents received ({received_sum}) and published ({published_sum}) do not match.")
     
     if filter_partial_year:
         output = filter_partial_years(output, "presidential_year")
@@ -294,7 +303,7 @@ if __name__ == "__main__":
     if not data_path.is_dir():
         print("Cannot locate data.")
 
-    process_data(data_path, major_path)
+    process_data(data_path, major_path, filter_partial_year=False)
     
     # calculate time elapsed
     stop = time.process_time()
