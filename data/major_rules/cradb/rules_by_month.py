@@ -62,7 +62,7 @@ def process_data_by_month(
     #output = output.loc[:, sort_cols]
     
     print(f"\nAggregated data by month:", output, sep="\n")
-    save_csv(output, root_path, f"major_rules_by_month")
+    save_csv(output, root_path, f"major_rules_by_month", quietly=True)
     return output
 
 
@@ -79,5 +79,5 @@ if __name__ == "__main__":
     # filtered data
     after = (2021, 1)
     filtered = filter_date_range(df, start=after)
-    save_csv(filtered, major_path, f"major_rules_by_month_after_{after[0]}_{after[1]}")
-    print(filtered)
+    save_csv(filtered, major_path, f"major_rules_by_month_after_{after[0]}_{after[1]}", quietly=True)
+    print(f"\nAggregated data by month (after {'-'.join((f'{a}' for a in after))}):", filtered, sep="\n")

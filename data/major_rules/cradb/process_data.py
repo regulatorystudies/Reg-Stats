@@ -181,7 +181,7 @@ def define_presidential_terms(
     return df_copy
 
 
-def save_csv(df: DataFrame, path: Path, file_name: str) -> None:
+def save_csv(df: DataFrame, path: Path, file_name: str, quietly: bool = False) -> None:
     """Save processed data in .csv format and prints file location.
 
     Args:
@@ -192,7 +192,8 @@ def save_csv(df: DataFrame, path: Path, file_name: str) -> None:
     with open(path / f"{file_name}.csv", "w", encoding="utf-8") as f:
         df.to_csv(f, index=False, lineterminator="\n")
     
-    print(f"Saved data to {path}.")
+    if not quietly:
+        print(f"Saved data to {path}.")
 
 
 def groupby_year(
