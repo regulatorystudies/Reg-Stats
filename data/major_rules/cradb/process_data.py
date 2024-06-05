@@ -126,7 +126,7 @@ def json_to_df(
     return df
 
 
-def find_duplicates(df: DataFrame, subset: tuple | list = ("url", "fed_reg_number")):
+def find_duplicates(df: DataFrame, subset: tuple | list = ("fed_reg_number", "major_rule_report", )):
     """Identify duplicate rules, returning two datasets with unique and duplicated observations.
 
     Args:
