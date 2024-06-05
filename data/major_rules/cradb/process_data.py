@@ -86,7 +86,7 @@ def extract_date(string: str):
 def json_to_df(
         data: dict | list, 
         has_metadata: bool = True, 
-        date_cols: list | tuple = ("effective", "received", "published")):
+        date_cols: list | tuple = ("effective", "received", "date_published_in_federal_register")):
     """Convert json object to pandas DataFrame and extract date information from select columns.
 
     Args:
@@ -103,6 +103,9 @@ def json_to_df(
         results = data
     
     df = DataFrame(results)
+    
+    # rename FR publication date column
+    df = df.rename(columns={"date_published_in_federal_register": "published"}, errors="ignore")
     
     # convert date columns to datetime.date format
     for col in date_cols:
