@@ -104,14 +104,18 @@ def json_to_df(
     
     df = DataFrame(results)
     
-    # rename FR publication date column
-    df = df.rename(columns={"date_published_in_federal_register": "published"}, errors="ignore")
+    bool_na = df.loc[:, "date_published_in_federal_register"].isna()
+    print(sum(bool_na))
     
     # convert date columns to datetime.date format
     for col in date_cols:
         df.loc[:, f"{col}_dt"] = [extract_date(x) if isinstance(x, str) else x for x in df.loc[:, col]]
         df.loc[:, f"{col}_year"] = [x.year if isinstance(x, date) else x for x in df.loc[:, f"{col}_dt"]]
         df.loc[:, f"{col}_month"] = [x.month if isinstance(x, date) else x for x in df.loc[:, f"{col}_dt"]]
+    
+    # rename FR publication date column
+    rename_cols = {c: f"published_{c.split('_')[-1]}" for c in df.columns if c.startswith("date_published_in_federal_register")}
+    df = df.rename(columns=rename_cols, errors="ignore")
     
     return df
 
