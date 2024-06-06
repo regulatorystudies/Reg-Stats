@@ -20,6 +20,7 @@ tests_path = Path(__file__).parent
 
 def cleanup(file: Path = tests_path / "temp.json"):
     if file.is_file():
+        print("True")
         file.unlink()
 
 
@@ -110,9 +111,9 @@ def scraper_examples():
     start = time.process_time()
     
     p = Path(__file__)
-    data_path = p.parents[1].joinpath("raw_data")
-    if not data_path.is_dir():
-        data_path.mkdir(parents=True, exist_ok=True)
+    test_path = p.parent
+    if not test_path.is_dir():
+        test_path.mkdir(parents=True, exist_ok=True)
     
     test_urls = [
         "https://www.gao.gov/fedrules/207897", 
@@ -123,7 +124,7 @@ def scraper_examples():
     rs = RuleScraper(input_data=data)
     out = rs.scrape_rules()
     #pprint(out)
-    rs.to_json(out, data_path, "rule_detail_test")
+    rs.to_json(out, test_path, "rule_detail_test")
     
     # calculate time elapsed
     stop = time.process_time()
@@ -152,8 +153,7 @@ if __name__ == "__main__":
     
     for func in ALL_TESTS:
         func()
-    
-    # deletes test files
-    cleanup()
-    
+        
     print("Tests complete.")
+    
+    scraper_examples()
