@@ -146,10 +146,15 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 line1
 
 # add logo to plot
-suppressWarnings({line2 <- ggdraw() + 
+#suppressWarnings({line2 <- ggdraw() + 
+#  draw_plot(line1) + 
+#  draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
+#line2})
+
+line2 <- ggdraw() + 
   draw_plot(line1) + 
   draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
-line2})
+line2
 
 ```
 
