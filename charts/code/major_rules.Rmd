@@ -35,17 +35,14 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 # load packages
 
 library(ggplot2)
-library(showtext)
 library(png)
 library(ggpattern)
 library(tidyr)
 library(ggrepel)
 library(dplyr)
 library(scales)
-library(cowplot)
-library(tidyverse)
 library(stringr)
-library(knitr) 
+
 ```
 
 ## Load data

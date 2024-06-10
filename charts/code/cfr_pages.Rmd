@@ -33,7 +33,6 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 ```{r imports, results='hide', warning=FALSE}
 
 library(ggplot2)
-library(showtext)
 library(png)
 library(ggpattern)
 library(tidyr)
@@ -41,7 +40,7 @@ library(ggrepel)
 library(dplyr)
 library(scales)
 library(gcookbook)
-library(knitr)
+
 ```
 
 ## Load data

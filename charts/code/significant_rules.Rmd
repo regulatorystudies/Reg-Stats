@@ -32,7 +32,6 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```{r load packages, results='hide', warning=FALSE}
 library(ggpattern)
-library(knitr)
 ```
 
 ## Load data
