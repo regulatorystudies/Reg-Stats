@@ -1779,8 +1779,9 @@ on their relative location to the project root.</p>
 <h1>Read data</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW9udGhseV9lczAgPC0gcmVhZC5jc3YoaGVyZShcImNoYXJ0c1wiLFwiZGF0YVwiLCBkYXRhX2ZpbGUpKVxuYGBgIn0= -->
-<pre class="r"><code>monthly_es0 &lt;- read.csv(here(&quot;charts&quot;,&quot;data&quot;, data_file))</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW9udGhseV9lczAgPC0gcmVhZC5jc3YoaGVyZShcImNoYXJ0c1wiLFwiZGF0YVwiLCBkYXRhX2ZpbGUpKVxuXG5cbmBgYCJ9 -->
+<pre class="r"><code>monthly_es0 &lt;- read.csv(here(&quot;charts&quot;,&quot;data&quot;, data_file))
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1789,7 +1790,7 @@ on their relative location to the project root.</p>
 <h1>Clean data</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW9udGhseV9lczEgPC0gbW9udGhseV9lczAgJT4lIFxuICBhZGRfcm93KE1vbnRoID0gXCJKYW5cIiwgTW9udGhzLmluLk9mZmljZSA9IDAsIFJlYWdhbiA9IDAsIEJ1c2guNDEgPSAwLCBcbiAgICAgICAgICBDbGludG9uID0gMCwgQnVzaC40MyA9IDAsIE9iYW1hID0gMCwgVHJ1bXAgPSAwLCBCaWRlbiA9IDApXG5cbiMgY3JlYXRlIHRlcm0gc3RhcnQgZGF0ZXMgTW9udGggWWVhclxucHJlc2lkZW50IDwtIGMoXCJSZWFnYW5cIiwgXCJCdXNoLjQxXCIsIFwiQ2xpbnRvblwiLCBcIkJ1c2guNDNcIiwgXCJPYmFtYVwiLCBcIlRydW1wXCIsIFwiQmlkZW5cIilcbm1vbnRoIDwtIGMoXCIxOTgxLTAxLTAxXCIsIFwiMTk4OS0wMS0wMVwiLCBcIjE5OTMtMDEtMDFcIiwgXCIyMDAxLTAxLTAxXCIsIFxuICAgICAgICAgICBcIjIwMDktMDEtMDFcIiwgXCIyMDE3LTAxLTAxXCIsXCIyMDIxLTAxLTAxXCIpXG5cbnN0YXJ0MCA8LSBkYXRhLmZyYW1lKHByZXNpZGVudCwgbW9udGgpICU+JSBcbiAgbXV0YXRlKE1vbnRoID0gXCJKYW5cIikgJT4lIFxuICBtdXRhdGUobW9udGggPSBhcy5EYXRlKG1vbnRoKSkgJT4lIFxuICBtdXRhdGUoTW9udGhzLmluLk9mZmljZSA9IDApXG5cbnN0IDwtIGFzLkRhdGUoXCIxOTgxLTAyLTAxXCIpXG5lbiA8LSBhcy5EYXRlKFwiMjAyNC0wNC0wMVwiKVxuXG5tb250aGx5X2VzMiA8LSBwaXZvdF9sb25nZXIobW9udGhseV9lczEsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgY29scyA9IFJlYWdhbjpCaWRlbixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYW1lc190byA9IFwicHJlc2lkZW50XCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFsdWVzX3RvID0gXCJydWxlc1wiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgKSAlPiUgXG4gIGdyb3VwX2J5KHByZXNpZGVudCkgJT4lIFxuICBhcnJhbmdlKHByZXNpZGVudCwgTW9udGhzLmluLk9mZmljZSlcblxubW9udGhseV9lczMgPC0gbGVmdF9qb2luKG1vbnRobHlfZXMyLCBzdGFydDAsIGJ5ID0gYyhcIk1vbnRoXCIsIFwiTW9udGhzLmluLk9mZmljZVwiLCBcInByZXNpZGVudFwiKSlcblxubW9udGhseV9lczQgPC0gbW9udGhseV9lczMgJT4lIFxuICBncm91cF9ieShwcmVzaWRlbnQpICU+JSBcbiAgZmlsbChtb250aCwgLmRpcmVjdGlvbiA9IGMoXCJkb3duXCIpKSAlPiUgXG4gIGFycmFuZ2UobW9udGgpICU+JSBcbiAgdW5ncm91cCgpICU+JSBcbiAgZmlsdGVyKCFpcy5uYShydWxlcyksXG4gICAgICAgICBNb250aHMuaW4uT2ZmaWNlICE9IDApICU+JSBcbiAgbXV0YXRlKGRhdGUgPSBzZXEuRGF0ZShzdCwgZW4sIGJ5ID0gXCIxIG1vbnRoXCIpKVxuXG5zdGFydDEgPC0gc3RhcnQwICU+JSBcbiAgbXV0YXRlKHJ1bGVzID0gMCxcbiAgICAgICAgIGRhdGUgPSBtb250aCkgJT4lIFxuICBzZWxlY3QoTW9udGgsIE1vbnRocy5pbi5PZmZpY2UsIHByZXNpZGVudCwgcnVsZXMsIG1vbnRoLCBkYXRlKVxuXG5tb250aGx5X2VzNSA8LSByYmluZChtb250aGx5X2VzNCwgc3RhcnQxKSAlPiUgXG4gIGFycmFuZ2UoZGF0ZSkgJT4lIFxuICBzZWxlY3QoIC1Nb250aCwgbW9udGgpXG5cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW9udGhseV9lczEgPC0gbW9udGhseV9lczAgJT4lIFxuICBhZGRfcm93KE1vbnRoID0gXCJKYW5cIiwgTW9udGhzLmluLk9mZmljZSA9IDAsIFJlYWdhbiA9IDAsIEJ1c2guNDEgPSAwLCBcbiAgICAgICAgICBDbGludG9uID0gMCwgQnVzaC40MyA9IDAsIE9iYW1hID0gMCwgVHJ1bXAgPSAwLCBCaWRlbiA9IDApXG5cbiMgY3JlYXRlIHRlcm0gc3RhcnQgZGF0ZXMgTW9udGggWWVhclxucHJlc2lkZW50IDwtIGMoXCJSZWFnYW5cIiwgXCJCdXNoLjQxXCIsIFwiQ2xpbnRvblwiLCBcIkJ1c2guNDNcIiwgXCJPYmFtYVwiLCBcIlRydW1wXCIsIFwiQmlkZW5cIilcbm1vbnRoIDwtIGMoXCIxOTgxLTAxLTAxXCIsIFwiMTk4OS0wMS0wMVwiLCBcIjE5OTMtMDEtMDFcIiwgXCIyMDAxLTAxLTAxXCIsIFxuICAgICAgICAgICBcIjIwMDktMDEtMDFcIiwgXCIyMDE3LTAxLTAxXCIsXCIyMDIxLTAxLTAxXCIpXG5cbnN0YXJ0MCA8LSBkYXRhLmZyYW1lKHByZXNpZGVudCwgbW9udGgpICU+JSBcbiAgbXV0YXRlKE1vbnRoID0gXCJKYW5cIikgJT4lIFxuICBtdXRhdGUobW9udGggPSBhcy5EYXRlKG1vbnRoKSkgJT4lIFxuICBtdXRhdGUoTW9udGhzLmluLk9mZmljZSA9IDApXG5cbnN0IDwtIGFzLkRhdGUoXCIxOTgxLTAyLTAxXCIpXG5lbiA8LSBhcy5EYXRlKFwiMjAyNC0wNC0wMVwiKVxuXG5tb250aGx5X2VzMiA8LSBwaXZvdF9sb25nZXIobW9udGhseV9lczEsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgY29scyA9IFJlYWdhbjpCaWRlbixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYW1lc190byA9IFwicHJlc2lkZW50XCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFsdWVzX3RvID0gXCJydWxlc1wiXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgKSAlPiUgXG4gIGdyb3VwX2J5KHByZXNpZGVudCkgJT4lIFxuICBhcnJhbmdlKHByZXNpZGVudCwgTW9udGhzLmluLk9mZmljZSlcblxubW9udGhseV9lczMgPC0gbGVmdF9qb2luKG1vbnRobHlfZXMyLCBzdGFydDAsIGJ5ID0gYyhcIk1vbnRoXCIsIFwiTW9udGhzLmluLk9mZmljZVwiLCBcInByZXNpZGVudFwiKSlcblxubW9udGhseV9lczQgPC0gbW9udGhseV9lczMgJT4lIFxuICBncm91cF9ieShwcmVzaWRlbnQpICU+JSBcbiAgZmlsbChtb250aCwgLmRpcmVjdGlvbiA9IGMoXCJkb3duXCIpKSAlPiUgXG4gIGFycmFuZ2UobW9udGgpICU+JSBcbiAgdW5ncm91cCgpICU+JSBcbiAgZmlsdGVyKCFpcy5uYShydWxlcyksXG4gICAgICAgICBNb250aHMuaW4uT2ZmaWNlICE9IDApICU+JSBcbiAgbXV0YXRlKGRhdGUgPSBzZXEuRGF0ZShzdCwgZW4sIGJ5ID0gXCIxIG1vbnRoXCIpKVxuXG5zdGFydDEgPC0gc3RhcnQwICU+JSBcbiAgbXV0YXRlKHJ1bGVzID0gMCxcbiAgICAgICAgIGRhdGUgPSBtb250aCkgJT4lIFxuICBzZWxlY3QoTW9udGgsIE1vbnRocy5pbi5PZmZpY2UsIHByZXNpZGVudCwgcnVsZXMsIG1vbnRoLCBkYXRlKVxuXG5tb250aGx5X2VzNSA8LSByYmluZChtb250aGx5X2VzNCwgc3RhcnQxKSAlPiUgXG4gIGFycmFuZ2UoZGF0ZSkgJT4lIFxuICBzZWxlY3QoIC1Nb250aCwgLW1vbnRoKVxuXG5gYGAifQ== -->
 <pre class="r"><code>monthly_es1 &lt;- monthly_es0 %&gt;% 
   add_row(Month = &quot;Jan&quot;, Months.in.Office = 0, Reagan = 0, Bush.41 = 0, 
           Clinton = 0, Bush.43 = 0, Obama = 0, Trump = 0, Biden = 0)
@@ -1833,7 +1834,7 @@ start1 &lt;- start0 %&gt;%
 
 monthly_es5 &lt;- rbind(monthly_es4, start1) %&gt;% 
   arrange(date) %&gt;% 
-  select( -Month, month)
+  select( -Month, -month)
 </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1843,6 +1844,16 @@ monthly_es5 &lt;- rbind(monthly_es4, start1) %&gt;%
 <h1>Plotting</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjdXJyZW50IGRhdGVcbmN1cnJlbnRfZGF0ZSA8LSBmb3JtYXQoU3lzLkRhdGUoKSwgXCIlQiAlZCwgJVlcIilcblxuIyBzZXQgY2FwdGlvbiB0ZXh0XG5jYXB0aW9uX3RleHQgPC0gcGFzdGUoXCJTb3VyY2VzOiBPZmZpY2Ugb2YgdGhlIEZlZGVyYWwgUmVnaXN0ZXIgKGZlZGVyYWxyZWdpc3Rlci5nb3YpXCIsIGN1cnJlbnRfZGF0ZSlcblxuIyBzZXQgd3JhcHBlZCBjYXB0aW9uIHdpZHRoXG53cmFwcGVkX2NhcHRpb24gPC0gcGFzdGUoc3Ryd3JhcChjYXB0aW9uX3RleHQsIHdpZHRoID0gNjUpLCBjb2xsYXBzZSA9IFwiXFxuXCIpXG5gYGAifQ== -->
+<pre class="r"><code># current date
+current_date &lt;- format(Sys.Date(), &quot;%B %d, %Y&quot;)
+
+# set caption text
+caption_text &lt;- paste(&quot;Sources: Office of the Federal Register (federalregister.gov)&quot;, current_date)
+
+# set wrapped caption width
+wrapped_caption &lt;- paste(strwrap(caption_text, width = 65), collapse = &quot;\n&quot;)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
