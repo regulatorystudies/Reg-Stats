@@ -13,6 +13,7 @@ The `i_am` function identifies where the Rmd is located within the main project 
 knitr::opts_chunk$set(echo = TRUE)
 
 library(here)
+
 # set location of this file in project directory
 i_am("charts/code/federal_register_pages.Rmd")
 
@@ -44,7 +45,7 @@ current_date <- format(Sys.Date(), "%B %d, %Y")
 caption_text <- paste("Source: Federal Register Statistics\n\nUpdated:", current_date)
 
 # get rid of bottom 11 rows
-tot_pages <- tot_pages[1:(nrow(tot_pages) - 9), ]
+tot_pages <- tot_pages[1:(nrow(tot_pages) - 8), ]
 
 # remove blank first row
 tot_pages <- tot_pages[-c(1), ]
@@ -90,12 +91,11 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
         axis.line.x = element_line(linewidth = 1, color = RSCgray))
 bar1
 
-# supress warning
-suppressWarnings({bar2 <- ggdraw() +
+# add logo to plot
+bar2 <- ggdraw() +
   draw_plot(bar1) +
- draw_image(logo, x = 0.1, y = 0.06, halign = 0, valign = 0, width = 0.2)
-bar2})
-
+  draw_image(logo, x = 0.1, y = 0.06, halign = 0, valign = 0, width = 0.2)
+bar2
 ```
 
 ```{r save}

@@ -33,15 +33,10 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 ```{r imports, results='hide', warning=FALSE}
 
 # load packages
-
 library(ggplot2)
-library(png)
 library(ggpattern)
 library(tidyr)
-library(ggrepel)
 library(dplyr)
-library(scales)
-library(stringr)
 
 ```
 
@@ -128,12 +123,12 @@ bar1 <-
 ```
 
 ```{r}
-suppressWarnings({new_bar <- ggdraw() +
+new_bar <- ggdraw() +
       draw_plot(bar1) +
       
        draw_image(logo,x = 0.1, y = 0.04, halign = 0, valign = 0, width = 0.2)
 
-new_bar})
+new_bar
 ```
 
 ```{r save}

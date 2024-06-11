@@ -14,9 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
 library(here)
-
 i_am("charts/code/cumulative_econ_significant_rules_by_admin.Rmd")
-
 
 # import local functions
 source(here("charts", "code", "local_utils.R"))
@@ -24,8 +22,7 @@ source(here("charts", "code", "style.R"))
 
 # point to dataset
 data_file = "cumulative_econ_significant_rules_by_presidential_month.csv"
-#font_add("avenir_lt_pro", here("charts", "style", "a-avenir-next-lt-pro.otf"))
-#showtext_auto()
+
 # refresh dataset
 copy_dataset(data_file, here("data"), here("charts", "data"))
 ```
@@ -34,9 +31,7 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```{r load packages, results='hide', warning=FALSE}
 library(ggrepel)
-
 ```
-
 
 ## Load Data
 
@@ -104,8 +99,6 @@ wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 ## Plot Data
 
-
-
 ```{r generate graph}
 # generate line graph
 line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) +
@@ -135,7 +128,6 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                                 lightgreen)) +
   coord_cartesian(clip = "off") +
   theme_RSC +
-   
   theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) +
   xlab("Months In Office") +
   ylab("Number of Rules") +
@@ -151,11 +143,11 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 
 line1
 
-
-suppressWarnings({line2 <- ggdraw() + 
+# add logo to plot
+line2 <- ggdraw() + 
   draw_plot(line1) + 
   draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
-line2})
+line2
 
 ```
 

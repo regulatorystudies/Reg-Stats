@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
 library(here)
-library(knitr)
 i_am("charts/code/econ_significant_rules.Rmd")
 
 # import local functions
@@ -115,10 +114,10 @@ bar1 <- ggplot(econ_sig_rules, aes(x = year, y = rules, fill = party, pattern = 
 bar1
 
 # add logo to plot
-suppressWarnings({bar2 <- ggdraw() + 
+bar2 <- ggdraw() + 
   draw_plot(bar1) + 
   draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
-bar2})
+bar2
 ```
 
 ```{r save}
