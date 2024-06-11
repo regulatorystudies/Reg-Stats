@@ -2,7 +2,7 @@
 title: "Monthly Economically Significant Rules by Presidential Month"
 author: "Deven Patel"
 date: "2024-05-15"
-output: html_notebook
+output: html_document
 ---
 
 ## Initialize
