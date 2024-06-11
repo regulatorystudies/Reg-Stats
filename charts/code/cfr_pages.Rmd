@@ -33,7 +33,6 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 ```{r imports, results='hide', warning=FALSE}
 
 library(ggplot2)
-library(showtext)
 library(png)
 library(ggpattern)
 library(tidyr)
@@ -41,6 +40,7 @@ library(ggrepel)
 library(dplyr)
 library(scales)
 library(gcookbook)
+
 ```
 
 ## Load data
@@ -84,7 +84,7 @@ upper <- ydynam(df2, 20000, 2)
 breaks4 <- c(seq(min(df2$year), max(df2$year), 4), 2021)
 
 bar2 <-
-  ggplot(data=df2, aes(x=year, y=tolpages)) +
+  ggplot(data=df2, aes(x=year, y=tolpages,family = "avenir_lt_pro")) +
   geom_bar(stat="identity", fill="#033C5A")+
   #geom_text(aes(label=len), vjust=-0.3, size=3.5)+
 
@@ -121,11 +121,11 @@ bar2 <-
 
 
 #logo 
-new_bar <- ggdraw() +
+suppressWarnings({new_bar <- ggdraw() +
       draw_plot(bar2) +
       draw_image(logo, x = 0.1, y = 0.05, halign = 0, valign = 0, width = 0.2)
 
-new_bar
+new_bar})
 
 ```
 

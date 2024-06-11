@@ -4,6 +4,7 @@
   library(tidyverse)
   library(cowplot)
   library(magick)
+  library(knitr) 
 
 # assigning colors to objects ####
   

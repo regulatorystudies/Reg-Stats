@@ -4,9 +4,6 @@ _archive/
 # OSX files
 .DS_Store
 
-# python bitcode files
-__pycache__/
-
 # History files
 .Rhistory
 .Rapp.history
@@ -56,3 +53,4 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+rsconnect-python/

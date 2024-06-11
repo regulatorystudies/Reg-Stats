@@ -34,16 +34,14 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 # load packages
 library(ggplot2)
-library(showtext)
 library(png)
 library(ggpattern)
 library(tidyr)
 library(ggrepel)
 library(dplyr)
 library(scales)
-library(cowplot)
-library(tidyverse)
 library(stringr)
+
 ```
 
 ## Load data
@@ -67,33 +65,36 @@ colnames(df1_1) <- c("yearseason", "FinalRules", "ProposedRules","Prerules","Tot
 
 df1_1$Total <- as.numeric(df1_1$Total)
 
-df1_1$yearseason <-factor(df1_1$yearseason,levels=unique(df1_1$yearseason))
+df1_1$sort <- seq.int(nrow(df1_1))
 
-df1_1a <- df1_1 %>% 
-  add_row(yearseason = "1995 Spring",
-          FinalRules = 0,
-          ProposedRules = 0,
-          Prerules = 0,
-          Total = 0,
-          .before = 1) %>% 
-  add_row(yearseason = "2012 Spring",
-          FinalRules = 0,
-          ProposedRules = 0,
-          Prerules = 0,
-          Total = 0,
-          .before = 35) %>% 
-  mutate(year = as.numeric(substr(yearseason, 1, 4))) %>% 
-  mutate(season = str_trim(factor(substr(yearseason, 6,12)))) %>% 
-  mutate(season2 = case_when(season == "" ~ "Fall",
-                             TRUE ~ season)) %>% 
-  select(-season, Season = season2) 
+#df1_1
+#data_new1 <- df1_1 %>% arrange(desc(sort))
+#data_new1 <- df1_1 %>% arrange(acs(sort))
+#data_new1$yearseason <-factor(data_new1$yearseason,levels=unique(data_new1$yearseason))
 
-df1_1a$sort <- seq.int(nrow(df1_1a))
-
-df1_1a$Season <- factor(df1_1a$Season, levels = c("Spring", "Fall") )
-
+#split year and season
+# data_new1[c('year', 'season')] <- str_split_fixed(data_new1$yearseason, ' ', 2) 
 
 ```
+
+```{r}
+# data processing
+# replace spring to s, fall to f
+
+df1_1$yearseason <- str_replace(df1_1$yearseason, "Fall", "F")
+df1_1$yearseason <- str_replace(df1_1$yearseason, "Spring", "S")
+df1_1$yearseason <-factor(df1_1$yearseason,levels=unique(df1_1$yearseason))
+#df1_1
+```
+
+
+```{r}
+#scale_modification <- function(max_value){
+#  if(max_value > )
+#}
+```
+
+
 
 ## Plot data
 
@@ -104,22 +105,28 @@ current_date <- format(Sys.Date(), "%B %d, %Y")
 caption_text <- paste("Source: Office of Information and Regulatory Affairs \n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
-bar2 <- ggplot(df1_1a,
-        aes(y = Total, x = as.factor(year))) +
-  geom_bar(aes(fill = Season), stat = "identity", position = "dodge") +
-  scale_fill_manual(values = c(GWbuff, GWblue)) +
-  scale_x_discrete(labels = df1_1a$year, breaks = df1_1a$year) +
+
+#plot
+bar2 <-
+  ggplot(data=df1_1, aes(x=yearseason, y=Total,family = "avenir_lt_pro")) +
+  geom_bar(stat="identity", fill="#033C5A")+
+
   ggtitle("Active Actions in the Unified Agenda") +
   ylab("Number of Actions \n") +
-  xlab("Note: Only the Fall Agenda is available for 1995 and only one agenda was published in 2012. \n") +
-  scale_y_continuous(breaks = seq(0, max(df1_1a$Total)+500, by = 500), expand = c(0, 0),
-                     limits = c(-2, max(df1_1a$Total)+500)) +
+  xlab("Note: 'S' indicates Spring, and 'F' indicates Fall in the x-axis. Only one agenda was published in 2012. \n") +
+  scale_y_continuous(breaks = seq(0, max(df1_1$Total)+500, by = 500), expand = c(0, 0),
+                     limits = c(-2, max(df1_1$Total)+500)) +
+                     #labels = label_number(suffix = "K", scale = 1e-3)) +
+                     #labels = label_number(scale = 1e-3) +
+  # scale_y_continuous()
+  #annotation_custom(logo, xmin = -2, xmax = 10, ymin = -800, ymax = -1200) + # for logo
+  # logo_y_dim = 0.3logo_y_max, logo_x_dim = 0.12logo_x_max ?
   coord_cartesian(clip = "off") +
   labs(caption = wrapped_caption)+
   theme_minimal() +
   theme(
       plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 30), size = 20),
-      legend.position = "bottom",
+      legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
       axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 10)),
@@ -135,18 +142,19 @@ bar2 <- ggplot(df1_1a,
       plot.margin = margin(50, 50, 50, 50)
     )
 
-bar2
+#bar2
+
 
 
 ```
 
 ```{r}
 #logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
-new_bar <- ggdraw() +
+suppressWarnings({new_bar <- ggdraw() +
       draw_plot(bar2) +
       draw_image(logo, x = 0.125, y = 0.03, halign = 0, valign = 0, width = 0.2)
 
-new_bar
+new_bar})
 ```
 
 
@@ -164,4 +172,3 @@ ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = new_bar, wid
 ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = new_bar, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
 
 ```
-

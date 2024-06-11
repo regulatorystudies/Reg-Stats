@@ -31,10 +31,6 @@ PRESIDENTIAL_ADMINS = {
     }
 
 
-class ProcessingError(Exception):
-    """Error processing documents."""
-
-
 def load_json(path: Path, file_name: str) -> dict | list:
     """Import data from .json format.
 
@@ -79,7 +75,7 @@ def extract_date(string: str):
     Returns:
         datetime.date: Object in `datetime.date` format.
     """
-    res = re.compile(r"\d{4}-\d{2}-\d{2}", re.I).match(string)
+    res = re.compile("\d{4}-\d{2}-\d{2}", re.I).match(string)
     
     if isinstance(res, re.Match):
         return date.fromisoformat(res[0])
@@ -90,7 +86,7 @@ def extract_date(string: str):
 def json_to_df(
         data: dict | list, 
         has_metadata: bool = True, 
-        date_cols: list | tuple = ("effective", "received", "date_published_in_federal_register")):
+        date_cols: list | tuple = ("effective", "received", "published")):
     """Convert json object to pandas DataFrame and extract date information from select columns.
 
     Args:
@@ -108,25 +104,16 @@ def json_to_df(
     
     df = DataFrame(results)
     
-    bool_na = df.loc[:, "date_published_in_federal_register"].isna()
-    print(f"Number of rules without publication date in Federal Register: {sum(bool_na)}")
-    print("Note: This generally means the rule was not published in the Federal Register, so we use GAO's received date for such rules.")
-    df.loc[bool_na, "date_published_in_federal_register"] = df["received"]
-    
     # convert date columns to datetime.date format
     for col in date_cols:
         df.loc[:, f"{col}_dt"] = [extract_date(x) if isinstance(x, str) else x for x in df.loc[:, col]]
         df.loc[:, f"{col}_year"] = [x.year if isinstance(x, date) else x for x in df.loc[:, f"{col}_dt"]]
         df.loc[:, f"{col}_month"] = [x.month if isinstance(x, date) else x for x in df.loc[:, f"{col}_dt"]]
     
-    # rename FR publication date column
-    rename_cols = {c: f"published_{c.split('_')[-1]}" for c in df.columns if c.startswith("date_published_in_federal_register")}
-    df = df.rename(columns=rename_cols, errors="ignore")
-    
     return df
 
 
-def find_duplicates(df: DataFrame, subset: tuple | list = ("fed_reg_number", "major_rule_report", )):
+def find_duplicates(df: DataFrame):
     """Identify duplicate rules, returning two datasets with unique and duplicated observations.
 
     Args:
@@ -136,7 +123,7 @@ def find_duplicates(df: DataFrame, subset: tuple | list = ("fed_reg_number", "ma
         tuple[DataFrame, DataFrame]: DataFrame with unique observations, DataFrame with duplicated observations.
     """    
     df_copy = df.copy(deep=True)
-    bool_dup = df_copy.duplicated(subset=list(subset), keep="first")
+    bool_dup = df_copy.duplicated(subset=["url", "fed_reg_number"], keep="first")
     df_uq, df_dup = df_copy.loc[~bool_dup, :], df_copy.loc[bool_dup, :]
     return df_uq, df_dup
 
@@ -181,7 +168,7 @@ def define_presidential_terms(
     return df_copy
 
 
-def save_csv(df: DataFrame, path: Path, file_name: str, quietly: bool = False) -> None:
+def save_csv(df: DataFrame, path: Path, file_name: str) -> None:
     """Save processed data in .csv format and prints file location.
 
     Args:
@@ -192,8 +179,7 @@ def save_csv(df: DataFrame, path: Path, file_name: str, quietly: bool = False) -
     with open(path / f"{file_name}.csv", "w", encoding="utf-8") as f:
         df.to_csv(f, index=False, lineterminator="\n")
     
-    if not quietly:
-        print(f"Saved data to {path}.")
+    print(f"Saved data to {path}.")
 
 
 def groupby_year(
@@ -264,7 +250,8 @@ def process_data(
     data = load_json(data_path, data_file)    
     df = json_to_df(data)
     df, df_dup = find_duplicates(df)
-    print(f"\nRemoved {len(df_dup)} duplicates.")
+    print(f"Removed {len(df_dup)} duplicates.")
+    #print(df_dup)
     timeframe = ("received", "published")
     dfs = []
     for tf in timeframe:
@@ -281,10 +268,6 @@ def process_data(
         )
     sort_cols = ["presidential_year", "end_of_term", "democratic_admin"] + [c for c in output.columns if "major_rules" in f"{c}"]
     output = output.loc[:, sort_cols]
-    received_sum = output["major_rules_received"].sum()
-    published_sum = output["major_rules_published"].sum()
-    if received_sum != published_sum:
-        raise ProcessingError(f"Sum of documents received ({received_sum}) and published ({published_sum}) do not match.")
     
     if filter_partial_year:
         output = filter_partial_years(output, "presidential_year")
@@ -304,7 +287,7 @@ if __name__ == "__main__":
     if not data_path.is_dir():
         print("Cannot locate data.")
 
-    process_data(data_path, major_path, filter_partial_year=False)
+    process_data(data_path, major_path)
     
     # calculate time elapsed
     stop = time.process_time()
