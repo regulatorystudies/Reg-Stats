@@ -38,8 +38,6 @@ library(ggpattern)
 
 ```{r}
 monthly_es0 <- read.csv(here("charts","data", data_file))
-
-
 ```
 
 # Clean data
@@ -133,9 +131,23 @@ bar1
 
 bar2 <- ggdraw() +
       draw_plot(bar1) +
-      draw_image(logo, x = 0.125, y = 0.03, halign = 0, valign = 0, width = 0.2)
+      draw_image(logo, x = 0.085, y = 0.03, halign = 0, valign = 0, width = 0.2)
 bar2
   
+
+```
+```{r}
+# Save pdf and png
+out = here("charts", "output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+image_name = "monthly_econ_significant_rules_by_presidential_month_biden"
+
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = bar2, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = bar2, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
 
 ```
 
