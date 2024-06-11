@@ -53,3 +53,4 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+rsconnect-python/

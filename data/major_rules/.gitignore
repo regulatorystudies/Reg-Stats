@@ -1,5 +1,7 @@
 # ----- Project-specific ----- #
 
+major_rules_by_month_after*.csv
+
 _val/
 profiling/
 
