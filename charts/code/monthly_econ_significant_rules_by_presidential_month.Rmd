@@ -17,14 +17,14 @@ library(here)
 i_am("charts/code/monthly_econ_significant_rules_by_presidential_month.Rmd")
 
 # import local functions
-
+source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
 
 # point to dataset
 data_file = "monthly_econ_significant_rules_by_presidential_month.csv"
 
 # refresh dataset
-copy_all_data(here("data", "monthly_es_rules"), here("charts", "data"))
+copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
 
@@ -127,13 +127,11 @@ bar1 <- ggplot(to_chart,aes(x = date, y = rules)) +
     panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
     panel.grid.minor = element_blank()
   )
-bar1
 
-bar2 <- ggdraw() +
+suppressWarnings({bar2 <- ggdraw() +
       draw_plot(bar1) +
       draw_image(logo, x = 0.085, y = 0.03, halign = 0, valign = 0, width = 0.2)
-bar2
-  
+bar2})
 
 ```
 ```{r}
