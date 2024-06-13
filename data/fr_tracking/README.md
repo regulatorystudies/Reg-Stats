@@ -26,10 +26,8 @@ Data: ~weekly
 ![](examples/12866.png)
 1. To determine if a rule is “major” search by “Control-F”ing the word “major” on the webpage, as well as “Congressional”. This should bring you to the part of the document which discusses whether it is a major rule. Enter a “1” if it is major. If it is not, enter a “0”. If it does not say, enter a “.”.  
 ![](examples/major.png)
-1. Copy the URL of the webpage into the far right column for each rule.  
 
 Other Tips:  
   - To double-check on a confusing regulation, search it in reginfo.gov and compare.  
     - To search at reginfo.gov, use the search box in the upper right. Make sure “Reg Review” is ticked off, and search the RIN or rule name. This will often bring you to an advanced search page where you can enter more information about the rule. If this does not turn up any results, search again with “Unified Agenda” ticked off instead.  
-  - If you miss a day, click on the same link under Current Issue but use Advanced Search to select just the rules from the day you missed before filling in more recent days.  
   - For missing values, add a “.” In the cell so reviewers know you did not just forget.  
