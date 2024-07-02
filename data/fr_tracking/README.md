@@ -28,7 +28,7 @@ Data: ~weekly
 ![](examples/12866.png)
 1. To determine if a rule is “major” search by “Control-F”ing the word “major” on the webpage, as well as “Congressional”. This should bring you to the part of the document which discusses whether it is a major rule. Enter a “1” if it is major. If it is not, enter a “0”. If it does not say, enter a “.”.  
 ![](examples/major.png)
-   - Alternatively, an agency may identify a rule as major by referring to the relevant section of the U.S. Code. You may come aross a sentence alongs the lines of: "This action meets the criteria set forth in 5 U.S.C. 804(2)." Also mark such rules as major=1.
+   - Alternatively, an agency may identify a rule as major by referring to the relevant section of the U.S. Code. You may come across a sentence alongs the lines of: "This action meets the criteria set forth in 5 U.S.C. 804(2)." Also mark such rules as major=1.
 
 Other Tips:  
   - To double-check on a confusing regulation, search it in reginfo.gov and compare.  
