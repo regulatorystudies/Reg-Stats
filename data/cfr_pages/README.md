@@ -6,6 +6,7 @@ The CFR pages data should be updated **once a year**. Since the date when the da
 
 Follow these steps to update the dataset:
 
-1. Check for updated data from the [Federal Register Statistics](https://www.federalregister.gov/reader-aids/federal-register-statistics) page. Select “Code of Federal Regulations Total Pages and Volumes 1938-XXXX.” A PDF will open. Scroll to the end of the table to see what is latest year with data available.
-2. Compare the data in the PDF to the `cfr_pages_by_calendar_year.csv` file.
-3. If new or revised data are available, make the necessary updates in the file, such as adding new years of data.
+1. Visit the [Federal Register Statistics](https://www.federalregister.gov/reader-aids/federal-register-statistics) page. 
+1. Select the XLS file under "Federal Register & CFR Publication Statistics – Aggregated Charts" and save it to this folder
+as "aggregated_charts_frstats.xlsx" (replace the existing file if necessary).
+1. Run the Python script `update_cfr_pages.py` in your preferred IDE to update the dataset.
