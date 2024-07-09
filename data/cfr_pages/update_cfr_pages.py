@@ -1,6 +1,6 @@
 import requests
 import os
-from PyPDF2 import PdfFileReader
+from PyPDF2 import PdfReader
 import pandas as pd
 from datetime import datetime
 import sys
@@ -8,6 +8,9 @@ from tqdm import tqdm
 
 import warnings
 warnings.filterwarnings("ignore")
+
+print("Download the XLS file from the Federal Register Statistics page before running this script."
+      " See README for instructions")
 
 #%% Import the latest dataset
 dir_path=os.path.dirname(os.path.realpath(__file__))
@@ -28,7 +31,7 @@ start_year=int(last_year)+1
 end_year=datetime.today().year
 
 if end_year>start_year:
-    print(f"Data for {start_year}-{end_year} will be updated. It may take a long time.")
+    print(f"Data for {start_year}-{end_year-1} will be updated. It may take a long time.")
 else:
     print("The current dataset is up-to-date. No update is needed.")
     sys.exit(0)
@@ -49,8 +52,8 @@ def download_file(url,file_path):
 #%% Function to count pages
 def count_pages(file_path):
     with open(file_path, "rb") as f:
-        pdf = PdfFileReader(f, strict=False)
-        pages=pdf.getNumPages()
+        pdf = PdfReader(f, strict=False)
+        pages=len(pdf.pages)
     return pages
 
 #%% Collect data
