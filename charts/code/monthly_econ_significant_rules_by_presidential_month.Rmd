@@ -57,7 +57,7 @@ start0 <- data.frame(president, month) %>%
   mutate(Months.in.Office = 0)
 
 st <- as.Date("1981-02-01")
-en <- as.Date("2024-05-01")
+en <- as.Date("2024-06-01")
 
 monthly_es2 <- pivot_longer(monthly_es1,
                             cols = Reagan:Biden,
