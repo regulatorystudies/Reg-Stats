@@ -58,14 +58,14 @@ class Scraper:
     
     def __init__(
             self, 
-            base_url: str = "https://www.gao.gov/legal/other-legal-work/congressional-review-act", 
+            base_url: str = "https://www.gao.gov/legal/congressional-review-act/search-database-of-rules", 
             url_stem: str = "https://www.gao.gov", 
             major_only: bool = False, 
             new_only: bool = False, **kwargs):
         """Initialize base scraper for CRA database.
 
         Args:
-            base_url (str, optional): URL to pass to `requests.get()`. Defaults to "https://www.gao.gov/legal/other-legal-work/congressional-review-act".
+            base_url (str, optional): URL to pass to `requests.get()`. Defaults to "https://www.gao.gov/legal/congressional-review-act/search-database-of-rules".
             url_stem (str, optional): Stem of GAO website URL for constructing rule-level URLs. Defaults to "https://www.gao.gov".
             request_params (dict, optional): Parameters to pass to `requests.get()`. Defaults to {"processed": 1, "type": "all", "priority": "all", "page": 0}.
             major_only (bool, optional): Only retrieve rules of type "Major". Defaults to False.
