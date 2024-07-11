@@ -59,37 +59,43 @@ df1 <- read.csv(here("charts","data", data_file))
 
 ```{r clean_data}
 
-df1_1 <-  df1
+df1_1 <- df1
 
-colnames(df1_1) <- c("yearseason", "FinalRules", "ProposedRules","Prerules","Total")
-
+# name columns and modify data types
+colnames(df1_1) <- c("yearseason", "FinalRules", "ProposedRules", "Prerules", "Total")
 df1_1$Total <- as.numeric(df1_1$Total)
+df1_1$yearseason <- factor(df1_1$yearseason, levels = unique(df1_1$yearseason))
 
-df1_1$yearseason <-factor(df1_1$yearseason,levels=unique(df1_1$yearseason))
-
-df1_1a <- df1_1 %>% 
+# create year, Season, and sort columns [if a yearseason value just specifies the year but not the season (e.g. 2012), then Fall will be assigned as the season]
+df1_1a <- df1_1 %>%
   add_row(yearseason = "1995 Spring",
           FinalRules = 0,
           ProposedRules = 0,
           Prerules = 0,
           Total = 0,
-          .before = 1) %>% 
+          .before = 1) %>%
   add_row(yearseason = "2012 Spring",
           FinalRules = 0,
           ProposedRules = 0,
           Prerules = 0,
           Total = 0,
-          .before = 35) %>% 
-  mutate(year = as.numeric(substr(yearseason, 1, 4))) %>% 
-  mutate(season = str_trim(factor(substr(yearseason, 6,12)))) %>% 
-  mutate(season2 = case_when(season == "" ~ "Fall",
-                             TRUE ~ season)) %>% 
-  select(-season, Season = season2) 
+          .before = 35) %>%
+  mutate(year = as.numeric(substr(yearseason, 1, 4))) %>%
+  mutate(season = str_trim(factor(substr(yearseason, 6, 12)))) %>%
+  mutate(season2 = case_when(season == "" ~ "Fall", TRUE ~ season)) %>%
+  select(-season, Season = season2)
 
 df1_1a$sort <- seq.int(nrow(df1_1a))
+df1_1a$Season <- factor(df1_1a$Season, levels = c("Spring", "Fall"))
 
-df1_1a$Season <- factor(df1_1a$Season, levels = c("Spring", "Fall") )
-
+# use expand.grid to create a complete df with every possible combination of years and seasons, then merge with df1_1a, then set all NA values = to 0
+all_years <- unique(df1_1a$year)
+all_seasons <- c("Spring", "Fall")
+df1_1a_complete <- expand.grid(year = all_years, Season = all_seasons)
+df1_1a_complete <- df1_1a_complete %>%
+  left_join(df1_1a, by = c("year", "Season")) %>%
+  mutate(Total = ifelse(is.na(Total), 0, Total)) %>%
+  arrange(year, Season)
 
 ```
 
@@ -102,7 +108,7 @@ current_date <- format(Sys.Date(), "%B %d, %Y")
 caption_text <- paste("Source: Office of Information and Regulatory Affairs \n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
-bar2 <- ggplot(df1_1a,
+bar2 <- ggplot(df1_1a_complete,
         aes(y = Total, x = as.factor(year))) +
   geom_bar(aes(fill = Season), stat = "identity", position = "dodge") +
   scale_fill_manual(values = c(GWbuff, GWblue)) +
