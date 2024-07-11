@@ -66,7 +66,7 @@ colnames(df1_1) <- c("yearseason", "FinalRules", "ProposedRules", "Prerules", "T
 df1_1$Total <- as.numeric(df1_1$Total)
 df1_1$yearseason <- factor(df1_1$yearseason, levels = unique(df1_1$yearseason))
 
-# create year, Season, and sort columns [if a yearseason value just specifies the year but not the season (e.g. 2012), then Fall will be assigned as the season]
+# add rows for missing seasons/UAs, create year, Season, and sort columns [if a yearseason value just specifies the year but not the season (e.g. "2012"), then Fall will be assigned as the season]
 df1_1a <- df1_1 %>%
   add_row(yearseason = "1995 Spring",
           FinalRules = 0,
@@ -115,7 +115,7 @@ bar2 <- ggplot(df1_1a_complete,
   scale_x_discrete(labels = df1_1a$year, breaks = df1_1a$year) +
   ggtitle("Active Actions in the Unified Agenda") +
   ylab("Number of Actions \n") +
-  xlab("Note: Only the Fall Agenda is available for 1995 and only one agenda was published in 2012. \n") +
+  xlab("\nNote: Only the Fall Agenda is available for 1995, and only one Agenda was published in 2012. Active actions refer to rulemakings \nin a pre-rule, proposed rule or final rule stage as indicated by the Unified Agenda.") +
   scale_y_continuous(breaks = seq(0, max(df1_1a$Total)+500, by = 500), expand = c(0, 0),
                      limits = c(-2, max(df1_1a$Total)+500)) +
   coord_cartesian(clip = "off") +
@@ -124,9 +124,11 @@ bar2 <- ggplot(df1_1a_complete,
   theme(
       plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 30), size = 20),
       legend.position = "bottom",
+      legend.title = element_blank(),
+      legend.text = element_text(size = 12),
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
-      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 10)),
+      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0, margin = margin(t = 0)),
       axis.line.x = element_line(linewidth = 1, color = RSCgray),
 
       #axis.ticks.x = element_line(color = RSCgray),
