@@ -17,7 +17,7 @@ copy_all_data <- function(path, new_path, file_type = "*.csv", recurse_levels = 
   
   file_list <- dir_ls(path, recurse = recurse_levels, type = "file", glob = file_type)
   file_list <- path_filter(file_list, regexp = ignore_pattern, invert = TRUE)
-  file_copy(file_list, new_path, overwrite = T)
+  file_copy(file_list, new_path, overwrite = TRUE)
   
   if (report){
     print(paste("Copied", length(file_list), "files."))
@@ -25,13 +25,13 @@ copy_all_data <- function(path, new_path, file_type = "*.csv", recurse_levels = 
 }
 
 # function for copying the specified dataset
-copy_dataset <- function(file_name, search_path, new_path){
+copy_dataset <- function(file_name, search_path, new_path, fixed = FALSE) {
   
-  search_files <- dir_ls(search_path, recurse = T, type = "file", glob = paste0("*.", path_ext(file_name)))
-  matches <- grep(file_name, search_files, ignore.case = T)
+  search_files <- dir_ls(search_path, recurse = TRUE, type = "file", glob = paste0("*.", path_ext(file_name)))
+  matches <- grep(file_name, search_files, ignore.case = TRUE, fixed = fixed)
   matched_files <- search_files[matches]
   if (length(matched_files) >= 1) {
-    file_copy(matched_files, new_path, overwrite = T)
+    file_copy(matched_files, new_path, overwrite = TRUE)
     print(paste("Copied file: ", file_name))
   } else {
     print("No file found.")

@@ -7,11 +7,7 @@ from pandas import DataFrame, to_datetime, concat
 from numpy import array
 from fr_toolbelt.api_requests import get_documents_by_date
 
-# source: https://github.com/verigak/progress/issues/58#issuecomment-471718558
-from patch_progress import getpatchedprogress
-progress = getpatchedprogress()
-
-from search_columns import search_columns
+from filter_documents import filter_corrections
 
 # set file paths
 p = Path(__file__)
@@ -22,19 +18,15 @@ if not API_DIR.exists():
 
 # set constants
 YEAR_RANGE = [f"{yr}" for yr in range(1995, date.today().year)]
-FIELDS = ["action", "agencies", "agency_names", "citation", "correction_of", "corrections", 
-          "document_number", "json_url", "president", "publication_date", "title", "type", 
-          ]
+FIELDS = [
+    "action", "agencies", "agency_names", "citation", "correction_of", "corrections", 
+    "document_number", "json_url", "president", "publication_date", "title", "type", 
+    ]
 SAVE_NAME_CSV = "federal_register_rules_by_presidential_year.csv"
 
 
 # ------------------
 # define functions
-
-
-class SearchError(Exception):
-    """Search returned misaligned results."""
-    pass
 
   
 def retrieve_documents(years: list, doctype: str, fields: list, save_path: Path, replace_existing: bool = True):
@@ -112,41 +104,6 @@ def format_documents(documents: list[dict]):
     return df
 
 
-def filter_documents(df: DataFrame):
-    """Filter out corrections from Federal Register documents. 
-    Identifies corrections using `corrrection_of` field and regex searches of `document_number`, `title`, and `action` fields.
-
-    Args:
-        df (DataFrame): Federal Register data.
-
-    Returns:
-        tuple: DataFrame with corrections removed, DataFrame of corrections
-    """
-    # get original column names
-    cols = df.columns.tolist()
-    
-    # filter out corrections
-    # 1. Using correction fields
-    bool_na = array(df["correction_of"].isna())
-
-    # 2. Searching other fields
-    search_1 = search_columns(df, [r"^[crxz][\d]{1,2}-(?:[\w]{2,4}-)?[\d]+"], ["document_number"], 
-                                 return_column="indicator1")
-    search_2 = search_columns(df, [r"(?:;\scorrection\b)|(?:\bcorrecting\samend[\w]+\b)"], ["title", "action"], 
-                                 return_column="indicator2")
-    bool_search = array(search_1["indicator1"] == 1) | array(search_2["indicator2"] == 1)
-
-    # separate corrections from non-corrections
-    df_no_corrections = df.loc[(bool_na & ~bool_search), cols]  # remove flagged documents
-    df_corrections = df.loc[(~bool_na | bool_search), cols]
-    
-    # return filtered results
-    if len(df) == len(df_no_corrections) + len(df_corrections):
-        return df_no_corrections, df_corrections
-    else:
-        raise SearchError(f"{len(df)} != {len(df_no_corrections)} + {len(df_corrections)}")
-
-
 def group_documents(df: DataFrame, group_column: str = "presidential_year", value_column: str = "document_number", return_column: str = None):
     """Group Federal Register documents by presidential year. 
     A [presidential year](https://regulatorystudies.columbian.gwu.edu/reg-stats) is defined as Feb. 1 to Jan. 31.
@@ -187,7 +144,7 @@ def main(years: list, fields: list, raw_path: Path, processed_path: Path, proces
     for doctype, fieldname in doctypes.items():
         documents = retrieve_documents(years, doctype, fields, raw_path, replace_existing=replace_existing)
         df = format_documents(documents)
-        df, corrections = filter_documents(df)
+        df, corrections = filter_corrections(df)
         corrections.loc[:, "type"] = doctype
         df_grouped = group_documents(df, return_column=fieldname)
         df_list.append(df_grouped)
