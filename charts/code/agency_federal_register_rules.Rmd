@@ -177,6 +177,18 @@ for (agency_a in agencies) {
   if ((nrow(df_agency) != 0) & (max(df_agency$rule_num) >= 10)) {
     agency_n <- df_agency$name
     agency_names_list[[toupper(agency_a)]] <- agency_n
+    # filter out initial years before the first final or proposed rule in which rule_num = 0 but not subsequent years in which rule_num = 0
+    found_non_zero <- FALSE
+    df_agency <- df_agency %>%
+      rowwise() %>%
+      mutate(to_keep = {
+        if (rule_num >= 1) {
+          found_non_zero <<- TRUE
+        }
+        found_non_zero | rule_num != 0
+      }) %>%
+      filter(to_keep) %>%
+      select(-to_keep)
     plot <- plot_data(df_agency, agency_a, agency_n)
     save_plot_png_pdf(plot, out, agency_a)
     }
