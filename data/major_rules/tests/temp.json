@@ -1,8 +1,0 @@
-{
-    "description": "Contains basic records for rules in GAO's CRA Database of Rules.",
-    "source": "url",
-    "date_retrieved": "today",
-    "major_only": true,
-    "rule_count": 0,
-    "results": []
-}

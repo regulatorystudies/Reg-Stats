@@ -102,15 +102,14 @@ graph <- function(dataset, interval, title){
     panel.grid.minor = element_blank()
   )
   
-  bar1
-  
-  bar2 <- ggdraw() + 
+  suppressWarnings({bar2 <- ggdraw() + 
   draw_plot(bar1) + 
   draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
   
-  bar2 
+  bar2})
+  
   return(bar2)
-}
+  }
 
 
 ```

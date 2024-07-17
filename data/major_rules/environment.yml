@@ -6,8 +6,8 @@ dependencies:
   - ipykernel=6.25
   - ipython=8.15
   - lxml=4.9
-  - pandas=2.1
-  - pip=23.3
+  - pandas=2.2
+  - pip=24.0
   - python=3.11
-  - requests=2.31
+  - requests=2.32
 prefix: C:\Users\mfebrizio\Anaconda3\envs\regstats_gao

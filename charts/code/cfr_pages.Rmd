@@ -33,7 +33,6 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 ```{r imports, results='hide', warning=FALSE}
 
 library(ggplot2)
-library(showtext)
 library(png)
 library(ggpattern)
 library(tidyr)
@@ -41,6 +40,7 @@ library(ggrepel)
 library(dplyr)
 library(scales)
 library(gcookbook)
+
 ```
 
 ## Load data
@@ -56,9 +56,10 @@ df <- read.csv(here("charts", "data", data_file))
 
 ```{r clean_data}
 
-
-df1 <- df[c(16:87),c(0:3)]
+df1 <- df[c(5:nrow(df)),c(0:3)]
 colnames(df1) <- c("year", "color", "tolpages")
+df1 <- df1[!is.na(as.numeric(as.character(df1$year))),]
+df1 <- df1[df1$year >= 1950, ]
 
 current_date <- format(Sys.Date(), "%B %d, %Y")
 caption_text <- paste("Source: Office of the Federal Register (federalregister.gov) for the years starting 2021;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
@@ -74,17 +75,17 @@ df2$year <- as.numeric(df2$year)
 
 ```{r plot_data, results='markup'}
 # create caption text
-caption_text <- paste("Sources:  Federal Register Statistics \n\nUpdated:", current_date)
+caption_text <- paste("Sources:  govinfo.gov for the years 2022 and onwards; Federal Register Statistics for all the prior years \n\nUpdated:", current_date)
 
 # format wrapping setting for caption text
 wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 upper <- ydynam(df2, 20000, 2)
 
-breaks4 <- c(seq(min(df2$year), max(df2$year), 4), 2021)
+breaks4 <- c(seq(min(df2$year), max(df2$year), 4))
 
 bar2 <-
-  ggplot(data=df2, aes(x=year, y=tolpages)) +
+  ggplot(data=df2, aes(x=year, y=tolpages,family = "avenir_lt_pro")) +
   geom_bar(stat="identity", fill="#033C5A")+
   #geom_text(aes(label=len), vjust=-0.3, size=3.5)+
 
@@ -121,11 +122,11 @@ bar2 <-
 
 
 #logo 
-new_bar <- ggdraw() +
+suppressWarnings({new_bar <- ggdraw() +
       draw_plot(bar2) +
       draw_image(logo, x = 0.1, y = 0.05, halign = 0, valign = 0, width = 0.2)
 
-new_bar
+new_bar})
 
 ```
 
