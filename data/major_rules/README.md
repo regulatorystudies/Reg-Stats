@@ -2,9 +2,7 @@
 
 ## Last Updated
 
-README: 2023-12-18
-
-Data: 2023-12-13
+README: 2024-07-17
 
 ## Update Instructions
 
@@ -61,17 +59,32 @@ Note: This method can only be used to update the data based on the received date
 
 If your computer's environment is set up with [Python 3.11](https://www.python.org/downloads/) and the necessary packages, you should be able to run the code.
 
-Using [Anaconda](https://www.anaconda.com/products/distribution), the environment can be created and activated using the environment.yml file with the following commands in the terminal:
+First, install a Python interpreter to run the code. Some suggested download options are from [Anaconda](https://www.anaconda.com/download) or [Python.org](https://www.python.org/downloads/).
 
-```{bash}
-cd "NAVIGATE TO DIRECTORY WHERE YML IS STORED"
+Second, download the code by [cloning](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) this Github repository.
 
-conda env create -f environment.yml
+Third, create a separate virtual environment for running the program. This is easy to do with the `venv` module in the [Python standard library](https://docs.python.org/3/library/venv.html) and the `requirements.txt` file in this repository. Enter the following commands in the terminal / command line:
 
-conda activate regstats_gao
+```{sh}
+cd "PATH/TO/YOUR/LOCAL/PROJECT/DIRECTORY/"
+
+python -m venv myenv  # where myenv is your virtual environment's name
+
+myvenv/scripts/activate  # activate on Windows
+source myvenv/bin/activate  # activate on macOS/linux
+
+python -m pip install -r requirements.txt
 ```
 
-See the [Anaconda documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) for more details.
+If you have issues installing the packages from the requirements.txt, it may be because OS-specific packages are included in the requirements.txt. To get around this, different requirements.txt files may exist in this repo (e.g., requirements-win.txt, requirements-mac.txt) that can be substituted in the commands used. Alternatively, generating a new requirements.txt using the [pip-tools](https://pip-tools.readthedocs.io/en/stable/) package would be a good approach. After activating your virtual environment, run the following commands in the terminal:
+
+```{sh}
+python -m pip install -U pip pip-tools
+
+pip-compile -o my_requirements.txt requirements.in
+
+pip-sync my_requirements.txt
+```
 
 ## CRAdb Tutorial
 
