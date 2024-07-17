@@ -95,8 +95,8 @@ def get_agencies_by_pattern(keep_pattern: str = None):
     return filtered
 
 
-def get_agency_acronyms(df: DataFrame, metadata: dict, agency_column: str):
-    return df.loc[:, agency_column].apply(lambda x: metadata.get(x, {}).get("short_name"))
+def get_agency_metadata_values(df: DataFrame, metadata: dict, agency_column: str, key: str):
+    return df.loc[:, agency_column].apply(lambda x: metadata.get(x, {}).get(key))
 
 
 def _get_metadata_value(slug: str, metadata: dict, key: str):
@@ -166,7 +166,8 @@ def main(
     bool_1994 = dfPrez.loc[:, "presidential_year"] == 1994
     dfPrez = dfPrez.loc[~bool_1994]  # drop partial data from 1994 presidential year
     dfPrez = ensure_all_years_in_index(dfPrez, agency_column=agency_column)
-    dfPrez.loc[:, "acronym"] = get_agency_acronyms(dfPrez, metadata, agency_column)
+    dfPrez.loc[:, "acronym"] = get_agency_metadata_values(dfPrez, metadata, agency_column, "short_name")
+    dfPrez.loc[:, "name"] = get_agency_metadata_values(dfPrez, metadata, agency_column, "name")
     if "parent_" not in agency_column:
         dfPrez.loc[:, "parent_agency"] = get_parent_agency(dfPrez, metadata, agency_column)
     value_cols = list(doctypes.values())
@@ -180,7 +181,7 @@ def main(
         errors="ignore")
     sort_columns = ["parent_agency", "agency", "presidential_year"]
     dfPrez = dfPrez.sort_values([c for c in sort_columns if c in dfPrez.columns], ignore_index=True, kind="stable")
-    cols = ("parent_agency", "subagency", "agency", "acronym", "presidential_year", "final_rules", "proposed_rules")
+    cols = ("parent_agency", "subagency", "agency", "acronym", "name", "presidential_year", "final_rules", "proposed_rules")
     return dfPrez.loc[:, [c for c in cols if c in dfPrez.columns]]
 
 
