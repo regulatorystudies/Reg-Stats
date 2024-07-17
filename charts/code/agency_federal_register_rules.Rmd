@@ -39,7 +39,7 @@ rules_pub_NA <- read.csv(here("charts", "data", data_file))
 
 ```{r code}
 # modify column names
-colnames(rules_pub_NA) <- c("agency", "acronym", "year", "final", "proposed")
+colnames(rules_pub_NA) <- c("agency", "acronym", "name", "year", "final", "proposed")
 
 # remove rows with NA values
 rules_pub <- rules_pub_NA[complete.cases(rules_pub_NA), ]
@@ -78,9 +78,9 @@ get_interval <- function(integer_vector) {
   return(interval)
   }
 
-plot_data <- function(df, agency_acronym) {
+plot_data <- function(df, agency_acronym, agency_name) {
   interval <- get_interval(df_agency[["rule_num"]])
-  upper <- ydynam(df, interval, 5)
+  upper <- ydynam(df, interval, 6)
   #print(paste0(agency_acronym, ": ", upper))
   line1 <- ggplot(df, 
                   aes(x = year,
@@ -105,7 +105,7 @@ plot_data <- function(df, agency_acronym) {
               axis.ticks.x = element_blank()) +
             xlab(element_blank()) +
             ylab("Number of Rules") +
-            ggtitle(paste(toupper(agency_acronym), "Rules Published in the Federal Register by Presidential Year")) +
+            ggtitle(paste(agency_name, "Rules Published by Presidential Year")) +
             labs(color = NULL, linetype = NULL, caption = caption_text) +
             scale_y_continuous(
               breaks = seq(0, upper, by = interval),
@@ -168,11 +168,17 @@ agencies <- c(
   "va"
   )
 
-for (agency_ in agencies) {
-  df_agency <- rules_pub_long %>% filter(acronym == toupper(agency_))
+# create empty agency names list to be filled by loop
+agency_names_list <- list()
+
+# loop
+for (agency_a in agencies) {
+  df_agency <- rules_pub_long %>% filter(acronym == toupper(agency_a))
   if ((nrow(df_agency) != 0) & (max(df_agency$rule_num) >= 10)) {
-    plot <- plot_data(df_agency, agency_)
-    save_plot_png_pdf(plot, out, agency_)
+    agency_n <- df_agency$name
+    agency_names_list[[toupper(agency_a)]] <- agency_n
+    plot <- plot_data(df_agency, agency_a, agency_n)
+    save_plot_png_pdf(plot, out, agency_a)
     }
   }
 
