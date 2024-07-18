@@ -55,13 +55,13 @@
       plot.margin = margin(50, 50, 50, 50)
     )
   
-  # custom RSC wrapper function for geom_label_repel (sets font to avenir_lt_pro)
-  geom_label_repel_RSC <- function(...) {
+  # custom wrapper function for geom_label_repel() (sets default font to avenir_lt_pro)
+  geom_label_repel <- function(...) {
     geom_label_repel(..., family = "avenir_lt_pro")
   }
   
-  # custom RSC wrapper function for annotate (sets font to avenir_lt_pro)
-  annotate_RSC <- function(geom, x, y, label, ...) {
+  # custom wrapper function for annotate() (sets default font to avenir_lt_pro)
+  annotate <- function(geom, x, y, label, ...) {
     annotate(geom, x = x, y = y, label = label, ..., family = "avenir_lt_pro")
   }
   
