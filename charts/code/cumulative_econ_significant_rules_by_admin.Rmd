@@ -111,7 +111,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   annotate(geom = "segment", x = 48, xend = 48, y = 0, yend = max(cum_sig_long$econ_rules) + 10, linetype = "dashed", linewidth = 0.50, color = RSCdarkgray) +
   annotate(geom = "segment", x = min(0), xend = max(cum_sig_long$months_in_office), y = 0, yend = 0, linetype = "solid", linewidth = 1, color = RSCgray) +
   geom_line(linewidth = 0.75) +
-  geom_label_repel(data = line_ends, 
+  geom_label_repel_RSC(data = line_ends, 
                   aes(x = months_in_office_end, y = econ_rules_end, label = president),
                   nudge_x = 0, nudge_y = 10,
                   segment.size = 0.2,
@@ -139,7 +139,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   xlab("Months In Office") +
   ylab("Number of Rules") +
   ggtitle("Cumulative Economically Significant Final Rules Published by Administration") +
-  annotate(geom = "text", x = 48, y = max(cum_sig_long$econ_rules) + 12, label = "End of First Presidential Term", size = 4, hjust = 0, vjust = 0) +
+  annotate_RSC(geom = "text", x = 48, y = max(cum_sig_long$econ_rules) + 12, label = "End of First Presidential Term", size = 4, hjust = 0, vjust = 0) +
   labs(color = "President", caption = wrapped_caption) +
   scale_y_continuous(breaks = seq(0, ydynam(cum_sig_long, 50, 3), by = 50),
                      expand = c(0, 0), 

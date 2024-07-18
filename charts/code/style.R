@@ -55,14 +55,14 @@
       plot.margin = margin(50, 50, 50, 50)
     )
   
-  # custom wrapper function for geom_label_repel() (sets default font to avenir_lt_pro)
-  geom_label_repel <- function(...) {
+  # custom RSC wrapper function for geom_label_repel() (sets default font to avenir_lt_pro), call default function from package to avoid infinite recursion? e.g. ggrepel::geom_label_repel instead of geom_label_repel
+  geom_label_repel_RSC <- function(...) {
     geom_label_repel(..., family = "avenir_lt_pro")
   }
   
-  # custom wrapper function for annotate() (sets default font to avenir_lt_pro)
-  annotate <- function(geom, x, y, label, ...) {
-    annotate(geom, x = x, y = y, label = label, ..., family = "avenir_lt_pro")
+  # custom RSC wrapper function for annotate() (sets default font to avenir_lt_pro), call default function from package to avoid infinite recursion? e.g. ggplot2::annotate instead of annotate
+  annotate_RSC <- function(...) {
+    annotate(..., family = "avenir_lt_pro")
   }
   
   # thank you to Yaxin for developing this custom theme!
