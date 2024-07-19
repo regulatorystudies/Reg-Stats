@@ -1,0 +1,197 @@
+---
+title: "Agency Rules Published in the Federal Register by Presidential Year"
+author: "Mark Febrizio"
+date: `Sys.Date()`
+output: html_document
+---
+
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+library(here)
+i_am("charts/code/agency_federal_register_rules.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "agency_federal_register_rules_by_presidential_year.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
+```
+
+## Load Data
+
+```{r load data}
+# load csv using here
+rules_pub_NA <- read.csv(here("charts", "data", data_file))
+```
+
+## Process Data
+
+```{r code}
+# modify column names
+colnames(rules_pub_NA) <- c("agency", "acronym", "name", "year", "final", "proposed")
+
+# remove rows with NA values
+rules_pub <- rules_pub_NA[complete.cases(rules_pub_NA), ]
+
+# make long data frame
+rules_pub_long <- pivot_longer(rules_pub, cols = c("final", "proposed"), names_to =
+"rule_type", values_to = "rule_num")
+
+# change rule_type column to factor (assign levels and labels)
+rules_pub_long <- rules_pub_long %>% 
+  mutate(rule_type = factor(rule_type,
+                            levels = c("final", 
+                                       "proposed"),
+                            labels = c("Final Rules", 
+                                       "Proposed Rules")))
+
+# set current date
+current_date <- format(Sys.Date(), "%B %d, %Y")
+
+# set caption text
+caption_text <- paste("Source: Federal Register API;\n excludes corrections to rules.\n\nUpdated:", current_date)
+
+```
+
+## Plot Data
+
+```{r graph}
+
+get_interval <- function(integer_vector) {
+  max_value <- max(integer_vector)/5
+  if (max_value < 50) {
+    interval <- round(max_value)
+  } else {
+    interval <- round(max_value, -1)
+  }
+  return(interval)
+  }
+
+plot_data <- function(df, agency_acronym, agency_name) {
+  interval <- get_interval(df_agency[["rule_num"]])
+  upper <- ydynam(df, interval, 6)
+  #print(paste0(agency_acronym, ": ", upper))
+  line1 <- ggplot(df, 
+                  aes(x = year,
+                   y = rule_num,
+                   group = rule_type,
+                   color = rule_type,
+                   linetype = rule_type)) +
+            geom_line(aes(linetype = rule_type), linewidth = 1) +
+            scale_color_manual(values = c(GWblue, lightblue),
+                               guide = "legend") +
+            scale_linetype_manual(values = c("solid", "33"),
+                                  guide = "legend") +
+            coord_cartesian(clip = "off") +
+            theme_RSC +
+            theme(
+              plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 0, unit = "pt")),
+              legend.position = "top",
+              legend.margin = margin(t = 10, b = -10),
+              legend.text = element_text(size = 15),
+              legend.key.size = unit(2, "lines"),    
+              axis.text.x = element_text(angle = 65, hjust = 1),
+              axis.ticks.x = element_blank()) +
+            xlab(element_blank()) +
+            ylab("Number of Rules") +
+            ggtitle(paste(agency_name, "Rules Published by Presidential Year")) +
+            labs(color = NULL, linetype = NULL, caption = caption_text) +
+            scale_y_continuous(
+              breaks = seq(0, upper, by = interval),
+              expand = c(0, 0), 
+              limits = c(0, upper)) +
+            scale_x_continuous(breaks = seq(min(df$year), 
+                                            max(df$year), by = 1), 
+                               limits = c(min(df$year) - 1, 
+                                          max(df$year) + 1), 
+                               expand = c(0, 0))
+
+  # add logo to plot
+  line2 <- ggdraw() + 
+    draw_plot(line1) + 
+    draw_image(logo, x = 0.1, y = 0.059, halign = 0, valign = 0, width = 0.2, height = 0.2)
+  return(line2)
+  }
+
+save_plot_png_pdf <- function(fig, save_path, agency_acronym) {
+  
+  image_name <- paste0(tolower(agency_acronym), "_federal_register_rules_by_presidential_year")
+  
+  # save as pdf
+  ggsave(here(save_path, paste0(image_name, ".pdf")), plot = fig, width = 12, height = 9, dpi = 300)
+  
+  # save as png
+  ggsave(here(save_path, paste0(image_name, ".png")), device = "png", plot = fig, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+  }
+
+```
+
+```{r pipeline}
+
+# create empty output folder if it doesn't already exist
+out <- here("charts", "output", "by_agency")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+# notes:
+# FRS = federal-reserve-system; excluded because notice and comment not primary manner of regulation
+# ind reg agencies: https://www.law.cornell.edu/uscode/text/44/3502#5
+
+agencies <- c(
+  "cfpb", "cftc", "cpsc", 
+  "dhs", "doc", "dod", "doe", "doi", "doj", "dol", "dos", "dot", 
+  "ed", "epa", 
+  "fcc", "fdic", "ferc", "fhfa", "fmc", "ftc", 
+  "hhs", "hud", 
+  "icc",
+  "mshfrc", 
+  "nlrb", 
+  "nrc",
+  "occ", 
+  "oshrc", 
+  "prc", 
+  "sba", "sec", 
+  "treas", 
+  "usda", 
+  "va"
+  )
+
+# create empty agency names list to be filled by loop
+agency_names_list <- list()
+
+# loop
+for (agency_a in agencies) {
+  df_agency <- rules_pub_long %>% filter(acronym == toupper(agency_a))
+  if ((nrow(df_agency) != 0) & (max(df_agency$rule_num) >= 10)) {
+    agency_n <- df_agency$name
+    agency_names_list[[toupper(agency_a)]] <- agency_n
+    # filter out initial years before the first final or proposed rule in which rule_num = 0 but not subsequent years in which rule_num = 0
+    found_non_zero <- FALSE
+    df_agency <- df_agency %>%
+      rowwise() %>%
+      mutate(to_keep = {
+        if (rule_num >= 1) {
+          found_non_zero <<- TRUE
+        }
+        found_non_zero | rule_num != 0
+      }) %>%
+      filter(to_keep) %>%
+      select(-to_keep)
+    plot <- plot_data(df_agency, agency_a, agency_n)
+    save_plot_png_pdf(plot, out, agency_a)
+    }
+  }
+
+```
