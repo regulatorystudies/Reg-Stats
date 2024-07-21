@@ -39,7 +39,7 @@
     # according to documentation, showtext_auto needed for this to work properly 
   
 # custom theme for RSC Reg Stats plots
-  theme_RSC <- theme_minimal() +
+  theme_RSC <- theme_minimal(base_family = "avenir_lt_pro") +
     theme(
       plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
       legend.position = "none",
@@ -51,10 +51,19 @@
       axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 10)),
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
-      text = element_text(family = "avenir_lt_pro"),
       plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
       plot.margin = margin(50, 50, 50, 50)
     )
+  
+  # custom RSC wrapper function for geom_label_repel() (sets default font to avenir_lt_pro), call default function from package to avoid infinite recursion? e.g. ggrepel::geom_label_repel instead of geom_label_repel
+  geom_label_repel_RSC <- function(...) {
+    geom_label_repel(..., family = "avenir_lt_pro")
+  }
+  
+  # custom RSC wrapper function for annotate() (sets default font to avenir_lt_pro), call default function from package to avoid infinite recursion? e.g. ggplot2::annotate instead of annotate
+  annotate_RSC <- function(...) {
+    annotate(..., family = "avenir_lt_pro")
+  }
   
   # thank you to Yaxin for developing this custom theme!
   
