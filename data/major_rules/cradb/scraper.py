@@ -61,7 +61,9 @@ class Scraper:
             base_url: str = "https://www.gao.gov/legal/congressional-review-act/search-database-of-rules", 
             url_stem: str = "https://www.gao.gov", 
             major_only: bool = False, 
-            new_only: bool = False, **kwargs):
+            new_only: bool = False, 
+            **kwargs
+        ):
         """Initialize base scraper for CRA database.
 
         Args:
@@ -371,7 +373,7 @@ class PopulationScraper(Scraper):
 class RuleScraper(Scraper):
     """Scraper for retrieving detailed data on rules in GAO's CRA database."""
     
-    def __init__(self, input_data: dict | list = None, **kwargs) -> None:
+    def __init__(self, input_data: dict | list | None = None, **kwargs) -> None:
         """Initialize RuleScraper, inheriting atrributes and methods from Scraper class.
 
         Args:
@@ -469,6 +471,46 @@ class RuleScraper(Scraper):
             }
         
         return output
+
+
+class NewRuleScraper(PopulationScraper, RuleScraper):
+    def __init__(self, existing_data: dict | list, params: dict | None = None, interval: int = 30, **kwargs) -> None:
+        super().__init__(**kwargs)
+        if params is not None:
+            self.params = self.set_request_params(params)
+        else:
+            self.params = BASE_PARAMS
+        if existing_data is None:
+            self.existing_data = {}
+        else:
+            self.existing_data = existing_data
+        self.interval = interval
+        self.total_rules = self.get_document_count(self.request_soup(self.params))
+    
+    def _get_interval_rules(self, interval_count: int = 0):
+        #end_interval = get_last_received_date()
+        end_interval = date.today() + timedelta(days=1)
+        start_interval = date.today() - timedelta(days=self.interval)
+        self.params |= {
+            "received_start_date": start_interval, 
+            "received_end_date": end_interval, 
+            }
+        soup = self.request_soup(self.params)
+        interval_documents = self.get_document_count(soup)
+        interval_pages = self.get_page_count(soup)
+        self.scrape_population(self.params, interval_pages, interval_documents)
+
+
+
+#    def get_soup(self):
+#        x = soup
+    
+    # need:
+    # set of existing rules
+    # total rules to collect
+    # interval of time for start of search of new rules
+    # identify size of initial set
+    # identify comparison set // pre-initial set
 
 
 def create_soup_strainer(for_method: str = None):
