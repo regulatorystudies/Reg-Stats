@@ -831,7 +831,7 @@ def pipeline(data_path: Path,
         return True
     else:
         
-        if use_existing_pop_data and (not new_only):
+        if use_existing_pop_data:
             ps = PopulationScraper(major_only=major_only, new_only=new_only)
             pop_data = ps.from_json(data_path, f"population_{type}").get("results")
             document_count = len(pop_data)
@@ -901,13 +901,11 @@ def scraper(
     while True:
         
         # print prompts to console
-        new_prompt = "no"  #input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
-        detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
+        new_prompt = input("Retrieve only new rules (i.e., those added by GAO since last retrieval date)? [yes/no]: ").lower()
         
         # check user inputs
         valid_inputs = y_inputs + n_inputs
-        if ((new_prompt in valid_inputs) 
-            and (detail_prompt in valid_inputs)):
+        if new_prompt in valid_inputs:
             
             # set major_only param
             major_only = True
@@ -918,19 +916,26 @@ def scraper(
                 new_only = True
             elif new_prompt in n_inputs:
                 new_only = False
-
-            if detail_prompt in y_inputs:
-                rule_detail = True
-            elif detail_prompt in n_inputs:
-                rule_detail = False
             
-            if rule_detail:
-                existing_prompt = input("Use existing population data for retrieving rule-level details?\n(Select this if you previously retrieved population data and only want to retrieve rule-level details.) [yes/no]: ").lower()
-                if existing_prompt in y_inputs:
-                    use_existing_pop_data = True
-                elif existing_prompt in n_inputs:
+            # skips rule_detail and use_existing_pop_data if new_only is True
+            if not new_only:
+                detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
+
+                if detail_prompt in y_inputs:
+                    rule_detail = True
+                elif detail_prompt in n_inputs:
+                    rule_detail = False
+                
+                if rule_detail:
+                    existing_prompt = input("Use existing population data for retrieving rule-level details?\n(Select this if you previously retrieved population data and only want to retrieve rule-level details.) [yes/no]: ").lower()
+                    if existing_prompt in y_inputs:
+                        use_existing_pop_data = True
+                    elif existing_prompt in n_inputs:
+                        use_existing_pop_data = False
+                else:
                     use_existing_pop_data = False
             else:
+                rule_detail = False
                 use_existing_pop_data = False
                 
             # call scraper pipeline
