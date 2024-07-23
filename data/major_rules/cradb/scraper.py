@@ -1,6 +1,6 @@
 from collections import Counter
 from copy import deepcopy
-from datetime import date, timedelta
+from datetime import datetime, date, timedelta
 import json
 from pathlib import Path
 import re
@@ -50,6 +50,11 @@ def sleep_retry(timeout: int, retry: int = 3):
 
 
 class ParseError(Exception):
+    pass
+
+
+class NewDataRetrievalError(Exception):
+    """Raised when failed to retrieve new data from database."""
     pass
 
 
@@ -381,9 +386,9 @@ class RuleScraper(Scraper):
         """        
         super().__init__(**kwargs)
         if input_data is None:
-            self.data = {}
+            self.population_data = {}
         else:
-            self.data = input_data
+            self.population_data = input_data
     
     @sleep_retry(60)
     def scrape_rule(self, url: str):
@@ -432,7 +437,7 @@ class RuleScraper(Scraper):
         
         return rule_data
     
-    def scrape_rules(self, path: Path = None, file_name: str = None):
+    def scrape_rules(self, path: Path | None = None, file_name: str | None = None):
         """Scrape detailed data for multiple rules.
 
         Args:
@@ -441,16 +446,16 @@ class RuleScraper(Scraper):
 
         Returns:
             dict[str]: Results of the scraped data and accompanying metadata.
-        """        
+        """
         if (path is not None) and (file_name is not None):
             # import json
-            self.data = self.from_json(path, file_name)
+            self.population_data = self.from_json(path, file_name)
         
         # iteratively: read soup, scrape rule, append data
         try:
-            rules = self.data.get("results")
+            rules = self.population_data.get("results")
         except AttributeError:
-            rules = self.data
+            rules = self.population_data
         
         all_rule_data = []
         for rule in rules:    
@@ -474,32 +479,96 @@ class RuleScraper(Scraper):
 
 
 class NewRuleScraper(PopulationScraper, RuleScraper):
-    def __init__(self, existing_data: dict | list, params: dict | None = None, interval: int = 30, **kwargs) -> None:
+    def __init__(self, path: Path | None = None, file_name: str | None = None, existing_population_data: dict | list | None = None, params: dict | None = None, interval: int = 30, **kwargs) -> None:
         super().__init__(**kwargs)
+        self.path = path
+        self.file_name = file_name
+        if existing_population_data is not None:
+            if isinstance(existing_population_data, list):
+                self.existing_population_data = existing_population_data
+            elif isinstance(existing_population_data, dict):
+                self.existing_population_data = existing_population_data.get("results", [])
+        elif (path is not None) and (file_name is not None):
+            self.existing_population_data = self._get_existing_data(self.path, self.file_name)
+        if isinstance(self.existing_population_data, dict):
+            self.existing_population_size = len(self.existing_population_data.get("results", []))
+        elif isinstance(self.existing_population_data, list):
+            self.existing_population_size = len(self.existing_population_data)
         if params is not None:
             self.params = self.set_request_params(params)
         else:
-            self.params = BASE_PARAMS
-        if existing_data is None:
-            self.existing_data = {}
-        else:
-            self.existing_data = existing_data
+            self.params = self.set_request_params(BASE_PARAMS)
         self.interval = interval
-        self.total_rules = self.get_document_count(self.request_soup(self.params))
+        self.new_population_size = self.get_document_count(self.request_soup(self.params))
     
-    def _get_interval_rules(self, interval_count: int = 0):
-        #end_interval = get_last_received_date()
-        end_interval = date.today() + timedelta(days=1)
-        start_interval = date.today() - timedelta(days=self.interval)
-        self.params |= {
-            "received_start_date": start_interval, 
-            "received_end_date": end_interval, 
-            }
-        soup = self.request_soup(self.params)
-        interval_documents = self.get_document_count(soup)
-        interval_pages = self.get_page_count(soup)
-        self.scrape_population(self.params, interval_pages, interval_documents)
+    def _get_existing_data(self, path: Path, file_name: str) -> list:
 
+        data = self.from_json(path, file_name)
+        if isinstance(data, dict):
+            data: list = data.get("results", [])
+        elif isinstance(data, list):
+            pass
+        else:
+            raise TypeError("JSON object loaded of wrong type. Must be `list` or `dict`.")
+        return data
+    
+    def _get_interval_data(self, start_interval: date, end_interval: date) -> list:
+        self.params |= {
+                "received_start_date": start_interval, 
+                "received_end_date": end_interval, 
+                }
+        soup = self.request_soup(self.params)
+        interval_document_count = self.get_document_count(soup)
+        interval_page_count = self.get_page_count(soup)
+        interval_results = self.scrape_population(params=self.params, pages=interval_page_count, documents=interval_document_count)
+        return interval_results.get("results")
+
+    def _find_interval(self, interval_multiplier: int = 1):
+
+        end_interval = date.today() + timedelta(days=1)
+        while True:
+            start_interval = date.today() - timedelta(days=self.interval * interval_multiplier)
+            self.params |= {"received_end_date": start_interval}
+            soup = self.request_soup(self.params)
+            pre_interval_documents = self.get_document_count(soup)
+            print(f"Documents before {start_interval}: {pre_interval_documents}")
+            if pre_interval_documents == self.existing_population_size:
+                interval_results = self._get_interval_data(start_interval, end_interval)
+                break
+            elif pre_interval_documents > self.existing_population_size:
+                interval_multiplier += 1
+                continue
+            elif pre_interval_documents < self.existing_population_size:
+                interval_multiplier = round(interval_multiplier / 2)
+                continue            
+            else:
+                raise NewDataRetrievalError
+        return start_interval, interval_results
+    
+    def _combine_existing_and_new_data(self):
+        start_interval, new_data = self._find_interval()
+        combined_data = self.existing_population_data + new_data
+        if len(combined_data) != self.new_population_size:
+            print(len(combined_data))
+            raise NewDataRetrievalError
+        return start_interval, new_data, combined_data
+    
+    def scrape_new_rules(self, path: Path, file_name: str):
+        
+        start_interval, new_pop_data, combined_pop_data = self._combine_existing_and_new_data()
+        self.population_data = new_pop_data
+        new_detail_data: list = self.scrape_rules().get("results", [])
+        existing_detail_data: list = self._get_existing_data(path, file_name)
+        #print(set([type(rule.get("date_published_in_federal_register")) for rule in existing_detail_data]))
+        existing_detail_data = [rule for rule in existing_detail_data if datetime.fromisoformat(rule.get("date_published_in_federal_register", rule.get("received", rule.get("effective")))).date() <= start_interval]
+        print("exi", len(existing_detail_data), existing_detail_data[0])
+        print("new", len(new_detail_data), new_detail_data[0])
+        combined_detail_data = existing_detail_data + new_detail_data
+        if len(combined_pop_data) != len(combined_detail_data):
+            print("pop", len(combined_pop_data))
+            print("det", len(combined_detail_data))
+            raise NewDataRetrievalError
+        return combined_pop_data, combined_detail_data
 
 
 #    def get_soup(self):
