@@ -10,5 +10,5 @@ if __name__ == "__main__":
     ns = NewRuleScraper(path=path, file_name="population_major", major_only=True)
     pop, detail = ns.scrape_new_rules(path=path, file_name="rule_detail_major")
 
-    pprint(pop[-1])
-    pprint(detail[-1])
+    pprint(pop.keys())
+    pprint(detail.keys())
