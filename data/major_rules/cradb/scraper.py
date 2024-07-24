@@ -94,11 +94,6 @@ class Scraper:
         """        
         if self.major_only:
             params.update({"type": "Major"})
-        
-        if self.new_only:
-            start_date = get_last_received_date(kwargs.get("path"), kwargs.get("file_name"))
-            params.update({"received_start_date": start_date})
-        
         return params
     
     def request_soup(self, params: dict = None, page: int = None, alt_url: str = None, parser: str = "lxml", strainer: SoupStrainer = None):
@@ -530,11 +525,12 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
         interval_results = self.scrape_population(params=self.params, pages=interval_page_count, documents=interval_document_count)
         return interval_results.get("results")
 
-    def _find_interval(self, interval_multiplier: int = 1):
+    def _find_interval(self, ): #interval_multiplier: int = 1):
 
         end_interval = date.today() + timedelta(days=1)
+        start_interval = date.fromisoformat(get_last_received_date(self.existing_population_data))
         while True:
-            start_interval = date.today() - timedelta(days=self.interval * interval_multiplier)
+            start_interval = start_interval - timedelta(days=self.interval)
             self.params |= {"received_end_date": start_interval}
             soup = self.request_soup(self.params)
             pre_interval_documents = self.get_document_count(soup)
@@ -543,10 +539,12 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
                 interval_results = self._get_interval_data(start_interval, end_interval)
                 break
             elif pre_interval_documents > self.existing_population_size:
-                interval_multiplier += 1
+                #interval_multiplier = interval_multiplier * 1.5
+                self.interval += 1
                 continue
             elif pre_interval_documents < self.existing_population_size:
-                interval_multiplier = round(interval_multiplier / 2)
+                #interval_multiplier = interval_multiplier * 0.5
+                self.interval += -1
                 continue            
             else:
                 raise NewDataRetrievalError
@@ -676,7 +674,7 @@ def get_retrieval_date(path : Path, file_name: str):
     return data["date_retrieved"]
 
 
-def get_last_received_date(path : Path, file_name: str):
+def get_last_received_date(results: list | dict):
     """Get most recent received date plus one day from existing data.
 
     Args:
@@ -686,10 +684,10 @@ def get_last_received_date(path : Path, file_name: str):
     Returns:
         str: String of last received date plus one day in YYYY-MM-DD format.
     """
-    with open(path / f"{file_name}.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
-    
-    results = data["results"]
+    if isinstance(results, dict):
+        results = results["results"]
+    elif isinstance(results, list):
+        pass
     received_dates = (extract_date(r.get("received")) for r in results)
     received_list = sorted(received_dates, reverse=True)
     last_received_plus_one = received_list[0] + timedelta(days=1)
@@ -824,7 +822,7 @@ def pipeline(data_path: Path,
         type = "all"
     
     if new_only:
-        ns = NewRuleScraper(path=data_path, file_name=file_name_population, major_only=major_only)
+        ns = NewRuleScraper(path=data_path, file_name=file_name_population, major_only=major_only, interval=1)
         pop, detail = ns.scrape_new_rules(path=data_path, file_name=file_name_detail)
         ns.to_json(pop, data_path, f"population_{type}")
         ns.to_json(detail, data_path, f"rule_detail_{type}")
