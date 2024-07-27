@@ -565,7 +565,7 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
         new_detail_data: list = self.scrape_rules().get("results", [])
         existing_detail_data: list = self._get_existing_data(path, file_name)
         #print(set([type(rule.get("date_published_in_federal_register")) for rule in existing_detail_data]))
-        existing_detail_data = [rule for rule in existing_detail_data if datetime.fromisoformat(rule.get("received", start_interval)).date() <= start_interval]
+        existing_detail_data = [rule for rule in existing_detail_data if datetime.fromisoformat(rule.get("received", start_interval)).date() < start_interval]
         #print("exi", len(existing_detail_data), existing_detail_data[0])
         #print("new", len(new_detail_data), new_detail_data[0])
         #exi = [rule.get("control_number") for rule in existing_detail_data]
@@ -573,10 +573,16 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
         #missing_from_new = [rule for rule in exi if rule not in new]
         #missing_from_exi = [rule for rule in new if rule not in exi]
         combined_detail_data = existing_detail_data + new_detail_data
-        dup_list, dups = remove_duplicates(combined_detail_data)
-        if dups > 0:
-            print(f"Removed {dups} duplicates: {dup_list}")
+        combined_data = []
+        for cat, data in (("population", combined_pop_data), ("detail", combined_detail_data)):
+            data, dups = remove_duplicates(data)
+            if dups > 0:
+                print(f"Removed {dups} duplicates from {cat} data.")
+            combined_data.append(data)
+        combined_pop_data, combined_detail_data = combined_data
         if len(combined_pop_data) != len(combined_detail_data):
+            print(identify_duplicates(combined_pop_data))
+            print(len(combined_pop_data), len(combined_detail_data))
             detail = [r.get("fed_reg_number") for r in combined_detail_data]
             pop = [r.get("fed_reg_number") for r in combined_pop_data]
             missing_from_det = [rule for rule in pop if rule not in detail]
