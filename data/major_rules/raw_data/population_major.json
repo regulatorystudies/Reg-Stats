@@ -145,16 +145,6 @@
         },
         {
             "page": 0,
-            "url": "https://www.gao.gov/fedrules/208851",
-            "type": "Major Federal Rule",
-            "identifier": "2050-AH14",
-            "fed_reg_number": "89 FR 38950",
-            "effective_date": "2024-11-04T13:00:00Z",
-            "received": "2024-05-08T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 0,
             "url": "https://www.gao.gov/fedrules/208869",
             "type": "Major Federal Rule",
             "identifier": "2060-AV83",
