@@ -50,6 +50,7 @@ def sleep_retry(timeout: int, retry: int = 3):
 
 
 class ParseError(Exception):
+    """Raise when parsing the html for the variable of interest fails."""
     pass
 
 
@@ -478,7 +479,8 @@ class RuleScraper(Scraper):
             if not quietly:
                 report_retrieval_status(len(all_rule_data), truncate(len(rules), places = -3))
         
-        print(f"Retrieved detailed information for {len(all_rule_data)} rules.")
+        if not quietly:
+            print(f"Retrieved detailed information for {len(all_rule_data)} rules.")
         output = self._add_output_metadata(all_rule_data, how="detail")
         return output
 
@@ -539,6 +541,7 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
 
         end_interval = date.today() + timedelta(days=1)
         start_interval = date.fromisoformat(get_last_received_date(self.existing_population_data))
+        print("Searching for new rules...")
         while True:
             start_interval = start_interval - timedelta(days=self.interval)
             self.params |= {"received_end_date": start_interval}
@@ -549,23 +552,22 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
             
             # compare pre interval document count with size of existing pop before start_interval
             if pre_interval_documents == len(existing_population_size_before_start_interval):
-                print(f"Documents before {start_interval}: {pre_interval_documents}")
+                #print(f"Documents before {start_interval}: {pre_interval_documents}")
                 interval_results = self._get_interval_data(start_interval, end_interval)
                 break
 
         return start_interval, interval_results
     
-    def _sort_retrieved_data(self, data):
-        return sorted(sorted(data, key=lambda x: x.get("page")), key=lambda x: x.get("received"), reverse=True)
+    def _sort_retrieved_data(self, data: list):
+        return sorted(sorted(data, key=lambda x: x.get("page", x.get("url"))), key=lambda x: x.get("received"), reverse=True)
 
     def _combine_existing_and_new_data(self):
         start_interval, new_data = self._find_interval()
         combined_pop_data = self.existing_population_data + new_data
-        combined_pop_data, dups = remove_duplicates(combined_pop_data)
-        if dups > 0:
-            print(f"Removed {dups} duplicates from population data.")
+        combined_pop_data, _ = remove_duplicates(combined_pop_data)
+        #if dups > 0:
+        #    print(f"Removed {dups} duplicates from population data.")
         if len(combined_pop_data) != self.new_population_size:
-            print()
             raise NewDataRetrievalError(f"Size of combined population data ({len(combined_pop_data)}) does not match ({self.new_population_size})")
         combined_pop_data = self._sort_retrieved_data(combined_pop_data)
         return start_interval, new_data, combined_pop_data
@@ -585,9 +587,10 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
         #missing_from_new = [rule for rule in exi if rule not in new]
         #missing_from_exi = [rule for rule in new if rule not in exi]
         combined_detail_data = existing_detail_data + new_detail_data
-        combined_detail_data, dups = remove_duplicates(combined_detail_data)
-        if dups > 0:
-            print(f"Removed {dups} duplicates from detail data.")
+        combined_detail_data, _ = remove_duplicates(combined_detail_data)
+        #if dups > 0:
+        #    print(f"Removed {dups} duplicates from detail data.")
+        combined_detail_data = self._sort_retrieved_data(combined_detail_data)
         if len(combined_pop_data) != len(combined_detail_data):
             print(identify_duplicates(combined_pop_data))
             print(len(combined_pop_data), len(combined_detail_data))
@@ -596,18 +599,8 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
             missing_from_det = [rule for rule in pop if rule not in detail]
             missing_from_pop = [rule for rule in detail if rule not in pop]
             raise NewDataRetrievalError(f"Missing rules {missing_from_pop} from population data and {missing_from_det} from rule detail data.")
+        print(f"Retrieved detailed information for {len(combined_pop_data) - self.existing_population_size} new rules.")
         return self._add_output_metadata(combined_pop_data, how="population"), self._add_output_metadata(combined_detail_data, how="detail")
-
-
-#    def get_soup(self):
-#        x = soup
-    
-    # need:
-    # set of existing rules
-    # total rules to collect
-    # interval of time for start of search of new rules
-    # identify size of initial set
-    # identify comparison set // pre-initial set
 
 
 def create_soup_strainer(for_method: str = None):
