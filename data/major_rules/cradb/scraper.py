@@ -484,6 +484,8 @@ class RuleScraper(Scraper):
 
 
 class NewRuleScraper(PopulationScraper, RuleScraper):
+    """Scrape population and rule detail data for new rules not present in the retrieved database."""
+
     def __init__(self, path: Path | None = None, file_name: str | None = None, existing_population_data: dict | list | None = None, params: dict | None = None, interval: int = 30, **kwargs) -> None:
         super().__init__(**kwargs)
         self.path = path
@@ -542,21 +544,31 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
             self.params |= {"received_end_date": start_interval}
             soup = self.request_soup(self.params)
             pre_interval_documents = self.get_document_count(soup)
-            print(f"Documents before {start_interval}: {pre_interval_documents}")
-            if pre_interval_documents == self.existing_population_size:
+            existing_population_size_before_start_interval = [rule for rule in self.existing_population_data if datetime.fromisoformat(rule.get("received")).date() < start_interval]
+            #print(existing_population_size_before_start_interval[0].get("received"))
+            
+            # compare pre interval document count with size of existing pop before start_interval
+            if pre_interval_documents == len(existing_population_size_before_start_interval):
+                print(f"Documents before {start_interval}: {pre_interval_documents}")
                 interval_results = self._get_interval_data(start_interval, end_interval)
                 break
-            else:
-                continue
+
         return start_interval, interval_results
     
+    def _sort_retrieved_data(self, data):
+        return sorted(sorted(data, key=lambda x: x.get("page")), key=lambda x: x.get("received"), reverse=True)
+
     def _combine_existing_and_new_data(self):
         start_interval, new_data = self._find_interval()
-        combined_data = self.existing_population_data + new_data
-        if len(combined_data) != self.new_population_size:
-            print(len(combined_data))
-            raise NewDataRetrievalError
-        return start_interval, new_data, combined_data
+        combined_pop_data = self.existing_population_data + new_data
+        combined_pop_data, dups = remove_duplicates(combined_pop_data)
+        if dups > 0:
+            print(f"Removed {dups} duplicates from population data.")
+        if len(combined_pop_data) != self.new_population_size:
+            print()
+            raise NewDataRetrievalError(f"Size of combined population data ({len(combined_pop_data)}) does not match ({self.new_population_size})")
+        combined_pop_data = self._sort_retrieved_data(combined_pop_data)
+        return start_interval, new_data, combined_pop_data
     
     def scrape_new_rules(self, path: Path, file_name: str):
         
@@ -573,13 +585,9 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
         #missing_from_new = [rule for rule in exi if rule not in new]
         #missing_from_exi = [rule for rule in new if rule not in exi]
         combined_detail_data = existing_detail_data + new_detail_data
-        combined_data = []
-        for cat, data in (("population", combined_pop_data), ("detail", combined_detail_data)):
-            data, dups = remove_duplicates(data)
-            if dups > 0:
-                print(f"Removed {dups} duplicates from {cat} data.")
-            combined_data.append(data)
-        combined_pop_data, combined_detail_data = combined_data
+        combined_detail_data, dups = remove_duplicates(combined_detail_data)
+        if dups > 0:
+            print(f"Removed {dups} duplicates from detail data.")
         if len(combined_pop_data) != len(combined_detail_data):
             print(identify_duplicates(combined_pop_data))
             print(len(combined_pop_data), len(combined_detail_data))
