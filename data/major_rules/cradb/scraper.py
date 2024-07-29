@@ -232,13 +232,14 @@ class PopulationScraper(Scraper):
         return page_count
     
     @sleep_retry(300, retry=12)
-    def scrape_population(self, params: dict, pages: int | list | range | tuple, documents: int = None, **kwargs):
+    def scrape_population(self, params: dict, pages: int | list | range | tuple, documents: int = None, quietly: bool = False, **kwargs):
         """Scrape html for population of rules in CRA database.
 
         Args:
             params (dict): Parameters to pass to `request_soup()`.
             pages (int): Number of pages containing rule data. In practice, this should be equivalent to the value returned by `get_page_count()`.
             documents (int, optional): If non-zero `int`, print status updates on number of retrieved documents. Defaults to None.
+            quietly (bool, optional): Do not print status updates. Defaults to False.
 
         Returns:
             dict: Results of the scraped data and accompanying metadata.
@@ -268,7 +269,7 @@ class PopulationScraper(Scraper):
             one_page = self.scrape_page(rules_this_page, page, collected_data=kwargs.get("collected_data"))
             
             all_rules.extend(one_page)
-            if documents is not None:
+            if (documents is not None) and (not quietly):
                 report_retrieval_status(len(all_rules), truncate(documents, places = -3), **kwargs)
         
         #dup_items = identify_duplicates(all_rules)
@@ -448,12 +449,13 @@ class RuleScraper(Scraper):
         
         return rule_data
     
-    def scrape_rules(self, path: Path | None = None, file_name: str | None = None):
+    def scrape_rules(self, path: Path | None = None, file_name: str | None = None, quietly: bool = False):
         """Scrape detailed data for multiple rules.
 
         Args:
             path (Path, optional): Path to input data. Defaults to None.
             file_name (str, optional): File name of input data. Defaults to None.
+            quietly (bool, optional): Do not print status updates. Defaults to False.
 
         Returns:
             dict[str]: Results of the scraped data and accompanying metadata.
@@ -473,7 +475,8 @@ class RuleScraper(Scraper):
             #soup = self.request_soup(alt_url = rule.get("url"))
             rule_data = self.scrape_rule(url = rule.get("url"))
             all_rule_data.append(rule_data)
-            report_retrieval_status(len(all_rule_data), truncate(len(rules), places = -3))
+            if not quietly:
+                report_retrieval_status(len(all_rule_data), truncate(len(rules), places = -3))
         
         print(f"Retrieved detailed information for {len(all_rule_data)} rules.")
         output = self._add_output_metadata(all_rule_data, how="detail")
@@ -522,10 +525,15 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
         soup = self.request_soup(self.params)
         interval_document_count = self.get_document_count(soup)
         interval_page_count = self.get_page_count(soup)
-        interval_results = self.scrape_population(params=self.params, pages=interval_page_count, documents=interval_document_count)
+        interval_results = self.scrape_population(
+            params=self.params, 
+            pages=interval_page_count, 
+            documents=interval_document_count, 
+            quietly=True
+            )
         return interval_results.get("results")
 
-    def _find_interval(self, ): #interval_multiplier: int = 1):
+    def _find_interval(self, ):
 
         end_interval = date.today() + timedelta(days=1)
         start_interval = date.fromisoformat(get_last_received_date(self.existing_population_data))
@@ -538,16 +546,8 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
             if pre_interval_documents == self.existing_population_size:
                 interval_results = self._get_interval_data(start_interval, end_interval)
                 break
-            elif pre_interval_documents > self.existing_population_size:
-                #interval_multiplier = interval_multiplier * 1.5
-                self.interval += 1
-                continue
-            elif pre_interval_documents < self.existing_population_size:
-                #interval_multiplier = interval_multiplier * 0.5
-                self.interval += -1
-                continue            
             else:
-                raise NewDataRetrievalError
+                continue
         return start_interval, interval_results
     
     def _combine_existing_and_new_data(self):
@@ -562,10 +562,10 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
         
         start_interval, new_pop_data, combined_pop_data = self._combine_existing_and_new_data()
         self.population_data = new_pop_data
-        new_detail_data: list = self.scrape_rules().get("results", [])
+        new_detail_data: list = self.scrape_rules(quietly=True).get("results", [])
         existing_detail_data: list = self._get_existing_data(path, file_name)
         #print(set([type(rule.get("date_published_in_federal_register")) for rule in existing_detail_data]))
-        existing_detail_data = [rule for rule in existing_detail_data if datetime.fromisoformat(rule.get("received", start_interval)).date() < start_interval]
+        existing_detail_data = [rule for rule in existing_detail_data if datetime.fromisoformat(rule.get("received", start_interval)).date() <= start_interval]
         #print("exi", len(existing_detail_data), existing_detail_data[0])
         #print("new", len(new_detail_data), new_detail_data[0])
         #exi = [rule.get("control_number") for rule in existing_detail_data]
@@ -781,9 +781,11 @@ def truncate(n: int | float, places: int = 0):
     return int(n * multiplier) / multiplier
 
 
-def report_retrieval_status(retrieved_documents: int, 
-                            total_documents: int, 
-                            n_status_updates: int = 10) -> None:
+def report_retrieval_status(
+        retrieved_documents: int, 
+        total_documents: int, 
+        n_status_updates: int = 10, 
+    ) -> None:
     """Reports "n_status_updates" of the documents retrieved so far.
 
     Args:
