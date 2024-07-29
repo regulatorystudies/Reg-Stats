@@ -50,7 +50,7 @@ def sleep_retry(timeout: int, retry: int = 3):
 
 
 class ParseError(Exception):
-    """Raise when parsing the html for the variable of interest fails."""
+    """Raised when parsing the html for the variable of interest fails."""
     pass
 
 
@@ -273,9 +273,6 @@ class PopulationScraper(Scraper):
             if (documents is not None) and (not quietly):
                 report_retrieval_status(len(all_rules), truncate(documents, places = -3), **kwargs)
         
-        #dup_items = identify_duplicates(all_rules)
-        #pprint(dup_items)
-        
         all_rules_dedup = all_rules
         all_rules_dedup, dups = remove_duplicates(all_rules)
         if dups > 0:
@@ -287,31 +284,37 @@ class PopulationScraper(Scraper):
     def scrape_page(self, 
                     rules_this_page: BeautifulSoup, 
                     page: int, 
-                    collected_data: list = None):
-        
-        if collected_data:
-            #control_num_list = (extract_control_number(r.get("url"), regex=False) for r in collected_data)
+                    collected_data: list | None = None):
+        """Scrape a single page of data from the database search results.
+
+        Args:
+            rules_this_page (BeautifulSoup): Soup for a page of results.
+            page (int): Page number of results.
+            collected_data (list | None, optional): Skip scraping rules that have already been collected. Defaults to None.
+
+        Raises:
+            ParseError: Parsing HTML failed.
+
+        Returns:
+            list: List of documents scraped from one page of results.
+        """        
+        if collected_data is not None:
             url_list = (r.get("url") for r in collected_data)
         
         # loop over rules on a single page
         one_page = []
         for rule in rules_this_page:
             bookmark = rule.find("div", class_="teaser-search--bookmark").a
-            #control_num = extract_control_number(f"{bookmark['href']}")
             url = f"{self.url_stem}{bookmark['href']}"
-            if collected_data:
-                #control_num_list = [extract_control_number(r.get("url")) for r in collected_data]
-                #print(control_num)
+            if collected_data is not None:
                 if url in url_list:
-                #if control_num in control_num_list:
-                    #print(url)
+                    # skip to the next object in the loop
                     continue
             
             rows = rule.find_all("div", class_="teaser-search--row")
             rule_dict = {
                 "page": page, 
-                "url": url, #f"{self.url_stem}{bookmark['href']}", 
-                #"control_num": control_num, 
+                "url": url,
                 "type": bookmark.string.strip()
                 }
             for row in rows:
@@ -324,7 +327,7 @@ class PopulationScraper(Scraper):
                     elif div.time is None:
                         value = div.string.strip()
                     else:
-                        raise ParseError
+                        raise ParseError("Parsing HTML failed.")
                     rule_dict.update({label: value})
             one_page.append(rule_dict)
         
@@ -486,7 +489,9 @@ class RuleScraper(Scraper):
 
 
 class NewRuleScraper(PopulationScraper, RuleScraper):
-    """Scrape population and rule detail data for new rules not present in the retrieved database."""
+    """Scrape population and rule detail data for new rules not present in the retrieved database.
+    Inherits from `PopulationScraper` and `RuleScraper`.
+    """
 
     def __init__(self, path: Path | None = None, file_name: str | None = None, existing_population_data: dict | list | None = None, params: dict | None = None, interval: int = 30, **kwargs) -> None:
         super().__init__(**kwargs)
@@ -511,7 +516,8 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
         self.new_population_size = self.get_document_count(self.request_soup(self.params))
     
     def _get_existing_data(self, path: Path, file_name: str) -> list:
-
+        """Retrieve list of existing data by passing a path and file name.
+        """
         data = self.from_json(path, file_name)
         if isinstance(data, dict):
             data: list = data.get("results", [])
@@ -522,6 +528,15 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
         return data
     
     def _get_interval_data(self, start_interval: date, end_interval: date) -> list:
+        """Scrape population data from a given interval of received dates.
+
+        Args:
+            start_interval (date): Start date for database "received" field (inclusive).
+            end_interval (date): End date for database "received" field (exclusive).
+
+        Returns:
+            list: Results from database that fall within the date interval.
+        """
         self.params |= {
                 "received_start_date": start_interval, 
                 "received_end_date": end_interval, 
@@ -537,8 +552,12 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
             )
         return interval_results.get("results")
 
-    def _find_interval(self, ):
+    def _find_interval(self):
+        """_summary_
 
+        Returns:
+            _type_: _description_
+        """
         end_interval = date.today() + timedelta(days=1)
         start_interval = date.fromisoformat(get_last_received_date(self.existing_population_data))
         print("Searching for new rules...")
