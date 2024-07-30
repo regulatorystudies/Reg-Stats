@@ -1,7 +1,7 @@
 {
     "description": "Contains basic records for rules in GAO's CRA Database of Rules.",
     "source": "https://www.gao.gov/legal/congressional-review-act/search-database-of-rules",
-    "date_retrieved": "2024-07-29",
+    "date_retrieved": "2024-07-30",
     "major_only": true,
     "rule_count": 2256,
     "results": [
@@ -205,21 +205,21 @@
         },
         {
             "page": 0,
-            "url": "https://www.gao.gov/fedrules/208857",
-            "type": "Major Federal Rule",
-            "identifier": "1904-AF62",
-            "fed_reg_number": "38762",
-            "effective_date": "2024-09-04T13:00:00Z",
-            "received": "2024-05-07T13:00:00Z",
-            "priority": "Significant/Substantive"
-        },
-        {
-            "page": 0,
             "url": "https://www.gao.gov/fedrules/208856",
             "type": "Major Federal Rule",
             "identifier": "0693-AB70",
             "fed_reg_number": "88 FR 65600",
             "effective_date": "2023-11-24T13:00:00Z",
+            "received": "2024-05-07T13:00:00Z",
+            "priority": "Significant/Substantive"
+        },
+        {
+            "page": 1,
+            "url": "https://www.gao.gov/fedrules/208857",
+            "type": "Major Federal Rule",
+            "identifier": "1904-AF62",
+            "fed_reg_number": "38762",
+            "effective_date": "2024-09-04T13:00:00Z",
             "received": "2024-05-07T13:00:00Z",
             "priority": "Significant/Substantive"
         },

@@ -1,7 +1,7 @@
 {
     "description": "Contains detailed records for rules in GAO's CRA Database of Rules.",
     "sources": "Series of links with pattern https://www.gao.gov/fedrules/{control_number}",
-    "date_retrieved": "2024-07-29",
+    "date_retrieved": "2024-07-30",
     "rule_count": 2256,
     "results": [
         {
