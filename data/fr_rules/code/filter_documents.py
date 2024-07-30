@@ -5,7 +5,11 @@ from numpy import array
 from pandas import DataFrame
 
 
-# Defining a function to search for string patterns within dataframe columns
+class SearchError(Exception):
+    """Search returned misaligned results."""
+    pass
+
+
 def search_columns(df: DataFrame, 
                    patterns: list, 
                    columns: list, 
@@ -79,3 +83,38 @@ def search_columns(df: DataFrame,
     
     else:
         raise ValueError("Incorrect input for 'return_as' parameter.")
+
+
+def filter_corrections(df: DataFrame):
+    """Filter out corrections from Federal Register documents. 
+    Identifies corrections using `corrrection_of` field and regex searches of `document_number`, `title`, and `action` fields.
+
+    Args:
+        df (DataFrame): Federal Register data.
+
+    Returns:
+        tuple: DataFrame with corrections removed, DataFrame of corrections
+    """
+    # get original column names
+    cols = df.columns.tolist()
+    
+    # filter out corrections
+    # 1. Using correction fields
+    bool_na = array(df["correction_of"].isna())
+
+    # 2. Searching other fields
+    search_1 = search_columns(df, [r"^[crxz][\d]{1,2}-(?:[\w]{2,4}-)?[\d]+"], ["document_number"], 
+                                 return_column="indicator1")
+    search_2 = search_columns(df, [r"(?:;\scorrection\b)|(?:\bcorrecting\samend[\w]+\b)"], ["title", "action"], 
+                                 return_column="indicator2")
+    bool_search = array(search_1["indicator1"] == 1) | array(search_2["indicator2"] == 1)
+
+    # separate corrections from non-corrections
+    df_no_corrections = df.loc[(bool_na & ~bool_search), cols]  # remove flagged documents
+    df_corrections = df.loc[(~bool_na | bool_search), cols]
+    
+    # return filtered results
+    if len(df) == len(df_no_corrections) + len(df_corrections):
+        return df_no_corrections, df_corrections
+    else:
+        raise SearchError(f"{len(df)} != {len(df_no_corrections)} + {len(df_corrections)}")
