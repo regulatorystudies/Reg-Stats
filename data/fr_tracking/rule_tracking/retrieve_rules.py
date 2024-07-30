@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Mark Febrizio
 
-Created: 2024-01-16
-
-Last modified: 2024-01-16
-"""
-# dependencies
 from datetime import date
 import functools
 import logging
