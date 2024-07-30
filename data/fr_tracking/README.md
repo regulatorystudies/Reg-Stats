@@ -76,4 +76,5 @@ When updates are made to the application code, you will need to deploy a revised
   - Log in to the regulatorystudies shinyapp.io account, go to Account -> Tokens, and generate a new token (or use an existing token)
   - Follow the instructions in the [shinyapps.io documentation](https://docs.posit.co/shinyapps.io/guide/getting_started/#working-with-shiny-for-python).
 - Run the `deploy.bat` script, which contains the commands needed to push an updated version of the application.
+  - On Windows, this can be done by navigating to the root directory (`~/fr_tracking/`) and running `& deploy.bat` from the command line.
   - You can also copy the commands from the script and run them in the terminal directly.
