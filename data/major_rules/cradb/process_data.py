@@ -6,6 +6,7 @@ import re
 from pandas import DataFrame, merge
 
 
+# revise these constants after each presidential transition
 END_OF_ADMIN = (2000, 2008, 2016, 2020)
 PRESIDENTIAL_ADMINS = {
     "Clinton": {
@@ -53,7 +54,8 @@ def load_json(path: Path, file_name: str) -> dict | list:
 
 
 def fix_url_stubs(data: dict | list, url_stem: str = r"https://www.gao.gov", key: str = "major_rule_report"):
-    
+    """Updates a rule's key, value pair to include a missing url domain.
+    """
     if isinstance(data, dict):
         results = data.get("results")
     elif isinstance(data, list):
@@ -228,6 +230,17 @@ def filter_partial_years(
         cutoff_presidential: str = "02-01", 
         cutoff_calendar: str = "01-01"
     ):
+    """Remove partial year data from the processed output. For example, we do not want to publish partial 2024 data before the year is done.
+
+    Args:
+        df (DataFrame): Input data.
+        year_column (str): Column containing the year information.
+        cutoff_presidential (str, optional): MM-DD indicating the beginning of each presidential year. Defaults to "02-01".
+        cutoff_calendar (str, optional): MM-DD indicating the beginning of each calendar year. Defaults to "01-01".
+
+    Returns:
+        DataFrame: Filtered data without a trailing partial year.
+    """    
     this_day = date.today()
     this_year = this_day.year
     presidential_year_cutoff = date.fromisoformat(f"{this_year}-{cutoff_presidential}")
@@ -251,6 +264,7 @@ def process_data(
         root_path: Path, 
         data_file: str = "rule_detail_major", 
         filter_partial_year: bool = True, 
+        quietly: bool = True,
     ) -> None:
     """Text-based interface for running the data processing pipeline. 
     Operates within a `while True` loop that doesn't break until it receives valid inputs.
@@ -265,7 +279,8 @@ def process_data(
     data = load_json(data_path, data_file)    
     df = json_to_df(data)
     df, df_dup = find_duplicates(df)
-    print(f"\nRemoved {len(df_dup)} duplicates.")
+    if not quietly:
+        print(f"\nRemoved {len(df_dup)} duplicates.")
     timeframe = ("received", "published")
     dfs = []
     for tf in timeframe:
