@@ -552,11 +552,13 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
             )
         return interval_results.get("results")
 
-    def _find_interval(self):
-        """_summary_
+    def _find_interval(self) -> tuple[date, list]:
+        """Find date interval that contains all new rules added to database. 
+        Starting with `self.interval` instance attribute, iteratively searches backward 
+        until the count of documents in the existing local database matches the count of documents in GAO's database.
 
         Returns:
-            _type_: _description_
+            tuple[date, list]: Start date of found interval, list of documents retrieved from interval
         """
         end_interval = date.today() + timedelta(days=1)
         start_interval = date.fromisoformat(get_last_received_date(self.existing_population_data))
@@ -567,7 +569,6 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
             soup = self.request_soup(self.params)
             pre_interval_documents = self.get_document_count(soup)
             existing_population_size_before_start_interval = [rule for rule in self.existing_population_data if datetime.fromisoformat(rule.get("received")).date() < start_interval]
-            #print(existing_population_size_before_start_interval[0].get("received"))
             
             # compare pre interval document count with size of existing pop before start_interval
             if pre_interval_documents == len(existing_population_size_before_start_interval):
@@ -577,38 +578,45 @@ class NewRuleScraper(PopulationScraper, RuleScraper):
 
         return start_interval, interval_results
     
-    def _sort_retrieved_data(self, data: list):
+    def _sort_retrieved_data(self, data: list[dict]) -> list:
+        """Sort list of retrieved data based on 1) "page" or "url" (ascending) and 2) "received" date (descending).
+        """
         return sorted(sorted(data, key=lambda x: x.get("page", x.get("url"))), key=lambda x: x.get("received"), reverse=True)
 
     def _combine_existing_and_new_data(self):
+        """Combine population data from existing local database and newly retrieved data, removing duplicates.
+
+        Returns:
+            tuple[date, list, list]: Start date of interval, list of documents retrieved from interval, list of combined population data
+        """
         start_interval, new_data = self._find_interval()
         combined_pop_data = self.existing_population_data + new_data
         combined_pop_data, _ = remove_duplicates(combined_pop_data)
-        #if dups > 0:
-        #    print(f"Removed {dups} duplicates from population data.")
         if len(combined_pop_data) != self.new_population_size:
             raise NewDataRetrievalError(f"Size of combined population data ({len(combined_pop_data)}) does not match ({self.new_population_size})")
         combined_pop_data = self._sort_retrieved_data(combined_pop_data)
         return start_interval, new_data, combined_pop_data
     
     def scrape_new_rules(self, path: Path, file_name: str):
-        
+        """Scrape rules in GAO's database that do not yet exist in the local database.
+
+        Args:
+            path (Path): Path to existing detailed rule data.
+            file_name (str): File name of existing detailed rule data.
+
+        Raises:
+            NewDataRetrievalError: Raised when rules in the population data are missing from the rule detail data (or vice versa).
+
+        Returns:
+            tuple[dict, dict]: Population data, Rule detail data
+        """        
         start_interval, new_pop_data, combined_pop_data = self._combine_existing_and_new_data()
         self.population_data = new_pop_data
         new_detail_data: list = self.scrape_rules(quietly=True).get("results", [])
         existing_detail_data: list = self._get_existing_data(path, file_name)
-        #print(set([type(rule.get("date_published_in_federal_register")) for rule in existing_detail_data]))
         existing_detail_data = [rule for rule in existing_detail_data if datetime.fromisoformat(rule.get("received", start_interval)).date() <= start_interval]
-        #print("exi", len(existing_detail_data), existing_detail_data[0])
-        #print("new", len(new_detail_data), new_detail_data[0])
-        #exi = [rule.get("control_number") for rule in existing_detail_data]
-        #new = [rule.get("control_number") for rule in new_detail_data]
-        #missing_from_new = [rule for rule in exi if rule not in new]
-        #missing_from_exi = [rule for rule in new if rule not in exi]
         combined_detail_data = existing_detail_data + new_detail_data
         combined_detail_data, _ = remove_duplicates(combined_detail_data)
-        #if dups > 0:
-        #    print(f"Removed {dups} duplicates from detail data.")
         combined_detail_data = self._sort_retrieved_data(combined_detail_data)
         if len(combined_pop_data) != len(combined_detail_data):
             print(identify_duplicates(combined_pop_data))
