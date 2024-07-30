@@ -33,6 +33,7 @@ PRESIDENTIAL_ADMINS = {
 
 class ProcessingError(Exception):
     """Error processing documents."""
+    pass
 
 
 def load_json(path: Path, file_name: str) -> dict | list:

@@ -1,6 +1,6 @@
 from collections import Counter
 from copy import deepcopy
-from datetime import date, timedelta
+from datetime import datetime, date, timedelta
 import json
 from pathlib import Path
 import re
@@ -50,6 +50,12 @@ def sleep_retry(timeout: int, retry: int = 3):
 
 
 class ParseError(Exception):
+    """Raised when parsing the html for the variable of interest fails."""
+    pass
+
+
+class NewDataRetrievalError(Exception):
+    """Raised when failed to retrieve new data from database."""
     pass
 
 
@@ -61,7 +67,9 @@ class Scraper:
             base_url: str = "https://www.gao.gov/legal/congressional-review-act/search-database-of-rules", 
             url_stem: str = "https://www.gao.gov", 
             major_only: bool = False, 
-            new_only: bool = False, **kwargs):
+            new_only: bool = False, 
+            **kwargs
+        ):
         """Initialize base scraper for CRA database.
 
         Args:
@@ -87,11 +95,6 @@ class Scraper:
         """        
         if self.major_only:
             params.update({"type": "Major"})
-        
-        if self.new_only:
-            start_date = get_last_received_date(kwargs.get("path"), kwargs.get("file_name"))
-            params.update({"received_start_date": start_date})
-        
         return params
     
     def request_soup(self, params: dict = None, page: int = None, alt_url: str = None, parser: str = "lxml", strainer: SoupStrainer = None):
@@ -124,6 +127,29 @@ class Scraper:
             response.raise_for_status()
         
         return BeautifulSoup(response.content, parser, parse_only=strainer)
+    
+    def _add_output_metadata(self, results: list, how: str):
+        if how == "population":
+            output = {
+                "description": "Contains basic records for rules in GAO's CRA Database of Rules.", 
+                "source": self.url, 
+                "date_retrieved": f"{date.today()}", 
+                "major_only": self.major_only, 
+                "rule_count": len(results), 
+                "results": results
+                }
+        elif how == "detail":
+            example_control_number = r"{control_number}"
+            output = {
+                "description": "Contains detailed records for rules in GAO's CRA Database of Rules.", 
+                "sources": f"Series of links with pattern {self.url_stem}/fedrules/{example_control_number}", 
+                "date_retrieved": f"{date.today()}", 
+                "rule_count": len(results), 
+                "results": results
+                }
+        else:
+            raise ValueError("Parameter 'how' accepts inputs of 'population' or 'detail'.")
+        return output
     
     def from_json(self, path: Path, file_name: str) -> dict | list:
         """Import data from .json format.
@@ -207,13 +233,14 @@ class PopulationScraper(Scraper):
         return page_count
     
     @sleep_retry(300, retry=12)
-    def scrape_population(self, params: dict, pages: int | list | range | tuple, documents: int = None, **kwargs):
+    def scrape_population(self, params: dict, pages: int | list | range | tuple, documents: int = None, quietly: bool = False, **kwargs):
         """Scrape html for population of rules in CRA database.
 
         Args:
             params (dict): Parameters to pass to `request_soup()`.
             pages (int): Number of pages containing rule data. In practice, this should be equivalent to the value returned by `get_page_count()`.
             documents (int, optional): If non-zero `int`, print status updates on number of retrieved documents. Defaults to None.
+            quietly (bool, optional): Do not print status updates. Defaults to False.
 
         Returns:
             dict: Results of the scraped data and accompanying metadata.
@@ -243,55 +270,51 @@ class PopulationScraper(Scraper):
             one_page = self.scrape_page(rules_this_page, page, collected_data=kwargs.get("collected_data"))
             
             all_rules.extend(one_page)
-            if documents is not None:
+            if (documents is not None) and (not quietly):
                 report_retrieval_status(len(all_rules), truncate(documents, places = -3), **kwargs)
-        
-        #dup_items = identify_duplicates(all_rules)
-        #pprint(dup_items)
         
         all_rules_dedup = all_rules
         all_rules_dedup, dups = remove_duplicates(all_rules)
         if dups > 0:
             print(f"Filtered out {dups} duplicates.")
         
-        output = {
-            "description": "Contains basic records for rules in GAO's CRA Database of Rules.", 
-            "source": self.url, 
-            "date_retrieved": f"{date.today()}", 
-            "major_only": self.major_only, 
-            "rule_count": len(all_rules_dedup), 
-            "results": all_rules_dedup
-            }
+        output = self._add_output_metadata(all_rules_dedup, how="population")
         return output
     
     def scrape_page(self, 
                     rules_this_page: BeautifulSoup, 
                     page: int, 
-                    collected_data: list = None):
-        
-        if collected_data:
-            #control_num_list = (extract_control_number(r.get("url"), regex=False) for r in collected_data)
+                    collected_data: list | None = None):
+        """Scrape a single page of data from the database search results.
+
+        Args:
+            rules_this_page (BeautifulSoup): Soup for a page of results.
+            page (int): Page number of results.
+            collected_data (list | None, optional): Skip scraping rules that have already been collected. Defaults to None.
+
+        Raises:
+            ParseError: Parsing HTML failed.
+
+        Returns:
+            list: List of documents scraped from one page of results.
+        """        
+        if collected_data is not None:
             url_list = (r.get("url") for r in collected_data)
         
         # loop over rules on a single page
         one_page = []
         for rule in rules_this_page:
             bookmark = rule.find("div", class_="teaser-search--bookmark").a
-            #control_num = extract_control_number(f"{bookmark['href']}")
             url = f"{self.url_stem}{bookmark['href']}"
-            if collected_data:
-                #control_num_list = [extract_control_number(r.get("url")) for r in collected_data]
-                #print(control_num)
+            if collected_data is not None:
                 if url in url_list:
-                #if control_num in control_num_list:
-                    #print(url)
+                    # skip to the next object in the loop
                     continue
             
             rows = rule.find_all("div", class_="teaser-search--row")
             rule_dict = {
                 "page": page, 
-                "url": url, #f"{self.url_stem}{bookmark['href']}", 
-                #"control_num": control_num, 
+                "url": url,
                 "type": bookmark.string.strip()
                 }
             for row in rows:
@@ -304,7 +327,7 @@ class PopulationScraper(Scraper):
                     elif div.time is None:
                         value = div.string.strip()
                     else:
-                        raise ParseError
+                        raise ParseError("Parsing HTML failed.")
                     rule_dict.update({label: value})
             one_page.append(rule_dict)
         
@@ -371,7 +394,7 @@ class PopulationScraper(Scraper):
 class RuleScraper(Scraper):
     """Scraper for retrieving detailed data on rules in GAO's CRA database."""
     
-    def __init__(self, input_data: dict | list = None, **kwargs) -> None:
+    def __init__(self, input_data: dict | list | None = None, **kwargs) -> None:
         """Initialize RuleScraper, inheriting atrributes and methods from Scraper class.
 
         Args:
@@ -379,9 +402,9 @@ class RuleScraper(Scraper):
         """        
         super().__init__(**kwargs)
         if input_data is None:
-            self.data = {}
+            self.population_data = {}
         else:
-            self.data = input_data
+            self.population_data = input_data
     
     @sleep_retry(60)
     def scrape_rule(self, url: str):
@@ -430,45 +453,181 @@ class RuleScraper(Scraper):
         
         return rule_data
     
-    def scrape_rules(self, path: Path = None, file_name: str = None):
+    def scrape_rules(self, path: Path | None = None, file_name: str | None = None, quietly: bool = False):
         """Scrape detailed data for multiple rules.
 
         Args:
             path (Path, optional): Path to input data. Defaults to None.
             file_name (str, optional): File name of input data. Defaults to None.
+            quietly (bool, optional): Do not print status updates. Defaults to False.
 
         Returns:
             dict[str]: Results of the scraped data and accompanying metadata.
-        """        
+        """
         if (path is not None) and (file_name is not None):
             # import json
-            self.data = self.from_json(path, file_name)
+            self.population_data = self.from_json(path, file_name)
         
         # iteratively: read soup, scrape rule, append data
         try:
-            rules = self.data.get("results")
+            rules = self.population_data.get("results")
         except AttributeError:
-            rules = self.data
+            rules = self.population_data
         
         all_rule_data = []
         for rule in rules:    
             #soup = self.request_soup(alt_url = rule.get("url"))
             rule_data = self.scrape_rule(url = rule.get("url"))
             all_rule_data.append(rule_data)
-            report_retrieval_status(len(all_rule_data), truncate(len(rules), places = -3))
+            if not quietly:
+                report_retrieval_status(len(all_rule_data), truncate(len(rules), places = -3))
         
-        print(f"Retrieved detailed information for {len(all_rule_data)} rules.")
-        
-        example_control_number = r"{control_number}"
-        output = {
-            "description": "Contains detailed records for rules in GAO's CRA Database of Rules.", 
-            "sources": f"Series of links with pattern {self.url_stem}/fedrules/{example_control_number}", 
-            "date_retrieved": f"{date.today()}", 
-            "rule_count": len(all_rule_data), 
-            "results": all_rule_data
-            }
-        
+        if not quietly:
+            print(f"Retrieved detailed information for {len(all_rule_data)} rules.")
+        output = self._add_output_metadata(all_rule_data, how="detail")
         return output
+
+
+class NewRuleScraper(PopulationScraper, RuleScraper):
+    """Scrape population and rule detail data for new rules not present in the retrieved database.
+    Inherits from `PopulationScraper` and `RuleScraper`.
+    """
+
+    def __init__(self, path: Path | None = None, file_name: str | None = None, existing_population_data: dict | list | None = None, params: dict | None = None, interval: int = 30, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.path = path
+        self.file_name = file_name
+        if existing_population_data is not None:
+            if isinstance(existing_population_data, list):
+                self.existing_population_data = existing_population_data
+            elif isinstance(existing_population_data, dict):
+                self.existing_population_data = existing_population_data.get("results", [])
+        elif (path is not None) and (file_name is not None):
+            self.existing_population_data = self._get_existing_data(self.path, self.file_name)
+        if isinstance(self.existing_population_data, dict):
+            self.existing_population_size = len(self.existing_population_data.get("results", []))
+        elif isinstance(self.existing_population_data, list):
+            self.existing_population_size = len(self.existing_population_data)
+        if params is not None:
+            self.params = self.set_request_params(params)
+        else:
+            self.params = self.set_request_params(BASE_PARAMS)
+        self.interval = interval
+        self.new_population_size = self.get_document_count(self.request_soup(self.params))
+    
+    def _get_existing_data(self, path: Path, file_name: str) -> list:
+        """Retrieve list of existing data by passing a path and file name.
+        """
+        data = self.from_json(path, file_name)
+        if isinstance(data, dict):
+            data: list = data.get("results", [])
+        elif isinstance(data, list):
+            pass
+        else:
+            raise TypeError("JSON object loaded of wrong type. Must be `list` or `dict`.")
+        return data
+    
+    def _get_interval_data(self, start_interval: date, end_interval: date) -> list:
+        """Scrape population data from a given interval of received dates.
+
+        Args:
+            start_interval (date): Start date for database "received" field (inclusive).
+            end_interval (date): End date for database "received" field (exclusive).
+
+        Returns:
+            list: Results from database that fall within the date interval.
+        """
+        self.params |= {
+                "received_start_date": start_interval, 
+                "received_end_date": end_interval, 
+                }
+        soup = self.request_soup(self.params)
+        interval_document_count = self.get_document_count(soup)
+        interval_page_count = self.get_page_count(soup)
+        interval_results = self.scrape_population(
+            params=self.params, 
+            pages=interval_page_count, 
+            documents=interval_document_count, 
+            quietly=True
+            )
+        return interval_results.get("results")
+
+    def _find_interval(self) -> tuple[date, list]:
+        """Find date interval that contains all new rules added to database. 
+        Starting with `self.interval` instance attribute, iteratively searches backward 
+        until the count of documents in the existing local database matches the count of documents in GAO's database.
+
+        Returns:
+            tuple[date, list]: Start date of found interval, list of documents retrieved from interval
+        """
+        end_interval = date.today() + timedelta(days=1)
+        start_interval = date.fromisoformat(get_last_received_date(self.existing_population_data))
+        print("Searching for new rules...")
+        while True:
+            start_interval = start_interval - timedelta(days=self.interval)
+            self.params |= {"received_end_date": start_interval}
+            soup = self.request_soup(self.params)
+            pre_interval_documents = self.get_document_count(soup)
+            existing_population_size_before_start_interval = [rule for rule in self.existing_population_data if datetime.fromisoformat(rule.get("received")).date() < start_interval]
+            
+            # compare pre interval document count with size of existing pop before start_interval
+            if pre_interval_documents == len(existing_population_size_before_start_interval):
+                #print(f"Documents before {start_interval}: {pre_interval_documents}")
+                interval_results = self._get_interval_data(start_interval, end_interval)
+                break
+
+        return start_interval, interval_results
+    
+    def _sort_retrieved_data(self, data: list[dict]) -> list:
+        """Sort list of retrieved data based on 1) "page" or "url" (ascending) and 2) "received" date (descending).
+        """
+        return sorted(sorted(data, key=lambda x: x.get("page", x.get("url"))), key=lambda x: x.get("received"), reverse=True)
+
+    def _combine_existing_and_new_data(self):
+        """Combine population data from existing local database and newly retrieved data, removing duplicates.
+
+        Returns:
+            tuple[date, list, list]: Start date of interval, list of documents retrieved from interval, list of combined population data
+        """
+        start_interval, new_data = self._find_interval()
+        combined_pop_data = self.existing_population_data + new_data
+        combined_pop_data, _ = remove_duplicates(combined_pop_data)
+        if len(combined_pop_data) != self.new_population_size:
+            raise NewDataRetrievalError(f"Size of combined population data ({len(combined_pop_data)}) does not match ({self.new_population_size})")
+        combined_pop_data = self._sort_retrieved_data(combined_pop_data)
+        return start_interval, new_data, combined_pop_data
+    
+    def scrape_new_rules(self, path: Path, file_name: str):
+        """Scrape rules in GAO's database that do not yet exist in the local database.
+
+        Args:
+            path (Path): Path to existing detailed rule data.
+            file_name (str): File name of existing detailed rule data.
+
+        Raises:
+            NewDataRetrievalError: Raised when rules in the population data are missing from the rule detail data (or vice versa).
+
+        Returns:
+            tuple[dict, dict]: Population data, Rule detail data
+        """        
+        start_interval, new_pop_data, combined_pop_data = self._combine_existing_and_new_data()
+        self.population_data = new_pop_data
+        new_detail_data: list = self.scrape_rules(quietly=True).get("results", [])
+        existing_detail_data: list = self._get_existing_data(path, file_name)
+        existing_detail_data = [rule for rule in existing_detail_data if datetime.fromisoformat(rule.get("received", start_interval)).date() <= start_interval]
+        combined_detail_data = existing_detail_data + new_detail_data
+        combined_detail_data, _ = remove_duplicates(combined_detail_data)
+        combined_detail_data = self._sort_retrieved_data(combined_detail_data)
+        if len(combined_pop_data) != len(combined_detail_data):
+            print(identify_duplicates(combined_pop_data))
+            print(len(combined_pop_data), len(combined_detail_data))
+            detail = [r.get("fed_reg_number") for r in combined_detail_data]
+            pop = [r.get("fed_reg_number") for r in combined_pop_data]
+            missing_from_det = [rule for rule in pop if rule not in detail]
+            missing_from_pop = [rule for rule in detail if rule not in pop]
+            raise NewDataRetrievalError(f"Missing rules {missing_from_pop} from population data and {missing_from_det} from rule detail data.")
+        print(f"Retrieved detailed information for {len(combined_pop_data) - self.existing_population_size} new rules.")
+        return self._add_output_metadata(combined_pop_data, how="population"), self._add_output_metadata(combined_detail_data, how="detail")
 
 
 def create_soup_strainer(for_method: str = None):
@@ -549,7 +708,7 @@ def get_retrieval_date(path : Path, file_name: str):
     return data["date_retrieved"]
 
 
-def get_last_received_date(path : Path, file_name: str):
+def get_last_received_date(results: list | dict):
     """Get most recent received date plus one day from existing data.
 
     Args:
@@ -559,10 +718,10 @@ def get_last_received_date(path : Path, file_name: str):
     Returns:
         str: String of last received date plus one day in YYYY-MM-DD format.
     """
-    with open(path / f"{file_name}.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
-    
-    results = data["results"]
+    if isinstance(results, dict):
+        results = results["results"]
+    elif isinstance(results, list):
+        pass
     received_dates = (extract_date(r.get("received")) for r in results)
     received_list = sorted(received_dates, reverse=True)
     last_received_plus_one = received_list[0] + timedelta(days=1)
@@ -650,9 +809,11 @@ def truncate(n: int | float, places: int = 0):
     return int(n * multiplier) / multiplier
 
 
-def report_retrieval_status(retrieved_documents: int, 
-                            total_documents: int, 
-                            n_status_updates: int = 10) -> None:
+def report_retrieval_status(
+        retrieved_documents: int, 
+        total_documents: int, 
+        n_status_updates: int = 10, 
+    ) -> None:
     """Reports "n_status_updates" of the documents retrieved so far.
 
     Args:
@@ -671,18 +832,22 @@ def report_retrieval_status(retrieved_documents: int,
 
 
 def pipeline(data_path: Path, 
-             major_only: bool = False, 
+             major_only: bool = True, 
              new_only: bool = False, 
              rule_detail: bool = True, 
              use_existing_pop_data: bool = False, 
+             file_name_population: str | None = "population_major",
+             file_name_detail: str | None = "rule_detail_major", 
              **kwargs):
     """Executes main pipeline for retrieving data from GAO's CRA database.
 
     Args:
-        major_only (bool, optional): Retrieve only major rules. Defaults to False.
-        new_only (bool, optional): Retrieve only new rules received by GAO (when True, must pass `path` and `file_name` as **kwargs). Defaults to False.
+        major_only (bool, optional): Retrieve only major rules. Defaults to True.
+        new_only (bool, optional): Retrieve only new rules received by GAO. Defaults to False.
         rule_detail (bool, optional): Retrieve rule-level details by initializing a `RuleScraper()` instance. Defaults to True.
         use_existing_pop_data (bool, optional): Use existing population data file to retrieve rule-level details. Defaults to False.
+        file_name_population: (str | None, optional): File name for existing population data without file suffix. Defaults to "population_major".
+        file_name_detail: (str | None, optional): File name for existing rule detail data without file suffix. Defaults to "rule_detail_major".
     
     Returns:
         bool | None: Returns True if retrieved rule-level details, False if only population data, None if no rules to retrieve.
@@ -692,78 +857,63 @@ def pipeline(data_path: Path,
     else:
         type = "all"
     
-    if use_existing_pop_data and (not new_only):
-        ps = PopulationScraper(major_only=major_only, new_only=new_only)
-        pop_data = ps.from_json(data_path, f"population_{type}").get("results")
-        document_count = len(pop_data)
-    else:
-        # initialize PopulationScraper
-        ps = PopulationScraper(major_only=major_only, new_only=new_only, **kwargs)
-        
-        # request and parse html
-        params = ps.set_request_params(BASE_PARAMS, **kwargs)
-        soup = ps.request_soup(params, page = 0, strainer=create_soup_strainer())
-        document_count = ps.get_document_count(soup)
-        if document_count < 1:
-            print("No rules to retrieve.")
-            return
-        else:  # retrieve rules turned up by database search
-            page_count = ps.get_page_count(soup)
-            print(f"Requesting {document_count} rules from {page_count + 1} page(s).")
-            
-            # scrape population data and save
-            pop_data = ps.scrape_population(params, page_count, document_count)
-            
-            # check for missing documents
-            print("Checking for missing documents.")
-            results = ps.get_missing_documents(pop_data, BASE_PARAMS, document_count)
-            if results is not None:
-                print("Retrieved missing documents.")
-                pop_data = results
-            
-            # add existing dataset to new documents
-            if new_only:
-                new_data = deepcopy(pop_data.get("results"))
-                existing_pop_data = ps.from_json(data_path, f"population_{type}").get("results")
-                combined_pop = pop_data["results"] + existing_pop_data
-                results_uq, _ = remove_duplicates(combined_pop)
-                pop_data.update({
-                    "rule_count": len(results_uq), 
-                    "results": results_uq
-                                 })
-            
-            # save population data
-            ps.to_json(pop_data, data_path, f"population_{type}")
-            
-            # summarize rule types retrieved
-            type_counts = Counter([rule["type"] for rule in pop_data["results"]])
-            for k, v in type_counts.items():
-                print(f"{k}s: {v}")
-    
-    # retrieve rule-level detail data
-    if rule_detail:
-        print(f"Requesting {document_count} rules.")
-        
-        if new_only:
-            pop_data = new_data
-            existing_rule_data = ps.from_json(data_path, f"rule_detail_{type}").get("results")
-            
-        # initialize RuleScraper
-        rs = RuleScraper(input_data=pop_data)
-        
-        # scrape rule detail data and save
-        rule_data = rs.scrape_rules()
-        if new_only:
-            #rule_data["results"].extend(existing_rule_data)
-            combined_rules = rule_data["results"] + existing_rule_data
-            rules_uq, _ = remove_duplicates(combined_rules)
-            rule_data.update({
-                "rule_count": len(rules_uq), 
-                "results": rules_uq
-                })
-        rs.to_json(rule_data, data_path, f"rule_detail_{type}")
-    
+    if new_only:
+        ns = NewRuleScraper(path=data_path, file_name=file_name_population, major_only=major_only, interval=1)
+        pop, detail = ns.scrape_new_rules(path=data_path, file_name=file_name_detail)
+        ns.to_json(pop, data_path, f"population_{type}")
+        ns.to_json(detail, data_path, f"rule_detail_{type}")
         return True
+    else:
+        
+        if use_existing_pop_data:
+            ps = PopulationScraper(major_only=major_only, new_only=new_only)
+            pop_data = ps.from_json(data_path, f"population_{type}").get("results")
+            document_count = len(pop_data)
+        else:
+            # initialize PopulationScraper
+            ps = PopulationScraper(major_only=major_only, new_only=new_only, **kwargs)
+            
+            # request and parse html
+            params = ps.set_request_params(BASE_PARAMS, **kwargs)
+            soup = ps.request_soup(params, page = 0, strainer=create_soup_strainer())
+            document_count = ps.get_document_count(soup)
+            if document_count < 1:
+                print("No rules to retrieve.")
+                return
+            else:  # retrieve rules turned up by database search
+                page_count = ps.get_page_count(soup)
+                print(f"Requesting {document_count} rules from {page_count + 1} page(s).")
+                
+                # scrape population data and save
+                pop_data = ps.scrape_population(params, page_count, document_count)
+                
+                # check for missing documents
+                print("Checking for missing documents.")
+                results = ps.get_missing_documents(pop_data, BASE_PARAMS, document_count)
+                if results is not None:
+                    print("Retrieved missing documents.")
+                    pop_data = results
+                
+                # save population data
+                ps.to_json(pop_data, data_path, f"population_{type}")
+                
+                # summarize rule types retrieved
+                type_counts = Counter([rule["type"] for rule in pop_data["results"]])
+                for k, v in type_counts.items():
+                    print(f"{k}s: {v}")
+        
+        # retrieve rule-level detail data
+        if rule_detail:
+            print(f"Requesting {document_count} rules.")
+             
+            # initialize RuleScraper
+            rs = RuleScraper(input_data=pop_data)
+            
+            # scrape rule detail data and save
+            rule_data = rs.scrape_rules()
+            rs.to_json(rule_data, data_path, f"rule_detail_{type}")
+        
+            return True
     
     return False
 
@@ -785,13 +935,11 @@ def scraper(
     while True:
         
         # print prompts to console
-        new_prompt = "no"  #input("Retrieve only new rules (i.e., those received by GAO since last retrieval date)? [yes/no]: ").lower()
-        detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
+        new_prompt = input("Retrieve only new rules (i.e., those added by GAO since last retrieval date)? [yes/no]: ").lower()
         
         # check user inputs
         valid_inputs = y_inputs + n_inputs
-        if ((new_prompt in valid_inputs) 
-            and (detail_prompt in valid_inputs)):
+        if new_prompt in valid_inputs:
             
             # set major_only param
             major_only = True
@@ -802,19 +950,26 @@ def scraper(
                 new_only = True
             elif new_prompt in n_inputs:
                 new_only = False
-
-            if detail_prompt in y_inputs:
-                rule_detail = True
-            elif detail_prompt in n_inputs:
-                rule_detail = False
             
-            if rule_detail:
-                existing_prompt = input("Use existing population data for retrieving rule-level details?\n(Select this if you previously retrieved population data and only want to retrieve rule-level details.) [yes/no]: ").lower()
-                if existing_prompt in y_inputs:
-                    use_existing_pop_data = True
-                elif existing_prompt in n_inputs:
+            # skips rule_detail and use_existing_pop_data if new_only is True
+            if not new_only:
+                detail_prompt = input("Retrieve rule-level details? [yes/no]: ").lower()
+
+                if detail_prompt in y_inputs:
+                    rule_detail = True
+                elif detail_prompt in n_inputs:
+                    rule_detail = False
+                
+                if rule_detail:
+                    existing_prompt = input("Use existing population data for retrieving rule-level details?\n(Select this if you previously retrieved population data and only want to retrieve rule-level details.) [yes/no]: ").lower()
+                    if existing_prompt in y_inputs:
+                        use_existing_pop_data = True
+                    elif existing_prompt in n_inputs:
+                        use_existing_pop_data = False
+                else:
                     use_existing_pop_data = False
             else:
+                rule_detail = False
                 use_existing_pop_data = False
                 
             # call scraper pipeline
