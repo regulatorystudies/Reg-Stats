@@ -56,3 +56,6 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Pycharm folder
+.idea/
