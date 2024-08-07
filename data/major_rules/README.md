@@ -2,7 +2,7 @@
 
 ## Last Updated
 
-README: 2024-07-17
+README: 2024-07-30
 
 ## Update Instructions
 
@@ -36,14 +36,18 @@ README: 2024-07-17
 
       - The module will direct you through each step until the program finishes.
 
+#### Troubleshooting
+
+If you notice that the program is failing, ensure that GAO's database url has not changed (as it has in the past). In `scraper.py`, compare the `Scraper` class's "base_url" instance attribute to the current url on GAO's site. Update "base_url" and commit the changes if it has changed.
+
 ### Manual Process
 
 Note: This method can only be used to update the data based on the received date, not the published date.
 
 1. Update data in the spreadsheet `major_rules_by_presidential_year.csv`:
 
-    - Go to GAO’s Congressional Review Act (CRA) [page](https://www.gao.gov/legal/other-legal-work/congressional-review-act).  
-    - Scroll down to “Search Database of Rules” and fill in the following fields to get the number of major rules for the specified year:  
+    - Go to GAO’s Congressional Review Act (CRA) database of rules [page](https://www.gao.gov/legal/congressional-review-act/search-database-of-rules).  
+    - Fill in the following fields to get the number of major rules for the specified year:  
       - Rule Type: select “Major”
       - Rule Priority: select “All” for updating “Total Major Rules” or “Significant/Substantive” for updating “Total Major Rules, excluding non-significant”
       - Input “Date Received by GAO” by presidential year, so for example, “02/01/2021” to “02/01/2022” for Presidential Year 2021 (the database excludes documents received on the end date from the results).

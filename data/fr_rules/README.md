@@ -8,40 +8,28 @@ The graph of Federal Register (FR) rules, including both final and proposed rule
 
 ## Last Updated
 
-README: 2023-11-21
+README: 2024-07-30
 
-Data: 2023-03-28
-
-Charts: 2023-03-28
+Data: ~annually
 
 ## Update Instructions
 
 Follow these procedures to update the data:
 
-1. Determine whether the data files and charts can be incremented by another year. The data for the prior calendar year can be updated on or after the first business day of January. The data for the prior presidential year can be updated on or after the first business day of February.
+1. Determine whether the data filess and chart can be incremented by another year. The data for the prior presidential year can be updated on or after the first business day of February.
 
-2. Ensure whether Python and the relevant packages are installed on your computer's environment.
+1. Ensure whether Python and the relevant packages are installed on your computer's environment (see instructions below).
 
-3. Retrieve the raw data from the Federal Register API to update the calendar year and presidential year data:
-    - Presidential year
-      - Run the python code in "fr_rules_presidential_year.py" as a script (it can be executed in the IDE or editor of your choice or from the command line)
+1. Retrieve the raw data from the Federal Register API to update the presidential year data:
+    - Aggregate data
+      - Run the python code in `fr_rules_presidential_year.py` as a script (it can be executed in the IDE or editor of your choice or from the command line)
       - Ensure that the code is executed correctly; if errors, troubleshoot
-      - Ensure that data saved in json and csv files
-    - Calendar year
-      - In progress (script: "fr_rules_calendar_year.py")
-
-4. Append the source note at bottom of the data files for sharing:
-    - Open the files "federal_register_rules_calendar_year.csv" and "federal_register_rules_presidential_year.csv"
-    - Add the citation text at the bottom of each file, starting two cells below the last line of data (see the citation text below)
-
-## Citation Text
-
-```{comment}
-Produced by the George Washington University Regulatory Studies Center, https://go.gwu.edu/regstudies  
-Source: Federal Register API, https://www.federalregister.gov/reader-aids/developer-resources/rest-api  
-Updated: yyyy-mm-dd  
-Notes: Excludes corrections to final and proposed rules.  
-```
+      - Ensure that data saved in JSON and CSV files
+        - The JSON files will be located in an untracked `fr_rules/_api/` folder, and the CSV files will be located in the `fr_rules/` root folder
+    - Agency-level data
+      - This code relies on the retrieved API data, so it is necessary to run the aggregate data script first
+      - Run the `agency_fr_rules_presidential_year.py` script from an IDE or the command line
+      - The ouput CSV file will be located in the `fr_rules/` root folder
 
 ## Environment Set Up
 
@@ -54,7 +42,7 @@ cd "NAVIGATE TO DIRECTORY WHERE YML IS STORED"
 
 conda env create -f environment.yml
 
-conda activate regstats1
+conda activate regstats_fr
 
 conda env list
 ```
