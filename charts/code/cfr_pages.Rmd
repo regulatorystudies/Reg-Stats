@@ -85,7 +85,7 @@ upper <- ydynam(df2, 20000, 2)
 breaks4 <- c(seq(min(df2$year), max(df2$year), 4))
 
 bar2 <-
-  ggplot(data=df2, aes(x=year, y=tolpages,family = "avenir_lt_pro")) +
+  ggplot(data=df2, aes(x=year, y=tolpages)) +
   geom_bar(stat="identity", fill="#033C5A")+
   #geom_text(aes(label=len), vjust=-0.3, size=3.5)+
 
@@ -99,9 +99,9 @@ bar2 <-
                      limits = c(min(df2$year)-1, max(df2$year)+1),
                      expand = c(0,0)) + 
   coord_cartesian(clip = "off") +
-  #theme_RSC +
   labs(caption = wrapped_caption)+
   theme_minimal() +
+  theme_RSC + 
   theme(
       plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
       legend.position = "none",
@@ -115,7 +115,6 @@ bar2 <-
       axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 20)),# modified margin to adjust the space between title and y-axis 
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
-      text = element_text(family = "avenir_lt_pro"),
       plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
       plot.margin = margin(50, 50, 50, 50)
     )
