@@ -55,6 +55,8 @@ df <- read.csv(here("charts", "data", data_file))
 ## Process data
 
 ```{r clean_data}
+# copy df
+df1 <- df
 
 # set column names
 colnames(df1) <- c("year", "tolpages")
@@ -67,19 +69,16 @@ df1$year <- as.integer(df1$year)
 
 # set current date
 current_date <- format(Sys.Date(), "%B %d, %Y")
-
-# set caption text
-caption_text <- paste("Source: Office of the Federal Register (federalregister.gov) for the years starting 2021;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
 ```
 
 ## Plot data
 
 ```{r plot_data, results='markup'}
 # create caption text
-caption_text <- paste("Sources:  govinfo.gov for the years 2022 and onwards; Federal Register Statistics for all the prior years \n\nUpdated:", current_date)
+caption_text <- paste("Sources: GovInfo.gov for the years 2022 and onwards; Federal Register Statistics for all the prior years. \n\nUpdated:", current_date)
 
 # format wrapping setting for caption text
-wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
+wrapped_caption <- paste(strwrap(caption_text, width = 55), collapse = "\n")
 
 upper <- ydynam(df1, 20000, 2)
 
