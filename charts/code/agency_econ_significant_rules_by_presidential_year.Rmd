@@ -45,15 +45,14 @@ Affairs (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
 
 # define agencies, intervals, and titles
-agencies = c("dhs", "doe", "doi", "dol", "dot", "ed", "epa", "hhs", "hud", "sba", "usda")
-intervals = c(1,1,1,1,1,1,2,5,1,5,2)
+agencies = c("dhs", "doc", "dod", "doe", "doi", "doj", "dol", "dos", "dot", "ed", "epa", "hhs", "hud", "sba", "usda", "ust", "va")
+intervals = c(1,1,1,1,1,1,1,1,1,1,2,5,1,5,2,2,1)
 chart_ref <- as.data.frame(list(agency = agencies, interval = intervals)) %>% 
   mutate(title = paste0("Economically Significant Final Rules Published by ", 
                   toupper(agency),
                   " Each Presidential Year"))
 
 # data cleaning
-
 clean <- function(data_0){
   colnames(data_0) <- c("year", "party", "rules")
   data_0$party <- as.factor(data_0$party)
@@ -87,7 +86,7 @@ graph <- function(dataset, interval, title){
   labs(caption = wrapped_caption) +
   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
   theme_RSC +
-  coord_cartesian(ylim = c(0, upper),
+  coord_cartesian(ylim = c(0, upper + 0.1),
                   xlim = c(min(dataset$year)-0.5,
                                 max(dataset$year)+0.5),
                   expand = FALSE) +
