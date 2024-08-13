@@ -121,6 +121,7 @@ bar2 <- ggplot(df1_1a_complete,
   coord_cartesian(clip = "off") +
   labs(caption = wrapped_caption)+
   theme_minimal() +
+  theme_RSC +
   theme(
       plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 30), size = 20),
       legend.position = "bottom",
@@ -136,7 +137,6 @@ bar2 <- ggplot(df1_1a_complete,
       axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 10)),# modified margin to adjust the space between title and y-axis 
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
-      text = element_text(family = "avenir_lt_pro"),
       plot.caption = element_text(hjust = 1, vjust = 10, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
       plot.margin = margin(50, 50, 50, 50)
     )

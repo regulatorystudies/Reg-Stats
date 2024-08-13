@@ -60,9 +60,6 @@ colnames(cum_sig) <- c("month", "months_in_office", "Reagan", "Bush_41", "Clinto
 # get rid of unnecessary columns (will also need to manually update with new president names here)
 cum_sig <- cum_sig[ , c("months_in_office", "Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump", "Biden")]
 
-# get rid of unnecessary rows (this would need to be altered if a president served more than two terms)
-#cum_sig <- cum_sig[-c(98:101), ]
-
 # create long data frame (will also need to manually add new president's names here)
 cum_sig_long_NA <- pivot_longer(cum_sig, cols = c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump", "Biden"), names_to = "president", values_to = "econ_rules")
 
@@ -97,8 +94,6 @@ cum_sig_long$months_in_office <- as.numeric(cum_sig_long$months_in_office)
 
 ```{r plot_data, results='markup'}
 
-
-
 # calculate the end points of the lines
 line_ends <- cum_sig_long %>%
   group_by(president) %>%
@@ -112,8 +107,6 @@ wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 # generate line graph
 line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = president, group = president)) +
-#         annotate(geom = "segment", x = 48, xend = 48, y = 0, yend = max(cum_sig_long$econ_rules) + 10, linetype = "dashed", linewidth = 0.50, color = RSCgray) +
- #        annotate(geom = "segment", x = min(cum_sig_long$months_in_office), xend = max(cum_sig_long$months_in_office), y = 0, yend = 0, linetype = "solid", linewidth = 1, color = RSCgray) +  
          geom_line(linewidth = 0.75) +
          geom_label_repel_RSC(data = line_ends,
                   aes(x = months_in_office_end, y = econ_rules_end, label = president),
@@ -137,7 +130,6 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                                 lightblue,
                                 darkyellow,
                                 lightgreen)) +
-  #coord_cartesian(ylim = c(0, max(cun_sig_first_long$econ_rules) + 25)) +
   coord_cartesian(clip = "off")+
   theme_RSC +
   theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),

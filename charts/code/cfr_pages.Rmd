@@ -55,37 +55,37 @@ df <- read.csv(here("charts", "data", data_file))
 ## Process data
 
 ```{r clean_data}
+# copy df
+df1 <- df
 
-df1 <- df[c(5:nrow(df)),c(0:3)]
-colnames(df1) <- c("year", "color", "tolpages")
+# set column names
+colnames(df1) <- c("year", "tolpages")
+
+# remove rows with NA values
 df1 <- df1[!is.na(as.numeric(as.character(df1$year))),]
-df1 <- df1[df1$year >= 1950, ]
 
+# convert year column to integer
+df1$year <- as.integer(df1$year)
+
+# set current date
 current_date <- format(Sys.Date(), "%B %d, %Y")
-caption_text <- paste("Source: Office of the Federal Register (federalregister.gov) for the years starting 2021;\n       Office of Information and Regulatory Affairs (OIRA) (reginfo.gov) for all prior years.\n\nUpdated:", current_date)
-
-df2 = subset(df1, select = -c(color) )
-
-df2$tolpages <- as.numeric(gsub(",","",df2$tolpages))
-df2$year <- as.numeric(df2$year)
-
 ```
 
 ## Plot data
 
 ```{r plot_data, results='markup'}
 # create caption text
-caption_text <- paste("Sources:  govinfo.gov for the years 2022 and onwards; Federal Register Statistics for all the prior years \n\nUpdated:", current_date)
+caption_text <- paste("Sources: GovInfo.gov for the years 2022 and onwards; Federal Register Statistics for all the prior years. \n\nUpdated:", current_date)
 
 # format wrapping setting for caption text
-wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
+wrapped_caption <- paste(strwrap(caption_text, width = 55), collapse = "\n")
 
-upper <- ydynam(df2, 20000, 2)
+upper <- ydynam(df1, 20000, 2)
 
-breaks4 <- c(seq(min(df2$year), max(df2$year), 4))
+breaks4 <- c(seq(min(df1$year), max(df1$year), 4))
 
 bar2 <-
-  ggplot(data=df2, aes(x=year, y=tolpages,family = "avenir_lt_pro")) +
+  ggplot(data=df1, aes(x=year, y=tolpages)) +
   geom_bar(stat="identity", fill="#033C5A")+
   #geom_text(aes(label=len), vjust=-0.3, size=3.5)+
 
@@ -96,18 +96,18 @@ bar2 <-
                      limits = c(-2, upper),
                      labels = function(x) ifelse(x == 0, "0", scales::label_number( scale = 1e-3)(x)),) +
   scale_x_continuous(breaks = breaks4,
-                     limits = c(min(df2$year)-1, max(df2$year)+1),
+                     limits = c(min(df1$year)-1, max(df1$year)+1),
                      expand = c(0,0)) + 
   coord_cartesian(clip = "off") +
-  #theme_RSC +
   labs(caption = wrapped_caption)+
   theme_minimal() +
+  theme_RSC + 
   theme(
-      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
+      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 20, unit = "pt"), size = 20),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
-      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 20)),
+      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 3)),
       #axis.ticks.x = element_line(color = RSCgray),
       axis.text.y = element_text(size = 12),
       axis.line.x = element_line(linewidth = 1, color = RSCgray),
@@ -115,7 +115,6 @@ bar2 <-
       axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 20)),# modified margin to adjust the space between title and y-axis 
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
-      text = element_text(family = "avenir_lt_pro"),
       plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
       plot.margin = margin(50, 50, 50, 50)
     )
