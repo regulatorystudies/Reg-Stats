@@ -45,7 +45,7 @@ Affairs (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
 
 # define agencies, intervals, and titles
-agencies = c("dhs", "doc", "dod", "doe", "doi", "doj", "dol", "dos", "dot", "ed", "epa", "hhs", "hud", "sba", "usda", "ust", "va")
+agencies = c("dhs", "doc", "dod", "doe", "doi", "doj", "dol", "dos", "dot", "ed", "epa", "hhs", "hud", "sba", "treasury", "usda", "va")
 intervals = c(1,1,1,1,1,1,1,1,1,1,2,5,1,5,2,2,1)
 chart_ref <- as.data.frame(list(agency = agencies, interval = intervals)) %>% 
   mutate(title = paste0("Economically Significant Final Rules Published by ", 
