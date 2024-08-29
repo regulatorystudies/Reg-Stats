@@ -23,7 +23,7 @@ agencies=[([r'homeland\s+security\s+department', r'department\s+of\s+homeland\s+
           ([r'health\s+and\s+human\s+services\s+department', r'department\s+of\s+health\s+and\s+human\s+services'],'hhs'),
           ([r'housing\s+and\s+urban\s+development\s+department', r'department\s+of\s+housing\s+and\s+urban\s+development'],'hud'),
           ([r'small\s+business\s+administration'],'sba'),
-          ([r'treasury\s+department', r'department\s+of\s+the\s+treasury', r'treasury'], 'treasury'),
+          ([r'treasury\s+department', r'department\s+of\s+the\s+treasury', r'treasury'], 'treas'),
           ([r'agriculture\s+department', r'department\s+of\s+agriculture'],'usda'),
           ([r'veterans\s+affairs\s+department', r'department\s+of\s+veterans\s+affairs'], 'va')]
 
