@@ -1,0 +1,9 @@
+name: regstats_sig
+channels:
+  - defaults
+dependencies:
+  - pandas
+  - pip
+  - python>=3.7
+  - python-dateutil
+prefix: C:\Users\mark\anaconda3\envs\regstats_sig
