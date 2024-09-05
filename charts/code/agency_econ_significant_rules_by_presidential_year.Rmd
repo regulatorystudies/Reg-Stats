@@ -48,9 +48,7 @@ wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
 agencies = c("dhs", "doc", "dod", "doe", "doi", "doj", "dol", "dos", "dot", "ed", "epa", "hhs", "hud", "sba", "treas", "usda", "va")
 intervals = c(1,1,1,1,1,1,1,1,1,1,2,5,1,5,2,2,1)
 chart_ref <- as.data.frame(list(agency = agencies, interval = intervals)) %>% 
-  mutate(title = paste0("Economically Significant Final Rules Published by ", 
-                  toupper(agency),
-                  " Each Presidential Year"))
+  mutate(title = paste0(toupper(agency), " Economically Significant Final Rules Published by Presidential Year"))
 
 # data cleaning
 clean <- function(data_0){
