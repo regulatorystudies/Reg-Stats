@@ -52,8 +52,14 @@ def update_admin(df,df_fr,admin,update_start_date,update_end_date,type='cumulati
 def check_partial_month(df_fr,update_end_date):
     if max(df_fr['publication_date'])>=update_end_date:
         pass
+    elif update_end_date.weekday()>=5:  # if end of month is a Saturday (5) or Sunday (6)
+        if max(df_fr['publication_date']) >= update_end_date - relativedelta(days=update_end_date.weekday()-4):
+            pass
+        else:
+            print(f'WARNING: The FR tracking data for {update_end_date.year}-{update_end_date.month} is not complete.')
+            update_end_date = update_end_date.replace(day=1) - relativedelta(days=1)
     else:
-        print(f'WARNING: The data for {update_end_date.year}-{update_end_date.month} is not complete.')
+        print(f'WARNING: The FR tracking data for {update_end_date.year}-{update_end_date.month} is not complete.')
         update_end_date=update_end_date.replace(day=1) - relativedelta(days=1)
 
     return update_end_date

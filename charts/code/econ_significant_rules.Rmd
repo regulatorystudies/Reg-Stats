@@ -62,9 +62,6 @@ colnames(econ_sig_rules) <- c("year", "party", "rules", "withdrawn")
 # get rid of withdrawn column
 econ_sig_rules <- econ_sig_rules[ , c("year", "party", "rules")]
 
-# get rid of bottom three rows
-#econ_sig_rules <- econ_sig_rules[1:(nrow(econ_sig_rules) - 5), ]
-
 # make party factor variable
 econ_sig_rules$party <- as.factor(econ_sig_rules$party)
 
@@ -73,7 +70,6 @@ econ_sig_rules$party <- as.factor(econ_sig_rules$party)
 ## Plot data
 
 ```{r generate graph}
-# generate bar1
 # generate bar1
 bar1 <- ggplot(econ_sig_rules, aes(x = year, y = rules, fill = party, pattern = party)) +
   geom_bar_pattern(stat = "identity", width = 0.5,
