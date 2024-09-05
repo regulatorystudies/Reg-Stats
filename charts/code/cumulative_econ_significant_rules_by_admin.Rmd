@@ -29,14 +29,6 @@ data_file = "cumulative_econ_significant_rules_by_presidential_month.csv"
 copy_dataset(data_file, here("data"), here("charts", "data"))
 ```
 
-## Load Packages
-
-```{r load packages, results='hide', warning=FALSE}
-library(ggrepel)
-
-```
-
-
 ## Load Data
 
 ```{r load data}
@@ -102,8 +94,6 @@ wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 ```
 
 ## Plot Data
-
-
 
 ```{r generate graph}
 # generate line graph
