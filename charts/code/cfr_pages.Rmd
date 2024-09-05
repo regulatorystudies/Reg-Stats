@@ -27,12 +27,6 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
 
-## Load Packages
-
-```{r imports, results='hide', warning=FALSE}
-library(scales)
-```
-
 ## Load data
 
 ```{r load_data}
