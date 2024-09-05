@@ -13,7 +13,6 @@ The `i_am` function identifies where the Rmd is located within the main project 
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-library(here)
 i_am("charts/code/major_rules.Rmd")
 
 # import local functions
@@ -33,15 +32,7 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 ```{r imports, results='hide', warning=FALSE}
 
 # load packages
-
-library(ggplot2)
-library(png)
 library(ggpattern)
-library(tidyr)
-library(ggrepel)
-library(dplyr)
-library(scales)
-library(stringr)
 
 ```
 

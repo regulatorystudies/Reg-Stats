@@ -13,7 +13,6 @@ The `i_am` function identifies where the Rmd is located within the main project 
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
-library(here)
 i_am("charts/code/monthly_econ_significant_rules_by_presidential_month.Rmd")
 
 # import local functions
@@ -26,12 +25,6 @@ data_file = "monthly_econ_significant_rules_by_presidential_month.csv"
 # refresh dataset
 copy_dataset(data_file, here("data"), here("charts", "data"))
 
-```
-
-## Load packages
-
-```{r load packages, results='hide', warning=FALSE}
-library(ggpattern)
 ```
 
 # Read data
