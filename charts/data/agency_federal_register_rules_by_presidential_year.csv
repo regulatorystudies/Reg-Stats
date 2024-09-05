@@ -130,12 +130,12 @@ agriculture-department,USDA,Agriculture Department,2006,252,158
 agriculture-department,USDA,Agriculture Department,2007,198,125
 agriculture-department,USDA,Agriculture Department,2008,210,113
 agriculture-department,USDA,Agriculture Department,2009,181,102
-agriculture-department,USDA,Agriculture Department,2010,168,109
-agriculture-department,USDA,Agriculture Department,2011,170,145
+agriculture-department,USDA,Agriculture Department,2010,168,110
+agriculture-department,USDA,Agriculture Department,2011,170,147
 agriculture-department,USDA,Agriculture Department,2012,124,81
-agriculture-department,USDA,Agriculture Department,2013,156,102
+agriculture-department,USDA,Agriculture Department,2013,156,103
 agriculture-department,USDA,Agriculture Department,2014,158,86
-agriculture-department,USDA,Agriculture Department,2015,155,106
+agriculture-department,USDA,Agriculture Department,2015,155,109
 agriculture-department,USDA,Agriculture Department,2016,156,105
 agriculture-department,USDA,Agriculture Department,2017,84,71
 agriculture-department,USDA,Agriculture Department,2018,100,99
@@ -278,9 +278,9 @@ architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural a
 architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2010,0,4
 architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2011,0,5
 architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2012,0,14
-architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2013,1,14
+architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2013,1,15
 architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2014,1,4
-architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2015,0,5
+architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2015,0,8
 architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2016,3,2
 architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2017,2,2
 architectural-and-transportation-barriers-compliance-board,ATBCB,Architectural and Transportation Barriers Compliance Board,2018,0,2
@@ -565,12 +565,12 @@ commerce-department,DOC,Commerce Department,2006,327,153
 commerce-department,DOC,Commerce Department,2007,338,138
 commerce-department,DOC,Commerce Department,2008,360,169
 commerce-department,DOC,Commerce Department,2009,322,143
-commerce-department,DOC,Commerce Department,2010,324,135
-commerce-department,DOC,Commerce Department,2011,341,208
+commerce-department,DOC,Commerce Department,2010,324,136
+commerce-department,DOC,Commerce Department,2011,341,210
 commerce-department,DOC,Commerce Department,2012,335,189
-commerce-department,DOC,Commerce Department,2013,310,173
+commerce-department,DOC,Commerce Department,2013,310,174
 commerce-department,DOC,Commerce Department,2014,346,181
-commerce-department,DOC,Commerce Department,2015,337,147
+commerce-department,DOC,Commerce Department,2015,337,150
 commerce-department,DOC,Commerce Department,2016,387,174
 commerce-department,DOC,Commerce Department,2017,313,106
 commerce-department,DOC,Commerce Department,2018,304,113
@@ -684,9 +684,9 @@ consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2
 consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2010,0,0
 consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2011,21,3
 consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2012,24,28
-consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2013,33,12
+consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2013,33,13
 consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2014,14,15
-consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2015,15,3
+consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2015,15,6
 consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2016,18,12
 consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2017,18,11
 consumer-financial-protection-bureau,CFPB,Consumer Financial Protection Bureau,2018,14,10
@@ -711,11 +711,11 @@ consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2007,
 consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2008,7,9
 consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2009,9,11
 consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2010,18,17
-consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2011,16,17
+consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2011,16,19
 consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2012,14,15
-consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2013,11,9
+consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2013,11,10
 consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2014,6,12
-consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2015,10,23
+consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2015,10,26
 consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2016,8,11
 consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2017,14,17
 consumer-product-safety-commission,CPSC,Consumer Product Safety Commission,2018,14,8
@@ -826,17 +826,17 @@ defense-department,DOD,Defense Department,2006,186,46
 defense-department,DOD,Defense Department,2007,143,56
 defense-department,DOD,Defense Department,2008,148,39
 defense-department,DOD,Defense Department,2009,141,41
-defense-department,DOD,Defense Department,2010,165,72
-defense-department,DOD,Defense Department,2011,177,68
+defense-department,DOD,Defense Department,2010,165,74
+defense-department,DOD,Defense Department,2011,177,72
 defense-department,DOD,Defense Department,2012,147,37
-defense-department,DOD,Defense Department,2013,133,52
+defense-department,DOD,Defense Department,2013,133,54
 defense-department,DOD,Defense Department,2014,130,65
-defense-department,DOD,Defense Department,2015,134,47
-defense-department,DOD,Defense Department,2016,138,70
+defense-department,DOD,Defense Department,2015,134,53
+defense-department,DOD,Defense Department,2016,139,70
 defense-department,DOD,Defense Department,2017,31,20
 defense-department,DOD,Defense Department,2018,118,49
 defense-department,DOD,Defense Department,2019,171,53
-defense-department,DOD,Defense Department,2020,136,50
+defense-department,DOD,Defense Department,2020,135,50
 defense-department,DOD,Defense Department,2021,67,40
 defense-department,DOD,Defense Department,2022,80,35
 defense-department,DOD,Defense Department,2023,82,45
@@ -942,12 +942,12 @@ education-department,ED,Education Department,2006,13,6
 education-department,ED,Education Department,2007,9,10
 education-department,ED,Education Department,2008,9,12
 education-department,ED,Education Department,2009,12,6
-education-department,ED,Education Department,2010,13,9
-education-department,ED,Education Department,2011,10,8
+education-department,ED,Education Department,2010,13,10
+education-department,ED,Education Department,2011,10,10
 education-department,ED,Education Department,2012,14,18
-education-department,ED,Education Department,2013,41,40
+education-department,ED,Education Department,2013,41,41
 education-department,ED,Education Department,2014,32,41
-education-department,ED,Education Department,2015,22,29
+education-department,ED,Education Department,2015,22,30
 education-department,ED,Education Department,2016,32,22
 education-department,ED,Education Department,2017,23,7
 education-department,ED,Education Department,2018,15,17
@@ -1058,12 +1058,12 @@ energy-department,DOE,Energy Department,2006,62,52
 energy-department,DOE,Energy Department,2007,53,40
 energy-department,DOE,Energy Department,2008,42,52
 energy-department,DOE,Energy Department,2009,58,42
-energy-department,DOE,Energy Department,2010,52,86
-energy-department,DOE,Energy Department,2011,52,92
+energy-department,DOE,Energy Department,2010,52,87
+energy-department,DOE,Energy Department,2011,51,94
 energy-department,DOE,Energy Department,2012,46,77
-energy-department,DOE,Energy Department,2013,49,99
+energy-department,DOE,Energy Department,2013,49,100
 energy-department,DOE,Energy Department,2014,50,114
-energy-department,DOE,Energy Department,2015,61,115
+energy-department,DOE,Energy Department,2015,61,118
 energy-department,DOE,Energy Department,2016,75,92
 energy-department,DOE,Energy Department,2017,42,33
 energy-department,DOE,Energy Department,2018,29,38
@@ -1087,12 +1087,12 @@ environmental-protection-agency,EPA,Environmental Protection Agency,2006,491,348
 environmental-protection-agency,EPA,Environmental Protection Agency,2007,471,353
 environmental-protection-agency,EPA,Environmental Protection Agency,2008,469,300
 environmental-protection-agency,EPA,Environmental Protection Agency,2009,444,303
-environmental-protection-agency,EPA,Environmental Protection Agency,2010,460,392
-environmental-protection-agency,EPA,Environmental Protection Agency,2011,516,466
+environmental-protection-agency,EPA,Environmental Protection Agency,2010,460,393
+environmental-protection-agency,EPA,Environmental Protection Agency,2011,516,468
 environmental-protection-agency,EPA,Environmental Protection Agency,2012,624,470
-environmental-protection-agency,EPA,Environmental Protection Agency,2013,490,397
+environmental-protection-agency,EPA,Environmental Protection Agency,2013,490,398
 environmental-protection-agency,EPA,Environmental Protection Agency,2014,501,442
-environmental-protection-agency,EPA,Environmental Protection Agency,2015,573,457
+environmental-protection-agency,EPA,Environmental Protection Agency,2015,573,461
 environmental-protection-agency,EPA,Environmental Protection Agency,2016,536,425
 environmental-protection-agency,EPA,Environmental Protection Agency,2017,564,406
 environmental-protection-agency,EPA,Environmental Protection Agency,2018,473,392
@@ -1290,12 +1290,12 @@ federal-communications-commission,FCC,Federal Communications Commission,2006,171
 federal-communications-commission,FCC,Federal Communications Commission,2007,106,83
 federal-communications-commission,FCC,Federal Communications Commission,2008,153,124
 federal-communications-commission,FCC,Federal Communications Commission,2009,120,87
-federal-communications-commission,FCC,Federal Communications Commission,2010,89,83
-federal-communications-commission,FCC,Federal Communications Commission,2011,127,95
+federal-communications-commission,FCC,Federal Communications Commission,2010,89,84
+federal-communications-commission,FCC,Federal Communications Commission,2011,127,97
 federal-communications-commission,FCC,Federal Communications Commission,2012,99,92
-federal-communications-commission,FCC,Federal Communications Commission,2013,119,112
+federal-communications-commission,FCC,Federal Communications Commission,2013,119,113
 federal-communications-commission,FCC,Federal Communications Commission,2014,133,92
-federal-communications-commission,FCC,Federal Communications Commission,2015,83,81
+federal-communications-commission,FCC,Federal Communications Commission,2015,83,84
 federal-communications-commission,FCC,Federal Communications Commission,2016,80,71
 federal-communications-commission,FCC,Federal Communications Commission,2017,107,78
 federal-communications-commission,FCC,Federal Communications Commission,2018,114,75
@@ -1319,10 +1319,10 @@ federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation
 federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2007,11,8
 federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2008,17,8
 federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2009,26,11
-federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2010,14,14
-federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2011,16,19
+federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2010,14,15
+federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2011,16,21
 federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2012,11,14
-federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2013,11,12
+federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2013,11,13
 federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2014,17,27
 federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2015,16,12
 federal-deposit-insurance-corporation,FDIC,Federal Deposit Insurance Corporation,2016,16,14
@@ -1667,12 +1667,12 @@ federal-reserve-system,FRS,Federal Reserve System,2006,23,10
 federal-reserve-system,FRS,Federal Reserve System,2007,33,10
 federal-reserve-system,FRS,Federal Reserve System,2008,39,16
 federal-reserve-system,FRS,Federal Reserve System,2009,35,13
-federal-reserve-system,FRS,Federal Reserve System,2010,26,16
-federal-reserve-system,FRS,Federal Reserve System,2011,23,28
+federal-reserve-system,FRS,Federal Reserve System,2010,26,17
+federal-reserve-system,FRS,Federal Reserve System,2011,23,30
 federal-reserve-system,FRS,Federal Reserve System,2012,17,13
-federal-reserve-system,FRS,Federal Reserve System,2013,22,17
+federal-reserve-system,FRS,Federal Reserve System,2013,22,18
 federal-reserve-system,FRS,Federal Reserve System,2014,27,23
-federal-reserve-system,FRS,Federal Reserve System,2015,20,14
+federal-reserve-system,FRS,Federal Reserve System,2015,20,17
 federal-reserve-system,FRS,Federal Reserve System,2016,25,21
 federal-reserve-system,FRS,Federal Reserve System,2017,27,16
 federal-reserve-system,FRS,Federal Reserve System,2018,27,22
@@ -1725,7 +1725,7 @@ federal-trade-commission,FTC,Federal Trade Commission,2006,7,15
 federal-trade-commission,FTC,Federal Trade Commission,2007,7,11
 federal-trade-commission,FTC,Federal Trade Commission,2008,9,22
 federal-trade-commission,FTC,Federal Trade Commission,2009,11,26
-federal-trade-commission,FTC,Federal Trade Commission,2010,10,13
+federal-trade-commission,FTC,Federal Trade Commission,2010,10,14
 federal-trade-commission,FTC,Federal Trade Commission,2011,13,18
 federal-trade-commission,FTC,Federal Trade Commission,2012,9,15
 federal-trade-commission,FTC,Federal Trade Commission,2013,10,20
@@ -1783,12 +1783,12 @@ general-services-administration,GSA,General Services Administration,2006,64,16
 general-services-administration,GSA,General Services Administration,2007,64,21
 general-services-administration,GSA,General Services Administration,2008,77,38
 general-services-administration,GSA,General Services Administration,2009,87,20
-general-services-administration,GSA,General Services Administration,2010,78,20
-general-services-administration,GSA,General Services Administration,2011,71,21
+general-services-administration,GSA,General Services Administration,2010,78,22
+general-services-administration,GSA,General Services Administration,2011,71,25
 general-services-administration,GSA,General Services Administration,2012,62,24
-general-services-administration,GSA,General Services Administration,2013,56,19
+general-services-administration,GSA,General Services Administration,2013,56,21
 general-services-administration,GSA,General Services Administration,2014,56,31
-general-services-administration,GSA,General Services Administration,2015,54,27
+general-services-administration,GSA,General Services Administration,2015,54,33
 general-services-administration,GSA,General Services Administration,2016,68,22
 general-services-administration,GSA,General Services Administration,2017,10,13
 general-services-administration,GSA,General Services Administration,2018,28,15
@@ -1926,14 +1926,14 @@ health-and-human-services-department,HHS,Health and Human Services Department,20
 health-and-human-services-department,HHS,Health and Human Services Department,2005,160,74
 health-and-human-services-department,HHS,Health and Human Services Department,2006,167,56
 health-and-human-services-department,HHS,Health and Human Services Department,2007,179,69
-health-and-human-services-department,HHS,Health and Human Services Department,2008,175,59
+health-and-human-services-department,HHS,Health and Human Services Department,2008,176,59
 health-and-human-services-department,HHS,Health and Human Services Department,2009,135,54
-health-and-human-services-department,HHS,Health and Human Services Department,2010,135,76
-health-and-human-services-department,HHS,Health and Human Services Department,2011,140,121
+health-and-human-services-department,HHS,Health and Human Services Department,2010,135,77
+health-and-human-services-department,HHS,Health and Human Services Department,2011,140,123
 health-and-human-services-department,HHS,Health and Human Services Department,2012,115,83
-health-and-human-services-department,HHS,Health and Human Services Department,2013,131,132
+health-and-human-services-department,HHS,Health and Human Services Department,2013,131,133
 health-and-human-services-department,HHS,Health and Human Services Department,2014,131,127
-health-and-human-services-department,HHS,Health and Human Services Department,2015,159,113
+health-and-human-services-department,HHS,Health and Human Services Department,2015,159,116
 health-and-human-services-department,HHS,Health and Human Services Department,2016,204,121
 health-and-human-services-department,HHS,Health and Human Services Department,2017,127,90
 health-and-human-services-department,HHS,Health and Human Services Department,2018,113,103
@@ -1957,12 +1957,12 @@ homeland-security-department,DHS,Homeland Security Department,2006,404,185
 homeland-security-department,DHS,Homeland Security Department,2007,432,168
 homeland-security-department,DHS,Homeland Security Department,2008,417,197
 homeland-security-department,DHS,Homeland Security Department,2009,463,183
-homeland-security-department,DHS,Homeland Security Department,2010,521,173
-homeland-security-department,DHS,Homeland Security Department,2011,578,175
+homeland-security-department,DHS,Homeland Security Department,2010,521,174
+homeland-security-department,DHS,Homeland Security Department,2011,578,177
 homeland-security-department,DHS,Homeland Security Department,2012,632,201
-homeland-security-department,DHS,Homeland Security Department,2013,579,159
+homeland-security-department,DHS,Homeland Security Department,2013,579,160
 homeland-security-department,DHS,Homeland Security Department,2014,544,137
-homeland-security-department,DHS,Homeland Security Department,2015,498,115
+homeland-security-department,DHS,Homeland Security Department,2015,498,118
 homeland-security-department,DHS,Homeland Security Department,2016,512,142
 homeland-security-department,DHS,Homeland Security Department,2017,562,129
 homeland-security-department,DHS,Homeland Security Department,2018,596,142
@@ -1991,7 +1991,7 @@ housing-and-urban-development-department,HUD,Housing and Urban Development Depar
 housing-and-urban-development-department,HUD,Housing and Urban Development Department,2012,18,14
 housing-and-urban-development-department,HUD,Housing and Urban Development Department,2013,18,18
 housing-and-urban-development-department,HUD,Housing and Urban Development Department,2014,24,17
-housing-and-urban-development-department,HUD,Housing and Urban Development Department,2015,22,19
+housing-and-urban-development-department,HUD,Housing and Urban Development Department,2015,22,20
 housing-and-urban-development-department,HUD,Housing and Urban Development Department,2016,26,25
 housing-and-urban-development-department,HUD,Housing and Urban Development Department,2017,4,6
 housing-and-urban-development-department,HUD,Housing and Urban Development Department,2018,9,8
@@ -2102,12 +2102,12 @@ interior-department,DOI,Interior Department,2006,90,202
 interior-department,DOI,Interior Department,2007,88,167
 interior-department,DOI,Interior Department,2008,110,165
 interior-department,DOI,Interior Department,2009,60,129
-interior-department,DOI,Interior Department,2010,85,137
-interior-department,DOI,Interior Department,2011,83,219
+interior-department,DOI,Interior Department,2010,85,138
+interior-department,DOI,Interior Department,2011,83,221
 interior-department,DOI,Interior Department,2012,89,182
-interior-department,DOI,Interior Department,2013,108,178
+interior-department,DOI,Interior Department,2013,108,179
 interior-department,DOI,Interior Department,2014,87,148
-interior-department,DOI,Interior Department,2015,76,110
+interior-department,DOI,Interior Department,2015,76,113
 interior-department,DOI,Interior Department,2016,125,111
 interior-department,DOI,Interior Department,2017,68,60
 interior-department,DOI,Interior Department,2018,55,66
@@ -2308,9 +2308,9 @@ justice-department,DOJ,Justice Department,2009,15,12
 justice-department,DOJ,Justice Department,2010,35,27
 justice-department,DOJ,Justice Department,2011,26,21
 justice-department,DOJ,Justice Department,2012,19,18
-justice-department,DOJ,Justice Department,2013,24,19
+justice-department,DOJ,Justice Department,2013,24,20
 justice-department,DOJ,Justice Department,2014,28,21
-justice-department,DOJ,Justice Department,2015,28,20
+justice-department,DOJ,Justice Department,2015,28,23
 justice-department,DOJ,Justice Department,2016,43,35
 justice-department,DOJ,Justice Department,2017,25,17
 justice-department,DOJ,Justice Department,2018,23,9
@@ -2335,11 +2335,11 @@ labor-department,DOL,Labor Department,2007,26,36
 labor-department,DOL,Labor Department,2008,42,43
 labor-department,DOL,Labor Department,2009,24,32
 labor-department,DOL,Labor Department,2010,44,52
-labor-department,DOL,Labor Department,2011,31,38
+labor-department,DOL,Labor Department,2011,31,40
 labor-department,DOL,Labor Department,2012,35,25
-labor-department,DOL,Labor Department,2013,35,27
+labor-department,DOL,Labor Department,2013,35,28
 labor-department,DOL,Labor Department,2014,24,40
-labor-department,DOL,Labor Department,2015,31,48
+labor-department,DOL,Labor Department,2015,31,51
 labor-department,DOL,Labor Department,2016,55,33
 labor-department,DOL,Labor Department,2017,24,20
 labor-department,DOL,Labor Department,2018,29,29
@@ -2595,12 +2595,12 @@ national-aeronautics-and-space-administration,NASA,National Aeronautics and Spac
 national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2007,58,17
 national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2008,61,16
 national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2009,63,14
-national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2010,67,19
-national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2011,62,24
+national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2010,67,20
+national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2011,62,26
 national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2012,68,21
-national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2013,53,18
+national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2013,53,20
 national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2014,58,28
-national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2015,61,21
+national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2015,61,27
 national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2016,71,26
 national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2017,14,4
 national-aeronautics-and-space-administration,NASA,National Aeronautics and Space Administration,2018,26,12
@@ -3204,12 +3204,12 @@ nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2006,24,36
 nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2007,36,43
 nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2008,21,43
 nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2009,21,34
-nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2010,19,40
-nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2011,21,55
+nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2010,19,41
+nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2011,21,57
 nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2012,19,38
-nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2013,23,47
+nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2013,23,48
 nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2014,29,37
-nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2015,26,36
+nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2015,26,39
 nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2016,27,25
 nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2017,18,21
 nuclear-regulatory-commission,NRC,Nuclear Regulatory Commission,2018,20,26
@@ -3497,7 +3497,7 @@ postal-regulatory-commission,PRC,Postal Regulatory Commission,2009,45,16
 postal-regulatory-commission,PRC,Postal Regulatory Commission,2010,14,9
 postal-regulatory-commission,PRC,Postal Regulatory Commission,2011,3,12
 postal-regulatory-commission,PRC,Postal Regulatory Commission,2012,3,4
-postal-regulatory-commission,PRC,Postal Regulatory Commission,2013,4,9
+postal-regulatory-commission,PRC,Postal Regulatory Commission,2013,4,8
 postal-regulatory-commission,PRC,Postal Regulatory Commission,2014,7,9
 postal-regulatory-commission,PRC,Postal Regulatory Commission,2015,6,17
 postal-regulatory-commission,PRC,Postal Regulatory Commission,2016,8,11
@@ -3698,11 +3698,11 @@ regulatory-information-service-center,RISC,Regulatory Information Service Center
 regulatory-information-service-center,RISC,Regulatory Information Service Center,2008,0,0
 regulatory-information-service-center,RISC,Regulatory Information Service Center,2009,0,0
 regulatory-information-service-center,RISC,Regulatory Information Service Center,2010,0,1
-regulatory-information-service-center,RISC,Regulatory Information Service Center,2011,0,0
+regulatory-information-service-center,RISC,Regulatory Information Service Center,2011,0,1
 regulatory-information-service-center,RISC,Regulatory Information Service Center,2012,0,2
-regulatory-information-service-center,RISC,Regulatory Information Service Center,2013,0,1
+regulatory-information-service-center,RISC,Regulatory Information Service Center,2013,0,2
 regulatory-information-service-center,RISC,Regulatory Information Service Center,2014,0,2
-regulatory-information-service-center,RISC,Regulatory Information Service Center,2015,0,0
+regulatory-information-service-center,RISC,Regulatory Information Service Center,2015,0,2
 regulatory-information-service-center,RISC,Regulatory Information Service Center,2016,0,2
 regulatory-information-service-center,RISC,Regulatory Information Service Center,2017,0,2
 regulatory-information-service-center,RISC,Regulatory Information Service Center,2018,0,2
@@ -3784,12 +3784,12 @@ securities-and-exchange-commission,SEC,Securities and Exchange Commission,2006,2
 securities-and-exchange-commission,SEC,Securities and Exchange Commission,2007,30,25
 securities-and-exchange-commission,SEC,Securities and Exchange Commission,2008,32,27
 securities-and-exchange-commission,SEC,Securities and Exchange Commission,2009,34,25
-securities-and-exchange-commission,SEC,Securities and Exchange Commission,2010,37,36
-securities-and-exchange-commission,SEC,Securities and Exchange Commission,2011,40,41
+securities-and-exchange-commission,SEC,Securities and Exchange Commission,2010,37,37
+securities-and-exchange-commission,SEC,Securities and Exchange Commission,2011,40,43
 securities-and-exchange-commission,SEC,Securities and Exchange Commission,2012,29,13
-securities-and-exchange-commission,SEC,Securities and Exchange Commission,2013,24,26
+securities-and-exchange-commission,SEC,Securities and Exchange Commission,2013,24,16
 securities-and-exchange-commission,SEC,Securities and Exchange Commission,2014,14,16
-securities-and-exchange-commission,SEC,Securities and Exchange Commission,2015,20,25
+securities-and-exchange-commission,SEC,Securities and Exchange Commission,2015,20,28
 securities-and-exchange-commission,SEC,Securities and Exchange Commission,2016,31,24
 securities-and-exchange-commission,SEC,Securities and Exchange Commission,2017,23,10
 securities-and-exchange-commission,SEC,Securities and Exchange Commission,2018,26,22
@@ -3842,12 +3842,12 @@ small-business-administration,SBA,Small Business Administration,2006,6,7
 small-business-administration,SBA,Small Business Administration,2007,9,7
 small-business-administration,SBA,Small Business Administration,2008,10,5
 small-business-administration,SBA,Small Business Administration,2009,11,9
-small-business-administration,SBA,Small Business Administration,2010,10,7
-small-business-administration,SBA,Small Business Administration,2011,13,16
+small-business-administration,SBA,Small Business Administration,2010,10,8
+small-business-administration,SBA,Small Business Administration,2011,13,18
 small-business-administration,SBA,Small Business Administration,2012,18,15
-small-business-administration,SBA,Small Business Administration,2013,13,5
+small-business-administration,SBA,Small Business Administration,2013,13,6
 small-business-administration,SBA,Small Business Administration,2014,5,14
-small-business-administration,SBA,Small Business Administration,2015,12,15
+small-business-administration,SBA,Small Business Administration,2015,12,18
 small-business-administration,SBA,Small Business Administration,2016,13,11
 small-business-administration,SBA,Small Business Administration,2017,11,7
 small-business-administration,SBA,Small Business Administration,2018,10,13
@@ -3874,7 +3874,7 @@ social-security-administration,SSA,Social Security Administration,2009,7,12
 social-security-administration,SSA,Social Security Administration,2010,16,6
 social-security-administration,SSA,Social Security Administration,2011,17,6
 social-security-administration,SSA,Social Security Administration,2012,7,4
-social-security-administration,SSA,Social Security Administration,2013,12,10
+social-security-administration,SSA,Social Security Administration,2013,12,9
 social-security-administration,SSA,Social Security Administration,2014,13,6
 social-security-administration,SSA,Social Security Administration,2015,11,7
 social-security-administration,SSA,Social Security Administration,2016,17,9
@@ -4019,7 +4019,7 @@ surface-transportation-board,STB,Surface Transportation Board,2009,2,1
 surface-transportation-board,STB,Surface Transportation Board,2010,2,5
 surface-transportation-board,STB,Surface Transportation Board,2011,4,5
 surface-transportation-board,STB,Surface Transportation Board,2012,5,6
-surface-transportation-board,STB,Surface Transportation Board,2013,6,6
+surface-transportation-board,STB,Surface Transportation Board,2013,6,5
 surface-transportation-board,STB,Surface Transportation Board,2014,3,6
 surface-transportation-board,STB,Surface Transportation Board,2015,1,8
 surface-transportation-board,STB,Surface Transportation Board,2016,15,16
@@ -4190,12 +4190,12 @@ transportation-department,DOT,Transportation Department,2006,815,600
 transportation-department,DOT,Transportation Department,2007,793,605
 transportation-department,DOT,Transportation Department,2008,834,532
 transportation-department,DOT,Transportation Department,2009,753,498
-transportation-department,DOT,Transportation Department,2010,801,637
-transportation-department,DOT,Transportation Department,2011,761,591
+transportation-department,DOT,Transportation Department,2010,801,638
+transportation-department,DOT,Transportation Department,2011,761,593
 transportation-department,DOT,Transportation Department,2012,749,627
 transportation-department,DOT,Transportation Department,2013,803,621
 transportation-department,DOT,Transportation Department,2014,697,489
-transportation-department,DOT,Transportation Department,2015,626,488
+transportation-department,DOT,Transportation Department,2015,626,491
 transportation-department,DOT,Transportation Department,2016,756,551
 transportation-department,DOT,Transportation Department,2017,754,481
 transportation-department,DOT,Transportation Department,2018,700,476
@@ -4219,12 +4219,12 @@ treasury-department,TREAS,Treasury Department,2006,126,109
 treasury-department,TREAS,Treasury Department,2007,127,104
 treasury-department,TREAS,Treasury Department,2008,131,126
 treasury-department,TREAS,Treasury Department,2009,101,75
-treasury-department,TREAS,Treasury Department,2010,103,76
-treasury-department,TREAS,Treasury Department,2011,123,106
+treasury-department,TREAS,Treasury Department,2010,103,77
+treasury-department,TREAS,Treasury Department,2011,123,108
 treasury-department,TREAS,Treasury Department,2012,95,95
-treasury-department,TREAS,Treasury Department,2013,87,83
+treasury-department,TREAS,Treasury Department,2013,87,84
 treasury-department,TREAS,Treasury Department,2014,115,62
-treasury-department,TREAS,Treasury Department,2015,85,82
+treasury-department,TREAS,Treasury Department,2015,85,83
 treasury-department,TREAS,Treasury Department,2016,151,107
 treasury-department,TREAS,Treasury Department,2017,53,35
 treasury-department,TREAS,Treasury Department,2018,60,70
