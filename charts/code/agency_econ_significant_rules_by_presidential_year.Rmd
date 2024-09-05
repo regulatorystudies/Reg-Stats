@@ -45,11 +45,11 @@ Affairs (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
 
 # define agencies, intervals, and titles
-agencies = c("DHS", "DOC", "DOD", "DOE", "DOI", "DOJ", "DOL", "DOS", "DOT", "ED", "EPA", "HHS", "HUD", "SBA", "Treasury", "USDA", "VA")
+agencies = c("dhs", "doc", "dod", "doe", "doi", "doj", "dol", "dos", "dot", "ed", "epa", "hhs", "hud", "sba", "treas", "usda", "va")
 intervals = c(1,1,1,1,1,1,1,1,1,1,2,5,1,5,2,2,1)
 chart_ref <- as.data.frame(list(agency = agencies, interval = intervals)) %>% 
   mutate(title = paste0("Economically Significant Final Rules Published by ", 
-                  agency,
+                  toupper(agency),
                   " Each Presidential Year"))
 
 # data cleaning
@@ -131,7 +131,7 @@ chart_n_save <- function(agency){
   print(bar)
   ggsave(
     here("charts", "output", "by_agency", 
-         paste0(agency, "_econ_significant_rules_by_presidential_year.pdf")
+         paste0(tolower(agency), "_econ_significant_rules_by_presidential_year.pdf")
          ), 
     plot = get("bar"), 
     width = 12, 
@@ -140,7 +140,7 @@ chart_n_save <- function(agency){
     )
   ggsave(
     here("charts", "output", "by_agency", 
-         paste0(agency, "_econ_significant_rules_by_presidential_year.png")
+         paste0(tolower(agency), "_econ_significant_rules_by_presidential_year.png")
          ), 
     device = "png", 
     plot = get("bar"), 
@@ -173,13 +173,15 @@ interval <- chart_ref[which(chart_ref$agency==agency), 2]
 title <- chart_ref[which(chart_ref$agency==agency), 3]
 bar <- graph(rules1, interval, title)
 print(bar)
+# ƒ
+# ^ FIGURE OUT WHAT'S GOING WRONG HERE
 
 ```
 # Save individual charts as needed
 ```{r}
 ggsave(
   here("charts", "output", "by_agency", 
-       paste0(agency, "_econ_significant_rules_by_presidential_year.pdf")
+       paste0(tolower(agency), "_econ_significant_rules_by_presidential_year.pdf")
        ), 
   plot = get("bar"), 
   width = 12, 
@@ -188,7 +190,7 @@ ggsave(
   )
 ggsave(
   here("charts", "output", "by_agency", 
-       paste0(agency, "_econ_significant_rules_by_presidential_year.png")
+       paste0(tolower(agency), "_econ_significant_rules_by_presidential_year.png")
        ), 
   device = "png", 
   plot = get("bar"), 
