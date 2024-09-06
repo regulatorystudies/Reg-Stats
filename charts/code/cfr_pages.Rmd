@@ -13,6 +13,7 @@ The `i_am` function identifies where the Rmd is located within the main project 
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
+library(here)
 i_am("charts/code/cfr_pages.Rmd")
 
 # import local functions

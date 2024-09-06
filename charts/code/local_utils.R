@@ -4,6 +4,7 @@ library(grid)
 library(here)
 library(png)
 library(dplyr)
+library(ggrepel)
 
 # function to load png file
 get_png <- function(filename) {

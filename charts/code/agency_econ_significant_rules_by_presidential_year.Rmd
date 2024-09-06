@@ -13,6 +13,7 @@ The `i_am` function identifies where the Rmd is located within the main project 
 knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
+library(here)
 i_am("charts/code/agency_econ_significant_rules_by_presidential_year.Rmd")
 
 # import local functions
@@ -171,7 +172,7 @@ title <- chart_ref[which(chart_ref$agency==agency), 3]
 bar <- graph(rules1, interval, title)
 print(bar)
 # ƒ
-# ^ FIGURE OUT WHAT'S GOING WRONG HERE
+# ^ FIGURE OUT WHAT'S GOING WRONG HERE, also still need to fix code for outputting individual charts
 
 ```
 # Save individual charts as needed

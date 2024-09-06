@@ -5,7 +5,7 @@
   library(cowplot)
   library(magick)
   library(knitr)
-  library(ggrepel)
+ 
 
 # assigning colors to objects ####
   
