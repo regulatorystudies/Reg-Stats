@@ -28,23 +28,12 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
 
-## Load Packages
-
-```{r imports, results='hide', warning=FALSE}
-
-library(ggplot2)
-library(ggpattern)
-library(ggrepel)
-library(dplyr)
-
-```
-
 ## Load data
 
 ```{r load_data}
 
 # load csv using here
-cun_sig_first <- read.csv(here("charts", "data", data_file))
+cum_sig_first <- read.csv(here("charts", "data", data_file))
 
 ```
 
@@ -52,7 +41,7 @@ cun_sig_first <- read.csv(here("charts", "data", data_file))
 
 ```{r clean_data}
 
-cum_sig <- cun_sig_first[c(1:13), ]
+cum_sig <- cum_sig_first[c(1:13), ]
 
 # rename columns (will need to manually update with the names of new presidents)
 colnames(cum_sig) <- c("month", "months_in_office", "Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump", "Biden")

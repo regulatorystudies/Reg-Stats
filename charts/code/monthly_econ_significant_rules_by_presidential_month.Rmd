@@ -56,8 +56,10 @@ start0 <- data.frame(president, month) %>%
   mutate(month = as.Date(month)) %>% 
   mutate(Months.in.Office = 0)
 
+# starting month
 st <- as.Date("1981-02-01")
-en <- as.Date("2024-08-01")
+# ending month (set to the first day of the previous complete month from today)
+en <- as.Date(format(as.Date(cut(Sys.Date() - months(1), "month")), "%Y-%m-01"))
 
 monthly_es2 <- pivot_longer(monthly_es1,
                             cols = Reagan:Biden,
