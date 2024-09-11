@@ -28,12 +28,6 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
 
-## Load packages
-
-```{r load packages, results='hide', warning=FALSE}
-library(ggpattern)
-```
-
 # Read data
 
 ```{r}

@@ -26,26 +26,7 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
 
-
-
-## Load Packages
-
-```{r imports, results='hide', warning=FALSE}
-
-# load packages
-library(ggplot2)
-library(ggpattern)
-library(tidyr)
-library(ggrepel)
-library(dplyr)
-library(scales)
-library(cowplot)
-library(tidyverse)
-library(stringr)
-```
-
 ## Load data
-
 
 ```{r load_data}
 

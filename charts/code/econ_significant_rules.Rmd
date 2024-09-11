@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # set location of this file in project directory
 library(here)
-library(knitr)
 i_am("charts/code/econ_significant_rules.Rmd")
 
 # import local functions
