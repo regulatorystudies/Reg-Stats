@@ -28,21 +28,6 @@ copy_dataset(data_file, here("data"), here("charts", "data"))
 
 ```
 
-## Load Packages
-
-```{r imports, results='hide', warning=FALSE}
-
-library(ggplot2)
-library(png)
-library(ggpattern)
-library(tidyr)
-library(ggrepel)
-library(dplyr)
-library(scales)
-library(gcookbook)
-
-```
-
 ## Load data
 
 ```{r load_data}

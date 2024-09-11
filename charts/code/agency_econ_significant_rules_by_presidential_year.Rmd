@@ -172,7 +172,7 @@ title <- chart_ref[which(chart_ref$agency==agency), 3]
 bar <- graph(rules1, interval, title)
 print(bar)
 # ƒ
-# ^ FIGURE OUT WHAT'S GOING WRONG HERE
+# ^ FIGURE OUT WHAT'S GOING WRONG HERE, also still need to fix code for outputting individual charts
 
 ```
 # Save individual charts as needed

@@ -4,7 +4,8 @@
   library(tidyverse)
   library(cowplot)
   library(magick)
-  library(knitr) 
+  library(knitr)
+  library(ggrepel)
 
 # assigning colors to objects ####
   
@@ -54,16 +55,6 @@
       plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
       plot.margin = margin(50, 50, 50, 50)
     )
-  
-  # custom RSC wrapper function for geom_label_repel(), (sets default font to avenir_lt_pro)
-  geom_label_repel_RSC <- function(...) {
-    geom_label_repel(..., family = "avenir_lt_pro")
-  }
-  
-  # custom RSC wrapper function for annotate(), (sets default font to avenir_lt_pro)
-  annotate_RSC <- function(...) {
-    annotate(..., family = "avenir_lt_pro")
-  }
   
   # thank you to Yaxin for developing this custom theme!
   
