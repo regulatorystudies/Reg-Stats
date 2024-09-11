@@ -9,17 +9,23 @@ import re
 dir_path=os.path.dirname(os.path.realpath(__file__))
 
 #%% Define agencies: ([full names], acronym)
-agencies=[([r'homeland\s+security\s+department',r'department\s+of\s+homeland\s+security'],'dhs'),
+agencies=[([r'homeland\s+security\s+department', r'department\s+of\s+homeland\s+security', r'homeland\s+security\s+office'],'dhs'),
+          ([r'commerce\s+department', r'department\s+of\s+commerce'], 'doc'),
+          ([r'defense\s+department', r'department\s+of\s+defense'], 'dod'),
           ([r'energy\s+department', r'department\s+of\s+energy'],'doe'),
           ([r'interior\s+department', r'department\s+of\s+interior'],'doi'),
+          ([r'justice\s+department', r'department\s+of\s+justice'], 'doj'),
           ([r'labor\s+department', r'department\s+of\s+labor'],'dol'),
+          ([r'state\s+department', r'department\s+of\s+state'], 'dos'),
           ([r'transportation\s+department', r'department\s+of\s+transportation'],'dot'),
           ([r'education\s+department', r'department\s+of\s+education'],'ed'),
           ([r'environmental\s+protection\s+agency'],'epa'),
           ([r'health\s+and\s+human\s+services\s+department', r'department\s+of\s+health\s+and\s+human\s+services'],'hhs'),
           ([r'housing\s+and\s+urban\s+development\s+department', r'department\s+of\s+housing\s+and\s+urban\s+development'],'hud'),
           ([r'small\s+business\s+administration'],'sba'),
-          ([r'agriculture\s+department', r'department\s+of\s+agriculture'],'usda')]
+          ([r'treasury\s+department', r'department\s+of\s+the\s+treasury', r'treasury'], 'treas'),
+          ([r'agriculture\s+department', r'department\s+of\s+agriculture'],'usda'),
+          ([r'veterans\s+affairs\s+department', r'department\s+of\s+veterans\s+affairs'], 'va')]
 
 #%% Import FR tracking data
 df_fr = pd.read_csv(f'{dir_path}/../../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
