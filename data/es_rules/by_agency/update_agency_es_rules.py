@@ -111,4 +111,25 @@ def update_agency(agency,df_fr):
 #%% Update all agencies
 for agency in agencies:
     update_agency(agency,df_fr)
-print('All agencies have been updated. End of execution.')
+print('All agency data have been updated.')
+
+#%% Combine all agency data into a single dataset
+df_all=pd.DataFrame()
+for agency in agencies:
+    # Import individual file
+    file_path = f'{dir_path}/{agency[1]}_econ_significant_rules_by_presidential_year.csv'
+    df_add=pd.read_csv(file_path)
+    df_add.rename(columns={df_add.columns[-1]:'Economically Significant Rules'},inplace=True)
+    df_add['Agency Name']=agency[0][0].replace(r'\s+',' ').title()
+    df_add['Agency Acronym']=agency[1].upper()
+
+    # Concatenate files
+    df_all=pd.concat([df_all,df_add],ignore_index=True)
+
+# Sort
+df_all=df_all.sort_values(['Agency Name','Presidential Year']).reset_index(drop=True)
+# Reorder columns
+df_all=df_all[['Agency Name','Agency Acronym','Presidential Year','Presidential Party','Economically Significant Rules']]
+# Save file
+df_all.to_csv(f'{dir_path}/../agency_econ_significant_rules_by_presidential_year.csv',index=False)
+print('The combined agency dataset has been saved.\nEnd of execution.')
