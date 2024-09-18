@@ -119,7 +119,7 @@ plot_data <- function(df, agency_acronym, agency_name) {
 
   # add logo to plot
   line2 <- ggdraw() + 
-    draw_plot(line1) + 
+    suppressWarnings(draw_plot(line1)) + 
     draw_image(logo, x = 0.1, y = 0.059, halign = 0, valign = 0, width = 0.2, height = 0.2)
   return(line2)
   }
