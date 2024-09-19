@@ -88,8 +88,8 @@ bar1 <-
   ylab("Number of Rules") +
   xlab("Note: This figure reflects the number of major rules that federal agencies submitted to the Government Accountability Office as required by the Congressional \nReview Act during each presidential year. The data may not match the number of major rules published in the Federal Register. \n") +
   scale_y_continuous(breaks = seq(0, max(num_fr$major_rules_published) + 25, by = 25), expand = c(0, 0),
-                     limits = c(-2, max(num_fr$major_rules_published) + 25)) +
-  coord_cartesian(ylim = c(0, max(num_fr$major_rules_published) + 25)) + # move thicker bottom x-axisx to 0 line
+                     limits = c(0, max(num_fr$major_rules_published) + 25)) +
+  coord_cartesian(clip = "off") +
   labs(caption = wrapped_caption)+
   theme_minimal() +
   theme_RSC +
@@ -112,8 +112,6 @@ bar1 <-
 
       plot.margin = margin(50, 50, 50, 50)
     )
-  
-  #coord_cartesian(ylim = c(0, max(sig_fin_rules$rules) + 50)) +
   
 
 
