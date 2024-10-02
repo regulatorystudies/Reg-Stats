@@ -25,16 +25,23 @@ Data: ~weekly
     - Many values can be found in the grey box at the top right. Typically, you can find “RIN” and “Agency/Docket Number” there.
     - RIN is sometimes missing from this box, and Agency/Docket Number often is. It’s often worth a quick scan of the document to look for RIN elsewhere, or worth checking reginfo.gov, but sometimes one just doesn’t exist. Don’t worry if Agency/Docket information is missing.
 1. To determine if a rule is significant/economically significant, search by “Control-F”ing the word “significant” on the webpage, as well as “12866”. This should bring you to the part of the document which discusses whether it is a significant rule. Enter a “1” if it is significant (and a 1 in the economically significant column as well if it is economically significant). If it is not, enter a “0”. If it does not say, enter a “.”.  
-![Example of language indicating a rule is not a significant regulatory action](examples/12866.png)
+![Example of language indicating a rule is not a significant regulatory action](examples/12866.png)\
+See **Other Tips** below for tips on ambiguous cases.
 1. To determine if a rule is “major” search by “Control-F”ing the word “major” on the webpage, as well as “Congressional”. This should bring you to the part of the document which discusses whether it is a major rule. Enter a “1” if it is major. If it is not, enter a “0”. If it does not say, enter a “.”.  
 ![Example of language indicating a rule is not a major rule](examples/major.png)
    - Alternatively, an agency may identify a rule as major by referring to the relevant section of the U.S. Code. You may come across a sentence alongs the lines of: "This action meets the criteria set forth in 5 U.S.C. 804(2)." Also mark such rules as major=1.
 
-Other Tips:  
-
-- To double-check on a confusing regulation, search it in reginfo.gov and compare.  
-  - To search at reginfo.gov, use the search box in the upper right. Make sure “Reg Review” is ticked off, and search the RIN or rule name. This will often bring you to an advanced search page where you can enter more information about the rule. If this does not turn up any results, search again with “Unified Agenda” ticked off instead.  
-- For missing values, add a “.” In the cell so reviewers know you did not just forget.  
+### Other Tips:  
+- For missing values, add a “.” in the cell so reviewers know you did not just forget. 
+- There is often confusion about whether a significant rule is also section 3(f)(1) significant (applicable to rules published after April 6, 2023). The following tips may help:
+  - Rules that mention EO 14094 are not necessarily section 3(f)(1) significant. It is important to note whether it says that it is significant under **Section 3(f)(1)** of EO 14094.
+  - Some section 3(f)(1) significant rules do not mention the section number but mention the monetary threshold of $200 million.
+  - Rules that are not major are less likely to be section 3(f)(1) significant.
+  - Rules that do not explictly mention whether they are section 3(f)(1) significant in any ways are more likely to be **not** section 3(f)(1) significant, but look through other sections (e.g., benefits and costs) for cost/benefit estimates to confirm.
+- Use reginfo.gov as a secondary source for double-checking the significance designation.  
+  - To find the rule on reginfo.gov, click Document Details on the Federal Register page of the rule. If there is a RIN, which is often hyperlinked, click on it, and you will be directed to a reginfo.gov page with a list of Unified Agendas in which the rule appeared. Click on the latest Unified Agenda on the page, and look for the Priority field, which includes the significance designation from the Unified Agenda.
+  - Note that the designation from the Unified Agenda is not always accurate and may be different from the Federal Register preamble. Because the Unified Agenda is forward-looking, agencies or OIRA may change the designation when the rule is actually published. Therefore, always use the Federal Register preamble as the primary source for this information, and use reginfo.gov as a supplementary source only (if at all).
+ 
 
 ## Environment Set Up
 
