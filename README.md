@@ -9,11 +9,11 @@ The project root contains several files, including an RStudio project (.Rproj), 
 In addition to these files, there are several directories:
 
 - charts/
-  - contains the code for updating Reg Stats charts, chart style information, and data visualization output
+  - contains the R code for updating Reg Stats charts, chart style information, and data visualization output
   - see this sub-directory's README for more details
 - data/
   - contains sub-directories for each Reg Stats chart and dataset
-  - each sub-directory contains the code for collecting Reg Stats data (when automated) and the data for each dataset
+  - each sub-directory contains instructions for updating each Reg Stats dataset (either automatically or manually), the Python code for collecting the data (when automated), and the data for each dataset
   - see the README within each sub-directory for more details
 - renv/
   - contains the profiles associated with the project lockfiles; this is where package binaries will be installed on your local machine
@@ -40,5 +40,5 @@ In addition to these files, there are several directories:
 
     Steps:
       - You will need to activate the renv profile associated with the version of R you're running. If using R 4.3.1, run the command `renv::activate(profile = "R_431")` to open the profile with the lockfile corresponding to R 4.3.1 packages. If using R 4.2.2, run `renv::activate(profile = "R_422")`. See the [renv docs](https://rstudio.github.io/renv/articles/profiles.html) for more information.  
-      - Run `renv::restore()`` to align your environment with the lockfile.  
+      - Run `renv::restore()` to align your environment with the lockfile.  
       - If you continue to have issues restoring the environment, you may be able to skip this step and install required packages using `utils::install.packages()`.  
