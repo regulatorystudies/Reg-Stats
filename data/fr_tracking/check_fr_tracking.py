@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import datetime
+import os
 
 #%% Import FR tracking data
 df=pd.read_csv('data/fr_tracking/fr_tracking.csv',encoding="latin")
@@ -25,16 +26,22 @@ else:
 #%% Drop duplicates
 # Federal holidays included in the original data
 df_new=df[~((df['publication_date']==datetime(2021,5,31)) | (df['publication_date']==datetime(2021,11,11)))]
-print('Duplicates removed:',len(df)-len(df_new))
+print('Federal holidays removed:',len(df)-len(df_new))
 
 # Other duplicates (keep last)
 # Including removing 12/14/2023 2023-27495; 12/14/2023 2023-27523; 12/14/2023 2023-27617 (these were published 12/15/2023)
 lenb4=len(df_new)
 df_new=df_new.sort_values(['document_number','publication_date','significant','econ_significant','3(f)(1) significant','Major']).\
     drop_duplicates(subset=['document_number'],keep='last',ignore_index=True)
-print('Duplicates removed:',lenb4-len(df_new))
+print('Other duplicates removed:',lenb4-len(df_new))
 
 print('Number of duplicates:',len(df_new[df_new.duplicated(subset=['document_number'],keep=False)]))
+
+#%% Drop saved duplicates
+if os.path.exists('data/fr_tracking/fr_tracking_duplicates.csv'):
+    os.remove('data/fr_tracking/fr_tracking_duplicates.csv')
+else:
+    pass
 
 #%% Save revised dataframe
 df_new['publication_date']=df_new['publication_date'].dt.date
