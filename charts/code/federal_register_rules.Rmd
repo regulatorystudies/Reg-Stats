@@ -87,7 +87,8 @@ line1 <- ggplot(rules_pub_long,
     legend.text = element_text(size = 15),
     legend.key.size = unit(2, "lines"),    
     axis.text.x = element_text(angle = 65, hjust = 1),
-    axis.ticks.x = element_blank()) +
+    #axis.ticks.x = element_blank()
+    ) +
   xlab(element_blank()) +
   ylab("Number of Rules") +
   ggtitle("Rules Published in the Federal Register by Presidential Year") +
