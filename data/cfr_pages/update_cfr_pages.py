@@ -15,12 +15,13 @@ print("Download the XLS file from the Federal Register Statistics page before ru
 #%% Import the latest dataset
 dir_path=os.path.dirname(os.path.realpath(__file__))
 df_full=pd.read_excel(f'{dir_path}/aggregated_charts_frstats.xlsx',sheet_name='CFR Vols',skiprows=4)
+# df_full=pd.read_excel(f'data/cfr_pages/aggregated_charts_frstats.xlsx',sheet_name='CFR Vols',skiprows=4)
 #print(df_full.info())
 
 #%% Separate data and notes
 df_data=df_full[df_full['Year'].astype('str').str.isnumeric()]
 df_data['Year']=df_data['Year'].astype('int')
-df_data=df_data[['Year','Total Pages']][df_data['Year']>=1950]
+df_data=df_data[['Year','Total Volumes\n(Exc CFR Index)','Total Pages']][df_data['Year']>=1950]
 
 df_notes=df_full[df_full['Year'].astype('str').str.contains(r'\*')][['Year']]
 
@@ -101,12 +102,15 @@ df_disagg=pd.read_csv(f'{dir_path}/cfr_pages_disaggregated.csv')
 df_disagg=pd.concat([df_disagg,df[df['year']>max(df_disagg['year'])]],ignore_index=True)
 df_disagg.to_csv(f"{dir_path}/cfr_pages_disaggregated.csv",index=False)
 
+#%% Load disaggregated data (if applicable)
+# df=pd.read_csv(f"data/cfr_pages/cfr_pages_disaggregated.csv")
+
 #%% Concatenate annual data
-df_year=df[['year','pages']].groupby('year').sum().reset_index()
-df_year.rename(columns={'year':'Year','pages':'Total Pages'},inplace=True)
+df_year=df[['year','vol','pages']].groupby('year').agg({'vol':'size','pages':'sum'}).reset_index()
+df_year.rename(columns={'year':'Year','vol':'Total Volumes\n(Exc CFR Index)','pages':'Total Pages'},inplace=True)
 #print(df_year)
 
-df_data=pd.concat([df_data,df_year],ignore_index=True)
+df_data=pd.concat([df_data,df_year[df_year['Year']>max(df_data['Year'])]],ignore_index=True)
 
 #%% Concatenate notes
 # Add data source
@@ -114,11 +118,11 @@ df_notes.loc[-1]=[f"Data source: GovInfo (https://www.govinfo.gov/app/collection
                   f" Federal Register Statistics (https://www.federalregister.gov/reader-aids/federal-register-statistics)"
                   f" for all the prior years."]
 
-#%%
 df_data=pd.concat([df_data,df_notes],ignore_index=True)
 
 #%% Export updated annual data
 df_data.to_csv(f'{dir_path}/cfr_pages_by_calendar_year.csv',index=False)
+# df_data.to_csv(f'data/cfr_pages/cfr_pages_by_calendar_year.csv',index=False)
 print("Data have been updated and saved. END.")
 
 
