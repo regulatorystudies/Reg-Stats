@@ -4,8 +4,6 @@
 #
 #    pip-compile --output-file=requirements-mac.txt requirements.in
 #
-appnope==0.1.4
-    # via ipykernel
 asttokens==2.4.1
     # via stack-data
 beautifulsoup4==4.12.3
@@ -89,7 +87,7 @@ soupsieve==2.5
     # via beautifulsoup4
 stack-data==0.6.3
     # via ipython
-tornado==6.4.1
+tornado==6.4.2
     # via
     #   ipykernel
     #   jupyter-client
