@@ -85,11 +85,9 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   labs(caption = caption_text) +
   coord_cartesian(clip = "off") +
   theme_RSC +
-  theme(
-        #axis.ticks.x = element_blank(),
+  theme(axis.ticks.x = element_blank(),
         axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
-        axis.line.x = element_line(linewidth = 1, color = RSCgray)
-        )
+        axis.line.x = element_line(linewidth = 1, color = RSCgray))
 bar1
 
 # supress warning
