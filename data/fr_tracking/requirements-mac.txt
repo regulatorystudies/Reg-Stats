@@ -65,7 +65,7 @@ pyjwt==2.8.0
     # via rsconnect-python
 python-dateutil==2.9.0.post0
     # via pandas
-python-multipart==0.0.9
+python-multipart==0.0.18
     # via shiny
 pytz==2024.1
     # via pandas
