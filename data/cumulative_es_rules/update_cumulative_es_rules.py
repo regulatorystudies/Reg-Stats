@@ -11,10 +11,12 @@ import esfunc
 
 #%% Specify the file path of the current dataset
 file_path=f'{dir_path}/cumulative_econ_significant_rules_by_presidential_month.csv'
+file_path2=f'{dir_path}/cumulative_econ_significant_rules_by_presidential_month.xlsx'
 
 #%% Run functions to update the data
 df=esfunc.main(dir_path,file_path,type='cumulative')
 
 #%% Export
 df.to_csv(file_path, index=False)
+df.to_excel(file_path2, index=False)
 print('The dataset has been updated and saved. End of execution.')
