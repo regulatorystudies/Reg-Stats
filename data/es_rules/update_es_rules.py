@@ -1,5 +1,3 @@
-print('NOTE: The current code can only update data for presidential years 2021 and later.')
-
 import pandas as pd
 import os
 import sys
@@ -8,14 +6,13 @@ from datetime import date
 # Import customized functions
 dir_path=os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, f'{dir_path}/../py_funcs')
-from get_party import *
-from get_reginfo_data import *
+from party import *
+from reginfo import *
 
 #%% Specify the earliest year of this dataset
 earliest_year=1981
 
 #%% Import the current dataset
-# dir_path='data/es_rules'
 file_path=f'{dir_path}/econ_significant_rules_by_presidential_year.csv'
 
 if os.path.exists(file_path):
