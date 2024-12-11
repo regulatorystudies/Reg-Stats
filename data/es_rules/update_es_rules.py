@@ -19,7 +19,7 @@ if os.path.exists(file_path):
     # Read the dataset if existing
     df=pd.read_csv(file_path)
     # The latest data-year in the current dataset
-    last_year_with_data = int(df['Presidential Year (February 1 - January 31)'].iloc[-1])
+    last_year_with_data = int(df[df['Economically Significant Rules Published'].notnull()]['Presidential Year (February 1 - January 31)'].iloc[-1])
 else:
     # Create a file
     df=pd.DataFrame(columns=['Presidential Year (February 1 - January 31)',
@@ -88,11 +88,12 @@ def verify_previous_data(df,check):
             old_data_updated=old_data_updated | get_fr_data(2021,last_year_with_data)
 
         # Compare with the original data
+        print('Comparing newly collected data with original data...')
         old_data_original=dict(zip(df['Presidential Year (February 1 - January 31)'],
-                                   df['Economically Significant Rules Published'].astype(int)))
+                                   df['Economically Significant Rules Published'].fillna(-1).astype('int')))
         for k in old_data_updated:
             if old_data_updated[k]!=old_data_original[k]:
-                print(f'Value for {old_data_updated[k]} has been updated from {old_data_original[k]} to {old_data_updated[k]}.')
+                print(f'Value for {k} has been updated from {old_data_original[k] if old_data_original[k]>=0 else None} to {old_data_updated[k]}.')
             else:
                 pass
         print('All previous data have been verified.')
@@ -127,7 +128,8 @@ if last_year_with_data<current_year-1:
         df=verify_previous_data(df,check)
 
         # Append new data
-        df_output = pd.concat([df, df_new], ignore_index=True)
+        df_output = pd.concat([df[df['Economically Significant Rules Published'].notnull()],
+                               df_new], ignore_index=True)
     else:
         df_output=df_new
 
