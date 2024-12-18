@@ -6,7 +6,7 @@ import sys
 
 # Import customized functions
 dir_path=os.path.dirname(os.path.realpath(__file__))
-sys.path.insert(0, f'{dir_path}/funcs')
+sys.path.insert(0, f'{dir_path}/../py_funcs')
 import esfunc
 
 #%% Specify the file path of the current dataset
