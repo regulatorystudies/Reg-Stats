@@ -18,6 +18,10 @@ In addition to these files, there are several directories:
 - renv/
   - contains the profiles associated with the project lockfiles; this is where package binaries will be installed on your local machine
 
+The structure of the repository is depicted below:
+
+![Map of Reg Stats Repository](charts/style/repo_map.png) 
+
 ## R Environment Set Up
 
 1. Download requirements  
