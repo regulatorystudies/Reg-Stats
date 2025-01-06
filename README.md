@@ -20,7 +20,7 @@ In addition to these files, there are several directories:
 
 The structure of the repository is depicted below:
 
-![Map of Reg Stats Repository](repo_map.png) 
+![Map of Reg Stats Repository](charts/style/repo_map.png) 
 
 ## R Environment Set Up
 
