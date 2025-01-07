@@ -22,6 +22,39 @@ The structure of the repository is depicted below:
 
 ![Map of Reg Stats Repository](charts/style/repo_map.png) 
 
+## Instructions for Updating Data and Charts
+
+#### Economically Significant Rules by Presidential Year
+- Update data:
+  - Run `data/es_rules/update_es_rules.py`
+  - Output: `data/es_rules/econ_significant_rules_by_presidential_year.csv`
+- Update chart:
+  - Run `charts/code/econ_significant_rules.Rmd`
+  - Output:
+    - `charts/output/econ_significant_rules_published_by_presidential_year.pdf`
+    - `charts/output/econ_significant_rules_published_by_presidential_year.png`
+
+#### Monthly Economically Significant Rules
+- Update data:
+  - Run `data/monthly_es_rules/update_monthly_es_rules.py`
+  - Output: `data/monthly_es_rules/monthly_econ_significant_rules_by_presidential_month.csv`
+- Update chart:
+  - Run `charts/code/monthly_econ_significant_rules_by_presidential_month.Rmd`
+  - Output:
+    - `charts/output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`
+    - `charts/output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`
+
+#### Monthly Economically Significant Rules
+- Update data:
+  - Run `data/monthly_es_rules/update_monthly_es_rules.py`
+  - Output: `data/monthly_es_rules/monthly_econ_significant_rules_by_presidential_month.csv`
+- Update chart:
+  - Run `charts/code/monthly_econ_significant_rules_by_presidential_month.Rmd`
+  - Output:
+    - `charts/output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`
+    - `charts/output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`
+
+
 ## R Environment Set Up
 
 1. Download requirements  
