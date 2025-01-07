@@ -44,17 +44,6 @@ The structure of the repository is depicted below:
     - `charts/output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`
     - `charts/output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`
 
-#### Monthly Economically Significant Rules
-- Update data:
-  - Run `data/monthly_es_rules/update_monthly_es_rules.py`
-  - Output: `data/monthly_es_rules/monthly_econ_significant_rules_by_presidential_month.csv`
-- Update chart:
-  - Run `charts/code/monthly_econ_significant_rules_by_presidential_month.Rmd`
-  - Output:
-    - `charts/output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`
-    - `charts/output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`
-
-
 ## R Environment Set Up
 
 1. Download requirements  
