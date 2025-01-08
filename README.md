@@ -24,53 +24,81 @@ The structure of the repository is depicted below:
 
 ## Instructions for Updating Data and Charts
 
-#### Economically Significant Rules by Presidential Year
+For updating the data or charts, follow the instructions in each subdirectory. The following list provides a summary of
+files and output corresponding to each data series in Reg Stats.
 
-| Task  | Location | File | Output |
-|-------| -------- | ---- | ------ |
-| Data  | `data/es_rules` | `update_es_rules.py` | `econ_significant_rules_by_presidential_year.csv` |
-| Chart | `charts/` | `code/econ_significant_rules.Rmd` | `output/econ_significant_rules_published_by_presidential_year.pdf`<br/>`charts/output/econ_significant_rules_published_by_presidential_year.png` |
+After setting up the required Python or R environment (see instructions in each subdirectory), run the Python or R code
+in the "File" column, and an output dataset or chart in the "Output" column will be generated.
 
-- Update data:
-  - Run `data/es_rules/update_es_rules.py`
-  - Output: `data/es_rules/econ_significant_rules_by_presidential_year.csv`
-- Update chart:
-  - Run `charts/code/econ_significant_rules.Rmd`
-  - Output:
-    - `charts/output/econ_significant_rules_published_by_presidential_year.pdf`
-    - `charts/output/econ_significant_rules_published_by_presidential_year.png`
+#### Economically Significant Final Rules Published by Presidential Year
+| Task  | Location         | File | Output |
+|-------|------------------| ---- | ------ |
+| Data  | `data/es_rules/` | `update_es_rules.py` | `econ_significant_rules_by_presidential_year.csv` |
+| Chart | `charts/`        | `code/econ_significant_rules.Rmd` | `output/econ_significant_rules_published_by_presidential_year.pdf`<br/>`output/econ_significant_rules_published_by_presidential_year.png` |
 
-#### Monthly Economically Significant Rules
-- Update data:
-  - Run `data/monthly_es_rules/update_monthly_es_rules.py`
-  - Output: `data/monthly_es_rules/monthly_econ_significant_rules_by_presidential_month.csv`
-- Update chart:
-  - Run `charts/code/monthly_econ_significant_rules_by_presidential_month.Rmd`
-  - Output:
-    - `charts/output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`
-    - `charts/output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`
+#### Economically Significant Final Rules by Agency
+| Task  | Location         | File | Output                                                                                                                                                      |
+|-------|------------------| ---- |-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/es_rules/` | `by_agency/update_agency_es_rules.py` | `agency_econ_significant_rules_by_presidential_year.csv`                                                                                                    |
+| Chart | `charts/`        | `code/agency_econ_significant_rules_by_presidential_year.Rmd` | `output/by_agency/[agency]_econ_significant_rules_by_presidential_year.pdf`<br/>`output/by_agency/[agency]_econ_significant_rules_by_presidential_year.png` |
 
-## R Environment Set Up
+#### Monthly Economically Significant Final Rules under the Biden Administration
+| Task  | Location                 | File | Output                                                                                                                                              |
+|-------|--------------------------| ---- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/monthly_es_rules/` | `update_monthly_es_rules.py` | `monthly_econ_significant_rules_by_presidential_month.csv`                                                                                          |
+| Chart | `charts/`                | `code/monthly_econ_significant_rules_by_presidential_month.Rmd` | `output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`<br/>`output/monthly_econ_significant_rules_by_presidential_month_biden.png` |
 
-1. Download requirements  
+#### Cumulative Economically Significant Final Rules by Administration
+| Task  | Location                 | File | Output                                                                                                                                              |
+|-------|--------------------------| ---- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/cumulative_es_rules/` | `update_cumulative_es_rules.py` | `cumulative_econ_significant_rules_by_presidential_month.csv`                                                                                          |
+| Chart | `charts/`                | `code/cumulative_econ_significant_rules_by_admin.Rmd` | `output/cumulative_econ_significant_rules_by_presidential_month.pdf`<br/>`output/cumulative_econ_significant_rules_by_presidential_month.png` |
 
-    Steps:
-     - [R](https://cran.rstudio.com/) version 4.2.2 or 4.3.1 (you need one of these versions of R to activate the environment properly).  
-     - The [RStudio](https://posit.co/download/rstudio-desktop/) integrated development environment (IDE).  
-     - [renv](https://rstudio.github.io/renv/index.html) (currently using `renv@1.0.3`).  
-     - You may also need tools for compiling R on your machine to build R packages from source. See details for [Windows](https://cran.rstudio.com/bin/windows/Rtools/rtools40.html) and [macOS](https://cran.r-project.org/bin/macosx/tools/).  
+#### Cumulative Economically Significant Final Rules Published by Administration in First Year
+| Task  | Location                 | File | Output                                                                                                                                              |
+|-------|--------------------------| ---- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/cumulative_es_rules/` | `update_cumulative_es_rules.py` | `cumulative_econ_significant_rules_by_presidential_month.csv`                                                                                          |
+| Chart | `charts/`                | `code/cumulative_econ_significant_rules_first_year.Rmd` | `output/cumulative_econ_significant_rules_by_first_year.pdf`<br/>`output/cumulative_econ_significant_rules_by_first_year.png` |
 
-2. Clone repository  
-  
-    Clone the repository from GitHub if it isn't present on your local machine. See the [GitHub Docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) for instructions.  
+#### Significant Final Rules Published by Presidential Year
+| Task  | Location                | File | Output                                                                                                                                              |
+|-------|-------------------------| ---- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/sig_rules/` | `update_sig_rules.py` | `significant_rules_by_presidential_year.csv`                                                                                          |
+| Chart | `charts/`         | `code/significant_rules.Rmd` | `output/significant_rules_by_presidential_year.pdf`<br/>`output/significant_rules_by_presidential_year.png` |
 
-3. Open project in RStudio  
+#### Major Final Rules Published by Presidential Year
+| Task  | Location                | File | Output                                                                                                                                              |
+|-------|-------------------------| ---- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/major_rules/` | `cradb/process_data.py` | `major_rules_by_presidential_year.csv`                                                                                          |
+| Chart | `charts/`         | `code/major_rules.Rmd` | `output/major_rules_by_presidential_year.pdf`<br/>`output/major_rules_by_presidential_year.png` |
 
-    There are several ways to do this. One is clicking on the Reg-Stats.Rproj file in the repo. Another is opening a new Rstudio session, go to the project button at the top right corner, and select open project (or open in new session). When you open the project, RStudio should recognize the project was loaded with a specific version of renv.  
+#### Rules Published in the Federal Register by Presidential Year
+| Task  | Location                | File                                    | Output                                                                                                                                              |
+|-------|-------------------------|-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/fr_rules/` | `code/fr_rules_by_presidential_year.py` | `federal_register_rules_by_presidential_year.csv`                                                                                          |
+| Chart | `charts/`         | `code/federal_register_rules.Rmd`       | `output/federal_register_rules_by_presidential_year.pdf`<br/>`output/federal_register_rules_by_presidential_year.png` |
 
-4. Activate the environment using renv  
+#### Rules Published in the Federal Register by Aegncy
+| Task  | Location                | File                                    | Output                                                                                                                                                      |
+|-------|-------------------------|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/fr_rules/` | `code/agency_fr_rules_by_presidential_year.py` | `agency_federal_register_rules_by_presidential_year.csv`                                                                                                           |
+| Chart | `charts/`         | `code/agency_federal_register_rules.Rmd`       | `output/by_agency/[agency]_federal_register_rules_by_presidential_year.pdf`<br/>`output/by_agency/[agency]_federal_register_rules_by_presidential_year.png` |
 
-    Steps:
-      - You will need to activate the renv profile associated with the version of R you're running. If using R 4.3.1, run the command `renv::activate(profile = "R_431")` to open the profile with the lockfile corresponding to R 4.3.1 packages. If using R 4.2.2, run `renv::activate(profile = "R_422")`. See the [renv docs](https://rstudio.github.io/renv/articles/profiles.html) for more information.  
-      - Run `renv::restore()` to align your environment with the lockfile.  
-      - If you continue to have issues restoring the environment, you may be able to skip this step and install required packages using `utils::install.packages()`.  
+#### Total Pages Published in the Code of Federal Regulations
+| Task  | Location                | File                                    | Output                                                                                                                                              |
+|-------|-------------------------|-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/cfr_pages/` | `update_cfr_pages.py` | `cfr_pages_by_calendar_year.csv`                                                                                          |
+| Chart | `charts/`         | `code/cfr_pages.Rmd`       | `output/cfr_pages_by_calendar_year.pdf`<br/>`output/cfr_pages_by_calendar_year.png` |
+
+#### Total Pages Published in the Federal Register
+| Task  | Location                | File                 | Output                                                                                                                                              |
+|-------|-------------------------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/fr_pages/` | N/A                  | `federal_register_pages_by_calendar_year.csv`                                                                                          |
+| Chart | `charts/`         | `code/federal_register_pages.Rmd` | `output/federal_register_pages_by_calendar_year.pdf`<br/>`output/federal_register_pages_by_calendar_year.png` |
+
+#### Active Actions Published in the Unified Agenda
+| Task  | Location                | File                 | Output                                                                                                                                              |
+|-------|-------------------------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/ua_actions/` | `update_ua_actions.py`           | `active_actions_by_unified_agenda.csv`                                                                                          |
+| Chart | `charts/`         | `code/unified_agenda_active_actions.Rmd` | `output/active_actions_by_unified_agenda.pdf`<br/>`output/active_actions_by_unified_agenda.png` |
+
