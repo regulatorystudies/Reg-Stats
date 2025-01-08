@@ -25,6 +25,12 @@ The structure of the repository is depicted below:
 ## Instructions for Updating Data and Charts
 
 #### Economically Significant Rules by Presidential Year
+
+| Task  | Location | File | Output |
+|-------| -------- | ---- | ------ |
+| Data  | `data/es_rules` | `update_es_rules.py` | `econ_significant_rules_by_presidential_year.csv` |
+| Chart | `charts/` | `code/econ_significant_rules.Rmd` | `output/econ_significant_rules_published_by_presidential_year.pdf`<br/>`charts/output/econ_significant_rules_published_by_presidential_year.png` |
+
 - Update data:
   - Run `data/es_rules/update_es_rules.py`
   - Output: `data/es_rules/econ_significant_rules_by_presidential_year.csv`
