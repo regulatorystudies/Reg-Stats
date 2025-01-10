@@ -6,31 +6,37 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 # %% A function to update data for an administration
-def update_admin(df,df_fr,admin,update_start_date,update_end_date,type='cumulative'):
+def update_admin(df,df_fr,admin,update_start_date,update_end_date,rule_type='es',type='cumulative'):
 
     # Refine FR tracking data
     df_fr = df_fr[(df_fr['publication_date'] >= update_start_date) & (df_fr['publication_date'] <= update_end_date)]
 
-    # Count monthly economically/section 3(f)(1) significant rules
-    if min(df_fr['publication_date']) < date(2023, 4, 6) < max(df_fr['publication_date']):
-        df_fr_update1 = df_fr[df_fr['publication_date'] < date(2023, 4, 6)][
-            ['publication_year', 'publication_month', 'econ_significant']]. \
-            groupby(['publication_year', 'publication_month']).sum().reset_index()
-        df_fr_update1.rename(columns={'econ_significant': 'count'}, inplace=True)
-        df_fr_update2 = df_fr[df_fr['publication_date'] >= date(2023, 4, 6)][
-            ['publication_year', 'publication_month', '3(f)(1) significant']]. \
-            groupby(['publication_year', 'publication_month']).sum().reset_index()
-        df_fr_update2.rename(columns={'3(f)(1) significant': 'count'}, inplace=True)
-        df_fr_update = pd.concat([df_fr_update1,df_fr_update2],ignore_index=True)
-        df_fr_update=df_fr_update.groupby(['publication_year', 'publication_month']).sum()  #combine April 2023 data
-    elif max(df_fr['publication_date']) < date(2023, 4, 6):
-        df_fr_update = df_fr[['publication_year', 'publication_month', 'econ_significant']]. \
+    if rule_type=='es':
+        # Count monthly economically/section 3(f)(1) significant rules
+        if min(df_fr['publication_date']) < date(2023, 4, 6) < max(df_fr['publication_date']):
+            df_fr_update1 = df_fr[df_fr['publication_date'] < date(2023, 4, 6)][
+                ['publication_year', 'publication_month', 'econ_significant']]. \
+                groupby(['publication_year', 'publication_month']).sum().reset_index()
+            df_fr_update1.rename(columns={'econ_significant': 'count'}, inplace=True)
+            df_fr_update2 = df_fr[df_fr['publication_date'] >= date(2023, 4, 6)][
+                ['publication_year', 'publication_month', '3(f)(1) significant']]. \
+                groupby(['publication_year', 'publication_month']).sum().reset_index()
+            df_fr_update2.rename(columns={'3(f)(1) significant': 'count'}, inplace=True)
+            df_fr_update = pd.concat([df_fr_update1,df_fr_update2],ignore_index=True)
+            df_fr_update=df_fr_update.groupby(['publication_year', 'publication_month']).sum()  #combine April 2023 data
+        elif max(df_fr['publication_date']) < date(2023, 4, 6):
+            df_fr_update = df_fr[['publication_year', 'publication_month', 'econ_significant']]. \
+                groupby(['publication_year', 'publication_month']).sum()
+            df_fr_update.rename(columns={'econ_significant': 'count'}, inplace=True)
+        else:
+            df_fr_update = df_fr[['publication_year', 'publication_month', '3(f)(1) significant']]. \
+                groupby(['publication_year', 'publication_month']).sum()
+            df_fr_update.rename(columns={'3(f)(1) significant': 'count'}, inplace=True)
+
+    elif rule_type=='sig':
+        df_fr_update = df_fr[['publication_year', 'publication_month', 'significant']]. \
             groupby(['publication_year', 'publication_month']).sum()
-        df_fr_update.rename(columns={'econ_significant': 'count'}, inplace=True)
-    else:
-        df_fr_update = df_fr[['publication_year', 'publication_month', '3(f)(1) significant']]. \
-            groupby(['publication_year', 'publication_month']).sum()
-        df_fr_update.rename(columns={'3(f)(1) significant': 'count'}, inplace=True)
+        df_fr_update.rename(columns={'significant': 'count'}, inplace=True)
 
     # Append new data to the current dataset
     first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
@@ -65,7 +71,7 @@ def check_partial_month(df_fr,update_end_date):
     return update_end_date
 
 #%% The main function
-def main(dir_path,file_path,type='cumulative'):
+def main(dir_path,file_path,rule_type='es',type='cumulative'):
     # Define administrations and their start & end years
     # If there is a new administration, add {president name: [start year, end year]} to the dictionary below.
     admin_year = {'Reagan': [1981, 1989],
@@ -123,7 +129,7 @@ def main(dir_path,file_path,type='cumulative'):
 
             # update data
             print(f'Updating data from {update_start_date} to {update_end_date}...')
-            df = update_admin(df, df_fr, admin, update_start_date, update_end_date, type)
+            df = update_admin(df, df_fr, admin, update_start_date, update_end_date, rule_type, type)
             print(f'The {admin} administration data has been updated.')
 
     # %% Check current administration (starting from Biden)
@@ -148,7 +154,7 @@ def main(dir_path,file_path,type='cumulative'):
         pass
     else:
         print(f'Updating data from {update_start_date} to {update_end_date}...')
-        df = update_admin(df, df_fr, admin, update_start_date, update_end_date, type)
+        df = update_admin(df, df_fr, admin, update_start_date, update_end_date, rule_type, type)
         print(f'The {admin} administration data has been updated.')
 
     return df
