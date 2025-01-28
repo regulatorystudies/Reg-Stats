@@ -45,8 +45,7 @@ party_dict={
     2021: 'Democratic',
     2022: 'Democratic',
     2023: 'Democratic',
-    2024: 'Democratic',
-    2025: 'Republican'
+    2024: 'Democratic'
 }
 
 # Function to identify party

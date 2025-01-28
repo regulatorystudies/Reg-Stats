@@ -79,9 +79,8 @@ def main(dir_path,file_path,rule_type='es',type='cumulative'):
                   'Clinton': [1993, 2001],
                   'Bush 43': [2001, 2009],
                   'Obama': [2009, 2017],
-                  'Trump 45': [2017, 2021],
-                  'Biden': [2021, 2025],
-                  'Trump 47': [2025, ]}
+                  'Trump': [2017, 2021],
+                  'Biden': [2021, ]}
     print(f"The current dataset covers the {', '.join(list(admin_year.keys()))} administrations.\n"
           f"If there is a new administration, revise the admin_year dictionary in frcount.main and re-run the code.")
 

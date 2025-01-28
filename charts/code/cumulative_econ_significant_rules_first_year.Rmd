@@ -44,13 +44,13 @@ cum_sig_first <- read.csv(here("charts", "data", data_file))
 cum_sig <- cum_sig_first[c(1:13), ]
 
 # rename columns (will need to manually update with the names of new presidents)
-colnames(cum_sig) <- c("month", "months_in_office", "Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden")
+colnames(cum_sig) <- c("month", "months_in_office", "Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump", "Biden")
 
 # get rid of unnecessary columns (will also need to manually update with new president names here)
-cum_sig <- cum_sig[ , c("months_in_office", "Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden")]
+cum_sig <- cum_sig[ , c("months_in_office", "Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump", "Biden")]
 
 # create long data frame (will also need to manually add new president's names here)
-cum_sig_long_NA <- pivot_longer(cum_sig, cols = c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden"), names_to = "president", values_to = "econ_rules")
+cum_sig_long_NA <- pivot_longer(cum_sig, cols = c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump", "Biden"), names_to = "president", values_to = "econ_rules")
 
 # remove NA values from long data frame (these NA values are the potential econ_rules values for presidents who didn't/haven't yet served the maximum number of months)
 cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
@@ -63,14 +63,14 @@ cum_sig_long <- cum_sig_long %>%
                                    "Clinton", 
                                    "Bush_43",
                                    "Obama", 
-                                   "Trump_45",
+                                   "Trump",
                                    "Biden"),
                         labels = c("Reagan", 
                                    "Bush 41",
                                    "Clinton", 
                                    "Bush 43",
                                    "Obama", 
-                                   "Trump 45",
+                                   "Trump",
                                    "Biden")))
 
 
