@@ -44,7 +44,7 @@ df <- read.csv(here("charts", "data", data_file))
 df1 <- df
 
 # set column names
-colnames(df1) <- c("year", "tolpages")
+colnames(df1) <- c("year", "total_volumes", "total_pages")
 
 # remove rows with NA values
 df1 <- df1[!is.na(as.numeric(as.character(df1$year))),]
@@ -65,12 +65,12 @@ caption_text <- paste("Sources: GovInfo.gov for the years 2022 and onwards; Fede
 # format wrapping setting for caption text
 wrapped_caption <- paste(strwrap(caption_text, width = 55), collapse = "\n")
 
-upper <- ydynam(df1, 20000, 2)
+upper <- ydynam(df1, 20000, 3)
 
 breaks4 <- c(seq(min(df1$year), max(df1$year), 4))
 
 bar2 <-
-  ggplot(data=df1, aes(x=year, y=tolpages)) +
+  ggplot(data=df1, aes(x=year, y=total_pages)) +
   geom_bar(stat="identity", fill="#033C5A")+
   #geom_text(aes(label=len), vjust=-0.3, size=3.5)+
 
