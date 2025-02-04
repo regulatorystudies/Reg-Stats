@@ -1,0 +1,65 @@
+print('NOTE: The current code can only update data for the Biden and following administrations.')
+
+#%% Import packages
+import pandas as pd
+import os
+import sys
+from datetime import datetime
+from datetime import date
+from dateutil.relativedelta import relativedelta
+
+# Import customized functions
+dir_path=os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, f'{dir_path}/../py_funcs')
+import frcount
+
+#%% Define administrations and their start & end years (currently supporting "Biden" and "Trump 47")
+# If there is a new administration, add {president name: [start year, end year]} to the dictionary below.
+admin_year = {'Biden': [2021, 2025],
+              'Trump 47': [2025, 2029]}
+
+#%% Specify which administration you want to generate data on
+admin='Biden'
+
+#%% Specify the file path of the current dataset
+file_path=f"{dir_path}/monthly_significant_rules_{admin.replace(' ','').lower()}.csv"
+
+#%% Import the current dataset
+if os.path.exists(file_path):
+    df = pd.read_csv(file_path)
+    update_start_date=datetime.date(df[df['Significant'].notnull()]['Month-Year'].iloc[-1]+relativedelta(months=1))
+else:
+    # Create a file
+    df=pd.DataFrame(columns=['Month-Year','Months in Office',
+                             'Significant','Economically Significant','Other Significant'])
+    update_start_date=date(admin_year[admin][0],2,1)
+
+#%% Define update end date
+if update_start_date.year >= admin_year[admin][1]:
+    update_end_date = date(admin_year[admin][0], 1, 20)
+else:
+    update_end_date=date.today().replace(day=1) - relativedelta(days=1)
+    if (update_end_date.year == admin_year[admin][1]) and (update_end_date.month == 1):
+        update_end_date = update_end_date.replace(day=20)
+
+#%% Update data
+if update_start_date > update_end_date:
+    print(f'The {admin} administration data is up-to-date.')
+    pass
+else:
+    # Update data
+    df_update=frcount.count_fr_monthly(dir_path,update_start_date,update_end_date)
+    df_update.rename(columns={'sig_count':'Significant','es_count':'Economically Significant'},inplace=True)
+    df_update['Other Significant']=df_update['Significant']-df_update['Economically Significant']
+
+    df_update['Month-Year']=pd.to_datetime(df_update['publication_year'].astype(str)+df_update['publication_month'].astype(str), format='%Y%m')
+    df_update['Months in Office'] = (df_update['Month-Year'].dt.year-date(admin_year[admin][0],2,1).year) * 12 + (df_update['Month-Year'].dt.month-date(admin_year[admin][0],2,1).month) + 1
+    df_update['Month-Year']=df_update['Month-Year'].dt.strftime('%b-%y').astype(str)
+
+    # Append data
+    df=pd.concat([df,df_update.drop(['publication_year','publication_month'],axis=1)],ignore_index=True)
+
+#%% Export
+if len(df)>0:
+    df.to_csv(file_path, index=False)
+    print('The dataset has been updated and saved. End of execution.')
