@@ -92,6 +92,12 @@ def main(dir_path,file_path,rule_type='es',type='cumulative'):
         print('Error: no existing dataset.')
         sys.exit(0)
 
+    # Rename the first Trump administration if existing in the current dataset
+    if 'Trump' in df.columns:
+        df.rename(columns={'Trump':'Trump 45'},inplace=True)
+    else:
+        pass
+
     # %% Create a new column if there is a new administration
     new_admin = [x for x in admin_year.keys() if x not in df.columns]
     if len(new_admin) > 0:
