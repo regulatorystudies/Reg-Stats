@@ -7,6 +7,7 @@ import sys
 from datetime import datetime
 from datetime import date
 from dateutil.relativedelta import relativedelta
+import calendar
 
 # Import customized functions
 dir_path=os.path.dirname(os.path.realpath(__file__))
@@ -27,10 +28,12 @@ file_path=f"{dir_path}/monthly_significant_rules_{admin.replace(' ','').lower()}
 #%% Import the current dataset
 if os.path.exists(file_path):
     df = pd.read_csv(file_path)
-    update_start_date=datetime.date(df[df['Significant'].notnull()]['Month-Year'].iloc[-1]+relativedelta(months=1))
+    df['Date'] = pd.to_datetime(df['Year'].astype(str) + df['Month'].astype(str), format='%Y%b')
+    update_start_date=datetime.date(df[df['Significant'].notnull()]['Date'].iloc[-1]+relativedelta(months=1))
+    df.drop(['Date'], axis=1,inplace=True)
 else:
     # Create a file
-    df=pd.DataFrame(columns=['Month-Year','Months in Office',
+    df=pd.DataFrame(columns=['Year','Month','Months in Office',
                              'Significant','Economically Significant','Other Significant'])
     update_start_date=date(admin_year[admin][0],2,1)
 
@@ -48,16 +51,18 @@ if update_start_date > update_end_date:
     pass
 else:
     # Update data
+    print(f'Updating data from {update_start_date} to {update_end_date}...')
     df_update=frcount.count_fr_monthly(dir_path,update_start_date,update_end_date)
-    df_update.rename(columns={'sig_count':'Significant','es_count':'Economically Significant'},inplace=True)
+    df_update.rename(columns={'publication_year':'Year','publication_month':'Month',
+                              'sig_count':'Significant','es_count':'Economically Significant'},inplace=True)
     df_update['Other Significant']=df_update['Significant']-df_update['Economically Significant']
 
-    df_update['Month-Year']=pd.to_datetime(df_update['publication_year'].astype(str)+df_update['publication_month'].astype(str), format='%Y%m')
-    df_update['Months in Office'] = (df_update['Month-Year'].dt.year-date(admin_year[admin][0],2,1).year) * 12 + (df_update['Month-Year'].dt.month-date(admin_year[admin][0],2,1).month) + 1
-    df_update['Month-Year']=df_update['Month-Year'].dt.strftime('%b-%y').astype(str)
+    df_update['Date']=pd.to_datetime(df_update['Year'].astype(str)+df_update['Month'].astype(str), format='%Y%m')
+    df_update['Months in Office'] = (df_update['Date'].dt.year-date(admin_year[admin][0],2,1).year) * 12 + (df_update['Date'].dt.month-date(admin_year[admin][0],2,1).month) + 1
+    df_update['Month']=df_update['Month'].apply(lambda x: calendar.month_abbr[x])
 
     # Append data
-    df=pd.concat([df,df_update.drop(['publication_year','publication_month'],axis=1)],ignore_index=True)
+    df=pd.concat([df,df_update.drop(['Date'],axis=1)],ignore_index=True)
 
 #%% Export
 if len(df)>0:
