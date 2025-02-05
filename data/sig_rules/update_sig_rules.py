@@ -48,7 +48,7 @@ def input_party(year):
         else:
             print(f'ERROR: Your input party "{party}" is not valid.')
 
-#%% Count annual economically/section 3(f)(1) significant rules
+#%% Count annual significant rules
 update_data=[]
 for year in range(first_year_to_update,last_year_to_update+1):
     count=df_fr[(df_fr['publication_date'] >= date(year,2,1)) & \

@@ -27,28 +27,26 @@ else:
                              'Economically Significant Rules Published'])
     last_year_with_data=earliest_year-1
 
-#%% Import FR tracking data
-df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
-
-df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
-df_fr['econ_significant'] = pd.to_numeric(df_fr['econ_significant'], errors='coerce')
-df_fr['3(f)(1) significant']=pd.to_numeric(df_fr['3(f)(1) significant'], errors='coerce')
-
 #%% Function to count annual economically/section 3(f)(1) significant rules in FR tracking
-def get_fr_data(start_year, end_year):
-    result_dict={}  # List to store results
-    for year in range(start_year,end_year+1):
-        if year==2023:
-            count1=df_fr[(df_fr['publication_date'] >= date(year,2,1)) & \
-                         (df_fr['publication_date'] < date(year,4,6))]['econ_significant'].sum()
-            count2=df_fr[(df_fr['publication_date'] >= date(year,4,6)) & \
-                         (df_fr['publication_date'] <= date(year+1,1,31))]['3(f)(1) significant'].sum()
-            count=count1+count2
-        else:
-            col='econ_significant' if year<2023 else '3(f)(1) significant'
-            count=df_fr[(df_fr['publication_date']>=date(year,2,1)) & \
-                         (df_fr['publication_date']<=date(year+1,1,31))][col].sum()
+def count_fr_annual(start_year, end_year):
+    # Import FR tracking data
+    df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
 
+    df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
+    df_fr['publication_year'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.year
+    df_fr['econ_significant'] = pd.to_numeric(df_fr['econ_significant'], errors='coerce')
+    df_fr['3(f)(1) significant'] = pd.to_numeric(df_fr['3(f)(1) significant'], errors='coerce')
+
+    # Define which column to count (section 3f1 for rules published 4/6/2023-1/20/2025)
+    df_fr['col_to_count']=df_fr['econ_significant']
+    df_fr.loc[(df_fr['publication_date'] >= date(2023,4,6)) & (df_fr['publication_date'] <= date(2025,1,20)),
+            'col_to_count']=df_fr['3(f)(1) significant']
+
+    # Generate annual counts by presidential year (Feb 1 - Jan 31)
+    result_dict={}  # Dict to store results
+    for year in range(start_year,end_year+1):
+        count = df_fr[(df_fr['publication_date'] >= date(year, 2, 1)) & \
+                     (df_fr['publication_date'] <= date(year + 1, 1, 31))]['col_to_count'].sum()
         # Append data
         result_dict[year]=count
 
@@ -58,12 +56,12 @@ def get_fr_data(start_year, end_year):
 def update_data(first_year_to_update,last_year_to_update):
     if first_year_to_update>2020:
         print(f"Collecting data from FR tracking for presidential years {first_year_to_update}-{last_year_to_update}...")
-        new_data_dict=get_fr_data(first_year_to_update,last_year_to_update)
+        new_data_dict=count_fr_annual(first_year_to_update,last_year_to_update)
     else:
         print(f"Collecting data from reginfo.gov for presidential years {first_year_to_update}-2020...")
         new_data_dict=get_reginfo_data(first_year_to_update,2020)
         print(f"Collecting data from FR tracking for presidential years 2021-{last_year_to_update}...")
-        new_data_dict= new_data_dict | get_fr_data(2021,last_year_to_update)
+        new_data_dict= new_data_dict | count_fr_annual(2021,last_year_to_update)
 
     # Convert to dataframe
     df_new=pd.DataFrame(new_data_dict.items(),columns=['Presidential Year (February 1 - January 31)',
@@ -85,7 +83,7 @@ def verify_previous_data(df,check):
             print(f"Verifying data from reginfo.gov for presidential years {earliest_year}-2020...")
             old_data_updated=get_reginfo_data(earliest_year,2020)
             print(f"Verifying data from FR tracking for presidential years 2021-{last_year_with_data}...")
-            old_data_updated=old_data_updated | get_fr_data(2021,last_year_with_data)
+            old_data_updated=old_data_updated | count_fr_annual(2021,last_year_with_data)
 
         # Compare with the original data
         print('Comparing newly collected data with original data...')
