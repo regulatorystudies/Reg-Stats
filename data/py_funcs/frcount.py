@@ -89,28 +89,69 @@ def count_fr_monthly(dir_path,update_start_date,update_end_date):
 
     return df_fr_update
 
-# %% A function to update data for an administration
+# %% Function to collect reginfo data for multiple presidential months
+def count_reginfo_monthly(update_start_date, update_end_date, rule_type='es'):
+    # Create a dataframe to store results
+    df_update=pd.DataFrame(columns=['publication_year', 'publication_month',f'{rule_type}_count'])
+
+    # Literate through every month between update_start_date and update_end_date
+    # Initialize the start date
+    start_date = update_start_date.replace(day=1)
+
+    # Iterate through each month
+    while start_date <= update_end_date:
+        # Define start date and end date for reginfo search
+        if start_date<update_start_date:
+            start_date = update_start_date
+        else:
+            pass
+
+        end_date = (start_date + relativedelta(months=1)).replace(day=1) - relativedelta(days=1)
+        if end_date>update_end_date:
+            end_date=update_end_date
+        else:
+            pass
+
+        print(start_date.strftime("%m/%d/%Y"), end_date.strftime("%m/%d/%Y"))
+
+        # Get data for the month
+        result=get_reginfo_data(start_date, end_date, rule_type)
+        # Add a row to the dataframe
+        df_update.loc[len(df_update)] = [start_date.year, start_date.month, result]
+
+        # Update month for iteration
+        start_date=(start_date + relativedelta(months=1)).replace(day=1)
+
+    return df_update
+
+# %% A function to update data for an administration in the wide data format
 def update_admin(dir_path,df,admin,update_start_date,update_end_date,rule_type='es',type='cumulative'):
 
-    # Count monthly rules in FR tracking
-    df_fr_update=count_fr_monthly(dir_path,update_start_date,update_end_date)
+    # For administrations prior to Biden, pull data from reginfo.gov
+    if admin in ['Reagan','Bush 41','Clinton','Bush 43','Obama','Trump 45']:
+        df_update=count_reginfo_monthly(update_start_date, update_end_date, rule_type='es')
+
+    # For administrations starting Biden, pull data from FR tracking
+    else:
+        # Count monthly rules in FR tracking
+        df_update=count_fr_monthly(dir_path,update_start_date,update_end_date)
 
     # Append new data to the current dataset (cumulative or monthly)
     first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
     if type=='cumulative':
         cum_count=0 if first_month_no_data==0 else df[df[admin].notnull()][admin].iloc[-1]
-        for x in df_fr_update[f'{rule_type}_count']:
+        for x in df_update[f'{rule_type}_count']:
             cum_count = cum_count + x
             df.loc[df['Months in Office'] == first_month_no_data, admin] = cum_count
             first_month_no_data += 1
     elif type=='monthly':
-        for x in df_fr_update[f'{rule_type}_count']:
+        for x in df_update[f'{rule_type}_count']:
             df.loc[df['Months in Office'] == first_month_no_data, admin] = x
             first_month_no_data += 1
 
     return df
 
-#%% The main function
+#%% The main function to update the cumulative or monthly ES rules by presidential month datasets
 def main(dir_path,file_path,rule_type='es',type='cumulative'):
     # Define administrations and their start & end years
     # If there is a new administration, add {president name: [start year, end year]} to the dictionary below.
