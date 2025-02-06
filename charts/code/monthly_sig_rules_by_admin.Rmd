@@ -42,10 +42,6 @@ Presidential.Admin = "Biden"
 # copy data frame
 monthly_sig1 <- monthly_sig0
 
-# drop Significant column
-# monthly_sig1 <- monthly_sig1 %>%
-#   select(-Significant)
-
 # convert Year column from integer to character
 monthly_sig1$Year <- as.character(monthly_sig1$Year)
 
