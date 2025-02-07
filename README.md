@@ -78,7 +78,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 | Data  | `data/fr_rules/` | `code/fr_rules_by_presidential_year.py` | `federal_register_rules_by_presidential_year.csv`                                                                                          |
 | Chart | `charts/`         | `code/federal_register_rules.Rmd`       | `output/federal_register_rules_by_presidential_year.pdf`<br/>`output/federal_register_rules_by_presidential_year.png` |
 
-#### Rules Published in the Federal Register by Aegncy
+#### Rules Published in the Federal Register by Agency
 | Task  | Location                | File                                    | Output                                                                                                                                                      |
 |-------|-------------------------|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Data  | `data/fr_rules/` | `code/agency_fr_rules_by_presidential_year.py` | `agency_federal_register_rules_by_presidential_year.csv`                                                                                                           |
