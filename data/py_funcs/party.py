@@ -1,6 +1,16 @@
-#  Identify presidential party for each year
+#%% Define administrations and their start & end years
+# If there is a new administration, add {president name: [start year, end year]} to the dictionary below.
+admin_year = {'Reagan': [1981, 1989],
+              'Bush 41': [1989, 1993],
+              'Clinton': [1993, 2001],
+              'Bush 43': [2001, 2009],
+              'Obama': [2009, 2017],
+              'Trump 45': [2017, 2021],
+              'Biden': [2021, 2025],
+              'Trump 47': [2025, 2029]}
 
-# Party dictionry
+#%% Presidential party dictionary
+# If there is a new presidential year, add {president year: party} to the dictionary below.
 party_dict={
     1981: 'Republican',
     1982: 'Republican',
@@ -45,10 +55,14 @@ party_dict={
     2021: 'Democratic',
     2022: 'Democratic',
     2023: 'Democratic',
-    2024: 'Democratic'
+    2024: 'Democratic',
+    2025: 'Republican',
+    2026: 'Republican',
+    2027: 'Republican',
+    2028: 'Republican'
 }
 
-# Function to identify party
+#%% Function to identify party
 def input_party(year):
 
     if year in party_dict:

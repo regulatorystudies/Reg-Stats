@@ -6,4 +6,5 @@ dependencies:
   - pip
   - python>=3.7
   - python-dateutil
+  - openpyxl
 prefix: C:\Users\mark\anaconda3\envs\regstats_sig
