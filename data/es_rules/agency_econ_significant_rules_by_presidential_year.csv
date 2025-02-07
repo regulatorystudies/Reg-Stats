@@ -42,6 +42,7 @@ Agriculture Department,USDA,2020,Republican,8.0
 Agriculture Department,USDA,2021,Democratic,4.0
 Agriculture Department,USDA,2022,Democratic,3.0
 Agriculture Department,USDA,2023,Democratic,5.0
+Agriculture Department,USDA,2024,Democratic,3.0
 Commerce Department,DOC,1981,Republican,0.0
 Commerce Department,DOC,1982,Republican,1.0
 Commerce Department,DOC,1983,Republican,0.0
@@ -85,6 +86,7 @@ Commerce Department,DOC,2020,Republican,2.0
 Commerce Department,DOC,2021,Democratic,1.0
 Commerce Department,DOC,2022,Democratic,1.0
 Commerce Department,DOC,2023,Democratic,6.0
+Commerce Department,DOC,2024,Democratic,3.0
 Defense Department,DOD,1981,Republican,0.0
 Defense Department,DOD,1982,Republican,0.0
 Defense Department,DOD,1983,Republican,0.0
@@ -128,6 +130,7 @@ Defense Department,DOD,2020,Republican,2.0
 Defense Department,DOD,2021,Democratic,0.0
 Defense Department,DOD,2022,Democratic,0.0
 Defense Department,DOD,2023,Democratic,2.0
+Defense Department,DOD,2024,Democratic,2.0
 Education Department,ED,1981,Republican,0.0
 Education Department,ED,1982,Republican,0.0
 Education Department,ED,1983,Republican,0.0
@@ -171,6 +174,7 @@ Education Department,ED,2020,Republican,2.0
 Education Department,ED,2021,Democratic,7.0
 Education Department,ED,2022,Democratic,4.0
 Education Department,ED,2023,Democratic,2.0
+Education Department,ED,2024,Democratic,1.0
 Energy Department,DOE,1981,Republican,0.0
 Energy Department,DOE,1982,Republican,0.0
 Energy Department,DOE,1983,Republican,2.0
@@ -214,6 +218,7 @@ Energy Department,DOE,2020,Republican,0.0
 Energy Department,DOE,2021,Democratic,0.0
 Energy Department,DOE,2022,Democratic,4.0
 Energy Department,DOE,2023,Democratic,7.0
+Energy Department,DOE,2024,Democratic,13.0
 Environmental Protection Agency,EPA,1981,Republican,0.0
 Environmental Protection Agency,EPA,1982,Republican,4.0
 Environmental Protection Agency,EPA,1983,Republican,2.0
@@ -257,6 +262,7 @@ Environmental Protection Agency,EPA,2020,Republican,8.0
 Environmental Protection Agency,EPA,2021,Democratic,3.0
 Environmental Protection Agency,EPA,2022,Democratic,4.0
 Environmental Protection Agency,EPA,2023,Democratic,11.0
+Environmental Protection Agency,EPA,2024,Democratic,24.0
 Health And Human Services Department,HHS,1981,Republican,0.0
 Health And Human Services Department,HHS,1982,Republican,1.0
 Health And Human Services Department,HHS,1983,Republican,6.0
@@ -300,6 +306,7 @@ Health And Human Services Department,HHS,2020,Republican,33.0
 Health And Human Services Department,HHS,2021,Democratic,23.0
 Health And Human Services Department,HHS,2022,Democratic,16.0
 Health And Human Services Department,HHS,2023,Democratic,18.0
+Health And Human Services Department,HHS,2024,Democratic,34.0
 Homeland Security Department,DHS,2003,Republican,6.0
 Homeland Security Department,DHS,2004,Republican,2.0
 Homeland Security Department,DHS,2005,Republican,3.0
@@ -321,6 +328,7 @@ Homeland Security Department,DHS,2020,Republican,7.0
 Homeland Security Department,DHS,2021,Democratic,2.0
 Homeland Security Department,DHS,2022,Democratic,8.0
 Homeland Security Department,DHS,2023,Democratic,4.0
+Homeland Security Department,DHS,2024,Democratic,4.0
 Housing And Urban Development Department,HUD,1981,Republican,0.0
 Housing And Urban Development Department,HUD,1982,Republican,0.0
 Housing And Urban Development Department,HUD,1983,Republican,2.0
@@ -364,6 +372,7 @@ Housing And Urban Development Department,HUD,2020,Republican,0.0
 Housing And Urban Development Department,HUD,2021,Democratic,0.0
 Housing And Urban Development Department,HUD,2022,Democratic,0.0
 Housing And Urban Development Department,HUD,2023,Democratic,0.0
+Housing And Urban Development Department,HUD,2024,Democratic,1.0
 Interior Department,DOI,1981,Republican,0.0
 Interior Department,DOI,1982,Republican,0.0
 Interior Department,DOI,1983,Republican,1.0
@@ -407,6 +416,7 @@ Interior Department,DOI,2020,Republican,4.0
 Interior Department,DOI,2021,Democratic,5.0
 Interior Department,DOI,2022,Democratic,0.0
 Interior Department,DOI,2023,Democratic,3.0
+Interior Department,DOI,2024,Democratic,5.0
 Justice Department,DOJ,1981,Republican,0.0
 Justice Department,DOJ,1982,Republican,0.0
 Justice Department,DOJ,1983,Republican,0.0
@@ -450,6 +460,7 @@ Justice Department,DOJ,2020,Republican,1.0
 Justice Department,DOJ,2021,Democratic,0.0
 Justice Department,DOJ,2022,Democratic,2.0
 Justice Department,DOJ,2023,Democratic,0.0
+Justice Department,DOJ,2024,Democratic,3.0
 Labor Department,DOL,1981,Republican,1.0
 Labor Department,DOL,1982,Republican,0.0
 Labor Department,DOL,1983,Republican,3.0
@@ -493,6 +504,7 @@ Labor Department,DOL,2020,Republican,10.0
 Labor Department,DOL,2021,Democratic,9.0
 Labor Department,DOL,2022,Democratic,4.0
 Labor Department,DOL,2023,Democratic,7.0
+Labor Department,DOL,2024,Democratic,14.0
 Small Business Administration,SBA,1981,Republican,0.0
 Small Business Administration,SBA,1982,Republican,0.0
 Small Business Administration,SBA,1983,Republican,1.0
@@ -536,6 +548,7 @@ Small Business Administration,SBA,2020,Republican,26.0
 Small Business Administration,SBA,2021,Democratic,6.0
 Small Business Administration,SBA,2022,Democratic,0.0
 Small Business Administration,SBA,2023,Democratic,1.0
+Small Business Administration,SBA,2024,Democratic,0.0
 State Department,DOS,1981,Republican,0.0
 State Department,DOS,1982,Republican,0.0
 State Department,DOS,1983,Republican,0.0
@@ -579,6 +592,7 @@ State Department,DOS,2020,Republican,0.0
 State Department,DOS,2021,Democratic,1.0
 State Department,DOS,2022,Democratic,0.0
 State Department,DOS,2023,Democratic,3.0
+State Department,DOS,2024,Democratic,0.0
 Transportation Department,DOT,1981,Republican,0.0
 Transportation Department,DOT,1982,Republican,2.0
 Transportation Department,DOT,1983,Republican,3.0
@@ -622,6 +636,7 @@ Transportation Department,DOT,2020,Republican,3.0
 Transportation Department,DOT,2021,Democratic,0.0
 Transportation Department,DOT,2022,Democratic,2.0
 Transportation Department,DOT,2023,Democratic,4.0
+Transportation Department,DOT,2024,Democratic,7.0
 Treasury Department,TREAS,1981,Republican,0.0
 Treasury Department,TREAS,1982,Republican,0.0
 Treasury Department,TREAS,1983,Republican,0.0
@@ -665,6 +680,7 @@ Treasury Department,TREAS,2020,Republican,16.0
 Treasury Department,TREAS,2021,Democratic,9.0
 Treasury Department,TREAS,2022,Democratic,3.0
 Treasury Department,TREAS,2023,Democratic,3.0
+Treasury Department,TREAS,2024,Democratic,5.0
 Veterans Affairs Department,VA,1981,Republican,0.0
 Veterans Affairs Department,VA,1982,Republican,0.0
 Veterans Affairs Department,VA,1983,Republican,0.0
@@ -708,3 +724,4 @@ Veterans Affairs Department,VA,2020,Republican,1.0
 Veterans Affairs Department,VA,2021,Democratic,3.0
 Veterans Affairs Department,VA,2022,Democratic,0.0
 Veterans Affairs Department,VA,2023,Democratic,4.0
+Veterans Affairs Department,VA,2024,Democratic,5.0
