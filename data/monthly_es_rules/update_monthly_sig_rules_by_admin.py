@@ -1,3 +1,6 @@
+#------------------------------Code to Update Monthly Significant Rules by Administration------------------------------
+#-----------------------------------------Author: Zhoudan Xie----------------------------------------------------------
+
 print('NOTE: The current code can only update data for the Biden and following administrations.')
 
 #%% Import packages
@@ -12,7 +15,7 @@ import calendar
 # Import customized functions
 dir_path=os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, f'{dir_path}/../py_funcs')
-import frcount
+from frcount import *
 
 #%% Define administrations and their start & end years (currently supporting "Biden" and "Trump 47")
 # If there is a new administration, add {president name: [start year, end year]} to the dictionary below.
@@ -50,14 +53,13 @@ def update_by_admin(file_path,admin):
             update_end_date=date.today().replace(day=1) - relativedelta(days=1)
 
     #%% Update data
-    print(update_start_date,update_end_date)
     if update_start_date > update_end_date:
         print(f'The {admin} administration data is up-to-date.')
         pass
     else:
         # Update data
         print(f'Updating {admin} data from {update_start_date} to {update_end_date}...')
-        df_update=frcount.count_fr_monthly(dir_path,update_start_date,update_end_date)
+        df_update=count_fr_monthly(dir_path,update_start_date,update_end_date)
         df_update.rename(columns={'publication_year':'Year','publication_month':'Month',
                                   'sig_count':'Significant','es_count':'Economically Significant'},inplace=True)
         df_update['Other Significant']=df_update['Significant']-df_update['Economically Significant']
@@ -70,9 +72,7 @@ def update_by_admin(file_path,admin):
         # Append data for this admin
         df=pd.concat([df,df_update.drop(['Date'],axis=1)],ignore_index=True)
 
-        # # Append data to all data
-        # df_all=pd.concat([df_all,df],ignore_index=True)
-        # df_all.sort_values(['Year','Month'],inplace=True)
+        print(f'The {admin} administration data has been updated.')
 
     #%% Export
     if len(df)>0:

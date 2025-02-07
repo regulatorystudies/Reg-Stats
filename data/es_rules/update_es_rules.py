@@ -22,7 +22,14 @@ if os.path.exists(file_path):
     # Read the dataset if existing
     df=pd.read_csv(file_path)
     # The latest data-year in the current dataset
-    last_year_with_data = int(df[df['Economically Significant Rules Published'].notnull()]['Presidential Year (February 1 - January 31)'].iloc[-1])
+    last_year_with_data = int(df[df['Economically Significant Rules Published'].notnull()]\
+                                  ['Presidential Year (February 1 - January 31)'].iloc[-1])
+    # Pre-determine if data for previous years need to be recollected
+    if (df['Economically Significant Rules Published'].isnull().any()) or \
+            (df['Presidential Year (February 1 - January 31)'].iloc[0]>earliest_year):
+        check='y'
+    else:
+        pass
 else:
     # Create a file
     df=pd.DataFrame(columns=['Presidential Year (February 1 - January 31)',
@@ -88,6 +95,7 @@ def update_data(first_year_to_update,last_year_to_update):
 #%% Function to verify previous data
 def verify_previous_data(df,check):
     if check=='y':
+        print('Data for previous years will be recollected and verified.')
         # Re-collect data
         if last_year_with_data<2021:
             print(f"Verifying data from reginfo.gov for presidential years {earliest_year}-{last_year_with_data}...")
@@ -103,10 +111,14 @@ def verify_previous_data(df,check):
         old_data_original=dict(zip(df['Presidential Year (February 1 - January 31)'],
                                    df['Economically Significant Rules Published'].fillna(-1).astype('int')))
         for k in old_data_updated:
-            if old_data_updated[k]!=old_data_original[k]:
-                print(f'Value for {k} has been updated from {old_data_original[k] if old_data_original[k]>=0 else None} to {old_data_updated[k]}.')
+            if k in old_data_original:
+                if old_data_updated[k]!=old_data_original[k]:
+                    print(f'Value for {k} has been updated from {old_data_original[k] if old_data_original[k]>=0 else None} to {old_data_updated[k]}.')
+                else:
+                    pass
             else:
-                pass
+                print(
+                    f'Value for {k} has been updated from None to {old_data_updated[k]}.')
         print('All previous data have been verified.')
 
         # Convert re-collected data to dataframe and replace the original data
@@ -134,9 +146,13 @@ if last_year_with_data<current_year-1:
 
     # Verify previous data?
     if first_year_to_update>earliest_year:
-        check = input(f'Do you want to verify/update all the previous data (it may take a few minutes)? [Y/N] >>> ')
-        check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
-        df=verify_previous_data(df,check)
+        # Verify previous data?
+        try:
+            df=verify_previous_data(df,check)
+        except NameError:
+            check = input(f'Do you want to verify/update all the previous data (it may take a few minutes)? [Y/N] >>> ')
+            check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
+            df=verify_previous_data(df,check)
 
         # Append new data
         df_output = pd.concat([df[df['Economically Significant Rules Published'].notnull()],
@@ -148,9 +164,12 @@ else:
     print('The dataset is up-to-date. No update is needed.')
 
     # Verify previous data?
-    check = input(f'Do you want to verify/update all the previous data (it may take a few minutes)? [Y/N] >>> ')
-    check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
-    df_output=verify_previous_data(df,check)
+    try:
+        df_output = verify_previous_data(df, check)
+    except NameError:
+        check = input(f'Do you want to verify/update all the previous data (it may take a few minutes)? [Y/N] >>> ')
+        check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
+        df_output = verify_previous_data(df, check)
 
 #%% Reorder columns
 df_output=df_output[['Presidential Year (February 1 - January 31)',
