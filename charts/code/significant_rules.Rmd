@@ -56,7 +56,7 @@ Affairs (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
 wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
 
 # rename columns
-colnames(sig_fin_rules) <- c("year", "party", "rules", "withdrawn")
+colnames(sig_fin_rules) <- c("year", "party", "rules")
 
 # get rid of withdrawn column
 sig_fin_rules <- sig_fin_rules[ , c("year", "party", "rules")]

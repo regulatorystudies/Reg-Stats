@@ -5,54 +5,6 @@ import sys
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
-# %% A function to update data for an administration
-def update_admin(df,df_fr,admin,update_start_date,update_end_date,rule_type='es',type='cumulative'):
-
-    # Refine FR tracking data
-    df_fr = df_fr[(df_fr['publication_date'] >= update_start_date) & (df_fr['publication_date'] <= update_end_date)]
-
-    if rule_type=='es':
-        # Count monthly economically/section 3(f)(1) significant rules
-        if min(df_fr['publication_date']) < date(2023, 4, 6) < max(df_fr['publication_date']):
-            df_fr_update1 = df_fr[df_fr['publication_date'] < date(2023, 4, 6)][
-                ['publication_year', 'publication_month', 'econ_significant']]. \
-                groupby(['publication_year', 'publication_month']).sum().reset_index()
-            df_fr_update1.rename(columns={'econ_significant': 'count'}, inplace=True)
-            df_fr_update2 = df_fr[df_fr['publication_date'] >= date(2023, 4, 6)][
-                ['publication_year', 'publication_month', '3(f)(1) significant']]. \
-                groupby(['publication_year', 'publication_month']).sum().reset_index()
-            df_fr_update2.rename(columns={'3(f)(1) significant': 'count'}, inplace=True)
-            df_fr_update = pd.concat([df_fr_update1,df_fr_update2],ignore_index=True)
-            df_fr_update=df_fr_update.groupby(['publication_year', 'publication_month']).sum()  #combine April 2023 data
-        elif max(df_fr['publication_date']) < date(2023, 4, 6):
-            df_fr_update = df_fr[['publication_year', 'publication_month', 'econ_significant']]. \
-                groupby(['publication_year', 'publication_month']).sum()
-            df_fr_update.rename(columns={'econ_significant': 'count'}, inplace=True)
-        else:
-            df_fr_update = df_fr[['publication_year', 'publication_month', '3(f)(1) significant']]. \
-                groupby(['publication_year', 'publication_month']).sum()
-            df_fr_update.rename(columns={'3(f)(1) significant': 'count'}, inplace=True)
-
-    elif rule_type=='sig':
-        df_fr_update = df_fr[['publication_year', 'publication_month', 'significant']]. \
-            groupby(['publication_year', 'publication_month']).sum()
-        df_fr_update.rename(columns={'significant': 'count'}, inplace=True)
-
-    # Append new data to the current dataset
-    first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
-    if type=='cumulative':
-        cum_count=0 if first_month_no_data==0 else df[df[admin].notnull()][admin].iloc[-1]
-        for x in df_fr_update['count']:
-            cum_count = cum_count + x
-            df.loc[df['Months in Office'] == first_month_no_data, admin] = cum_count
-            first_month_no_data += 1
-    elif type=='monthly':
-        for x in df_fr_update['count']:
-            df.loc[df['Months in Office'] == first_month_no_data, admin] = x
-            first_month_no_data += 1
-
-    return df
-
 #%% A function to check for partial data
 # (in case the data collection for the most recent month has not been completed)
 def check_partial_month(df_fr,update_end_date):
@@ -70,37 +22,9 @@ def check_partial_month(df_fr,update_end_date):
 
     return update_end_date
 
-#%% The main function
-def main(dir_path,file_path,rule_type='es',type='cumulative'):
-    # Define administrations and their start & end years
-    # If there is a new administration, add {president name: [start year, end year]} to the dictionary below.
-    admin_year = {'Reagan': [1981, 1989],
-                  'Bush 41': [1989, 1993],
-                  'Clinton': [1993, 2001],
-                  'Bush 43': [2001, 2009],
-                  'Obama': [2009, 2017],
-                  'Trump 45': [2017, 2021],
-                  'Biden': [2021, 2025],
-                  'Trump 47': [2025, ]}
-    print(f"The current dataset covers the {', '.join(list(admin_year.keys()))} administrations.\n"
-          f"If there is a new administration, revise the admin_year dictionary in frcount.main and re-run the code.")
-
-    # Import the current dataset
-    if os.path.exists(file_path):
-        df = pd.read_csv(file_path)
-    else:
-        print('Error: no existing dataset.')
-        sys.exit(0)
-
-    # %% Create a new column if there is a new administration
-    new_admin = [x for x in admin_year.keys() if x not in df.columns]
-    if len(new_admin) > 0:
-        for x in new_admin:
-            df[x] = None
-    else:
-        pass
-
-    # %% Import FR tracking data
+#%% A function to count monthly rules in FR tracking
+def count_fr_monthly(dir_path,update_start_date,update_end_date):
+    # Import FR tracking data
     df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
 
     # Add a row to account for missing data
@@ -113,6 +37,114 @@ def main(dir_path,file_path,rule_type='es',type='cumulative'):
     df_fr['significant'] = pd.to_numeric(df_fr['significant'], errors='coerce')
     df_fr['econ_significant'] = pd.to_numeric(df_fr['econ_significant'], errors='coerce')
     df_fr['3(f)(1) significant'] = pd.to_numeric(df_fr['3(f)(1) significant'], errors='coerce')
+
+    # check for partial month
+    update_end_date = check_partial_month(df_fr, update_end_date)
+
+    # Refine FR tracking data to update_start_date - update_end_date
+    df_fr = df_fr[(df_fr['publication_date'] >= update_start_date) & (df_fr['publication_date'] <= update_end_date)]
+
+    # Count monthly rules according to rule type
+    # Count monthly economically/section 3(f)(1) significant rules
+    if (min(df_fr['publication_date']) < date(2023, 4, 6) < max(df_fr['publication_date'])) | \
+        (min(df_fr['publication_date']) < date(2025,1,20) < max(df_fr['publication_date'])):
+        # "Economically significant" rules published before 4/6/2023 or after 1/20/2025
+        df_es1 = df_fr[(df_fr['publication_date'] < date(2023, 4, 6)) | \
+                        (df_fr['publication_date'] > date(2025, 1, 20))]\
+                        [['publication_year', 'publication_month', 'econ_significant']]. \
+                        groupby(['publication_year', 'publication_month']).sum().reset_index()
+        df_es1.rename(columns={'econ_significant': 'es_count'}, inplace=True)
+
+        # "Section 3f1 significant" rules published between 4/6/2023 and 1/20/2025
+        df_es2 = df_fr[(df_fr['publication_date'] >= date(2023, 4, 6)) & \
+                        (df_fr['publication_date'] <= date(2025, 1, 20))]\
+                        [['publication_year', 'publication_month', '3(f)(1) significant']]. \
+                        groupby(['publication_year', 'publication_month']).sum().reset_index()
+        df_es2.rename(columns={'3(f)(1) significant': 'es_count'}, inplace=True)
+
+        # Append
+        df_es = pd.concat([df_es1,df_es2],ignore_index=True)
+        df_es=df_es.groupby(['publication_year', 'publication_month']).sum().reset_index().\
+                    sort_values(['publication_year', 'publication_month'])
+
+    elif (max(df_fr['publication_date']) < date(2023, 4, 6)) | (min(df_fr['publication_date']) > date(2025, 1, 20)):
+        # "Economically significant" rules published before 4/6/2023 or after 1/20/2025
+        df_es = df_fr[['publication_year', 'publication_month', 'econ_significant']]. \
+                groupby(['publication_year', 'publication_month']).sum().reset_index()
+        df_es.rename(columns={'econ_significant': 'es_count'}, inplace=True)
+
+    else:
+        # "Section 3f1 significant" rules published between 4/6/2023 and 1/20/2025
+        df_es = df_fr[['publication_year', 'publication_month', '3(f)(1) significant']]. \
+                groupby(['publication_year', 'publication_month']).sum().reset_index()
+        df_es.rename(columns={'3(f)(1) significant': 'es_count'}, inplace=True)
+
+    # Count monthly significant rules
+    df_sig = df_fr[['publication_year', 'publication_month', 'significant']]. \
+                groupby(['publication_year', 'publication_month']).sum().reset_index()
+    df_sig.rename(columns={'significant': 'sig_count'}, inplace=True)
+
+    # Merge economically significant and significant rules data
+    df_fr_update=df_es.merge(df_sig,on=['publication_year', 'publication_month'],how='outer')
+
+    return df_fr_update
+
+# %% A function to update data for an administration
+def update_admin(dir_path,df,admin,update_start_date,update_end_date,rule_type='es',type='cumulative'):
+
+    # Count monthly rules in FR tracking
+    df_fr_update=count_fr_monthly(dir_path,update_start_date,update_end_date)
+
+    # Append new data to the current dataset (cumulative or monthly)
+    first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
+    if type=='cumulative':
+        cum_count=0 if first_month_no_data==0 else df[df[admin].notnull()][admin].iloc[-1]
+        for x in df_fr_update[f'{rule_type}_count']:
+            cum_count = cum_count + x
+            df.loc[df['Months in Office'] == first_month_no_data, admin] = cum_count
+            first_month_no_data += 1
+    elif type=='monthly':
+        for x in df_fr_update[f'{rule_type}_count']:
+            df.loc[df['Months in Office'] == first_month_no_data, admin] = x
+            first_month_no_data += 1
+
+    return df
+
+#%% The main function
+def main(dir_path,file_path,rule_type='es',type='cumulative'):
+    # Define administrations and their start & end years
+    # If there is a new administration, add {president name: [start year, end year]} to the dictionary below.
+    admin_year = {'Reagan': [1981, 1989],
+                  'Bush 41': [1989, 1993],
+                  'Clinton': [1993, 2001],
+                  'Bush 43': [2001, 2009],
+                  'Obama': [2009, 2017],
+                  'Trump 45': [2017, 2021],
+                  'Biden': [2021, 2025],
+                  'Trump 47': [2025, 2029]}
+    print(f"The current dataset covers the {', '.join(list(admin_year.keys()))} administrations.\n"
+          f"If there is a new administration, revise the admin_year dictionary in frcount.main and re-run the code.")
+
+    # Import the current dataset
+    if os.path.exists(file_path):
+        df = pd.read_csv(file_path)
+    else:
+        print('Error: no existing dataset.')
+        sys.exit(0)
+
+    # Rename the first Trump administration if existing in the current dataset
+    if 'Trump' in df.columns:
+        df.rename(columns={'Trump':'Trump 45'},inplace=True)
+    else:
+        pass
+
+    # %% Create a new column if there is a new administration
+    new_admin = [x for x in admin_year.keys() if x not in df.columns]
+    if len(new_admin) > 0:
+        for x in new_admin:
+            df[x] = None
+    else:
+        pass
 
     # %% Check previous administrations (starting from Biden)
     for admin in df.columns[8:-1]:
@@ -131,7 +163,7 @@ def main(dir_path,file_path,rule_type='es',type='cumulative'):
 
             # update data
             print(f'Updating data from {update_start_date} to {update_end_date}...')
-            df = update_admin(df, df_fr, admin, update_start_date, update_end_date, rule_type, type)
+            df = update_admin(dir_path, df, admin, update_start_date, update_end_date, rule_type, type)
             print(f'The {admin} administration data has been updated.')
 
     # %% Check current administration (starting from Biden)
@@ -147,16 +179,13 @@ def main(dir_path,file_path,rule_type='es',type='cumulative'):
         if (update_end_date.year == admin_year[admin][1]) and (update_end_date.month == 1):
             update_end_date = update_end_date.replace(day=20)
 
-    # check for partial month
-    update_end_date = check_partial_month(df_fr, update_end_date)
-
     # update data
     if update_start_date > update_end_date:
         print(f'The {admin} administration data is up-to-date.')
         pass
     else:
         print(f'Updating data from {update_start_date} to {update_end_date}...')
-        df = update_admin(df, df_fr, admin, update_start_date, update_end_date, rule_type, type)
+        df = update_admin(dir_path, df, admin, update_start_date, update_end_date, rule_type, type)
         print(f'The {admin} administration data has been updated.')
 
     return df

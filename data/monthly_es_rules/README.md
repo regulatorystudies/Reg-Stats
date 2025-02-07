@@ -8,8 +8,9 @@ The monthly economically significant rules data are on a monthly frequency and s
 
 ### Automated Process
 
-1. Ensure whether Python and the relevant packages are installed on your computer's environment (see instructions below on setting up your environment).
-1. Run the Python script `update_monthly_es_rules.py` in your preferred IDE to update the dataset.
+1. Ensure that Python and the relevant packages are installed on your computer's environment (see instructions below on setting up your environment).
+1. Run the Python script `update_monthly_sig_rules_by_admin.py` in your preferred IDE to update the dataset `monthly_significant_rules_by_admin.csv`. This dataset covers the monthly number of significant, economically significant, and other significant rules by administration in a long data format.
+1. Run the Python script `update_monthly_es_rules.py` in your preferred IDE to update the dataset `monthly_econ_significant_rules_by_presidential_month.csv`. This dataset covers the monthly number of economically significant rules by administration in a wide data format.
 
 #### Environment Set Up
 
