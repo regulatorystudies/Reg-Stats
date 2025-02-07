@@ -69,7 +69,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 #### Major Final Rules Published by Presidential Year
 | Task  | Location                | File | Output                                                                                                                                              |
 |-------|-------------------------| ---- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Data  | `data/major_rules/` | `cradb/process_data.py` | `major_rules_by_presidential_year.csv`                                                                                          |
+| Data  | `data/major_rules/` | `cradb/scraper.py`<br/>`cradb/process_data.py` | `major_rules_by_presidential_year.csv`                                                                                          |
 | Chart | `charts/`         | `code/major_rules.Rmd` | `output/major_rules_by_presidential_year.pdf`<br/>`output/major_rules_by_presidential_year.png` |
 
 #### Rules Published in the Federal Register by Presidential Year
