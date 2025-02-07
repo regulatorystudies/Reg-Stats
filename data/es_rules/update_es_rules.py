@@ -1,3 +1,6 @@
+#-----------------------Code to Update Annual Economically Significant Rules by Presidential Year-----------------------
+#-----------------------------------------Author: Zhoudan Xie----------------------------------------------------------
+
 import pandas as pd
 import os
 import sys
@@ -27,7 +30,7 @@ else:
                              'Economically Significant Rules Published'])
     last_year_with_data=earliest_year-1
 
-#%% Function to count annual economically/section 3(f)(1) significant rules in FR tracking
+#%% Function to count annual economically/section 3(f)(1) significant rules by presidential year in FR tracking
 def count_fr_annual(start_year, end_year):
     # Import FR tracking data
     df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
@@ -52,6 +55,16 @@ def count_fr_annual(start_year, end_year):
 
     return result_dict
 
+# %% Function to collect reginfo data for multiple presidential years
+def count_reginfo_annual(start_year, end_year, rule_type='es'):
+    result_dict = {}
+    for year in range(start_year, end_year + 1):
+        start_date = f'02/01/{year}'
+        end_date = f'01/31/{year + 1}'
+        result_dict[year] = get_reginfo_data(start_date, end_date, rule_type)
+
+    return result_dict
+
 #%% Function to collect data for years that need to be updated
 def update_data(first_year_to_update,last_year_to_update):
     if first_year_to_update>2020:
@@ -59,7 +72,7 @@ def update_data(first_year_to_update,last_year_to_update):
         new_data_dict=count_fr_annual(first_year_to_update,last_year_to_update)
     else:
         print(f"Collecting data from reginfo.gov for presidential years {first_year_to_update}-2020...")
-        new_data_dict=get_reginfo_data(first_year_to_update,2020)
+        new_data_dict=count_reginfo_annual(first_year_to_update,2020,rule_type='es')
         print(f"Collecting data from FR tracking for presidential years 2021-{last_year_to_update}...")
         new_data_dict= new_data_dict | count_fr_annual(2021,last_year_to_update)
 
@@ -78,10 +91,10 @@ def verify_previous_data(df,check):
         # Re-collect data
         if last_year_with_data<2021:
             print(f"Verifying data from reginfo.gov for presidential years {earliest_year}-{last_year_with_data}...")
-            old_data_updated=get_reginfo_data(earliest_year,last_year_with_data)
+            old_data_updated=count_reginfo_annual(earliest_year,last_year_with_data,rule_type='es')
         else:
             print(f"Verifying data from reginfo.gov for presidential years {earliest_year}-2020...")
-            old_data_updated=get_reginfo_data(earliest_year,2020)
+            old_data_updated=count_reginfo_annual(earliest_year,2020,rule_type='es')
             print(f"Verifying data from FR tracking for presidential years 2021-{last_year_with_data}...")
             old_data_updated=old_data_updated | count_fr_annual(2021,last_year_with_data)
 
