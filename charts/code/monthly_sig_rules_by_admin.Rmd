@@ -1,0 +1,138 @@
+---
+title: "Significant Rules by Presidential Month"
+author: "Henry Hirsch"
+date: "2025-02-05"
+output: html_document
+---
+
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+library(here)
+i_am("charts/code/monthly_sig_rules_by_admin.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "monthly_significant_rules_by_admin.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+
+```
+
+# Read Data
+
+```{r}
+monthly_sig0 <- read.csv(here("charts","data", data_file))
+```
+
+# Manipulate Data
+```{r}
+# manually set desired presidential admin (e.g. "Biden", "Trump 47", etc.)
+Presidential.Admin = "Biden"
+
+# copy data frame
+monthly_sig1 <- monthly_sig0
+
+# convert Year column from integer to character
+monthly_sig1$Year <- as.character(monthly_sig1$Year)
+
+# create date column
+monthly_sig1 <- monthly_sig1 %>%
+  mutate(Date = as.Date(paste0("01-", Month, "-", Year), format = "%d-%b-%Y"))
+
+# relocate to after month column
+monthly_sig1 <- monthly_sig1 %>%
+  relocate(Date, .after = Month)
+
+# convert to a long data frame
+monthly_sig2 <- monthly_sig1 %>%
+  pivot_longer(cols = c(Economically.Significant, Other.Significant),   
+               names_to = "Rule.Type",   
+               values_to = "Rule.Number")
+
+# convert Rule.Type column to factor
+monthly_sig2$Rule.Type <- factor(monthly_sig2$Rule.Type, 
+                                 levels = c("Other.Significant", "Economically.Significant"))
+
+# trim data frame so that it only includes rows for selected presidential admin
+monthly_sig3 <- monthly_sig2[monthly_sig2$Admin == Presidential.Admin, ]
+```
+
+# Plotting
+```{r}
+# current date
+current_date <- format(Sys.Date(), "%B %d, %Y")
+
+# set caption text
+caption_text <- paste("Source: Office of the Federal Register (federalregister.gov)\n\nUpdated", current_date)
+
+# set wrapped caption width
+wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
+
+# plot
+bar1 <- ggplot(monthly_sig3,aes(x = Date, y = Rule.Number, fill = Rule.Type)) + 
+  geom_bar(stat = "identity", color = "white", linewidth = 0.3) +
+ scale_fill_manual(
+   values = c("Economically.Significant" = GWblue, "Other.Significant" = GWbuff),
+   labels = c("Economically.Significant" = "Economically Significant", 
+             "Other.Significant" = "Other Significant")
+   ) +  
+  ggtitle(paste("Significant Final Rules Published Each Month \n under the", Presidential.Admin, "Administration")) +
+  ylab("Number of Rules") +
+  xlab("") +
+  scale_y_continuous(breaks = seq(0, ydynam(monthly_sig3, 10, 6), by = 10), # for ydynam, had to use the Significant column (total number of econ sig and other sig), to calculate the max height
+                     expand = c(0, 0.0),
+                     limits = c(0, ydynam(monthly_sig3, 10, 6))) +
+  scale_x_date(date_labels = "%b %y", expand = c(0.01,0.01),
+               breaks = seq(from = min(monthly_sig3$Date), to = max(monthly_sig3$Date), by = "2 months")) +
+  labs(caption = wrapped_caption) +
+  theme_RSC +
+  theme(
+    plot.caption = element_text(margin = margin(t = 15, l = 0, b = 0, unit = "pt")),
+    plot.title = element_text(hjust = 0.5, margin = margin(b = 20, unit = "pt")),
+    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1),
+    axis.ticks.x = element_blank(),
+    axis.line.x = element_line(linewidth = 1, color = RSCgray),
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom", 
+    legend.direction = "horizontal",
+    legend.margin = margin(t = -15, unit = "pt"),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 12),
+    ) +
+  guides(fill = guide_legend(reverse = TRUE)) + # this line reverses the order of econ sig and other sig in the legend
+  coord_cartesian(clip = "off") 
+  
+suppressWarnings({bar2 <- ggdraw() +
+      draw_plot(bar1) +
+      draw_image(logo, x = 0.085, y = 0.03, halign = 0, valign = 0, width = 0.2)
+bar2})
+
+```
+
+```{r}
+# Save pdf and png
+out = here("charts", "output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+image_name = paste0("monthly_significant_rules_", tolower((gsub(" ", "_", Presidential.Admin))))
+
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = bar2, width = 12, height = 9, dpi = 300)
+
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = bar2, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+
+```
+
