@@ -9,149 +9,16 @@ from datetime import date
 # Import customized functions
 dir_path=os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, f'{dir_path}/../py_funcs')
-from party import *
-from reginfo import *
+import update_annual
 
-#%% Specify the earliest year of this dataset
-earliest_year=1994
-
-#%% Import the current dataset
+#%% Specify file path, the earliest year of this dataset, and rule type
 file_path=f'{dir_path}/significant_rules_by_presidential_year.csv'
+earliest_year=1994
+rule_type='sig'
 
-if os.path.exists(file_path):
-    # Read the dataset if existing
-    df=pd.read_csv(file_path)
-    # The latest data-year in the current dataset
-    last_year_with_data = int(df[df['Significant Rules Published'].notnull()]['Presidential Year (February 1 - January 31)'].iloc[-1])
-else:
-    # Create a file
-    df=pd.DataFrame(columns=['Presidential Year (February 1 - January 31)',
-                             'Presidential Party',
-                             'Significant Rules Published'])
-    last_year_with_data=earliest_year-1
-
-#%% Function to count annual significant rules by presidential year in FR tracking
-def count_fr_annual(start_year, end_year):
-    # Import FR tracking data
-    df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
-
-    df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
-    df_fr['publication_year'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.year
-    df_fr['significant'] = pd.to_numeric(df_fr['significant'], errors='coerce')
-
-    # Generate annual counts by presidential year (Feb 1 - Jan 31)
-    result_dict={}  # Dict to store results
-    for year in range(start_year,end_year+1):
-        count = df_fr[(df_fr['publication_date'] >= date(year, 2, 1)) & \
-                     (df_fr['publication_date'] <= date(year + 1, 1, 31))]['significant'].sum()
-        # Append data
-        result_dict[year]=count
-
-    return result_dict
-
-# %% Function to collect reginfo data for multiple presidential years
-def count_reginfo_annual(start_year, end_year, rule_type='sig'):
-    result_dict = {}
-    for year in range(start_year, end_year + 1):
-        start_date = f'02/01/{year}'
-        end_date = f'01/31/{year + 1}'
-        result_dict[year] = get_reginfo_data(start_date, end_date, rule_type)
-
-    return result_dict
-
-#%% Function to collect data for years that need to be updated
-def update_data(first_year_to_update,last_year_to_update):
-    if first_year_to_update>2020:
-        print(f"Collecting data from FR tracking for presidential years {first_year_to_update}-{last_year_to_update}...")
-        new_data_dict=count_fr_annual(first_year_to_update,last_year_to_update)
-    else:
-        print(f"Collecting data from reginfo.gov for presidential years {first_year_to_update}-2020...")
-        new_data_dict=count_reginfo_annual(first_year_to_update,2020,rule_type='sig')
-        print(f"Collecting data from FR tracking for presidential years 2021-{last_year_to_update}...")
-        new_data_dict= new_data_dict | count_fr_annual(2021,last_year_to_update)
-
-    # Convert to dataframe
-    df_new=pd.DataFrame(new_data_dict.items(),columns=['Presidential Year (February 1 - January 31)',
-                                                       'Significant Rules Published'])
-
-    # Add presidential party
-    df_new['Presidential Party']=df_new['Presidential Year (February 1 - January 31)'].apply(input_party)
-
-    return df_new
-
-#%% Function to verify previous data
-def verify_previous_data(df,check):
-    if check=='y':
-        # Re-collect data
-        if last_year_with_data<2021:
-            print(f"Verifying data from reginfo.gov for presidential years {earliest_year}-{last_year_with_data}...")
-            old_data_updated=count_reginfo_annual(earliest_year,last_year_with_data,rule_type='sig')
-        else:
-            print(f"Verifying data from reginfo.gov for presidential years {earliest_year}-2020...")
-            old_data_updated=count_reginfo_annual(earliest_year,2020,rule_type='sig')
-            print(f"Verifying data from FR tracking for presidential years 2021-{last_year_with_data}...")
-            old_data_updated=old_data_updated | count_fr_annual(2021,last_year_with_data)
-
-        # Compare with the original data
-        print('Comparing newly collected data with original data...')
-        old_data_original=dict(zip(df['Presidential Year (February 1 - January 31)'],
-                                   df['Significant Rules Published'].fillna(-1).astype('int')))
-        for k in old_data_updated:
-            if old_data_updated[k]!=old_data_original[k]:
-                print(f'Value for {k} has been updated from {old_data_original[k] if old_data_original[k]>=0 else None} to {old_data_updated[k]}.')
-            else:
-                pass
-        print('All previous data have been verified.')
-
-        # Convert re-collected data to dataframe and replace the original data
-        df=pd.DataFrame(old_data_updated.items(),columns=['Presidential Year (February 1 - January 31)',
-                                                          'Significant Rules Published'])
-        # Add presidential party
-        df['Presidential Party'] = df['Presidential Year (February 1 - January 31)'].apply(input_party)
-
-    else:
-        pass
-
-    return df
-
-
-#%% Find years to be updated (if any)
-# Years to be updated
-current_year = date.today().year
-
-if last_year_with_data<current_year-1:
-    first_year_to_update=max(last_year_with_data+1,earliest_year)
-    last_year_to_update=current_year-1
-    print(f'Data update is needed for presidential year {first_year_to_update}-{last_year_to_update}.')
-
-    # Update data
-    df_new=update_data(first_year_to_update,last_year_to_update)
-
-    # Verify previous data?
-    if first_year_to_update>earliest_year:
-        check = input(f'Do you want to verify/update all the previous data (it may take a few minutes)? [Y/N] >>> ')
-        check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
-        df=verify_previous_data(df,check)
-
-        # Append new data
-        df_output = pd.concat([df[df['Significant Rules Published'].notnull()],
-                               df_new], ignore_index=True)
-    else:
-        df_output=df_new
-
-else:
-    print('The dataset is up-to-date. No update is needed.')
-
-    # Verify previous data?
-    check = input(f'Do you want to verify/update all the previous data (it may take a few minutes)? [Y/N] >>> ')
-    check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
-    df_output=verify_previous_data(df,check)
-
-#%% Reorder columns
-df_output=df_output[['Presidential Year (February 1 - January 31)',
-                     'Presidential Party',
-                     'Significant Rules Published']]
+#%% Run functions to update the data
+df=update_annual.main(dir_path,file_path,earliest_year,rule_type)
 
 #%% Export
-df_output.to_csv(file_path, index=False)
+df.to_csv(file_path, index=False)
 print('The dataset has been updated and saved. End of execution.')

@@ -89,3 +89,33 @@ def count_fr_monthly(dir_path,update_start_date,update_end_date):
     df_fr_update=df_es.merge(df_sig,on=['publication_year', 'publication_month'],how='outer')
 
     return df_fr_update
+
+#%% Function to count annual economically/section 3(f)(1) significant rules by presidential year in FR tracking
+def count_fr_annual(dir_path, start_year, end_year, rule_type):
+    # Import FR tracking data
+    df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
+
+    df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
+    df_fr['publication_year'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.year
+    df_fr['econ_significant'] = pd.to_numeric(df_fr['econ_significant'], errors='coerce')
+    df_fr['3(f)(1) significant'] = pd.to_numeric(df_fr['3(f)(1) significant'], errors='coerce')
+    df_fr['significant'] = pd.to_numeric(df_fr['significant'], errors='coerce')
+
+    # Define which column to count
+    if rule_type=='sig':
+        df_fr['col_to_count'] = df_fr['significant']
+    else:
+        # section 3f1 for rules published 4/6/2023-1/20/2025
+        df_fr['col_to_count']=df_fr['econ_significant']
+        df_fr.loc[(df_fr['publication_date'] >= date(2023,4,6)) & (df_fr['publication_date'] <= date(2025,1,20)),
+                'col_to_count']=df_fr['3(f)(1) significant']
+
+    # Generate annual counts by presidential year (Feb 1 - Jan 31)
+    result_dict={}  # Dict to store results
+    for year in range(start_year,end_year+1):
+        count = df_fr[(df_fr['publication_date'] >= date(year, 2, 1)) & \
+                     (df_fr['publication_date'] <= date(year + 1, 1, 31))]['col_to_count'].sum()
+        # Append data
+        result_dict[year]=count
+
+    return result_dict

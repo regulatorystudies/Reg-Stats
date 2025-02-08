@@ -16,17 +16,22 @@ import calendar
 dir_path=os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, f'{dir_path}/../py_funcs')
 from frcount import *
+from reginfo import *
+from party import *
 
-#%% Define administrations and their start & end years (currently supporting "Biden" and "Trump 47")
-# If there is a new administration, add {president name: [start year, end year]} to the dictionary below.
-admin_year = {'Biden': [2021, 2025],
-              'Trump 47': [2025, 2029]}
+# Report the admin coverage
+print(f"The current dataset covers the {', '.join(list(admin_year.keys()))} administrations.\n"
+      f"If there is a new administration, revise the admin_year dictionary in py_funcs/party.py and re-run the code.")
 
 #%% Specify the file path of the current dataset
 file_path=f"{dir_path}/monthly_significant_rules_by_admin.csv"
 
-#%% A function to update data by admin
-def update_by_admin(file_path,admin):
+#%% Get input on whether to verify all previous data
+check = input(f'Do you want to verify/update all the previous data (it may take a long time)? [Y/N] >>> ')
+check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
+
+#%% Check and update data for all administrations
+for admin in admin_year.keys():
     # Import the current dataset
     if os.path.exists(file_path):
         df = pd.read_csv(file_path)
@@ -36,12 +41,15 @@ def update_by_admin(file_path,admin):
             update_start_date=datetime.date(df[(df['Admin']==admin) & (df['Significant'].notnull())]['Date'].iloc[-1]+relativedelta(months=1))
             df.drop(['Date'], axis=1,inplace=True)
         else:
-            update_start_date = date(admin_year[admin][0], 2, 1)
+            update_start_date = date(admin_year[admin][0], 1, 21)
     else:
         # Create a file
         df=pd.DataFrame(columns=['Admin','Year','Month','Months in Office',
                                  'Significant','Economically Significant','Other Significant'])
-        update_start_date=date(admin_year[admin][0],2,1)
+        update_start_date=date(admin_year[admin][0],1,21)
+
+    #%% Revise update_start_date if needed
+    update_start_date = date(admin_year[admin][0], 1, 21) if check=='y' else update_start_date
 
     #%% Define update end date
     if update_start_date.year >= admin_year[admin][1]:
@@ -57,9 +65,17 @@ def update_by_admin(file_path,admin):
         print(f'The {admin} administration data is up-to-date.')
         pass
     else:
-        # Update data
         print(f'Updating {admin} data from {update_start_date} to {update_end_date}...')
-        df_update=count_fr_monthly(dir_path,update_start_date,update_end_date)
+        # Update data for prior administrations
+        if admin_year[admin][0]<2021:
+            df_update_es = count_reginfo_monthly(update_start_date, update_end_date, rule_type='es')
+            df_update_sig = count_reginfo_monthly(update_start_date, update_end_date, rule_type='sig')
+            df_update=df_update_es.merge(df_update_sig,on=['publication_year','publication_month'],how='outer')
+        # Update data for Biden and following administrations
+        else:
+            df_update=count_fr_monthly(dir_path,update_start_date,update_end_date)
+
+        # Add other columns
         df_update.rename(columns={'publication_year':'Year','publication_month':'Month',
                                   'sig_count':'Significant','es_count':'Economically Significant'},inplace=True)
         df_update['Other Significant']=df_update['Significant']-df_update['Economically Significant']
@@ -78,9 +94,4 @@ def update_by_admin(file_path,admin):
     if len(df)>0:
         df.to_csv(file_path, index=False)
 
-    return
-
-#%% Run function to update data
-for admin in admin_year.keys():
-    update_by_admin(file_path,admin)
 print('The dataset has been updated and saved. End of execution.')

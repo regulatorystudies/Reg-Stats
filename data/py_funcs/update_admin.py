@@ -5,7 +5,7 @@ from reginfo import *
 from party import *
 
 # %% A function to update data for an administration in the wide data format
-def update_admin(dir_path,df,admin,update_start_date,update_end_date,rule_type='es',data_type='cumulative'):
+def update_admin(dir_path,df,admin,update_start_date,update_end_date,check,rule_type='es',data_type='cumulative'):
 
     # For administrations prior to Biden, pull data from reginfo.gov
     if admin_year[admin][0]<2021:
@@ -17,7 +17,13 @@ def update_admin(dir_path,df,admin,update_start_date,update_end_date,rule_type='
         df_update=count_fr_monthly(dir_path,update_start_date,update_end_date)
 
     # Append new data to the current dataset (cumulative or monthly)
-    first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
+    # Define the start point
+    if check=='y':
+        first_month_no_data=0
+    else:
+        first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
+
+    # Append according to data type
     if data_type=='cumulative':
         cum_count=0 if first_month_no_data==0 else df[df[admin].notnull()][admin].iloc[-1]
         for x in df_update[f'{rule_type}_count']:
@@ -64,17 +70,25 @@ def main(dir_path,file_path,rule_type,data_type):
     print(f"The current dataset covers the {', '.join(list(admin_year.keys()))} administrations.\n"
           f"If there is a new administration, revise the admin_year dictionary in py_funcs/party.py and re-run the code.")
 
+    # Get input on whether to verify all previous data
+    check = input(f'Do you want to verify/update all the previous data (it may take a long time)? [Y/N] >>> ')
+    check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
+
     # Import dataset
     df=import_file(file_path)
 
     # Check if data for an administration are complete
     for admin in df.columns[2:]:
-        if len(df[df[admin].isnull()]) == 0:
+        if (len(df[df[admin].isnull()]) == 0) and (check=='n'):
             print(f'The {admin} administration data is up-to-date.')
             pass
         else:
-            first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
-            update_start_date = date(admin_year[admin][0], 1, 1) + relativedelta(months=first_month_no_data)
+            if check=='y':
+                first_month_no_data=0
+                update_start_date = date(admin_year[admin][0], 1, 21)
+            else:
+                first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
+                update_start_date = date(admin_year[admin][0], 1, 1) + relativedelta(months=first_month_no_data)
 
             # If update start date is later than the last day of the admin or later than the last day of last month
             if (update_start_date > date(admin_year[admin][1], 1, 20)) or (
@@ -99,7 +113,7 @@ def main(dir_path,file_path,rule_type,data_type):
 
                 # Update data
                 print(f'Updating data for the {admin} administration from {update_start_date} to {update_end_date}...')
-                df = update_admin(dir_path, df, admin, update_start_date, update_end_date, rule_type, data_type)
+                df = update_admin(dir_path, df, admin, update_start_date, update_end_date, check, rule_type, data_type)
                 print(f'The {admin} administration data has been updated.')
 
     return df
