@@ -37,7 +37,7 @@ def verify_previous_data(dir_path,df,col_update,check,earliest_year,last_year_wi
             old_data_updated=old_data_updated | count_fr_annual(dir_path,2021,last_year_with_data,rule_type)
 
         # Compare with the original data
-        print('Comparing newly collected data with original data...')
+        print('Comparing newly collected data with original data. Differences (if any) will be shown here.')
         old_data_original=dict(zip(df['Presidential Year (February 1 - January 31)'],
                                    df[col_update].fillna(-1).astype('int')))
         for k in old_data_updated:
