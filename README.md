@@ -45,7 +45,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 #### Monthly Economically Significant Final Rules under the Biden Administration
 | Task  | Location                 | File | Output                                                                                                                                              |
 |-------|--------------------------| ---- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Data  | `data/monthly_es_rules/` | `update_monthly_es_rules.py` | `monthly_econ_significant_rules_by_presidential_month.csv`                                                                                          |
+| Data  | `data/monthly_es_rules/` | `update_monthly_sig_rules_by_admin.py` | `monthly_significant_rules_by_admin.csv`                                                                                          |
 | Chart | `charts/`                | `code/monthly_econ_significant_rules_by_presidential_month.Rmd` | `output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`<br/>`output/monthly_econ_significant_rules_by_presidential_month_biden.png` |
 
 #### Cumulative Economically Significant Final Rules by Administration
@@ -78,7 +78,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 | Data  | `data/fr_rules/` | `code/fr_rules_by_presidential_year.py` | `federal_register_rules_by_presidential_year.csv`                                                                                          |
 | Chart | `charts/`         | `code/federal_register_rules.Rmd`       | `output/federal_register_rules_by_presidential_year.pdf`<br/>`output/federal_register_rules_by_presidential_year.png` |
 
-#### Rules Published in the Federal Register by Aegncy
+#### Rules Published in the Federal Register by Agency
 | Task  | Location                | File                                    | Output                                                                                                                                                      |
 |-------|-------------------------|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Data  | `data/fr_rules/` | `code/agency_fr_rules_by_presidential_year.py` | `agency_federal_register_rules_by_presidential_year.csv`                                                                                                           |
