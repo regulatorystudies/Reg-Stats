@@ -3,8 +3,9 @@ from datetime import datetime
 import os
 
 #%% Import FR tracking data
-df=pd.read_csv('data/fr_tracking/fr_tracking.csv',encoding="latin")
-print(df.info())
+dir_path=os.path.dirname(os.path.realpath(__file__))
+df=pd.read_csv(f'{dir_path}/fr_tracking.csv',encoding="latin")
+# print(df.info())
 
 #%% Check duplicates
 df['publication_date']=df['publication_date'].astype('datetime64[ns]')
@@ -38,12 +39,12 @@ print('Other duplicates removed:',lenb4-len(df_new))
 print('Number of duplicates:',len(df_new[df_new.duplicated(subset=['document_number'],keep=False)]))
 
 #%% Drop saved duplicates
-if os.path.exists('data/fr_tracking/fr_tracking_duplicates.csv'):
-    os.remove('data/fr_tracking/fr_tracking_duplicates.csv')
+if os.path.exists(f'{dir_path}/fr_tracking_duplicates.csv'):
+    os.remove(f'{dir_path}/fr_tracking_duplicates.csv')
 else:
     pass
 
 #%% Save revised dataframe
 df_new['publication_date']=df_new['publication_date'].dt.date
 df_new.sort_values(['publication_date','document_number'],inplace=True)
-df_new.to_csv('data/fr_tracking/fr_tracking.csv',index=False)
+df_new.to_csv(f'{dir_path}/fr_tracking.csv',index=False)
