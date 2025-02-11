@@ -42,6 +42,11 @@ def compare_df(df_old_data_original,df_old_data_updated):
 
     return df_diff
 
+#%% Get input on whether to verify all previous data (if previous data exist)
+check_input = input(
+    f'Do you want to verify/update all the previous data (it may take a few minutes)? [Y/N] >>> ')
+check_input = 'y' if (check_input.lower() in ['y', 'yes']) else 'n'
+
 #%% Check and update data for all administrations
 for admin in admin_year.keys():
     # Import the current dataset
@@ -53,13 +58,13 @@ for admin in admin_year.keys():
             df['Date'] = pd.to_datetime(df['Year'].astype(str) + df['Month'].astype(str), format='%Y%b')
             update_start_date=datetime.date(df[(df['Admin']==admin) & (df['Significant'].notnull())]['Date'].iloc[-1]+relativedelta(months=1))
 
-            # Get input on whether to verify all previous data
-            check = input(f'Do you want to verify/update all the previous data for the {admin} administration (it may take a few minutes)? [Y/N] >>> ')
-            check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
+            # Update previous-data-check
+            check=check_input
 
         else:
             update_start_date = date(admin_year[admin][0], 1, 21)
             df['Date']=pd.Series(dtype='datetime64[ns]')
+
             # Update previous-data-check
             check='n'
 
@@ -126,15 +131,14 @@ for admin in admin_year.keys():
         else: pass
 
         # Append/replace updated data for this admin
-        df=pd.concat([df[(df['Admin']!=admin) | (df['Date']<pd.to_datetime(update_start_date))],df_update.drop(['Date'],axis=1)],
+        df=pd.concat([df[(df['Admin']!=admin) | (df['Date']<pd.to_datetime(update_start_date.replace(day=1)))],
+                      df_update.drop(['Date'],axis=1)],
                      ignore_index=True)
-        df.drop(['Date'], axis=1, inplace=True)
 
-        print(f'The {admin} administration data have been updated.')
-
-        #%% Export
+        # Export
         if len(df)>0:
-            df.to_csv(file_path, index=False)
+            df.drop(['Date'], axis=1).to_csv(file_path, index=False)
         else: pass
+        print(f'The {admin} administration data have been updated.')
 
 print('The dataset has been updated and saved. End of execution.')
