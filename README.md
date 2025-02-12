@@ -42,11 +42,11 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 | Data  | `data/es_rules/` | `by_agency/update_agency_es_rules.py` | `agency_econ_significant_rules_by_presidential_year.csv`                                                                                                    |
 | Chart | `charts/`        | `code/agency_econ_significant_rules_by_presidential_year.Rmd` | `output/by_agency/[agency]_econ_significant_rules_by_presidential_year.pdf`<br/>`output/by_agency/[agency]_econ_significant_rules_by_presidential_year.png` |
 
-#### Monthly Economically Significant Final Rules under the Biden Administration
+#### Monthly Significant Final Rules under the Biden Administration
 | Task  | Location                 | File | Output                                                                                                                                              |
 |-------|--------------------------| ---- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | Data  | `data/monthly_es_rules/` | `update_monthly_sig_rules_by_admin.py` | `monthly_significant_rules_by_admin.csv`                                                                                          |
-| Chart | `charts/`                | `code/monthly_econ_significant_rules_by_presidential_month.Rmd` | `output/monthly_econ_significant_rules_by_presidential_month_biden.pdf`<br/>`output/monthly_econ_significant_rules_by_presidential_month_biden.png` |
+| Chart | `charts/`                | `code/monthly_sig_rules_by_admin.Rmd` | `output/monthly_significant_rules_biden.pdf`<br/>`output/monthly_significant_rules_biden.png` |
 
 #### Cumulative Economically Significant Final Rules by Administration
 | Task  | Location                 | File | Output                                                                                                                                              |
