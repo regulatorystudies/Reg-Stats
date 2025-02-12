@@ -33,7 +33,7 @@ def get_reginfo_data(start_date,end_date,rule_type='es'):
             # Rest of your code
             break  # Exit the loop if the request is successful
         except urllib.error.URLError as e:
-            print("Error:", e)
+            print(f"Error: {start_date}-{end_date}", e)
             print(f"Attempt {retry_count} failed. Re-trying the request...")
             retry_count += 1
 
@@ -49,7 +49,7 @@ def get_reginfo_data(start_date,end_date,rule_type='es'):
         result = re.search(r"Number Of Records Found:\s*(\d+)", content).group(1)
         result=int(result)
     except AttributeError:
-        print("Note: Number Of Records not found in HTML content.")
+        # print("Note: Number Of Records not found in HTML content.")
         result = 0  # apply your error handling
 
     return result
@@ -87,3 +87,13 @@ def count_reginfo_monthly(update_start_date, update_end_date, rule_type='es'):
         start_date=(start_date + relativedelta(months=1)).replace(day=1)
 
     return df_update
+
+# %% Function to collect reginfo data for multiple presidential years
+def count_reginfo_annual(start_year, end_year, rule_type='es'):
+    result_dict = {}
+    for year in range(start_year, end_year + 1):
+        start_date = f'02/01/{year}'
+        end_date = f'01/31/{year + 1}'
+        result_dict[year] = get_reginfo_data(start_date, end_date, rule_type)
+
+    return result_dict
