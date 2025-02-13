@@ -59,6 +59,7 @@ ydynam <- function(dataset, interval, col_number){
   upper <- case_when(
     interval == 1 ~ max(dataset[col_number]) + interval,
     interval != 1 ~ ceiling(max(dataset[col_number])/interval)*interval)
+  return(upper)
 }
 
 # custom RSC wrapper function for geom_label_repel(), (sets default font to avenir_lt_pro)
