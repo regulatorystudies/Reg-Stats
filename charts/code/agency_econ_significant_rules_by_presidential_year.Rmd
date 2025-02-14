@@ -20,8 +20,6 @@ i_am("charts/code/agency_econ_significant_rules_by_presidential_year.Rmd")
 source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
 
-# copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
-
 # point to dataset
 data_file = "agency_econ_significant_rules_by_presidential_year.csv"
 
