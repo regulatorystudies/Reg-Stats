@@ -149,7 +149,6 @@ save_plot_png_pdf <- function(fig, save_path, agency_acronym) {
 ```
 
 ```{r pipeline}
-
 # create empty output folder if it doesn't already exist
 out <- here("charts", "output", "by_agency")
 if (!dir.exists(out)){
@@ -165,13 +164,7 @@ for (agency_a in agencies) {
   if (nrow(df_agency) != 0) {
     agency_n <- df_agency$name
     agency_names_list[[toupper(agency_a)]] <- agency_n
-    first_non_zero_year <- df_agency %>%
-      filter(rules > 0) %>%
-      summarize(first_year = min(year, na.rm = TRUE)) %>%
-      pull(first_year)
-    df_agency <- df_agency %>%
-      filter(year <= first_non_zero_year | rules > 0)
-    
+
     plot <- plot_data(df_agency, agency_a, agency_n)
     save_plot_png_pdf(plot, out, agency_a)
   }
