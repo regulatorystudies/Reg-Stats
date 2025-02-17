@@ -44,7 +44,7 @@ current_date <- format(Sys.Date(), "%B %d, %Y")
 caption_text <- paste("Source: Federal Register Statistics\n\nUpdated:", current_date)
 
 # get rid of bottom 11 rows
-tot_pages <- tot_pages[1:(nrow(tot_pages) - 9), ]
+tot_pages <- tot_pages[1:(nrow(tot_pages) - 8), ]
 
 # remove blank first row
 tot_pages <- tot_pages[-c(1), ]
