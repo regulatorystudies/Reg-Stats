@@ -29,7 +29,7 @@ __pycache__/
 
 # RStudio files
 .Rproj.user/
-*.Rproj
+Reg-Stats.Rproj
 
 # produced vignettes
 vignettes/*.html
