@@ -1,7 +1,7 @@
 ---
 title: "Agency Econonmically Significant Final Rules by Presidential Year"
-author: "Deven Patel"
-date: "2024-02-01"
+author: "Henry Hirsch"
+date: "2025-02-13"
 output: html_document
 ---
 
@@ -20,50 +20,81 @@ i_am("charts/code/agency_econ_significant_rules_by_presidential_year.Rmd")
 source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
 
-copy_all_data(here("data", "es_rules", "by_agency"), here("charts", "data"))
+# point to dataset
+data_file = "agency_econ_significant_rules_by_presidential_year.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data", "es_rules"), here("charts", "data"))
 
 ```
 
-## Load packages
+## Load Packages
 
 ```{r load packages, results='hide', warning=FALSE}
 library(ggpattern)
 ```
 
-## Universal values and functions
+## Load Data
+
+```{r load data}
+agency_es_rules_NA <- read.csv(here("charts", "data", data_file))
+```
+
+## Process Data
 
 ```{r code}
-# current date
+# modify column names
+colnames(agency_es_rules_NA) <- c("name", "acronym", "year", "party", "rules")
+
+# remove rows with NA values
+agency_es_rules <- agency_es_rules_NA[complete.cases(agency_es_rules_NA), ]
+
+# set current date
 current_date <- format(Sys.Date(), "%B %d, %Y")
+```
+
+## Set Variables
+
+```{r set caption values}
+# set desired agencies
+agencies <- c(
+  "dhs", "doc", "dod", "doe", "doi", "doj", "dol", "dos", "dot", 
+  "ed", "epa", 
+  "hhs", "hud", 
+  "sba", 
+  "treas", 
+  "usda", 
+  "va"
+  )
 
 # set caption text
-caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for
-the years 2021 and onwards;\n Office of Information and Regulatory
-Affairs (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
+caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for the years 2021 and onwards;\n Office of Information and Regulatory Affairs (reginfo.gov) for all the prior years.\n\nUpdated:", current_date)
 
 # set wrapped caption width
 wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
 
-# define agencies, intervals, and titles
-agencies = c("dhs", "doc", "dod", "doe", "doi", "doj", "dol", "dos", "dot", "ed", "epa", "hhs", "hud", "sba", "treas", "usda", "va")
-intervals = c(1,1,1,1,1,1,1,1,1,1,2,5,1,5,2,2,1)
-chart_ref <- as.data.frame(list(agency = agencies, interval = intervals)) %>% 
-  mutate(title = paste0(toupper(agency), " Economically Significant Final Rules Published by Presidential Year"))
+```
 
-# data cleaning
-clean <- function(data_0){
-  colnames(data_0) <- c("year", "party", "rules")
-  data_0$party <- as.factor(data_0$party)
-  data_0$year <- as.numeric(data_0$year)
-  return(data_0)
+## Graphing Functions
+```{r graphing}
+# function for automatically generating y-axis intervals
+get_interval <- function(integer_vector) {
+  max_value <- max(integer_vector)
+  
+  if (max_value <= 20) {
+    interval <- round(max_value / 5)
+  } else {
+    interval <- max(floor(max_value / 10) * 5, 5)
+  }
+  
+  return(interval)
 }
 
-# charting function
-col_number <- 3
-
-graph <- function(dataset, interval, title){
-  upper <- ydynam(dataset, interval, col_number)
-  bar1 <- ggplot(dataset, aes(x = year, y = rules, fill = party, pattern = party)) +
+# plotting function
+plot_data <- function(df, agency_acronym, agency_name) {
+  interval <- get_interval(df_agency[["rules"]])
+  upper <- ydynam(df, interval, 5)
+  bar1 <- ggplot(df, aes(x = year, y = rules, fill = party, pattern = party)) +
   geom_bar_pattern(stat = "identity", width = 0.5,
                    position = position_dodge(preserve = "single"),
                    pattern_color = NA,
@@ -72,15 +103,15 @@ graph <- function(dataset, interval, title){
                    pattern_key_scale_factor = 0.6) +
   scale_fill_manual(values = c(GWblue, red)) +
   scale_pattern_manual(values = c(Democratic = "stripe", Republican = "none")) +
-  ggtitle(title) +
+  ggtitle(paste(toupper(agency_acronym), "Economically Significant Final Rules Published by Presidential Year")) +
   ylab("Number of Rules") +
   xlab("") +
-  scale_y_continuous(breaks = seq(0, upper, by = interval), 
-                     expand = c(0, 0.0), 
+  scale_y_continuous(breaks = seq(0, upper, by = interval),
+                     expand = c(0, 0.0),
                      limits = c(0, upper)) +
-  scale_x_continuous(breaks = seq(min(dataset$year),max(dataset$year)),
+  scale_x_continuous(breaks = seq(min(df$year),max(df$year)),
                      expand = c(0, 0),
-                     limits = c(min(dataset$year)-0.5, max(dataset$year)+0.5)) +
+                     limits = c(min(df$year)-0.5, max(df$year)+0.5)) +
   labs(caption = wrapped_caption) +
   theme(plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 50, unit = "pt"))) +
   coord_cartesian(clip = "off") +
@@ -95,105 +126,48 @@ graph <- function(dataset, interval, title){
     panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
     panel.grid.minor = element_blank()
   )
-  
-  suppressWarnings({bar2 <- ggdraw() + 
-  draw_plot(bar1) + 
-  draw_image(logo, x = 0.1, y = 0.08, halign = 0, valign = 0, width = 0.2)
-  
-  bar2})
-  
-  return(bar2)
-  }
 
+ # add logo to plot
+  bar2 <- ggdraw() + 
+    suppressWarnings(draw_plot(bar1)) + 
+    draw_image(logo, x = 0.1, y = 0.059, halign = 0, valign = 0, width = 0.2, height = 0.2)
+  return(bar2)
+}
+
+# save outputs function
+save_plot_png_pdf <- function(fig, save_path, agency_acronym) {
+  
+  image_name <- paste0(tolower(agency_acronym), "_econ_significant_rules_by_presidential_year")
+  
+  # save as pdf
+  ggsave(here(save_path, paste0(image_name, ".pdf")), plot = fig, width = 12, height = 9, dpi = 300)
+  
+  # save as png
+  ggsave(here(save_path, paste0(image_name, ".png")), device = "png", plot = fig, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+  }
 
 ```
 
-# all inclusive loop for data import, cleaning, charting, and saving
-```{r}
-
-out = here("charts", "output", "by_agency")
+```{r pipeline}
+# create empty output folder if it doesn't already exist
+out <- here("charts", "output", "by_agency")
 if (!dir.exists(out)){
   dir.create(out, showWarnings = FALSE)
+}
+
+# create empty agency names list to be filled by loop
+agency_names_list <- list()
+
+for (agency_a in agencies) {
+  df_agency <- agency_es_rules %>% filter(acronym == toupper(agency_a))
+  
+  if (nrow(df_agency) != 0) {
+    agency_n <- df_agency$name
+    agency_names_list[[toupper(agency_a)]] <- agency_n
+
+    plot <- plot_data(df_agency, agency_a, agency_n)
+    save_plot_png_pdf(plot, out, agency_a)
   }
-
-chart_n_save <- function(agency){
-  data_file = paste0(agency, "_econ_significant_rules_by_presidential_year.csv")
-  rules <- read.csv(here("charts", "data", data_file))
-  rules1 <- clean(rules)
-  interval <- chart_ref[which(chart_ref$agency==agency), 2]
-  title <- chart_ref[which(chart_ref$agency==agency), 3]
-  bar <- graph(rules1, interval, title)
-  print(bar)
-  ggsave(
-    here("charts", "output", "by_agency", 
-         paste0(agency, "_econ_significant_rules_by_presidential_year.pdf")
-         ), 
-    plot = get("bar"), 
-    width = 12, 
-    height = 9, 
-    dpi = 300
-    )
-  ggsave(
-    here("charts", "output", "by_agency", 
-         paste0(agency, "_econ_significant_rules_by_presidential_year.png")
-         ), 
-    device = "png", 
-    plot = get("bar"), 
-    width = 1200, 
-    height = 900, 
-    units = "px", 
-    dpi = 96, 
-    bg = "white"
-    )
-  }
-
-for (agency in agencies) {
-  chart_n_save(agency)
- }
+}
 
 ```
-
-# Outputting individual charts as needed
-```{r}
-# define agency
-agency <- "hhs"
-
-# run each step of the loop
-data_file = paste0(agency, "_econ_significant_rules_by_presidential_year.csv")
-rules <- read.csv(here("charts", "data", data_file))
-rules1 <- clean(rules)
-
-# Interval can be replaced with any number
-interval <- chart_ref[which(chart_ref$agency==agency), 2]
-title <- chart_ref[which(chart_ref$agency==agency), 3]
-bar <- graph(rules1, interval, title)
-print(bar)
-
-```
-# Save individual charts as needed
-```{r}
-ggsave(
-  here("charts", "output", "by_agency", 
-       paste0(agency, "_econ_significant_rules_by_presidential_year.pdf")
-       ), 
-  plot = get("bar"), 
-  width = 12, 
-  height = 9, 
-  dpi = 300
-  )
-ggsave(
-  here("charts", "output", "by_agency", 
-       paste0(agency, "_econ_significant_rules_by_presidential_year.png")
-       ), 
-  device = "png", 
-  plot = get("bar"), 
-  width = 1200, 
-  height = 900, 
-  units = "px", 
-  dpi = 96, 
-  bg = "white"
-  )
-```
-
-
-
