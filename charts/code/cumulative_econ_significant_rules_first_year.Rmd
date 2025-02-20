@@ -52,7 +52,7 @@ cum_sig <- cum_sig[ , c("months_in_office", "Reagan", "Bush_41", "Clinton", "Bus
 # create long data frame (will also need to manually add new president's names here)
 cum_sig_long_NA <- pivot_longer(cum_sig, cols = c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden"), names_to = "president", values_to = "econ_rules")
 
-# remove NA values from long data frame (these NA values are the potential econ_rules values for presidents who didn't/haven't yet served the maximum number of months)
+# remove NA values from long data frame (these NA values are the potential econ_rules values for presidents who didn't/haven't yet served the maximum number of months, also includes "0" month of the Reagan admin)
 cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
 
 # change president column to factor (assign levels and labels)
@@ -132,15 +132,15 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   ylab("Number of Rules \n") +
   ggtitle("Cumulative Economically Significant Final Rules Published \nby Administration in First Year") +
   labs(color = "President", caption = wrapped_caption) +
-  scale_y_continuous(breaks = seq(0, max(cum_sig_long_NA$econ_rules) + 25, by = 25),
+  scale_y_continuous(breaks = seq(0, max(cum_sig_long$econ_rules) + 25, by = 25),
                      expand = c(0, 0),
-                     limits = c(0, max(cum_sig_long_NA$econ_rules) + 25)
+                     limits = c(0, max(cum_sig_long$econ_rules) + 25)
                      #labels = function(x) ifelse(x == 0, "0", x)
                      #labels = scales::label_number(drop0trailing=TRUE)
                      ) +
-  scale_x_continuous(breaks = seq(2, max(cum_sig_long_NA$months_in_office), by = 2),
+  scale_x_continuous(breaks = seq(2, max(cum_sig_long$months_in_office), by = 2),
                      expand = c(0, 0),
-                     limits = c(0, max(cum_sig_long_NA$months_in_office))
+                     limits = c(0, max(cum_sig_long$months_in_office))
                      )
 
 
