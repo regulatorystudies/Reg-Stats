@@ -17,6 +17,7 @@ sys.path.insert(0, f'{dir_path}/../py_funcs')
 from frcount import *
 from reginfo import *
 from party import *
+from update_admin import *
 
 # Report the admin coverage
 print(f"The current dataset covers the {', '.join(list(admin_year.keys()))} administrations.\n"
@@ -24,23 +25,6 @@ print(f"The current dataset covers the {', '.join(list(admin_year.keys()))} admi
 
 #%% Specify the file path of the current dataset
 file_path=f"{dir_path}/monthly_significant_rules_by_admin.csv"
-
-#%% Function to compare two dataframes and report differences
-def compare_df(df_old_data_original,df_old_data_updated):
-    ne_stacked = (df_old_data_original != df_old_data_updated).stack()
-    changed = ne_stacked[ne_stacked]
-    changed.index.names = ['Months in Office', 'Value']
-
-    difference_locations = np.where(df_old_data_original != df_old_data_updated)
-    changed_from = df_old_data_original.values[difference_locations]
-    changed_to = df_old_data_updated.values[difference_locations]
-    df_diff=pd.DataFrame({'from': changed_from, 'to': changed_to}, index=changed.index)
-
-    if len(df_diff)>0:
-        print(df_diff)
-    else: pass
-
-    return df_diff
 
 #%% Get input on whether to verify all previous data (if previous data exist)
 check_input = input(
@@ -56,7 +40,7 @@ for admin in admin_year.keys():
         # Define update_start_date
         if admin in df['Admin'].tolist():
             df['Date'] = pd.to_datetime(df['Year'].astype(str) + df['Month'].astype(str), format='%Y%b')
-            update_start_date=datetime.date(df[(df['Admin']==admin) & (df['Significant'].notnull())]['Date'].iloc[-1]+relativedelta(months=1))
+            update_start_date=datetime.date(df[(df['Admin']==admin) & (df['Economically Significant'].notnull())]['Date'].iloc[-1]+relativedelta(months=1))
 
             # Update previous-data-check
             check=check_input
@@ -105,11 +89,17 @@ for admin in admin_year.keys():
         else:
             df_update=count_fr_monthly(dir_path,update_start_date,update_end_date)
 
-        # Add other columns
+        # Rename columns
         df_update.rename(columns={'publication_year':'Year','publication_month':'Month',
                                   'sig_count':'Significant','es_count':'Economically Significant'},inplace=True)
-        df_update['Other Significant']=df_update['Significant']-df_update['Economically Significant']
 
+        # Remove "economically significant" before Feb 1981 (EO 12291 signed on Feb 17, 1981)
+        df_update.loc[(df_update['Year']<1981) | ((df_update['Year']==1981) & (df_update['Month']<2)),'Economically Significant']=None
+        # Remove "significant" before 1994 (EO 12866 signed on Sep 30, 1993, but reginfo.gov data show a clear cut in Jan 1994)
+        df_update.loc[df_update['Year']<1994,'Significant']=None
+
+        # Add other columns
+        df_update['Other Significant']=df_update['Significant']-df_update['Economically Significant']
         df_update['Date']=pd.to_datetime(df_update['Year'].astype(str)+df_update['Month'].astype(str), format='%Y%m')
         df_update['Months in Office'] = (df_update['Date'].dt.year-date(admin_year[admin][0],2,1).year) * 12 + (df_update['Date'].dt.month-date(admin_year[admin][0],2,1).month) + 1
         df_update['Month']=df_update['Month'].apply(lambda x: calendar.month_abbr[x])
@@ -121,9 +111,11 @@ for admin in admin_year.keys():
 
             # Store two comparable dataframes
             df_old_data_original=df[df['Admin']==admin].set_index('Months in Office')\
-                        [['Significant','Economically Significant','Other Significant']].astype('int64')
+                        [['Significant','Economically Significant','Other Significant']].\
+                        astype('int', errors='ignore')
             df_old_data_updated = df_update[df_update['Months in Office'].isin(df_old_data_original.index)].\
-                        set_index('Months in Office')[['Significant','Economically Significant','Other Significant']].astype('int64')
+                        set_index('Months in Office')[['Significant','Economically Significant','Other Significant']].\
+                        astype('int', errors='ignore')
 
             # Report differences
             compare_df(df_old_data_original,df_old_data_updated)
@@ -139,6 +131,6 @@ for admin in admin_year.keys():
         if len(df)>0:
             df.drop(['Date'], axis=1).to_csv(file_path, index=False)
         else: pass
-        print(f'The {admin} administration data have been updated.')
+        print(f'The {admin} administration data have been verified/updated.')
 
 print('The dataset has been updated and saved. End of execution.')

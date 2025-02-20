@@ -1,10 +1,34 @@
 import pandas as pd
+import warnings
+warnings.filterwarnings('ignore', category=FutureWarning)
 
 from frcount import *
 from reginfo import *
 from party import *
 
-# %% A function to update data for an administration in the wide data format
+#%% Function to compare two dataframes and report differences
+def compare_df(df_old_data_original,df_old_data_updated):
+    # Fill null values for comparison
+    df_old_data_original=df_old_data_original.fillna(-1)
+    df_old_data_updated=df_old_data_updated.fillna(-1)
+
+    # Compare
+    ne_stacked = (df_old_data_original != df_old_data_updated).stack()
+    changed = ne_stacked[ne_stacked]
+    changed.index.names = ['Months in Office', 'Value']
+
+    difference_locations = np.where(df_old_data_original != df_old_data_updated)
+    changed_from = df_old_data_original.replace(-1, None).values[difference_locations]
+    changed_to = df_old_data_updated.replace(-1, None).values[difference_locations]
+    df_diff=pd.DataFrame({'from': changed_from, 'to': changed_to}, index=changed.index)
+
+    if len(df_diff)>0:
+        print(df_diff)
+    else: pass
+
+    return df_diff
+
+# %% Function to update data for an administration in the wide data format
 def update_admin(dir_path,df,admin,first_month_no_data,update_start_date,update_end_date,check,rule_type='es',data_type='cumulative'):
 
     # For administrations prior to Biden, pull data from reginfo.gov
@@ -19,7 +43,7 @@ def update_admin(dir_path,df,admin,first_month_no_data,update_start_date,update_
     # Append new data to the current dataset (cumulative or monthly)
     # Append according to data type
     if data_type=='cumulative':
-        cum_count=0 if first_month_no_data==1 else df[df[admin].notnull()][admin].iloc[-1]
+        cum_count=0 if first_month_no_data==0 else df[df[admin].notnull()][admin].iloc[-1]
         for x in df_update[f'{rule_type}_count']:
             cum_count = cum_count + x
             df.loc[df['Months in Office'] == first_month_no_data, admin] = cum_count
@@ -28,6 +52,12 @@ def update_admin(dir_path,df,admin,first_month_no_data,update_start_date,update_
         for x in df_update[f'{rule_type}_count']:
             df.loc[df['Months in Office'] == first_month_no_data, admin] = x
             first_month_no_data += 1
+
+    # Remove "economically significant" before Feb 1981 (EO 12291 signed on Feb 17, 1981)
+    if admin=='Reagan':
+        df.loc[df['Months in Office']==0,admin]=None
+    else:
+        pass
 
     return df
 
@@ -42,8 +72,8 @@ def import_file(file_path):
         list_of_months = [date(2024, i, 1).strftime('%b') for i in range(1, 13)]
         df['Month'] = np.tile(list_of_months, len(df) // len(list_of_months) + 1)[:len(df)]
 
-        # Delete the first January (which could capture rules from the previous administration)
-        df = df.iloc[1:, :].reset_index(drop=True)
+        # # Delete the first January in each administration (which could capture rules from the previous administration)
+        # df = df.iloc[1:, :].reset_index(drop=True)
 
     # Rename the first Trump administration if existing in the current dataset
     if 'Trump' in df.columns:
@@ -81,16 +111,18 @@ def main(dir_path,file_path,rule_type,data_type):
             pass
         else:
             if check=='y':  # Start with the beginning of the administration (Feb 1), if previous-data-check is selected
-                first_month_no_data=1
-                update_start_date = date(admin_year[admin][0], 2, 1)
+                first_month_no_data=0
+                update_start_date = date(admin_year[admin][0], 1, 21)
 
                 # Store the original data for previous months
-                old_data_original = dict(zip(df[df[admin].notnull()]['Months in Office'],
-                                             df[df[admin].notnull()][admin].astype('int')))
+                df_old_data_original = df.set_index('Months in Office')[[admin]].astype('int', errors='ignore')
 
             else:   # Start with the first null-value month, if previous-data-check is not selected
                 first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
-                update_start_date = date(admin_year[admin][0], 1, 1) + relativedelta(months=first_month_no_data)
+                if first_month_no_data==0:
+                    update_start_date = date(admin_year[admin][0], 1, 21)
+                else:
+                    update_start_date = date(admin_year[admin][0], 1, 1) + relativedelta(months=first_month_no_data)
 
             # If update start date is later than the last day of the admin or later than the last day of last month
             if (update_start_date > date(admin_year[admin][1], 1, 20)) or (
@@ -118,22 +150,11 @@ def main(dir_path,file_path,rule_type,data_type):
             if check=='y':
                 print('Comparing newly collected data with original data. Differences (if any) will be shown here.')
                 # Store the newly collected data for previous months
-                old_data_updated = dict(zip(df[df[admin].notnull()]['Months in Office'],
-                                             df[df[admin].notnull()][admin].astype('int')))
-                # Compare and report differences
-                updated_months=[]
-                for k in old_data_updated:
-                    if k in old_data_original:
-                        if old_data_updated[k] != old_data_original[k]:
-                            print(
-                                f'Value for {admin} month #{k} has been updated from {old_data_original[k]} to {old_data_updated[k]}.')
-                        else: pass
-                    else:
-                        updated_months.append(k)
-                if len(updated_months)>0:
-                    print(f'Value for {admin} month #{updated_months} has been added.')
-                else: pass
-                print(f'All previous data for {admin} have been verified.')
+                df_old_data_updated = df.set_index('Months in Office')[[admin]].astype('int', errors='ignore')
+
+                # Report differences
+                compare_df(df_old_data_original, df_old_data_updated)
+                print(f'All previous data for {admin} have been verified/updated.')
             else:
                 pass
 
