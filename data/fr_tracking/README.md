@@ -33,7 +33,7 @@ See **Other Tips** below for tips on ambiguous cases.
 
 ### Other Tips:  
 - For missing values, add a “.” in the cell so reviewers know you did not just forget. 
-- There is often confusion about whether a significant rule is also section 3(f)(1) significant (applicable to rules published after April 6, 2023). The following tips may help:
+- There is often confusion about whether a significant rule is also section 3(f)(1) significant (only applicable to rules published after April 6, 2023 and before January 21, 2025). The following tips may help:
   - Rules that mention EO 14094 are not necessarily section 3(f)(1) significant. It is important to note whether it says that it is significant under **Section 3(f)(1)** of EO 14094.
   - Some section 3(f)(1) significant rules do not mention the section number but mention the monetary threshold of $200 million.
   - Rules that are not major are less likely to be section 3(f)(1) significant.
