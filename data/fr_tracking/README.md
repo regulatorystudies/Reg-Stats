@@ -33,7 +33,7 @@ Data: ~weekly
 ### Other Tips:  
 - For missing values, add a “.” in the cell so reviewers know you did not just forget. 
 - There is often confusion about whether a significant rule is also economically significant (or "section 3(f)(1) significant" for rules published after April 6, 2023 and before January 21, 2025). The following tips may help:
-  - It the preamble says that the rule is significant under **Section 3(f)(1)** of EO 12866 (or EO 14094), it is economically (or section 3(f)(1)) significant. However, although EO 14094 defines section 3(f)(1) significant rules with the $200 million threshold, rules that mention EO 14094 are not necessarily section 3(f)(1) significant.
+  - If the preamble says that the rule is significant under **Section 3(f)(1)** of EO 12866 (or EO 14094), it is economically (or section 3(f)(1)) significant. However, although EO 14094 defines section 3(f)(1) significant rules with the $200 million threshold, rules that mention EO 14094 are not necessarily section 3(f)(1) significant.
   - Some economically (or section 3(f)(1)) significant rules do not mention the section number but mention the monetary threshold of $100 million (or $200 million).
   - Rules that are not major are less likely to be economically (or section 3(f)(1)) significant.
   - Rules that do not explictly mention whether they are economically (or section 3(f)(1)) significant in any ways are more likely to be **not** economically (or section 3(f)(1)) significant, but look through other sections (e.g., benefits and costs) for cost/benefit estimates to confirm.
