@@ -91,9 +91,9 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 | Chart | `charts/`         | `code/cfr_pages.Rmd`       | `output/cfr_pages_by_calendar_year.pdf`<br/>`output/cfr_pages_by_calendar_year.png` |
 
 #### Total Pages Published in the Federal Register
-| Task  | Location                | File                 | Output                                                                                                                                              |
-|-------|-------------------------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Data  | `data/fr_pages/` | N/A                  | `federal_register_pages_by_calendar_year.csv`                                                                                          |
+| Task  | Location                | File                              | Output                                                                                                                                              |
+|-------|-------------------------|-----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data  | `data/fr_pages/` | `update_fr_pages.py`              | `federal_register_pages_by_calendar_year.csv`                                                                                          |
 | Chart | `charts/`         | `code/federal_register_pages.Rmd` | `output/federal_register_pages_by_calendar_year.pdf`<br/>`output/federal_register_pages_by_calendar_year.png` |
 
 #### Active Actions Published in the Unified Agenda

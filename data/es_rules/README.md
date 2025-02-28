@@ -8,7 +8,7 @@ The economically significant rules data are on a yearly frequency and should be 
 
 ### Automated Process
 
-To update the dataset for a new presidential year after 2021, follow these steps:
+To update the dataset, follow these steps:
 
 1. Ensure whether Python and the relevant packages are installed on your computer's environment (see instructions below on setting up your environment).
 1. Run the Python script `update_es_rules.py` in your preferred IDE to update the dataset.
