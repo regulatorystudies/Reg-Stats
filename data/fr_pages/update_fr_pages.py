@@ -2,9 +2,7 @@ import requests
 import pandas as pd
 import re
 import os
-import sys
 from datetime import date
-import numpy as np
 
 import warnings
 warnings.filterwarnings("ignore")
