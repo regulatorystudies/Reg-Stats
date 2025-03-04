@@ -18,7 +18,8 @@ except ImportError:
 BASE_PARAMS = {
     "processed": 1, 
     "type": "all", 
-    "priority": "all", 
+    "priority": "all",
+    "received_start_date": "2021-02-01",
     }
 
 
@@ -115,10 +116,13 @@ class Scraper:
             params.update({"page": page})
         
         # makes different request when alt_url is given
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36'}
+
         if alt_url is not None:
-            response = requests.get(alt_url)
+            response = requests.get(alt_url,headers=headers)
         else:
-            response = requests.get(self.url, params=params)
+            response = requests.get(self.url, params=params, headers=headers)
         
         # raise status if request fails
         if response.status_code != 200:
@@ -832,12 +836,12 @@ def report_retrieval_status(
 
 
 def pipeline(data_path: Path, 
-             major_only: bool = True, 
+             major_only: bool = False,
              new_only: bool = False, 
              rule_detail: bool = True, 
              use_existing_pop_data: bool = False, 
-             file_name_population: str | None = "population_major",
-             file_name_detail: str | None = "rule_detail_major", 
+             file_name_population: str | None = "population_all",
+             file_name_detail: str | None = "rule_detail_all",
              **kwargs):
     """Executes main pipeline for retrieving data from GAO's CRA database.
 
@@ -942,8 +946,8 @@ def scraper(
         if new_prompt in valid_inputs:
             
             # set major_only param
-            major_only = True
-            file_name = "population_major"
+            major_only = False
+            file_name = "population_all"
 
             # set new_only param
             if new_prompt in y_inputs:
