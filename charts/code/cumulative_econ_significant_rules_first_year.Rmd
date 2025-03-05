@@ -43,14 +43,19 @@ cum_sig_first <- read.csv(here("charts", "data", data_file))
 
 cum_sig <- cum_sig_first[c(1:13), ]
 
-# rename columns (will need to manually update with the names of new presidents)
-colnames(cum_sig) <- c("month", "months_in_office", "Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden")
+# define administration variables (will need to manually update with the names of new presidents)
+admins <- c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden", "Trump_47")
+admin_labels <- c("Reagan","Bush 41","Clinton","Bush 43","Obama","Trump 45","Biden","Trump 47")
+admin_colors <- c(red,darkgreen,GWblue,GWbuff,lightblue,darkyellow,lightgreen,brown)
+
+# rename columns
+colnames(cum_sig) <- c("month", "months_in_office", admins)
 
 # get rid of unnecessary columns (will also need to manually update with new president names here)
-cum_sig <- cum_sig[ , c("months_in_office", "Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden")]
+cum_sig <- cum_sig[ , c("months_in_office", admins)]
 
 # create long data frame (will also need to manually add new president's names here)
-cum_sig_long_NA <- pivot_longer(cum_sig, cols = c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden"), names_to = "president", values_to = "econ_rules")
+cum_sig_long_NA <- pivot_longer(cum_sig, cols = admins, names_to = "president", values_to = "econ_rules")
 
 # remove NA values from long data frame (these NA values are the potential econ_rules values for presidents who didn't/haven't yet served the maximum number of months, also includes "0" month of the Reagan admin)
 cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
@@ -58,20 +63,8 @@ cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
 # change president column to factor (assign levels and labels)
 cum_sig_long <- cum_sig_long %>% 
   mutate(president = factor(president,
-                        levels = c("Reagan", 
-                                   "Bush_41",
-                                   "Clinton", 
-                                   "Bush_43",
-                                   "Obama", 
-                                   "Trump_45",
-                                   "Biden"),
-                        labels = c("Reagan", 
-                                   "Bush 41",
-                                   "Clinton", 
-                                   "Bush 43",
-                                   "Obama", 
-                                   "Trump 45",
-                                   "Biden")))
+                        levels = admins,
+                        labels = admin_labels))
 
 
 
@@ -112,13 +105,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                   label.padding = 0,
                   label.r = 0,
                   fill = alpha(c("white"), 0.8)) +
-  scale_color_manual(values = c(red,
-                                darkgreen,
-                                GWblue,
-                                GWbuff,
-                                lightblue,
-                                darkyellow,
-                                lightgreen)) +
+  scale_color_manual(values = admin_colors) +
   coord_cartesian(clip = "off") +
   theme_RSC +
   theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5),
