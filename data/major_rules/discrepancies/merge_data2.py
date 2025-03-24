@@ -110,6 +110,7 @@ gao_citation_check=gao_cra0[(gao_cra0['fed_reg_number'].notnull()) & \
                              (gao_cra0['Issue'].isnull()) | (gao_cra0['Issue']>90) | (gao_cra0['Issue']<70) |
                              (gao_cra0['FR']!='FR') | (~gao_cra0['Page'].astype(str).str.isnumeric()))].\
                             reset_index()
+print('# of citations for mannual checking:',len(gao_citation_check))
 gao_citation_check[['index','url','fed_reg_number']].to_csv('data/major_rules/discrepancies/gao_citation_check.csv',index=False)
 
 #%% Import manually fixed citations
@@ -119,7 +120,7 @@ print(gao_citation_check.info())
 # Merge it back to GAO data
 gao_cra0.loc[gao_cra0.index.isin(gao_citation_check['index']), 'fed_reg_number'] = gao_citation_check['fed_reg_number'].values
 
-# Check FR citations again
+#%% Check FR citations again
 print("Incorrect citations in GAO data:",len(gao_cra0[(gao_cra0['fed_reg_number'].notnull()) & (~gao_cra0['fed_reg_number'].astype(str).str.contains('FR'))]))
 gao_cra0[['Issue', 'FR', 'Page']] = gao_cra0['fed_reg_number'].str.split(' ',n=2,expand=True)
 gao_cra0['Issue']=pd.to_numeric(gao_cra0['Issue'],errors='coerce')
@@ -128,7 +129,28 @@ print("Incorrect FR Issue # in GAO data:",
                    ((gao_cra0['Issue'].isnull()) | (gao_cra0['Issue']>90) |
                     (gao_cra0['Issue']<70) | (gao_cra0['FR']!='FR'))]))
 
-# All incorrect citations have been fixed; now the only problem is the missing citations in GAO data
+#%% Check inconsistency between publication year
+year_issue={2021:86,
+            2022:87,
+            2023:88,
+            2024:89,
+            2025:90,
+            }
+
+gao_cra0['publication_year']=gao_cra0['date_published_in_federal_register'].dt.year
+
+gao_cra0['Issue2'] = gao_cra0['publication_year'].map(year_issue)
+print('# of unmatched FR year vs issue:',len(gao_cra0[(gao_cra0['Issue'].notnull()) & (gao_cra0['Issue']!=gao_cra0['Issue2'])]))
+# print(gao_cra0[(gao_cra0['Issue'].notnull()) & (gao_cra0['Issue']!=gao_cra0['Issue2'])]
+#       [['date_published_in_federal_register','received','fed_reg_number','Issue2']])
+
+# Correct Issue numbers based on pub years
+gao_cra0.loc[gao_cra0['Issue'].notnull(),'Issue']=gao_cra0['Issue2']
+
+# Re-generate fed_reg_number
+gao_cra0['fed_reg_number']=gao_cra0['Issue'].astype('Int64').astype(str)+' '+gao_cra0['FR']+' '+gao_cra0['Page']
+
+#%% All incorrect citations should have been fixed; now the only problem is the missing citations in GAO data
 print("Missing citations in GAO data:",len(gao_cra0[gao_cra0['fed_reg_number'].isnull()]))
 
 #%% Merge FR and GAO data using FR citations
@@ -213,11 +235,38 @@ df_merge[(df_merge['in_fr_df']!=1) & (df_merge['in_gao_df']==1)][['citation','ga
 
 #%% Examine rules in FR but not in GAO
 df_fr_not_in_gao=df_merge[(df_merge['in_fr_df']==1) & (df_merge['in_gao_df']!=1)].reset_index(drop=True)
+df_fr_not_in_gao['in_gao_df']=df_fr_not_in_gao['in_gao_df'].fillna(0)
 print(len(df_fr_not_in_gao))
 
 # Check if they are mostly recent rules
 df_fr_not_in_gao['publication_year']=df_fr_not_in_gao['publication_date'].dt.year
 print(df_fr_not_in_gao['publication_year'].value_counts(sort=False))
 
-# Export
-df_fr_not_in_gao.to_csv('data/major_rules/discrepancies/fr_rules_not_in_gao.csv',index=False)
+#%% Merge with significance data
+fr_sig=pd.read_csv('data/fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
+fr_sig=fr_sig[fr_sig['publication_date'].notnull()]
+print(fr_sig.info())
+
+#%% Select columns
+sig_cols=['significant','econ_significant','3(f)(1) significant','Major']
+fr_sig=fr_sig[['document_number']+sig_cols]
+
+# Clean data
+fr_sig['document_number']=fr_sig['document_number'].str.strip()
+
+# print("Duplicated document numbers:",
+#       len(fr_sig[fr_sig.duplicated(subset=['document_number'],keep=False)]))
+# print(fr_sig[fr_sig.duplicated(subset=['document_number'],keep=False)])
+
+#%% Merge on doc no
+df_fr_not_in_gao=df_fr_not_in_gao.drop(sig_cols,axis=1).merge(fr_sig,on=['document_number'], how="left", validate="1:1")
+print('# of missing data:',len(df_fr_not_in_gao[df_fr_not_in_gao['significant'].isnull()]))
+
+print('# of significant rules:',len(df_fr_not_in_gao[df_fr_not_in_gao['significant']=='1']))
+print('# of econ significant rules:',len(df_fr_not_in_gao[df_fr_not_in_gao['econ_significant']=='1']))
+print('# of 3f1 significant rules:',len(df_fr_not_in_gao[df_fr_not_in_gao['3(f)(1) significant']=='1']))
+print('# of major rules:',len(df_fr_not_in_gao[df_fr_not_in_gao['Major']=='1']))
+
+#%% Export
+df_fr_not_in_gao.drop(['Notes','gao_url','publication_year'],axis=1).\
+    to_csv('data/major_rules/discrepancies/fr_rules_not_in_gao.csv',index=False)
