@@ -70,6 +70,14 @@ print("Range in FR data:",min(fr_tracking0['publication_date']),max(fr_tracking0
 print("Range in GAO data:",min(gao_cra0['date_published_in_federal_register']),\
                             max(gao_cra0['date_published_in_federal_register']))
 
+#%% Clean other fields
+# replace all "?" values in the identifier column with "-"
+gao_cra0["identifier"] = gao_cra0["identifier"].str.replace("?", "-", regex=False)
+# replace all "ZRIN ", "Z-RIN ", "RIN ", "OMB ", "AND " in identifier column with ""
+gao_cra0["identifier"] = gao_cra0["identifier"].str.replace(r"\b(ZRIN |Z-RIN |RIN |OMB |AND )", "", regex=True).str.strip()
+
+fr_tracking0['regulation_id_number']=fr_tracking0['regulation_id_number'].str.strip()
+
 #----------------------------------------------Merge using FR citations-------------------------------------------------
 #%% Check citations in FR tracking
 print("Missing citations in FR data:",len(fr_tracking0[fr_tracking0['citation'].isnull()]))
@@ -110,7 +118,7 @@ gao_citation_check=gao_cra0[(gao_cra0['fed_reg_number'].notnull()) & \
                              (gao_cra0['Issue'].isnull()) | (gao_cra0['Issue']>90) | (gao_cra0['Issue']<70) |
                              (gao_cra0['FR']!='FR') | (~gao_cra0['Page'].astype(str).str.isnumeric()))].\
                             reset_index()
-print('# of citations for mannual checking:',len(gao_citation_check))
+print('# of citations for manual checking:',len(gao_citation_check))
 gao_citation_check[['index','url','fed_reg_number']].to_csv('data/major_rules/discrepancies/gao_citation_check.csv',index=False)
 
 #%% Import manually fixed citations
@@ -157,49 +165,82 @@ print("Missing citations in GAO data:",len(gao_cra0[gao_cra0['fed_reg_number'].i
 fr_tracking0["in_fr_df"] = 1
 gao_cra0["in_gao_df"] = 1
 
-# Split GAO data with/without citations
-gao_cra_citation=gao_cra0[gao_cra0['fed_reg_number'].notnull()]
-gao_cra_nocitation=gao_cra0[gao_cra0['fed_reg_number'].isnull()]
+# Check citation duplicates
+print("Duplicated citations in FR data:",len(fr_tracking0[fr_tracking0.duplicated(subset=['citation'],keep=False)]))
+print("Duplicated citations in GAO data:",len(gao_cra0[gao_cra0.duplicated(subset=['fed_reg_number'],keep=False)]))
 
-# Merge
-gao_cra_citation.rename(columns={'fed_reg_number':'citation','url':'gao_url'},inplace=True)
+# print(fr_tracking0[fr_tracking0.duplicated(subset=['citation'],keep=False)]\
+#           [['title','citation']].sort_values('citation'))
 
-df_merge=fr_tracking0.merge(gao_cra_citation[['citation','gao_url','in_gao_df']],on='citation',how='outer')
+# #%% Look for a second identifier
+# # Check RINs
+# fr_citation_duplicates=fr_tracking0[fr_tracking0.duplicated(subset=['citation'],keep=False)]
+# print("Missing RINs in FR citation duplicates:",len(fr_citation_duplicates[fr_citation_duplicates['regulation_id_number'].isnull()]))
+#
+# # Check agencies
+# fr_tracking0.loc[fr_tracking0['department'].isnull(),'department']=fr_tracking0['agency']
+#
+# print(fr_tracking0[fr_tracking0['department'].isnull()])
+#
+# print("Missing agencies in FR data:",len(fr_tracking0[fr_tracking0['department'].isnull()]))
+# print("Missing agencies in GAO data:",len(gao_cra0[gao_cra0['agency'].isnull()]))
+#
+# # Check citationXagency duplicates
+# print("Duplicated citationXagency in FR data:",len(fr_tracking0[fr_tracking0.duplicated(subset=['citation','department'],keep=False)]))
+# print("Duplicated citationXagency in GAO data:",len(gao_cra_citation[gao_cra_citation.duplicated(subset=['fed_reg_number','agency'],keep=False)]))
+#
+# print(fr_tracking0[fr_tracking0.duplicated(subset=['citation','department'],keep=False)]\
+#           [['department','citation']].sort_values('citation'))
 
-# Check results
-print(df_merge.info())
+#%% Failed to find a second identifier, merge on only unique citations
+# Split data with/without unique citations
+fr_citation_unique=fr_tracking0[fr_tracking0['citation'].notnull()].drop_duplicates(subset=['citation'],keep=False)
+gao_citation_unique=gao_cra0[gao_cra0['fed_reg_number'].notnull()].drop_duplicates(subset=['fed_reg_number'],keep=False)
+
+fr_citation_duplicates=fr_tracking0[~fr_tracking0.index.isin(fr_citation_unique.index)]
+gao_cra_nocitation=gao_cra0[~gao_cra0.index.isin(gao_citation_unique.index)]
 
 print("All rules in FR data:",len(fr_tracking0))
 print("All rules in GAO data:",len(gao_cra0))
-print("Rules in GAO data with citations:",len(gao_cra_citation))
+print("Rules in FR data with unique citations:",len(fr_citation_unique))
+print("Rules in GAO data with unique citations:",len(gao_citation_unique))
+
+#%% Merge
+gao_citation_unique.rename(columns={'fed_reg_number':'citation','url':'gao_url'},inplace=True)
+
+df_merge=fr_citation_unique.merge(gao_citation_unique[['citation','gao_url','in_gao_df']],
+                                  on='citation',how='outer',validate="1:1")
+
+# Check results
+print(df_merge.info())
 
 print("Rules in both FR and GAO:",len(df_merge[(df_merge['in_fr_df']==1) & (df_merge['in_gao_df']==1)]))
 print("Rules in FR but not in GAO:",len(df_merge[(df_merge['in_fr_df']==1) & (df_merge['in_gao_df']!=1)]))
 print("Rules in GAO but not in FR:",len(df_merge[(df_merge['in_fr_df']!=1) & (df_merge['in_gao_df']==1)]))
 
 #-----------------------------------------Merge using RIN & Publication Date--------------------------------------------
+#%% For those with missing or duplicated citations in FR/GAO data, merge using RIN + publication date
 
-#%% For those without FR citations in GAO data, try to merge using RIN + publication date
-
-# %% Check RINs in GAO data with no citations
+# %% Check RINs in GAO data with missing/duplicated citations
 # Rules with no RINs or dates
-print("Rules without citations in GAO data:",len(gao_cra_nocitation))
+print("Rules with missing/duplicated citations in GAO data:",len(gao_cra_nocitation))
 print("Rules with no RINs:",len(gao_cra_nocitation[gao_cra_nocitation['identifier'].isnull()]))
 print("Rules with no publication dates:",len(gao_cra_nocitation[gao_cra_nocitation['date_published_in_federal_register'].isnull()]))
 
 # # drop rows with "N/A" or no values in the identifier and date_published_in_federal_register columns
 # gao_cra_all_id_date = gao_cra0.replace("N/A", np.nan).dropna(subset=["identifier", "date_published_in_federal_register"])
-#
-# replace all "?" values in the identifier column with "-"
-gao_cra_nocitation["identifier"] = gao_cra_nocitation["identifier"].str.replace("?", "-", regex=False)
-
-# replace all "ZRIN ", "Z-RIN ", "RIN ", "OMB ", "AND " in identifier column with ""
-gao_cra_nocitation["identifier"] = gao_cra_nocitation["identifier"].str.replace(r"\b(ZRIN |Z-RIN |RIN |OMB |AND )", "", regex=True)
 
 #%% Refine GAO data to those with both RIN and pub date (i.e., those that can be merged)
-gao_cra_nocitation_rin=gao_cra_nocitation[(gao_cra_nocitation['identifier'].notnull()) & (gao_cra_nocitation['date_published_in_federal_register'].notnull())]
-
 # Check if RIN & publication date could be a unique identifier (duplicates should be 0)
+print("Duplicated RINs & publication dates:",len(gao_cra_nocitation[gao_cra_nocitation.duplicated(subset=['identifier','date_published_in_federal_register'],keep=False)]))
+
+# Split data with/without unique RINxDate
+gao_cra_nocitation_rin=gao_cra_nocitation[(gao_cra_nocitation['identifier'].notnull()) & (gao_cra_nocitation['date_published_in_federal_register'].notnull())]\
+                        .drop_duplicates(subset=['identifier','date_published_in_federal_register'],keep=False)
+gao_cra_nocitation_norin=gao_cra_nocitation[~gao_cra_nocitation.index.isin(gao_cra_nocitation_rin.index)]
+# print(len(gao_cra_nocitation),len(gao_cra_nocitation_norin),len(gao_cra_nocitation_rin))
+
+# Check if identifier again (duplicates should be 0)
 print("Duplicated RINs & publication dates:",len(gao_cra_nocitation_rin[gao_cra_nocitation_rin.duplicated(subset=['identifier','date_published_in_federal_register'],keep=False)]))
 
 #%% rename columns that will be used for anti-joining to match the corresponding FR tracking column names
@@ -209,39 +250,65 @@ gao_cra_nocitation_rin.rename(columns={
     'url':'gao_url',
 }, inplace=True)
 
+# %% Check RINs in FR data with duplicated citations
+# Rules with no RINs or dates
+print("Rules in duplicated citations in FR data:",len(fr_citation_duplicates))
+print("Rules with no RINs:",len(fr_citation_duplicates[fr_citation_duplicates['regulation_id_number'].isnull()]))
+print("Rules with no publication dates:",len(fr_citation_duplicates[fr_citation_duplicates['publication_date'].isnull()]))
+
+# Check if RIN & publication date could be a unique identifier (duplicates should be 0)
+print("Duplicated RINs & publication dates:",len(fr_citation_duplicates[fr_citation_duplicates.duplicated(subset=['regulation_id_number','publication_date'],keep=False)]))
+
+# Split data with/without unique RINxDate
+fr_citation_duplicates_rin=fr_citation_duplicates[(fr_citation_duplicates['regulation_id_number'].notnull()) & (fr_citation_duplicates['publication_date'].notnull())]\
+                        .drop_duplicates(subset=['regulation_id_number','publication_date'],keep=False)
+fr_citation_duplicates_norin=fr_citation_duplicates[~fr_citation_duplicates.index.isin(fr_citation_duplicates_rin.index)]
+
+# Check if identifier again (duplicates should be 0)
+print("Duplicated RINs & publication dates:",len(fr_citation_duplicates_rin[fr_citation_duplicates_rin.duplicated(subset=['regulation_id_number','publication_date'],keep=False)]))
+
 # %% merge on both "publication_date" and "regulation_id_number"
-print(len(df_merge))
-df_merge = df_merge.merge(
+df_merge2 = fr_citation_duplicates_rin.merge(
     gao_cra_nocitation_rin[['publication_date','regulation_id_number','gao_url','in_gao_df']],
     on=["publication_date", "regulation_id_number"],
     how="outer",
-    suffixes=("", "2")
+    suffixes=("", "2"),
+    validate="1:1"
 )
-print(len(df_merge))
+print('New merged dataset:',len(df_merge2))
 
-#%% Update columns
-df_merge.loc[(df_merge['in_gao_df'].isnull()) & (df_merge['in_gao_df2'].notnull()),'in_gao_df']=df_merge['in_gao_df2']
-df_merge.loc[(df_merge['gao_url'].isnull()) & (df_merge['gao_url2'].notnull()),'gao_url']=df_merge['gao_url2']
-df_merge.drop(['in_gao_df2','gao_url2'],axis=1,inplace=True)
+#%% Concatenate two merged datasets and add unmerged data
+df_merge_all=pd.concat([df_merge,df_merge2,gao_cra_nocitation_norin,fr_citation_duplicates_norin])
+print('Check FR data count:',df_merge_all['in_fr_df'].sum()==len(fr_tracking0))
+print('Check GAO data count:',df_merge_all['in_gao_df'].sum()==len(gao_cra0))
+
+#%% Fill nulls
+df_merge_all['in_fr_df']=df_merge_all['in_fr_df'].fillna(0)
+df_merge_all['in_gao_df']=df_merge_all['in_gao_df'].fillna(0)
+
+
+#---------------------------------------------------Examine Merged Data--------------------------------------------------
 
 #%% Examine results
-print("Rules in both FR and GAO:",len(df_merge[(df_merge['in_fr_df']==1) & (df_merge['in_gao_df']==1)]))
-print("Rules in FR but not in GAO:",len(df_merge[(df_merge['in_fr_df']==1) & (df_merge['in_gao_df']!=1)]))
-print("Rules in GAO but not in FR:",len(df_merge[(df_merge['in_fr_df']!=1) & (df_merge['in_gao_df']==1)]))
+print("All rules in merged data:",len(df_merge_all))
+print("Rules in both FR and GAO:",len(df_merge_all[(df_merge_all['in_fr_df']==1) & (df_merge_all['in_gao_df']==1)]))
+print("Rules in FR but not in GAO:",len(df_merge_all[(df_merge_all['in_fr_df']==1) & (df_merge_all['in_gao_df']!=1)]))
+print("Rules in GAO but not in FR:",len(df_merge_all[(df_merge_all['in_fr_df']!=1) & (df_merge_all['in_gao_df']==1)]))
 
 #%% Examine rules in GAO but not in FR
 # Will need to manually check why these rules are in GAO data but not in FR data; maybe errors in GAO data
-df_merge[(df_merge['in_fr_df']!=1) & (df_merge['in_gao_df']==1)][['citation','gao_url']].to_csv('data/major_rules/discrepancies/gao_rules_not_in_fr.csv',index=False)
+df_merge_all[(df_merge_all['in_fr_df']!=1) & (df_merge_all['in_gao_df']==1)][['citation','gao_url']].\
+    to_csv('data/major_rules/discrepancies/gao_rules_not_in_fr.csv',index=False)
 
 #%% Examine rules in FR but not in GAO
-df_fr_not_in_gao=df_merge[(df_merge['in_fr_df']==1) & (df_merge['in_gao_df']!=1)].reset_index(drop=True)
-df_fr_not_in_gao['in_gao_df']=df_fr_not_in_gao['in_gao_df'].fillna(0)
+df_fr_not_in_gao=df_merge_all[(df_merge_all['in_fr_df']==1) & (df_merge_all['in_gao_df']!=1)].reset_index(drop=True)
 print(len(df_fr_not_in_gao))
 
 # Check if they are mostly recent rules
 df_fr_not_in_gao['publication_year']=df_fr_not_in_gao['publication_date'].dt.year
 print(df_fr_not_in_gao['publication_year'].value_counts(sort=False))
 
+#-----------------------------------------------Add Significance Data---------------------------------------------------
 #%% Merge with significance data
 fr_sig=pd.read_csv('data/fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
 fr_sig=fr_sig[fr_sig['publication_date'].notnull()]
@@ -267,6 +334,46 @@ print('# of econ significant rules:',len(df_fr_not_in_gao[df_fr_not_in_gao['econ
 print('# of 3f1 significant rules:',len(df_fr_not_in_gao[df_fr_not_in_gao['3(f)(1) significant']=='1']))
 print('# of major rules:',len(df_fr_not_in_gao[df_fr_not_in_gao['Major']=='1']))
 
+#-----------------------------------------Re-merge rules in FR but not in GAO-------------------------------------------
+#%% For those in FR but not in GAO, merge using RIN + publication date again
+# because some may not have been matched due to incorrect citation info in GAO data
+
+#%% Data with unique RINxDate
+# Split merged data with/without unique RINxDate
+df_fr_not_in_gao_rin=df_fr_not_in_gao[(df_fr_not_in_gao['regulation_id_number'].notnull()) & (df_fr_not_in_gao['publication_date'].notnull())]\
+                        .drop_duplicates(subset=['regulation_id_number','publication_date'],keep=False)
+df_fr_not_in_gao_norin=df_fr_not_in_gao[~df_fr_not_in_gao.index.isin(df_fr_not_in_gao_rin.index)]
+print(len(df_fr_not_in_gao_rin),len(df_fr_not_in_gao_norin))
+
+# Split GAO data with/without unique RINxDate
+# Split data with/without unique RINxDate
+gao_cra_rin=gao_cra0[(gao_cra0['identifier'].notnull()) & (gao_cra0['date_published_in_federal_register'].notnull())]\
+                        .drop_duplicates(subset=['identifier','date_published_in_federal_register'],keep=False)
+gao_cra_norin=gao_cra0[~gao_cra0.index.isin(gao_cra_rin.index)]
+
+#%% Merge with unique RINxDate
+gao_cra_rin.rename(columns={
+    "date_published_in_federal_register": "publication_date",
+    "identifier": "regulation_id_number",
+    'url':'gao_url',
+}, inplace=True)
+
+df_fr_not_in_gao_merge=df_fr_not_in_gao_rin[list(fr_tracking0.columns)].merge(
+    gao_cra_rin[['publication_date','regulation_id_number','gao_url','in_gao_df']],
+    on=["publication_date", "regulation_id_number"],
+    how="left",
+    suffixes=("", "2"),
+    validate="1:1"
+)
+
+# Add back unmerged data
+df_fr_not_in_gao_merge=pd.concat([df_fr_not_in_gao_merge,df_fr_not_in_gao_norin])
+
+#%% Refine rules in FR but not in GAO
+df_fr_not_in_gao_merge['in_gao_df']=df_fr_not_in_gao_merge['in_gao_df'].fillna(0)
+df_fr_not_in_gao_update=df_fr_not_in_gao_merge[(df_fr_not_in_gao_merge['in_fr_df']==1) & (df_fr_not_in_gao_merge['in_gao_df']!=1)]
+print("Rules in GAO but not in FR:",len(df_fr_not_in_gao_update))
+
 #%% Export
-df_fr_not_in_gao.drop(['Notes','gao_url','publication_year'],axis=1).\
+df_fr_not_in_gao_update[list(fr_tracking0.columns)+['in_gao_df']].\
     to_csv('data/major_rules/discrepancies/fr_rules_not_in_gao.csv',index=False)
