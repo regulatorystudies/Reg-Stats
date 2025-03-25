@@ -16,7 +16,7 @@ print(fr_tracking0.head(5))
 
 # %%
 # load gao_cra json
-json_file = "data/major_rules/discrepancies/gao_cra.json"
+json_file = "data/major_rules/raw_data/rule_detail_all.json"
 
 with open(json_file, "r", encoding="ISO-8859-1") as f:
     data = json.load(f) 
@@ -24,7 +24,7 @@ with open(json_file, "r", encoding="ISO-8859-1") as f:
 gao_cra0 = pd.DataFrame(data["results"])
 
 print(gao_cra0.head(5))
-# gao_cra0.to_csv("gao_cra.csv", index=False)
+gao_cra0.to_csv("gao_cra.csv", index=False)
 
 # %%
 # fr_tracking df info
@@ -57,10 +57,10 @@ print("Range in GAO data:",min(gao_cra0['date_published_in_federal_register']),\
 
 # Refine to the same date range (if date is available)
 fr_tracking0=fr_tracking0[(fr_tracking0['publication_date'].isnull()) |
-                          ((fr_tracking0['publication_date']>datetime.datetime(2021,1,20)) &
+                          ((fr_tracking0['publication_date']>datetime.datetime(2021,2,1)) &
                           (fr_tracking0['publication_date']<datetime.datetime(2025,1,21)))]
 gao_cra0=gao_cra0[(gao_cra0['date_published_in_federal_register'].isnull()) |
-                  ((gao_cra0['date_published_in_federal_register']>datetime.datetime(2021,1,20)) &
+                  ((gao_cra0['date_published_in_federal_register']>datetime.datetime(2021,2,1)) &
                   (gao_cra0['date_published_in_federal_register']<datetime.datetime(2025,1,21)))]
 
 # Check dates again
@@ -118,7 +118,7 @@ gao_citation_check=pd.read_csv('data/major_rules/discrepancies/gao_citation_chec
 print(gao_citation_check.info())
 
 # Merge it back to GAO data
-gao_cra0.loc[gao_cra0.index.isin(gao_citation_check['index']), 'fed_reg_number'] = gao_citation_check['fed_reg_number'].values
+gao_cra0.loc[gao_cra0.index.isin(gao_citation_check['index']), 'fed_reg_number'] = gao_citation_check['fed_reg_number_corrected'].values
 
 #%% Check FR citations again
 print("Incorrect citations in GAO data:",len(gao_cra0[(gao_cra0['fed_reg_number'].notnull()) & (~gao_cra0['fed_reg_number'].astype(str).str.contains('FR'))]))

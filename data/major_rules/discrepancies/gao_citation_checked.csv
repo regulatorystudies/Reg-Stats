@@ -1,33 +1,33 @@
-index,url,fed_reg_number
-240,https://www.gao.gov/fedrules/208857,89 FR 38762
-277,https://www.gao.gov/fedrules/208853,89 FR 39254
-299,https://www.gao.gov/fedrules/208846,89 FR 37286
-605,https://www.gao.gov/fedrules/210632,89 FR 14576
-657,https://www.gao.gov/fedrules/208852,89 FR 39304
-962,https://www.gao.gov/fedrules/209891,89 FR 1822
-1776,https://www.gao.gov/fedrules/208172,88 FR 55394
-1778,https://www.gao.gov/fedrules/208169,88 FR 54026
-1851,https://www.gao.gov/fedrules/208055,88 FR 47359
-1947,https://www.gao.gov/fedrules/207955,88 FR 45811
-2562,https://www.gao.gov/fedrules/206923,88 FR 18440
-2582,https://www.gao.gov/fedrules/206832,88 FR 14291
-2764,https://www.gao.gov/fedrules/206584,88 FR 4735
-3727,https://www.gao.gov/fedrules/205101,87 FR 38910
-3840,https://www.gao.gov/fedrules/205280,87 FR 34574
-4077,https://www.gao.gov/fedrules/204397,87 FR 23431
-4248,https://www.gao.gov/fedrules/204236,87 FR 14390
-4255,https://www.gao.gov/fedrules/204286,87 FR 14155
-4368,https://www.gao.gov/fedrules/204245,87 FR 10069
-4388,https://www.gao.gov/fedrules/203817,87 FR 8953
-4950,https://www.gao.gov/fedrules/203326,86 FR 59641
-5585,https://www.gao.gov/fedrules/202117,86 FR 34158
-5598,https://www.gao.gov/fedrules/201995,86 FR 33512
-5841,https://www.gao.gov/fedrules/201845,86 FR 26672
-5950,https://www.gao.gov/fedrules/201735,86 FR 21917
-6036,https://www.gao.gov/fedrules/201775,86 FR 17706
-6052,https://www.gao.gov/fedrules/201787,86 FR 17502
-6060,https://www.gao.gov/fedrules/201795,86 FR 17285
-6318,https://www.gao.gov/fedrules/201091,86 FR 10022
-6628,https://www.gao.gov/fedrules/208855,89 FR 39124
-6738,https://www.gao.gov/fedrules/208187,
-7381,https://www.gao.gov/fedrules/206589,88 FR 3659
+index,url,fed_reg_number,fed_reg_number_corrected
+274,https://www.gao.gov/fedrules/208857,38762,89 FR 38762
+308,https://www.gao.gov/fedrules/208853,39254,89 FR 39254
+331,https://www.gao.gov/fedrules/208846,37286,89 FR 37286
+412,https://www.gao.gov/fedrules/208855,39124,89 FR 39124
+656,https://www.gao.gov/fedrules/210632,89 FR14576,89 FR 14576
+699,https://www.gao.gov/fedrules/208852,39304,89 FR 39304
+1004,https://www.gao.gov/fedrules/209891,2070-AL10,89 FR 1822
+1774,https://www.gao.gov/fedrules/208187,NA,
+1787,https://www.gao.gov/fedrules/208172,8 FR 55394,88 FR 55394
+1789,https://www.gao.gov/fedrules/208169,Endangered and threatened,88 FR 54026
+1861,https://www.gao.gov/fedrules/208055,8 FR 47359,88 FR 47359
+1965,https://www.gao.gov/fedrules/207955,7/18/2023,88 FR 45811
+2580,https://www.gao.gov/fedrules/206923,8 FR 18440,88 FR 18440
+2592,https://www.gao.gov/fedrules/206832,88 FR14291,88 FR 14291
+2750,https://www.gao.gov/fedrules/206589,3659,88 FR 3659
+3767,https://www.gao.gov/fedrules/205101,Final Rule Stated in Rule Only,87 FR 38910
+4113,https://www.gao.gov/fedrules/204397,4/20/2022,87 FR 23431
+4281,https://www.gao.gov/fedrules/204236,7 FR 14390,87 FR 14390
+4292,https://www.gao.gov/fedrules/204286,7 FR 14155,87 FR 14155
+4396,https://www.gao.gov/fedrules/204245,2/23/2022,87 FR 10069
+4416,https://www.gao.gov/fedrules/203817,7 FR 8953,87 FR 8953
+4970,https://www.gao.gov/fedrules/203326,6 FR 59641,86 FR 59641
+5608,https://www.gao.gov/fedrules/202117,"86 FR 34158 Television, televisi",86 FR 34158
+5852,https://www.gao.gov/fedrules/201845,86FR 26672,86 FR 26672
+5966,https://www.gao.gov/fedrules/201735,96 FR 21917,86 FR 21917
+6047,https://www.gao.gov/fedrules/201775,8 FR 17706,86 FR 17706
+6058,https://www.gao.gov/fedrules/201787,8 FR 17502,86 FR 17502
+6077,https://www.gao.gov/fedrules/201795,96 FR 17285,86 FR 17285
+6339,https://www.gao.gov/fedrules/201091,FR 10022,86 FR 10022
+9083,https://www.gao.gov/fedrules/206584,NIH-2020-0001 0925-AA68 206584,88 FR 4735
+9175,https://www.gao.gov/fedrules/205280,FR 87 34574,87 FR 34574
+9304,https://www.gao.gov/fedrules/201995,2021 86 FR 33512,86 FR 33512

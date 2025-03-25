@@ -19,7 +19,7 @@ BASE_PARAMS = {
     "processed": 1, 
     "type": "all", 
     "priority": "all",
-    "received_start_date": "2021-02-01",
+    "received_start_date": "2020-01-01",
     }
 
 
