@@ -29,7 +29,7 @@ def get_reginfo_data(start_date,end_date,rule_type='es'):
     retry_count = 0
     while retry_count < max_retries:
         try:
-            f = urllib.request.urlopen(url, timeout=10)
+            f = urllib.request.urlopen(url, timeout=15)
             # Rest of your code
             break  # Exit the loop if the request is successful
         except urllib.error.URLError as e:
