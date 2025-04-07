@@ -117,8 +117,16 @@ def main(dir_path,file_path,rule_type,data_type):
                 # Store the original data for previous months
                 df_old_data_original = df.set_index('Months in Office')[[admin]].astype('int', errors='ignore')
 
-            else:   # Start with the first null-value month, if previous-data-check is not selected
-                first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
+            else:   # Start with the first null-value month (if any), if previous-data-check is not selected
+                # Reagan data should start at Month 1
+                if df[admin].isnull().any() and admin!='Reagan':
+                    first_month_no_data = df[df[admin].isnull()]['Months in Office'].values[0]
+                elif admin=='Reagan' and df[df['Months in Office']>0][admin].isnull().any():
+                    first_month_no_data = df[(df[admin].isnull()) & (df['Months in Office']>0)]['Months in Office'].values[0]
+                else:
+                    first_month_no_data=97
+
+                # Define start date
                 if first_month_no_data==0:
                     update_start_date = date(admin_year[admin][0], 1, 21)
                 else:
