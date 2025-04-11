@@ -5,7 +5,9 @@ from requests.packages.urllib3.util.retry import Retry
 import json
 import os
 
-api_key='ZLsFxOcNOnnbLJZeXhyrFTcNddruSV9xtWFnsTQ0'
+#%% Get API key
+with open('data/public_laws/api_key.txt', 'r') as file:
+    api_key = file.read()
 
 #%% Define a function to get word count for a bill (public law)
 def get_bill_words(congress, bill_type, bill_no):
