@@ -60,3 +60,6 @@ rsconnect/
 
 # Pycharm folder
 .idea/
+
+# Secret files
+data/public_laws/api_key
