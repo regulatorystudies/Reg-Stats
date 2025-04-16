@@ -12,6 +12,13 @@ The `i_am` function identifies where the Rmd is located within the main project 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+#Add showtext
+if (!requireNamespace("showtext", quietly = TRUE)) {
+  install.packages("showtext")
+}
+library(showtext)
+font_add("Calibri Light", regular = "C:/Windows/Fonts/calibril.ttf")
+
 # set location of this file in project directory
 library(here)
 i_am("charts/code/cumulative_econ_significant_rules_by_admin.Rmd")
@@ -38,23 +45,19 @@ cum_sig <- read.csv(here("charts", "data", data_file))
 # Process Data
 
 ```{r clean data and update president names}
-
-# define administration variables (will need to manually update with the names of new presidents)
-admins <- c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden", "Trump_47")
-admin_labels <- c("Reagan","Bush 41","Clinton","Bush 43","Obama","Trump 45","Biden","Trump 47")
-admin_colors <- c(red,darkgreen,GWblue,GWbuff,lightblue,darkyellow,lightgreen,brown)
+# Create president_names list which can be updated at the top of the code and then referenced later in the code as needed?
 
 # rename columns (will need to manually update with the names of new presidents)
-colnames(cum_sig) <- c("month", "months_in_office", admins)
+colnames(cum_sig) <- c("month", "months_in_office", "Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden")
 
 # get rid of unnecessary columns (will also need to manually update with new president names here)
-cum_sig <- cum_sig[ , c("months_in_office", admins)]
+cum_sig <- cum_sig[ , c("months_in_office", "Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden")]
 
 # get rid of unnecessary rows (this would need to be altered if a president served more than two terms)
 cum_sig <- cum_sig[-c(98:101), ]
 
 # create long data frame (will also need to manually add new president's names here)
-cum_sig_long_NA <- pivot_longer(cum_sig, cols = admins, names_to = "president", values_to = "econ_rules")
+cum_sig_long_NA <- pivot_longer(cum_sig, cols = c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden"), names_to = "president", values_to = "econ_rules")
 
 # remove NA values from long data frame (these NA values are the potential econ_rules values for presidents who didn't/haven't yet served the maximum number of months)
 cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
@@ -62,8 +65,20 @@ cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
 # change president column to factor (assign levels and labels)
 cum_sig_long <- cum_sig_long %>% 
   mutate(president = factor(president,
-                        levels = admins,
-                        labels = admin_labels))
+                        levels = c("Reagan", 
+                                   "Bush_41",
+                                   "Clinton", 
+                                   "Bush_43",
+                                   "Obama", 
+                                   "Trump_45",
+                                   "Biden"),
+                        labels = c("Reagan", 
+                                   "Bush 41",
+                                   "Clinton", 
+                                   "Bush 43",
+                                   "Obama", 
+                                   "Trump 45",
+                                   "Biden")))
 
 # create list of colors for presidents (to be updated)?
 ```
@@ -77,13 +92,17 @@ line_ends <- cum_sig_long %>%
 # set current date
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
-# set caption text
-caption_text <- paste("Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;\n       Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
+# set caption text 
+caption_text <- paste("\n\nSources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
 
-# set wrapped caption width
-wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
+# set wrapped caption width 
+##FINN CHANGED WIDTH FROM 75 TO 85
+wrapped_caption <- paste(strwrap(caption_text, width = 80), collapse = "\n")
 ```
 
+```
+
+```
 ## Plot Data
 
 ```{r generate graph}
@@ -106,7 +125,13 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
                   label.padding = 0,
                   label.r = 0,
                   fill = alpha(c("white"), 0.8)) +
-  scale_color_manual(values = admin_colors) +
+  scale_color_manual(values = c(red,
+                                darkgreen,
+                                GWblue,
+                                GWbuff,
+                                lightblue,
+                                darkyellow,
+                                lightgreen)) +
   coord_cartesian(clip = "off") +
   theme_RSC +
    
@@ -115,6 +140,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   ylab("Number of Rules") +
   ggtitle("Cumulative Economically Significant Final Rules Published by Administration") +
   annotate_RSC(geom = "text", x = 48, y = max(cum_sig_long$econ_rules) + 12, label = "End of First Presidential Term", size = 4, hjust = 0, vjust = 0) +
+  annotate(geom = "text", x = 0, y = 0, label = "\n\n\n\n\nNote: Data for month 0 include rules published between January 21 and January 31 of the administration's first year.", size = 4.35, family = "Calibri Light", hjust=0) +
   labs(color = "President", caption = wrapped_caption) +
   scale_y_continuous(breaks = seq(0, ydynam(cum_sig_long, 50, 3), by = 50),
                      expand = c(0, 0), 
@@ -128,7 +154,7 @@ line1
 
 suppressWarnings({line2 <- ggdraw() + 
   draw_plot(line1) + 
-  draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
+  draw_image(logo, x = 0.1, y = 0.05, halign = 0, valign = 0, width = 0.2)
 line2})
 
 ```
