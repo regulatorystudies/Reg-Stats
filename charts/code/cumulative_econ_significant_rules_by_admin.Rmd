@@ -92,11 +92,18 @@ line_ends <- cum_sig_long %>%
 # set current date
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
+<<<<<<< Updated upstream
 # set caption text 
 caption_text <- paste("\n\nSources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
 
 # set wrapped caption width 
 ##FINN CHANGED WIDTH FROM 75 TO 85
+=======
+# set caption text
+caption_text <- paste("\n\nSources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
+
+# set wrapped caption width
+>>>>>>> Stashed changes
 wrapped_caption <- paste(strwrap(caption_text, width = 80), collapse = "\n")
 ```
 
@@ -140,7 +147,11 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   ylab("Number of Rules") +
   ggtitle("Cumulative Economically Significant Final Rules Published by Administration") +
   annotate_RSC(geom = "text", x = 48, y = max(cum_sig_long$econ_rules) + 12, label = "End of First Presidential Term", size = 4, hjust = 0, vjust = 0) +
+<<<<<<< Updated upstream
   annotate(geom = "text", x = 0, y = 0, label = "\n\n\n\n\nNote: Data for month 0 include rules published between January 21 and January 31 of the administration's first year.", size = 4.35, family = "Calibri Light", hjust=0) +
+=======
+    annotate_RSC(geom = "text", x = 0, y = 0, label = "\n\n\n\n\nNote: Data for month 0 include rules published between January 21 and January 31 of the administration's first year.", size = 4.35, hjust=0) +
+>>>>>>> Stashed changes
   labs(color = "President", caption = wrapped_caption) +
   scale_y_continuous(breaks = seq(0, ydynam(cum_sig_long, 50, 3), by = 50),
                      expand = c(0, 0), 

@@ -119,6 +119,11 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
         axis.line.x = element_line(linewidth = 1, color = RSCgray),
         plot.title = element_text(margin = margin(b = -50))
 ) +
+<<<<<<< Updated upstream
+=======
+
+  annotate_RSC(geom = "text", x = 0, y = 0, label = "\n\n\n\n\nNote: Data for month 0 include rules published between January 21 and January 31 of the administration's first year.", size = 4.35, hjust=0) +
+>>>>>>> Stashed changes
   xlab("Number of Months In Office") +
   #ylab("Number of Economically Significant Rules \n\n") +
   ylab("Number of Rules \n") +
