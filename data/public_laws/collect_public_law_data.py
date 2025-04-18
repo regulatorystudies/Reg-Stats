@@ -1,12 +1,15 @@
 import pandas as pd
 import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter, Retry
 import json
 import os
+from PyPDF2 import PdfReader
+from PyPDF2.errors import PdfReadError
+from io import BytesIO
+from datetime import datetime
 
 #%% Get API key
-with open('data/public_laws/api_key.txt', 'r') as file:
+with open('api_key.txt', 'r') as file:
     api_key = file.read()
 
 #%% Define a function to get word count for a bill (public law)
@@ -16,48 +19,73 @@ def get_bill_words(congress, bill_type, bill_no):
     response_bill = requests.get(url_bill)
     data_bill = response_bill.json()
 
-    #**** NEED REVISION ****#
-    # The first URL is not the final version of the public law; the PDF is, but it could contain text from the preceding law.
-    # Alternative clean text data are available on Govinfo.gov, but only since 104th Congress.
     # Get bill text url
-    url_text = data_bill['textVersions'][0]['formats'][0]['url']
+    pdf_url = None
+    # Loop through all textVersions
+    for version in data_bill.get("textVersions", []):
+        if version.get("type") == "Public Law":
+            date = version.get("date", "N/A")
+            for fmt in version.get("formats", []):
+                if fmt.get("type") == "PDF":
+                    pdf_url = fmt.get("url", "N/A")
+                    print(pdf_url)
+                    break
 
-    # Create a session object
-    session = requests.Session()
+    # Adjust date format
+    # Parse to datetime
+    dt = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
+    # Extract date only
+    date = dt.date()
 
-    # Define a retry strategy
-    retries = Retry(
-        total=5,  # Total number of retries
-        backoff_factor=0.1,  # Factor to calculate sleep time between retries
-        status_forcelist=[500, 502, 503, 504],  # HTTP status codes to retry
-        raise_on_status=False,
-    )
+    # Get page and word counts
+    # Initialize default values
+    num_pages = total_words = None
 
-    # Mount the HTTPAdapter with the retry strategy
-    adapter = HTTPAdapter(max_retries=retries)
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
+    if pdf_url!=None:
 
-    # Use the session to make requests
-    try:
-        response = session.get(url_text)
-        response.raise_for_status()
+        # Create a session object
+        session = requests.Session()
 
-        # Process the response
-        # Read bill text
-        bill_text = response.text
+        # Define a retry strategy
+        retries = Retry(
+            total=5,  # Total number of retries
+            backoff_factor=0.1,  # Factor to calculate sleep time between retries
+            status_forcelist=[500, 502, 503, 504],  # HTTP status codes to retry
+            raise_on_status=False,
+        )
 
-        # Remove any unwanted characters or extra spaces
-        cleaned_text = ' '.join(bill_text.split())
+        # Mount the HTTPAdapter with the retry strategy
+        adapter = HTTPAdapter(max_retries=retries)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
 
-        # Count the words
-        word_count = len(cleaned_text.split())
+        try:
+            response = session.get(pdf_url, timeout=10)
+            response.raise_for_status()
 
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred for {bill_type} {bill_no}: {e}")
-        word_count=None
+            try:
+                pdf_file = BytesIO(response.content)
+                reader = PdfReader(pdf_file)
 
-    return word_count
+                num_pages = len(reader.pages)
+                total_words = sum(
+                    len(page.extract_text().split())
+                    for page in reader.pages
+                    if page.extract_text()
+                )
+
+            except PdfReadError as e:
+                print(f"PDF read error for {bill_type} {bill_no}: {e}")
+                print(pdf_url)
+
+        except requests.exceptions.RequestException as e:
+            print(f"Request error for {bill_type} {bill_no}: {e}")
+            print(pdf_url)
+
+    else:
+        print(f"Missing PDF URL for {bill_type} {bill_no}.")
+
+    return num_pages, total_words, date
 
 #%% Define a function to get word counts for all public laws from a congress
 def get_laws_by_congress(congress):
@@ -84,30 +112,37 @@ def get_laws_by_congress(congress):
             law_no = bill['laws'][0]['number']
             bill_no = bill["number"]
             bill_type = bill["type"]
-            bill_word_count = get_bill_words(congress, bill_type, bill_no)
+
+            try:
+                bill_results = get_bill_words(congress, bill_type, bill_no)
+            except:
+                print(f"Data could not be collected for Public Law {law_no}.")
 
             # Append results
-            results_list.append((congress, law_no, bill_type, bill_no, bill_word_count))
+            results_list.append((congress, law_no, bill_type, bill_no) + bill_results)
+            print(f'Data collected for Public Law {law_no}.')
 
         offset += limit
 
     return results_list
 
 #%% Iterate through all congresses
-cols=['Congress', 'Public Law Number', 'Bill Type', 'Bill Number', 'Word Count']
+cols=['Congress', 'Public Law Number', 'Bill Type', 'Bill Number', 'Page Count', 'Word Count', 'Date']
 
 # Read existing dataset (if any)
-file_path='data/public_laws/public_law_word_count.csv'
+file_path='public_law_word_count.csv'
 if os.path.exists(file_path):
     df = pd.read_csv(file_path)
     start=df['Congress'].max()+1
 else:
     df=pd.DataFrame(columns=cols)
-    start=93
+    start=94
+    # Note: PDFs prior to 94th Congress are available, but they were not separated by law,
+    # so a file could contain text from the preceding law.
 
 # Collect data for all congresses through the current congress
 current=119
-for congress in range(start,current):
+for congress in range(start,current+1):
     results_list=get_laws_by_congress(congress)
     print(f'Data collected for {congress} congress.')
 
@@ -129,11 +164,11 @@ df.drop_duplicates(subset=['Public Law Number'],keep='first',ignore_index=True,i
 df.to_csv(file_path, index=False)
 
 #%% Aggregate by congress
-df['Bill Count']=1
+df['Law Count']=1
 
 # Sum by congress
-df_sum=df[['Congress','Word Count','Bill Count']].groupby('Congress').sum().reset_index()
+df_sum=df[['Congress','Page Count','Word Count','Law Count']].groupby('Congress').sum().reset_index()
 print(df_sum.info())
 
 # Save results
-df_sum.to_csv('data/public_laws/public_law_word_count_by_congress.csv',index=False)
+df_sum.to_csv('public_law_word_count_by_congress.csv',index=False)
