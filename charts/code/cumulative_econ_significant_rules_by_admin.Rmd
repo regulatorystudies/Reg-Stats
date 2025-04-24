@@ -78,7 +78,7 @@ line_ends <- cum_sig_long %>%
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
 # set caption text
-caption_text <- paste("\n\nSources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations;Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
+caption_text <- paste("\n\nSources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations; Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
 
 # set wrapped caption width
 wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
@@ -115,7 +115,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   ylab("Number of Rules") +
   ggtitle("Cumulative Economically Significant Final Rules Published by Administration") +
   annotate_RSC(geom = "text", x = 48, y = max(cum_sig_long$econ_rules) + 12, label = "End of First Presidential Term", size = 4, hjust = 0, vjust = 0) +
-    annotate_RSC(geom = "text", x = 0, y = 0, label = "\n\n\n\n\nNote: Data for month 0 include rules published between January 21 and January 31 of the administration's first year.", size = 4.35, hjust=0) +
+    annotate_RSC(geom = "text", x = 0, y = 0, label = "\n\n\n\n\n\nNote: Data for month 0 include rules published between January 21 and January 31 of the administration's first year.", size = 3.85, vjust = 0.5, hjust=0) +
   labs(color = "President", caption = wrapped_caption) +
   scale_y_continuous(breaks = seq(0, ydynam(cum_sig_long, 50, 3), by = 50),
                      expand = c(0, 0), 
