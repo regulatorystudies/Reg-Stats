@@ -25,18 +25,18 @@ def update_data(dir_path,col_update,first_year_to_update,last_year_to_update,rul
         new_data_dict= new_data_dict | count_fr_annual(dir_path,2021,last_year_to_update,rule_type,acronym)
 
     # Convert to dataframe
-        df_new=pd.DataFrame(new_data_dict.items(),columns=['Presidential Year (February 1 - January 31)',
+    df_new=pd.DataFrame(new_data_dict.items(),columns=['Presidential Year (February 1 - January 31)',
                                                         col_update])
 
-        # Add presidential party
-        df_new['Presidential Party']=df_new['Presidential Year (February 1 - January 31)'].apply(input_party)
+    # Add presidential party
+    df_new['Presidential Party']=df_new['Presidential Year (February 1 - January 31)'].apply(input_party)
         
-        # Add agency name and acronym
-        if acronym!='':
-            df_new['Agency Name']=agency_dict[acronym][0]
-            df_new['Agency Acronym']=acronym
-        else:
-            pass
+    # Add agency name and acronym
+    if acronym!='':
+        df_new['Agency Name']=agency_dict[acronym][0]
+        df_new['Agency Acronym']=acronym
+    else:
+        pass
             
     return df_new
 
