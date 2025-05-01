@@ -3,7 +3,6 @@
 # agency_dict entries will have the form 'ACRONYM': ('NAME', 'CODE')
 # these keys and values are derived from the reginfo_agency_list.xml file stored in the es_rules data folder
 # the RegInfo xml file was originally downloaded from here: https://www.reginfo.gov/public/do/XMLReportList#:~:text=Agency%20Reference%20Information
-# note: agency_dict acronyms are all caps so they won't match aconyms in agency_name_variations without modification
 
 import xml.etree.ElementTree as ET
 import os
