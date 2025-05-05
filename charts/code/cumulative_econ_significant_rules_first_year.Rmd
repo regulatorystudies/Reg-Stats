@@ -55,7 +55,7 @@ colnames(cum_sig) <- c("month", "months_in_office", admins)
 cum_sig <- cum_sig[ , c("months_in_office", admins)]
 
 # create long data frame (will also need to manually add new president's names here)
-cum_sig_long_NA <- pivot_longer(cum_sig, cols = admins, names_to = "president", values_to = "econ_rules")
+cum_sig_long_NA <- pivot_longer(cum_sig, cols = all_of(admins), names_to = "president", values_to = "econ_rules")
 
 # remove NA values from long data frame (these NA values are the potential econ_rules values for presidents who didn't/haven't yet served the maximum number of months, also includes "0" month of the Reagan admin)
 cum_sig_long <- cum_sig_long_NA[complete.cases(cum_sig_long_NA), ]
