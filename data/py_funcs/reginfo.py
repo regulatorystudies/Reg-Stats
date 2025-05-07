@@ -3,12 +3,6 @@ import pandas as pd
 import urllib.request
 import re
 from dateutil.relativedelta import relativedelta
-#from agencies import parse_reginfo_xml, xml_file_path
-
-#%% test
-# import pprint
-# agency_dict = parse_reginfo_xml(xml_file_path)
-# pprint.pprint(agency_dict)
 
 #%% Function to remove html tags
 CLEANR = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')

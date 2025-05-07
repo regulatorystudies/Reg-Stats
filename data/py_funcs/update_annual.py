@@ -4,11 +4,6 @@ from frcount import *
 from party import *
 from agencies import *
 
-#%% test
-#import pprint
-agency_dict = parse_reginfo_xml(xml_file_path)
-#pprint.pprint(agency_dict)
-
 #%% Function to collect data for years that need to be updated
 def update_data(dir_path,col_update,first_year_to_update,last_year_to_update,rule_type,check,agency_acronym=''):
     if first_year_to_update>2020:
@@ -159,7 +154,7 @@ def main(dir_path,file_path,earliest_year,rule_type,check=None,agency_acronym=''
             df_output = df_new
 
     else:
-        print(f'The {agency_acronym} dataset is up-to-date. No update is needed.') # change this to data instead of dataset and specify for a particular year
+        print(f'The {agency_acronym} data is up-to-date. No update is needed.') # change this to data instead of dataset and specify for a particular year
         # add another check-like flag here to stop contradictory print statements? "No update is needed" followed by "updating data"?
         # Verify previous data? PULL OUT AND TURN INTO FUNCTION (same as what was done directly above)
         if check!=None:

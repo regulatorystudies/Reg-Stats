@@ -1,31 +1,19 @@
 #-----------Code to Update Annual Economically Significant Rules by Presidential Year for Agencies----------------------
 #-----------------------------------------Author: Henry Hirsch----------------------------------------------------------
-#%%
+
 import pandas as pd
 import os
 import sys
 from datetime import date
 
-#%% Import customized functions and agency_name_variations dictionary
+# Import customized functions and agency_name_variations dictionary
 dir_path=os.path.dirname(os.path.realpath(__file__))
 dir_path= f'{dir_path}/../' # move up one directory so that this dir_path can be used interchangeably with the update_es_rules dir_path in the required functions
 sys.path.insert(0, f'{dir_path}/../py_funcs')
 
-# Now import custom modules
+# Import custom modules
 import update_annual
 from agencies import *
-
-# try:
-#     import update_annual
-#     from agencies import *
-# except(ModuleNotFoundError, ImportError):
-#     import update_annual
-#     from agencies import *
-    
-    # ^ see if this works (based off of pic on phone of what Zoey showed me)
-    
-    
-
     
 #%% Specify file path and rule type
 file_path=f'{dir_path}/agency_econ_significant_rules_by_presidential_year.csv'
@@ -41,8 +29,8 @@ check = None # if turned on, use to stop subsequent queries about whether you wa
 for agency_acronym in agency_acronyms:
     
     if agency_acronym=='DHS': # set the earliest year of data desired for a particular agency
-        earliest_year=2003 # (DHS founded November 25, 2002, don't want data prior to its founding)
-    else:             # ^ CHANGE TO 2002?
+        earliest_year=2003 # (DHS began operating on March 1st, 2003, don't want data prior to its founding)
+    else:             
         earliest_year=1981 # for most agencies, we want to go back to 1981 (when rules began to be designated as economically significant)
     
     if  agency_acronym!='' and (agency_acronym not in agency_dict): 

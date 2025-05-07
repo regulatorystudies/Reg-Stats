@@ -1,8 +1,9 @@
-#%%
-# Function to use the RegInfo xml to create a dictionary (agency_dict) with agency acronyms (including independent agencies) as keys and agency names and codes as values
-# agency_dict entries will have the form 'ACRONYM': ('NAME', 'CODE')
-# these keys and values are derived from the reginfo_agency_list.xml file stored in the es_rules data folder
-# the RegInfo xml file was originally downloaded from here: https://www.reginfo.gov/public/do/XMLReportList#:~:text=Agency%20Reference%20Information
+#%% Function to use the RegInfo xml to create a dictionary (agency_dict) with agency acronyms (including independent agencies) as keys and agency names and codes as values
+'''
+agency_dict entries will have the form 'ACRONYM': ('NAME', 'CODE')
+these keys and values are derived from the reginfo_agency_list.xml file stored in the es_rules data folder
+the RegInfo xml file was originally downloaded from here: https://www.reginfo.gov/public/do/XMLReportList#:~:text=Agency%20Reference%20Information
+'''
 
 import xml.etree.ElementTree as ET
 import os
@@ -38,6 +39,13 @@ def parse_reginfo_xml(xml_file):
     return agency_dict
 
 agency_dict = parse_reginfo_xml(xml_file_path)
+
+#%% test (use the commented-out code to check the structure of agency_dict)
+'''
+import pprint
+agency_dict = parse_reginfo_xml(xml_file_path)
+pprint.pprint(agency_dict)
+'''
 
 #%% Dictonary of agencies (excluding independent agencies) and the corresponding regex variations of their full names as expressed in the FR tracking dataset
 agency_name_variations = {
