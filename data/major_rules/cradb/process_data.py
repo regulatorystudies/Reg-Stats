@@ -324,7 +324,7 @@ if __name__ == "__main__":
     if not data_path.is_dir():
         print("Cannot locate data.")
 
-    process_data(data_path, major_path, filter_partial_year=False)
+    process_data(data_path, major_path, filter_partial_year=True)
     
     # calculate time elapsed
     stop = time.process_time()
