@@ -1,7 +1,7 @@
 # ----- Project-specific ----- #
 
 # Secret files
-data/public_laws/api_key
+api_key.txt
 
 # ----- Python ----- #
 

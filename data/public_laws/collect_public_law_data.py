@@ -7,13 +7,15 @@ from PyPDF2 import PdfReader
 from PyPDF2.errors import PdfReadError
 from io import BytesIO
 from datetime import datetime
+import numpy as np
+import fitz
 
 #%% Get API key
-with open('api_key.txt', 'r') as file:
+with open('data/public_laws/api_key.txt', 'r') as file:
     api_key = file.read()
 
 #%% Define a function to get word count for a bill (public law)
-def get_bill_words(congress, bill_type, bill_no):
+def get_bill_words(congress, bill_type, bill_no, timeout=10):
     url_bill = f'https://api.congress.gov/v3/bill/{congress}/{bill_type.lower()}/{bill_no}/text?api_key={api_key}'
 
     response_bill = requests.get(url_bill)
@@ -28,7 +30,7 @@ def get_bill_words(congress, bill_type, bill_no):
             for fmt in version.get("formats", []):
                 if fmt.get("type") == "PDF":
                     pdf_url = fmt.get("url", "N/A")
-                    print(pdf_url)
+                    #print(pdf_url)
                     break
 
     # Adjust date format
@@ -60,12 +62,12 @@ def get_bill_words(congress, bill_type, bill_no):
         session.mount('https://', adapter)
 
         try:
-            response = session.get(pdf_url, timeout=10)
+            response = session.get(pdf_url, timeout=timeout)
             response.raise_for_status()
 
+            pdf_file = BytesIO(response.content)
             try:
-                pdf_file = BytesIO(response.content)
-                reader = PdfReader(pdf_file)
+                reader = PdfReader(pdf_file, strict=False)
 
                 num_pages = len(reader.pages)
                 total_words = sum(
@@ -75,8 +77,17 @@ def get_bill_words(congress, bill_type, bill_no):
                 )
 
             except PdfReadError as e:
-                print(f"PDF read error for {bill_type} {bill_no}: {e}")
-                print(pdf_url)
+                print(f"PDF read error for {bill_type} {bill_no}: {e}.\nRetrying with fitz...")
+
+                try:
+                    doc = fitz.open(stream=pdf_file, filetype="pdf")
+                    for page_num, page in enumerate(doc, start=1):
+                        words = page.get_text("words")  # returns a list of words with position info
+                        total_words = len(words)
+                        num_pages=page_num
+                except Exception as e:
+                    print(f"Could not parse PDF for {bill_type} {bill_no}: {e}.")
+                    print(pdf_url)
 
         except requests.exceptions.RequestException as e:
             print(f"Request error for {bill_type} {bill_no}: {e}")
@@ -163,12 +174,37 @@ df.drop_duplicates(subset=['Public Law Number'],keep='first',ignore_index=True,i
 # Re-save
 df.to_csv(file_path, index=False)
 
+#%% Retry for missing data
+# Read existing dataset (if any)
+file_path='data/public_laws/public_law_word_count.csv'
+df = pd.read_csv(file_path)
+print('Missing values:',len(df[df['Word Count'].isnull()]))
+
+# Iterate through all missing data and retry
+for i in range(len(df)):
+    if np.isnan(df['Word Count'][i]):
+        congress=df['Congress'][i]
+        bill_type=df['Bill Type'][i]
+        bill_no=df['Bill Number'][i]
+
+        bill_results = get_bill_words(congress, bill_type, bill_no, timeout=30)
+        print(bill_results)
+        df.loc[i,'Page Count']=bill_results[0]
+        df.loc[i,'Word Count']=bill_results[1]
+    else:
+        pass
+
+print('Missing values:',len(df[df['Word Count'].isnull()]))
+
+#%% Re-save
+df.to_csv(file_path, index=False)
+
 #%% Aggregate by congress
-df['Law Count']=1
+df['Public Law Count']=1
 
 # Sum by congress
-df_sum=df[['Congress','Page Count','Word Count','Law Count']].groupby('Congress').sum().reset_index()
+df_sum=df[['Congress','Page Count','Word Count','Public Law Count']].groupby('Congress').sum().reset_index()
 print(df_sum.info())
 
 # Save results
-df_sum.to_csv('public_law_word_count_by_congress.csv',index=False)
+df_sum.to_csv('data/public_laws/public_law_word_count_by_congress.csv',index=False)
