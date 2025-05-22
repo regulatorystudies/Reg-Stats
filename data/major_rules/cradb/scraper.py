@@ -115,10 +115,13 @@ class Scraper:
             params.update({"page": page})
         
         # makes different request when alt_url is given
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36'}
+
         if alt_url is not None:
-            response = requests.get(alt_url)
+            response = requests.get(alt_url,headers=headers)
         else:
-            response = requests.get(self.url, params=params)
+            response = requests.get(self.url, params=params,headers=headers)
         
         # raise status if request fails
         if response.status_code != 200:

@@ -55,9 +55,16 @@ num_fr <- read.csv(here("charts", "data", data_file))
 num_fr$major_rules_received <- as.numeric(num_fr$major_rules_received)
 num_fr$major_rules_published <- as.numeric(num_fr$major_rules_published)
 
+# Remove partial year data
+# Get the current year
+current_year <- as.numeric(format(Sys.Date(), "%Y"))
+# Filter out rows where presidential_year >= current year
+num_fr <- num_fr[num_fr$presidential_year < current_year, ]
+
 # make party factor variable
 num_fr$democratic_admin <- as.factor(num_fr$democratic_admin)
 num_fr$presidential_year <- as.factor(num_fr$presidential_year)
+
 
 ```
 
