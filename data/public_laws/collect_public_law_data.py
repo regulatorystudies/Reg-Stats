@@ -177,21 +177,24 @@ earliest=94
 # Note: PDFs prior to 94th Congress are available, but they were not separated by law,
 # so a file could contain text from the preceding law.
 
+# Get current Congress session
+current_year = datetime.now().year
+# The first Congress started in 1789
+current=((current_year - 1789) // 2) + 1
+
 # Read existing dataset (if any)
 file_path=f'{dir_path}/public_law_word_count.csv'
 cols=['Congress', 'Public Law Number', 'Bill Type', 'Bill Number', 'Page Count', 'Word Count', 'Date', 'URL']
 
 if os.path.exists(file_path):
     df = pd.read_csv(file_path)
-    start=df['Congress'].max()+1
+    if df['Congress'].max()<current:
+        start=df['Congress'].max()+1
+    else:
+        start=current
 else:
     df=pd.DataFrame(columns=cols)
     start=earliest
-
-# Get current Congress session
-current_year = datetime.now().year
-# The first Congress started in 1789
-current=((current_year - 1789) // 2) + 1
 
 #%% Collect data for all congresses through the current congress
 if start<=current:
@@ -211,10 +214,12 @@ else:
     pass
 
 #%% Check duplicates
-print('Duplicates:\n',df[df.duplicated(subset=['Public Law Number'],keep=False)].sort_values('Public Law Number'))
+# print('Duplicates:\n',df[df.duplicated(subset=['Public Law Number'],keep=False)].sort_values('Public Law Number'))
 
 # Remove duplicates
-df.drop_duplicates(subset=['Public Law Number'],keep='first',ignore_index=True,inplace=True)
+if len(df[df.duplicated(subset=['Public Law Number'],keep=False)])>0:
+    print("Removing duplicates...")
+    df.drop_duplicates(subset=['Public Law Number'],keep='first',ignore_index=True,inplace=True)
 
 #%% Sort and save data
 # Sort by PL number
