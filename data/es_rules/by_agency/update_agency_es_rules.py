@@ -29,7 +29,7 @@ check = None # if turned on, use to stop subsequent queries about whether you wa
 for agency_acronym in agency_acronyms:
     
     if agency_acronym=='DHS': # set the earliest year of data desired for a particular agency
-        earliest_year=2003 # (DHS began operating on March 1st, 2003, don't want data prior to its founding)
+        earliest_year=2003 # DHS began operating on March 1st, 2003. Don't want data prior to its founding.
     else:             
         earliest_year=1981 # for most agencies, we want to go back to 1981 (when rules began to be designated as economically significant)
     
