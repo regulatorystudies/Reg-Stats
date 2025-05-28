@@ -17,7 +17,7 @@ earliest_year=1994
 rule_type='sig'
 
 #%% Run functions to update the data
-df=update_annual.main(dir_path,file_path,earliest_year,rule_type)
+df,_=update_annual.main(dir_path,file_path,earliest_year,rule_type)
 
 #%% Export
 df.to_csv(file_path, index=False)
