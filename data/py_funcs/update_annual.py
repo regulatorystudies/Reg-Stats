@@ -91,6 +91,20 @@ def verify_previous_data(dir_path,df,col_update,earliest_year,last_year_with_dat
 
     return df
 
+#%% Function to implement previous-data check
+def check_data(dir_path, df, col_update, earliest_year, last_year_with_data, rule_type, check, agency_acronym):
+    if check != None:
+        df = verify_previous_data(dir_path, df, col_update, earliest_year, last_year_with_data, rule_type, check,
+                                  agency_acronym)
+    else:
+        check = input(
+            f'Do you want to verify/update all the previous data (it may take a few minutes)? [Y/N] >>> ')
+        check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
+        df = verify_previous_data(dir_path, df, col_update, earliest_year, last_year_with_data, rule_type, check,
+                                  agency_acronym)
+
+    return df, check
+
 #%% Main function to update annual (economically) significant rules
 def main(dir_path,file_path,earliest_year,rule_type,check=None,agency_acronym=''):
     # agency_acronym='' is the default value if no particular agency is specified (in other words, all agencies)
@@ -137,33 +151,21 @@ def main(dir_path,file_path,earliest_year,rule_type,check=None,agency_acronym=''
         # Update data
         df_new = update_data(dir_path,col_update,first_year_to_update,last_year_to_update,rule_type,check,agency_acronym)
 
-        # Verify previous data? PULL OUT AND TURN INTO FUNCTION
+        # Verify previous data?
         if first_year_to_update > earliest_year:
             # Verify previous data?
-            if check!=None:
-                df = verify_previous_data(dir_path,df,col_update,earliest_year,last_year_with_data,rule_type,check,agency_acronym)
-            else:
-                check = input(
-                    f'Do you want to verify/update all the previous data (it may take a few minutes)? [Y/N] >>> ')
-                check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
-                df = verify_previous_data(dir_path,df,col_update,earliest_year,last_year_with_data,rule_type,check,agency_acronym)
+            df,check = check_data(dir_path,df,col_update,earliest_year,last_year_with_data,rule_type,check,agency_acronym)
 
             # Append new data
             df_output = pd.concat([df[df[col_update].notnull()],df_new], ignore_index=True)
+
         else:
             df_output = df_new
 
     else:
-        print(f'The {agency_acronym} data is up-to-date. No update is needed.') # change this to data instead of dataset and specify for a particular year
-        # add another check-like flag here to stop contradictory print statements? "No update is needed" followed by "updating data"?
-        # Verify previous data? PULL OUT AND TURN INTO FUNCTION (same as what was done directly above)
-        if check!=None:
-            df_output = verify_previous_data(dir_path,df,col_update,earliest_year,last_year_with_data,rule_type,check,agency_acronym)
-        else:
-            check = input(
-                f'Do you want to verify/update all the previous data (it may take a few minutes)? [Y/N] >>> ')
-            check = 'y' if (check.lower() in ['y', 'yes']) else 'n'
-            df_output = verify_previous_data(dir_path,df,col_update,earliest_year,last_year_with_data,rule_type,check,agency_acronym)
+        print(f'The {agency_acronym} data is up-to-date. No new-data update is needed.') # change this to data instead of dataset and specify for a particular year
+        # Verify previous data?
+        df_output,check = check_data(dir_path,df,col_update,earliest_year,last_year_with_data,rule_type,check,agency_acronym)
 
     # %% Reorder columns
     if agency_acronym == '':

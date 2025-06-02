@@ -41,7 +41,7 @@ def count_fr_monthly(dir_path,update_start_date,update_end_date):
     df_fr['econ_significant'] = pd.to_numeric(df_fr['econ_significant'], errors='coerce')
     df_fr['3(f)(1) significant'] = pd.to_numeric(df_fr['3(f)(1) significant'], errors='coerce')
 
-    # check for partial month (ZOEY, IS THIS CORRECT? I changed "x_partial_month" to "check_partial_month" below.)
+    # check for partial month
     update_end_date = check_partial_month(df_fr, update_end_date)
 
     # Refine FR tracking data to update_start_date - update_end_date
