@@ -10,7 +10,7 @@ admin_year = {'Reagan': [1981, 1989],
               'Trump 47': [2025, 2029]}
 
 #%% Presidential party dictionary
-# If there is a new presidential year, add {president year: party} to the dictionary below.
+# If there is a new presidential year, add {presidential year: party} to the dictionary below.
 party_dict={
     1981: 'Republican',
     1982: 'Republican',
