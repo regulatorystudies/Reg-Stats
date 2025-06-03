@@ -9,7 +9,7 @@ README: 2024-07-30
 ### Automated Program
 
 1. Determine whether the data files and charts can be incremented by another year. The data for the prior presidential year can be updated on or after the first business day of February.
-    - After a presidential transition, update the `END_OF_ADMIN` and `PRESIDENTIAL_ADMINS` constants at the top of the `process_data.py` script.
+    - After a presidential transition, update the `END_OF_ADMIN` and `PRESIDENTIAL_ADMINS` constants in the `py_funcs/party.py` script.
 
 1. Ensure whether Python and the relevant packages are installed on your computer's environment (see instructions below on setting up your environment).
 

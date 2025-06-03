@@ -10,7 +10,7 @@ admin_year = {'Reagan': [1981, 1989],
               'Trump 47': [2025, 2029]}
 
 #%% Presidential party dictionary
-# If there is a new presidential year, add {president year: party} to the dictionary below.
+# If there is a new presidential year, add {presidential year: party} to the dictionary below.
 party_dict={
     1981: 'Republican',
     1982: 'Republican',
@@ -82,3 +82,33 @@ def input_party(year):
                 print(f'ERROR: Your input party "{party}" is not valid. Try again.')
 
     return output
+
+#%% Another president dictionary with year and party (used for major rules)
+# revise these constants after each presidential transition
+END_OF_ADMIN = (2000, 2008, 2016, 2020, 2024, 2028)
+PRESIDENTIAL_ADMINS = {
+    "Clinton": {
+        "party": "D",
+        "years": range(1992, 2001)
+        },
+    "Bush": {
+        "party": "R",
+        "years": range(2001, 2009)
+        },
+    "Obama": {
+        "party": "D",
+        "years": range(2009, 2017)
+        },
+    "Trump45": {
+        "party": "R",
+        "years": range(2017, 2021)
+        },
+    "Biden": {
+        "party": "D",
+        "years": range(2021, 2025)
+        },
+    "Trump47":{
+        "party": "R",
+        "years": range(2025, 2029)
+        }
+    }

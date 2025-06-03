@@ -2,34 +2,14 @@ from datetime import date
 import json
 from pathlib import Path
 import re
-
+import os
+import sys
 from pandas import DataFrame, merge
 
-
-# revise these constants after each presidential transition
-END_OF_ADMIN = (2000, 2008, 2016, 2020)
-PRESIDENTIAL_ADMINS = {
-    "Clinton": {
-        "party": "D", 
-        "years": range(1992, 2001)
-        }, 
-    "Bush": {
-        "party": "R", 
-        "years": range(2001, 2009)
-        },
-    "Obama": {
-        "party": "D", 
-        "years": range(2009, 2017)
-        },
-    "Trump": {
-        "party": "R", 
-        "years": range(2017, 2021)
-        },
-    "Biden": {
-        "party": "D", 
-        "years": range(2021, 2025)
-        }    
-    }
+# Import customized functions
+dir_path=os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, f'{dir_path}/../../py_funcs')
+from party import *
 
 
 class ProcessingError(Exception):
@@ -320,7 +300,7 @@ if __name__ == "__main__":
     if not data_path.is_dir():
         print("Cannot locate data.")
 
-    process_data(data_path, major_path, filter_partial_year=False)
+    process_data(data_path, major_path, filter_partial_year=True)
     
     # calculate time elapsed
     stop = time.process_time()
