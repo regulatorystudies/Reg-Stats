@@ -18,8 +18,11 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 dir_path=os.path.dirname(os.path.realpath(__file__))
 
 # Get API key
-with open(f'{dir_path}/api_key.txt', 'r') as file:
-    api_key = file.read()
+if os.path.exists(f'{dir_path}/api_key.txt'):
+    with open(f'{dir_path}/api_key.txt', 'r') as file:
+        api_key = file.read()
+else:
+    raise ValueError("api_key.txt not existing. See README.")
 
 #%% Define a function to get word count from a PDF URL
 def read_pdf(pdf_url,law_no,timeout=10):
@@ -363,3 +366,5 @@ else:
 
 # Save results
 df_sum.to_csv(f'{dir_path}/public_law_word_count_by_congress.csv',index=False)
+
+print("END OF EXECUTION!")
