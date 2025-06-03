@@ -14,6 +14,7 @@ The Python script will collect all public laws enacted by the 94th Congress thro
 
 1. Run the `collect_public_law_data.py` script.
 
+Note: The script uses an API key from Congress.gov, which is currently stored as a Github repository secret and passed as an environment variable in `.github/workflows/congress.yml`. If the API key is deprecated, you'll need to get a new one from [Congress.gov](https://api.congress.gov/sign-up/).
 
 ## Environment Set Up
 
@@ -28,7 +29,7 @@ Third, create a separate virtual environment for running the program. This is ea
 ```{sh}
 cd "PATH/TO/YOUR/LOCAL/PROJECT/DIRECTORY/"
 
-python -m venv venv  # where myenv is your virtual environment's name
+python -m venv venv  # where venv is your virtual environment's name
 
 venv/scripts/activate  # activate on Windows
 source venv/bin/activate  # activate on macOS/linux

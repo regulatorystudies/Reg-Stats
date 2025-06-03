@@ -1,7 +1,9 @@
-name: Collect Public Law Data
+name: Run Public Law Data Script
 
 on:
   push:
+    branches:
+      - '**'  # run on all branches
     paths:
       - 'data/public_laws/**'
   workflow_dispatch:
@@ -9,18 +11,20 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: Set up Python
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r data/public_laws/requirements.txt
 
       - name: Run Python script
         env:
           API_KEY: ${{ secrets.CONGRESS_API_KEY }}
-        run: python collect_public_law_data.py
+        run: python data/public_laws/collect_public_law_data.py
