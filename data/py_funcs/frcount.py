@@ -3,8 +3,10 @@ import pandas as pd
 import numpy as np
 import os
 import sys
+import re
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from agencies import agency_name_variations
 
 #%% A function to check for partial data
 # (in case the data collection for the most recent month has not been completed)
@@ -91,10 +93,10 @@ def count_fr_monthly(dir_path,update_start_date,update_end_date):
     return df_fr_update
 
 #%% Function to count annual economically/section 3(f)(1) significant rules by presidential year in FR tracking
-def count_fr_annual(dir_path, start_year, end_year, rule_type):
+def count_fr_annual(dir_path, start_year, end_year, rule_type, agency_acronym=''):
     # Import FR tracking data
     df_fr = pd.read_csv(f'{dir_path}/../fr_tracking/fr_tracking.csv', encoding="ISO-8859-1")
-
+    
     df_fr['publication_date'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.date
     df_fr['publication_year'] = pd.to_datetime(df_fr['publication_date'], format="mixed").dt.year
     df_fr['econ_significant'] = pd.to_numeric(df_fr['econ_significant'], errors='coerce')
@@ -109,6 +111,20 @@ def count_fr_annual(dir_path, start_year, end_year, rule_type):
         df_fr['col_to_count']=df_fr['econ_significant']
         df_fr.loc[(df_fr['publication_date'] >= date(2023,4,6)) & (df_fr['publication_date'] <= date(2025,1,20)),
                 'col_to_count']=df_fr['3(f)(1) significant']
+
+
+    if agency_acronym != '':
+        agency_pattern = re.compile('|'.join(agency_name_variations[agency_acronym]), re.IGNORECASE)
+    
+        def find_agency(text, agency_pattern):
+            out = True if len(re.findall(agency_pattern, str(text))) > 0 else False
+            return out
+        
+        df_fr['find_agency'] = df_fr['department'].apply(find_agency, agency_pattern=agency_pattern)
+        df_fr = df_fr[df_fr['find_agency'] == True].reset_index(drop=True)
+    
+    else:
+        pass
 
     # Generate annual counts by presidential year (Feb 1 - Jan 31)
     result_dict={}  # Dict to store results
