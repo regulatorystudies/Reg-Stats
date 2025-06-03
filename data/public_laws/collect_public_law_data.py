@@ -18,12 +18,8 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 dir_path=os.path.dirname(os.path.realpath(__file__))
 
 # Get API key
-# with open(f'{dir_path}/api_key.txt', 'r') as file:
-#     api_key = file.read()
-
-api_key = os.getenv("API_KEY")
-if not api_key:
-    raise ValueError("API_KEY not set in environment variables")
+with open(f'{dir_path}/api_key.txt', 'r') as file:
+    api_key = file.read()
 
 #%% Define a function to get word count from a PDF URL
 def read_pdf(pdf_url,law_no,timeout=10):
