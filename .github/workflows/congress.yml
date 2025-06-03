@@ -1,3 +1,11 @@
+name: Collect Public Law Data
+
+on:
+  push:
+    paths:
+      - 'data/public_laws/**'
+  workflow_dispatch:
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
