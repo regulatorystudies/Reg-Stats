@@ -1,11 +1,6 @@
-name: Run Public Law Data Script
+name: Run Public Law Script Manually
 
 on:
-  push:
-    branches:
-      - '**'  # run on all branches
-    paths:
-      - 'data/public_laws/**'
   workflow_dispatch:
 
 jobs:
