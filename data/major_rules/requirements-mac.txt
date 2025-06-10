@@ -4,8 +4,6 @@
 #
 #    pip-compile --output-file=requirements-mac.txt requirements.in
 #
-appnope==0.1.4
-    # via ipykernel
 asttokens==2.4.1
     # via stack-data
 beautifulsoup4==4.12.3
@@ -79,7 +77,7 @@ pyzmq==26.0.3
     # via
     #   ipykernel
     #   jupyter-client
-requests==2.32.3
+requests==2.32.4
     # via -r requirements.in
 six==1.16.0
     # via
