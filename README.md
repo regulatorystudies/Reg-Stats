@@ -103,9 +103,8 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 | Chart | `charts/`         | `code/unified_agenda_active_actions.Rmd` | `output/active_actions_by_unified_agenda.pdf`<br/>`output/active_actions_by_unified_agenda.png` |
 
 #### Word Count of Public Laws by Congress
-| Task  | Location                | File                 | Output                                                                                                                                              |
-|-------|-------------------------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Data  | `data/public_laws/` | `collect_public_law_data.py`           | `public_law_word_count_by_congress.csv`                                                                                          
-|
-| Chart | `charts/`         | `code/public_law_word_count_by_congress.Rmd` | `output/public_law_word_count_by_congress.pdf`<br/>`output/public_law_word_count_by_congress.png` |
+| Task | Location           | File                            | Output                             |
+|------|--------------------|----------------------------------|------------------------------------|
+| Data | data/ua_actions/   | update_ua_actions.py             | active_actions_by_unified_agenda.csv |
+| Chart| charts/            | code/unified_agenda_active_actions.Rmd | output/active_actions_by_unified_agenda.pdf<br/>output/active_actions_by_unified_agenda.png |
 
