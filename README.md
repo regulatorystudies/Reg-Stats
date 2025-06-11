@@ -105,6 +105,6 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 #### Word Count of Public Laws by Congress
 | Task | Location           | File                            | Output                             |
 |------|--------------------|----------------------------------|------------------------------------|
-| Data | 'data/public_laws/'   | 'collect_public_law_data.py'             | 'public_law_word_count_by_congress.csv' |
-| Chart| 'charts/'            | 'code/public_law_word_count_by_congress.Rmd' | 'output/public_law_word_count_by_congress.pdf'<br/>'output/public_law_word_count_by_congress.png' |
+| Data | data/public_laws/   | collect_public_law_data.py             | public_law_word_count_by_congress.csv |
+| Chart| charts/            | code/public_law_word_count_by_congress.Rmd | output/public_law_word_count_by_congress.pdf<br/>output/public_law_word_count_by_congress.png |
 
