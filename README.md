@@ -34,7 +34,6 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 | Task  | Location         | File | Output |
 |-------|------------------| ---- | ------ |
 | Data  | `data/es_rules/` | `update_es_rules.py` | `econ_significant_rules_by_presidential_year.csv` |
-|
 | Chart | `charts/`        | `code/econ_significant_rules.Rmd` | `output/econ_significant_rules_published_by_presidential_year.pdf`<br/>`output/econ_significant_rules_published_by_presidential_year.png` |
 
 #### Economically Significant Final Rules by Agency
@@ -65,7 +64,6 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 | Task  | Location                | File | Output                                                                                                                                              |
 |-------|-------------------------| ---- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | Data  | `data/sig_rules/` | `update_sig_rules.py` | `significant_rules_by_presidential_year.csv`                                                                                          |
-|
 | Chart | `charts/`         | `code/significant_rules.Rmd` | `output/significant_rules_by_presidential_year.pdf`<br/>`output/significant_rules_by_presidential_year.png` |
 
 #### Major Final Rules Published by Presidential Year
@@ -90,7 +88,6 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 | Task  | Location                | File                                    | Output                                                                                                                                              |
 |-------|-------------------------|-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | Data  | `data/cfr_pages/` | `update_cfr_pages.py` | `cfr_pages_by_calendar_year.csv`                                                                                          |
-|
 | Chart | `charts/`         | `code/cfr_pages.Rmd`       | `output/cfr_pages_by_calendar_year.pdf`<br/>`output/cfr_pages_by_calendar_year.png` |
 
 #### Total Pages Published in the Federal Register
@@ -103,7 +100,6 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 | Task  | Location                | File                 | Output                                                                                                                                              |
 |-------|-------------------------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | Data  | `data/ua_actions/` | `update_ua_actions.py`           | `active_actions_by_unified_agenda.csv`                                                                                          |
-|
 | Chart | `charts/`         | `code/unified_agenda_active_actions.Rmd` | `output/active_actions_by_unified_agenda.pdf`<br/>`output/active_actions_by_unified_agenda.png` |
 
 #### Word Count of Public Laws by Congress
