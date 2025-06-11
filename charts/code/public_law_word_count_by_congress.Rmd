@@ -69,7 +69,7 @@ pres_labels <- data.frame(
 )
 
 # create function
-add_pres_annotations <- function(df, y_position, line_color = RSCdarkgray) {
+add_pres_annotations <- function(df, y_position = upper + 2e5, line_color = RSCdarkgray) {
   text_annotation <- lapply(1:nrow(df), function(i) {
     annotate_RSC(
       geom = "text",
@@ -111,7 +111,7 @@ bar1 <- ggplot(count_by_congress1, aes(x = congress, y = word_count)) +
   ggtitle("Public Law Word Count by Congress") +
   ylab("Millions of Words") +
   xlab("Congress") +
-  add_pres_annotations(pres_labels, y_position = upper + 2e5) +
+  add_pres_annotations(pres_labels) +
   scale_y_continuous(
     breaks = seq(0, annotation_y_max, by = 1e6),
     expand = c(0, 0),
