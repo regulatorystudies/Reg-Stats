@@ -31,10 +31,25 @@ After setting up the required Python or R environment (see instructions in each 
 in the "File" column, and an output dataset or chart in the "Output" column will be generated.
 
 #### Economically Significant Final Rules Published by Presidential Year
-| Update                | Task  | Location         | File | Output |
-|-----------------------|-------|------------------| ---- | ------ |
-|Annual: 1st week of Feb| Data  | `data/es_rules/` | `update_es_rules.py` | `econ_significant_rules_by_presidential_year.csv` |
-|                       | Chart | `charts/`        | `code/econ_significant_rules.Rmd` | `output/econ_significant_rules_published_by_presidential_year.pdf`<br/>`output/econ_significant_rules_published_by_presidential_year.png` |
+<table>
+  <tr>
+    <th>Update</th>
+    <th>Task</th>
+    <th>Location</th>
+    <th>File</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Annual:<br/>1st week<br/>of Feb</td>
+    <td>Data</td>
+    <td><code>data/es_rules/</code></td>
+    <td><code>update_es_rules.py</code></td>
+  </tr>
+  <tr>
+    <td>Chart</td>
+    <td><code>charts/</code></td>
+    <td><code>code/econ_significant_rules.Rmd</code></td>
+  </tr>
+</table>
 
 #### Economically Significant Final Rules by Agency
 | Task  | Location         | File | Output                                                                                                                                                      |
