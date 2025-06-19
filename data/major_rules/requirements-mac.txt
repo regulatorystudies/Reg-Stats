@@ -4,8 +4,6 @@
 #
 #    pip-compile --output-file=requirements-mac.txt requirements.in
 #
-appnope==0.1.4
-    # via ipykernel
 asttokens==2.4.1
     # via stack-data
 beautifulsoup4==4.12.3
@@ -105,7 +103,7 @@ typing-extensions==4.12.2
     # via ipython
 tzdata==2024.1
     # via pandas
-urllib3==2.2.2
+urllib3==2.5.0
     # via requests
 wcwidth==0.2.13
     # via prompt-toolkit
