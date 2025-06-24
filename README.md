@@ -83,7 +83,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/agency_econ_significant_rules_by_presidential_year.Rmd</code></td>
-          <td><code>output/by_agency/[agency]_econ_significant_rules_by_presidential_year.pdf</code><br/>`output/by_agency/[agency]_econ_significant_rules_by_presidential_year.png`</td>
+          <td><code>output/by_agency/[agency]_econ_significant_rules_by_presidential_year.pdf</code><br/><code>output/by_agency/[agency]_econ_significant_rules_by_presidential_year.png</code></td>
         </tr>
       </table>
 </details>
@@ -111,7 +111,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/monthly_sig_rules_by_admin.Rmd</code></td>
-          <td><code>output/monthly_significant_rules_biden.pdf</code><br/>`output/monthly_significant_rules_biden.png`</td>
+          <td><code>output/monthly_significant_rules_biden.pdf</code><br/><code>output/monthly_significant_rules_biden.png</code></td>
         </tr>
       </table>
 </details>
@@ -139,7 +139,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/cumulative_econ_significant_rules_by_admin.Rmd</code></td>
-          <td><code>output/cumulative_econ_significant_rules_by_presidential_month.pdf</code><br/>`output/cumulative_econ_significant_rules_by_presidential_month.png`</td>
+          <td><code>output/cumulative_econ_significant_rules_by_presidential_month.pdf</code><br/><code>output/cumulative_econ_significant_rules_by_presidential_month.png</code></td>
         </tr>
       </table>
 </details>
@@ -167,7 +167,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/cumulative_econ_significant_rules_first_year.Rmd</code></td>
-          <td><code>output/cumulative_econ_significant_rules_by_first_year.pdf</code><br/>`output/cumulative_econ_significant_rules_by_first_year.png`</td>
+          <td><code>output/cumulative_econ_significant_rules_by_first_year.pdf</code><br/><code>output/cumulative_econ_significant_rules_by_first_year.png</code></td>
         </tr>
       </table>
 </details>
@@ -195,7 +195,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/significant_rules.Rmd</code></td>
-          <td><code>output/significant_rules_by_presidential_year.pdf</code><br/>`output/significant_rules_by_presidential_year.png`</td>
+          <td><code>output/significant_rules_by_presidential_year.pdf</code><br/><code>output/significant_rules_by_presidential_year.png</code></td>
         </tr>
       </table>
 </details>
@@ -216,14 +216,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
           <td><code>data/major_rules/</code></td>
-          <td><code>cradb/scraper.py</code><br/>`cradb/process_data.py`</td>
+          <td><code>cradb/scraper.py</code><br/><code>cradb/process_data.py</code></td>
           <td><code>major_rules_by_presidential_year.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/major_rules.Rmd</code></td>
-          <td><code>output/major_rules_by_presidential_year.pdf</code><br/>`output/major_rules_by_presidential_year.png`</td>
+          <td><code>output/major_rules_by_presidential_year.pdf</code><br/><code>output/major_rules_by_presidential_year.png</code></td>
         </tr>
       </table>
 </details>
@@ -251,7 +251,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/federal_register_rules.Rmd</code></td>
-          <td><code>output/federal_register_rules_by_presidential_year.pdf</code><br/>`output/federal_register_rules_by_presidential_year.png`</td>
+          <td><code>output/federal_register_rules_by_presidential_year.pdf</code><br/><code>output/federal_register_rules_by_presidential_year.png</code></td>
         </tr>
       </table>
 </details>
@@ -279,7 +279,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/agency_federal_register_rules.Rmd</code></td>
-          <td><code>output/by_agency/[agency]_federal_register_rules_by_presidential_year.pdf</code><br/>`output/by_agency/[agency]_federal_register_rules_by_presidential_year.png`</td>
+          <td><code>output/by_agency/[agency]_federal_register_rules_by_presidential_year.pdf</code><br/><code>output/by_agency/[agency]_federal_register_rules_by_presidential_year.png</code></td>
         </tr>
       </table>
 </details>
@@ -307,7 +307,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/cfr_pages.Rmd</code></td>
-          <td><code>output/cfr_pages_by_calendar_year.pdf</code><br/>`output/cfr_pages_by_calendar_year.png`</td>
+          <td><code>output/cfr_pages_by_calendar_year.pdf</code><br/><code>output/cfr_pages_by_calendar_year.png</code></td>
         </tr>
       </table>
 </details>
@@ -335,7 +335,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/federal_register_pages.Rmd</code></td>
-          <td><code>output/federal_register_pages_by_calendar_year.pdf</code><br/>`output/federal_register_pages_by_calendar_year.png`</td>
+          <td><code>output/federal_register_pages_by_calendar_year.pdf</code><br/><code>output/federal_register_pages_by_calendar_year.png</code></td>
         </tr>
       </table>
 </details>
@@ -363,7 +363,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/unified_agenda_active_actions.Rmd</code></td>
-          <td><code>output/active_actions_by_unified_agenda.pdf</code><br/>`output/active_actions_by_unified_agenda.png`</td>
+          <td><code>output/active_actions_by_unified_agenda.pdf</code><br/><code>output/active_actions_by_unified_agenda.png</code></td>
         </tr>
       </table>
 </details>
@@ -391,7 +391,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/public_law_word_count_by_congress.Rmd</code></td>
-          <td><code>output/public_law_word_count_by_congress.pdf</code><br/>`output/public_law_word_count_by_congress.png`</td>
+          <td><code>output/public_law_word_count_by_congress.pdf</code><br/><code>output/public_law_word_count_by_congress.png</code></td>
         </tr>
       </table>
 </details>
