@@ -157,7 +157,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Monthly:<br/>1st week of month</td>
+      	  <td rowspan="2">Monthly (during 1st year of admin):<br/>1st week of month</td>
           <td>Data</td>
           <td>`data/cumulative_es_rules/`</td>
           <td>`update_cumulative_es_rules.py`</td>
@@ -353,7 +353,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Biannually:<br/>spring (may/jun) and fall (Nov/Dec)</td>
+      	  <td rowspan="2">Biannually:<br/>spring (May/Jun) and fall (Nov/Dec)</td>
           <td>Data</td>
           <td>`data/ua_actions/`</td>
           <td>`update_ua_actions.py`</td>
