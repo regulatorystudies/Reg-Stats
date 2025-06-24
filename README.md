@@ -75,15 +75,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
-          <td>`data/es_rules/`</td>
-          <td>`by_agency/update_agency_es_rules.py`</td>
-          <td>`agency_econ_significant_rules_by_presidential_year.csv`</td>
+          <td><code>data/es_rules/</code></td>
+          <td><code>by_agency/update_agency_es_rules.py</code></td>
+          <td><code>agency_econ_significant_rules_by_presidential_year.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/agency_econ_significant_rules_by_presidential_year.Rmd`</td>
-          <td>`output/by_agency/[agency]_econ_significant_rules_by_presidential_year.pdf`<br/>`output/by_agency/[agency]_econ_significant_rules_by_presidential_year.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/agency_econ_significant_rules_by_presidential_year.Rmd</code></td>
+          <td><code>output/by_agency/[agency]_econ_significant_rules_by_presidential_year.pdf</code><br/>`output/by_agency/[agency]_econ_significant_rules_by_presidential_year.png`</td>
         </tr>
       </table>
 </details>
@@ -103,15 +103,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Monthly:<br/>1st week of month</td>
           <td>Data</td>
-          <td>`data/monthly_es_rules/`</td>
-          <td>`update_monthly_sig_rules_by_admin.py`</td>
-          <td>`monthly_significant_rules_by_admin.csv`</td>
+          <td><code>data/monthly_es_rules/</code></td>
+          <td><code>update_monthly_sig_rules_by_admin.py</code></td>
+          <td><code>monthly_significant_rules_by_admin.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/monthly_sig_rules_by_admin.Rmd`</td>
-          <td>`output/monthly_significant_rules_biden.pdf`<br/>`output/monthly_significant_rules_biden.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/monthly_sig_rules_by_admin.Rmd</code></td>
+          <td><code>output/monthly_significant_rules_biden.pdf</code><br/>`output/monthly_significant_rules_biden.png`</td>
         </tr>
       </table>
 </details>
@@ -131,15 +131,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Monthly:<br/>1st week of month</td>
           <td>Data</td>
-          <td>`data/cumulative_es_rules/`</td>
-          <td>`update_cumulative_es_rules.py`</td>
-          <td>`cumulative_econ_significant_rules_by_presidential_month.csv`</td>
+          <td><code>data/cumulative_es_rules/</code></td>
+          <td><code>update_cumulative_es_rules.py</code></td>
+          <td><code>cumulative_econ_significant_rules_by_presidential_month.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/cumulative_econ_significant_rules_by_admin.Rmd`</td>
-          <td>`output/cumulative_econ_significant_rules_by_presidential_month.pdf`<br/>`output/cumulative_econ_significant_rules_by_presidential_month.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/cumulative_econ_significant_rules_by_admin.Rmd</code></td>
+          <td><code>output/cumulative_econ_significant_rules_by_presidential_month.pdf</code><br/>`output/cumulative_econ_significant_rules_by_presidential_month.png`</td>
         </tr>
       </table>
 </details>
@@ -159,15 +159,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Monthly:<br/>1st week of month</td>
           <td>Data</td>
-          <td>`data/cumulative_es_rules/`</td>
-          <td>`update_cumulative_es_rules.py`</td>
-          <td>`cumulative_econ_significant_rules_by_presidential_month.csv`</td>
+          <td><code>data/cumulative_es_rules/</code></td>
+          <td><code>update_cumulative_es_rules.py</code></td>
+          <td><code>cumulative_econ_significant_rules_by_presidential_month.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/cumulative_econ_significant_rules_first_year.Rmd`</td>
-          <td>`output/cumulative_econ_significant_rules_by_first_year.pdf`<br/>`output/cumulative_econ_significant_rules_by_first_year.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/cumulative_econ_significant_rules_first_year.Rmd</code></td>
+          <td><code>output/cumulative_econ_significant_rules_by_first_year.pdf</code><br/>`output/cumulative_econ_significant_rules_by_first_year.png`</td>
         </tr>
       </table>
 </details>
@@ -187,15 +187,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
-          <td>`data/sig_rules/`</td>
-          <td>`update_sig_rules.py`</td>
-          <td>`significant_rules_by_presidential_year.csv`</td>
+          <td><code>data/sig_rules/</code></td>
+          <td><code>update_sig_rules.py</code></td>
+          <td><code>significant_rules_by_presidential_year.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/significant_rules.Rmd`</td>
-          <td>`output/significant_rules_by_presidential_year.pdf`<br/>`output/significant_rules_by_presidential_year.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/significant_rules.Rmd</code></td>
+          <td><code>output/significant_rules_by_presidential_year.pdf</code><br/>`output/significant_rules_by_presidential_year.png`</td>
         </tr>
       </table>
 </details>
@@ -215,15 +215,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
-          <td>`data/major_rules/`</td>
-          <td>`cradb/scraper.py`<br/>`cradb/process_data.py`</td>
-          <td>`major_rules_by_presidential_year.csv`</td>
+          <td><code>data/major_rules/</code></td>
+          <td><code>cradb/scraper.py</code><br/>`cradb/process_data.py`</td>
+          <td><code>major_rules_by_presidential_year.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/major_rules.Rmd`</td>
-          <td>`output/major_rules_by_presidential_year.pdf`<br/>`output/major_rules_by_presidential_year.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/major_rules.Rmd</code></td>
+          <td><code>output/major_rules_by_presidential_year.pdf</code><br/>`output/major_rules_by_presidential_year.png`</td>
         </tr>
       </table>
 </details>
@@ -243,15 +243,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
-          <td>`data/fr_rules/`</td>
-          <td>`code/fr_rules_by_presidential_year.py`</td>
-          <td>`federal_register_rules_by_presidential_year.csv`</td>
+          <td><code>data/fr_rules/</code></td>
+          <td><code>code/fr_rules_by_presidential_year.py</code></td>
+          <td><code>federal_register_rules_by_presidential_year.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/federal_register_rules.Rmd`</td>
-          <td>`output/federal_register_rules_by_presidential_year.pdf`<br/>`output/federal_register_rules_by_presidential_year.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/federal_register_rules.Rmd</code></td>
+          <td><code>output/federal_register_rules_by_presidential_year.pdf</code><br/>`output/federal_register_rules_by_presidential_year.png`</td>
         </tr>
       </table>
 </details>
@@ -271,15 +271,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
-          <td>`data/fr_rules/`</td>
-          <td>`code/agency_fr_rules_by_presidential_year.py`</td>
-          <td>`agency_federal_register_rules_by_presidential_year.csv`</td>
+          <td><code>data/fr_rules/</code></td>
+          <td><code>code/agency_fr_rules_by_presidential_year.py</code></td>
+          <td><code>agency_federal_register_rules_by_presidential_year.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/agency_federal_register_rules.Rmd`</td>
-          <td>`output/by_agency/[agency]_federal_register_rules_by_presidential_year.pdf`<br/>`output/by_agency/[agency]_federal_register_rules_by_presidential_year.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/agency_federal_register_rules.Rmd</code></td>
+          <td><code>output/by_agency/[agency]_federal_register_rules_by_presidential_year.pdf</code><br/>`output/by_agency/[agency]_federal_register_rules_by_presidential_year.png`</td>
         </tr>
       </table>
 </details>
@@ -299,15 +299,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Annually:<br/>during first months of calendar year</td>
           <td>Data</td>
-          <td>`data/cfr_pages/`</td>
-          <td>`update_cfr_pages.py`</td>
-          <td>`cfr_pages_by_calendar_year.csv`</td>
+          <td><code>data/cfr_pages/</code></td>
+          <td><code>update_cfr_pages.py</code></td>
+          <td><code>cfr_pages_by_calendar_year.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/cfr_pages.Rmd`</td>
-          <td>`output/cfr_pages_by_calendar_year.pdf`<br/>`output/cfr_pages_by_calendar_year.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/cfr_pages.Rmd</code></td>
+          <td><code>output/cfr_pages_by_calendar_year.pdf</code><br/>`output/cfr_pages_by_calendar_year.png`</td>
         </tr>
       </table>
 </details>
@@ -327,15 +327,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Annually:<br/>beginning of calendar year</td>
           <td>Data</td>
-          <td>`data/fr_pages/`</td>
-          <td>`update_fr_pages.py`</td>
-          <td>`federal_register_pages_by_calendar_year.csv`</td>
+          <td><code>data/fr_pages/</code></td>
+          <td><code>update_fr_pages.py</code></td>
+          <td><code>federal_register_pages_by_calendar_year.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/federal_register_pages.Rmd`</td>
-          <td>`output/federal_register_pages_by_calendar_year.pdf`<br/>`output/federal_register_pages_by_calendar_year.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/federal_register_pages.Rmd</code></td>
+          <td><code>output/federal_register_pages_by_calendar_year.pdf</code><br/>`output/federal_register_pages_by_calendar_year.png`</td>
         </tr>
       </table>
 </details>
@@ -355,15 +355,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Biannually:<br/>spring (May/Jun) and fall (Nov/Dec)</td>
           <td>Data</td>
-          <td>`data/ua_actions/`</td>
-          <td>`update_ua_actions.py`</td>
-          <td>`active_actions_by_unified_agenda.csv`</td>
+          <td><code>data/ua_actions/</code></td>
+          <td><code>update_ua_actions.py</code></td>
+          <td><code>active_actions_by_unified_agenda.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/unified_agenda_active_actions.Rmd`</td>
-          <td>`output/active_actions_by_unified_agenda.pdf`<br/>`output/active_actions_by_unified_agenda.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/unified_agenda_active_actions.Rmd</code></td>
+          <td><code>output/active_actions_by_unified_agenda.pdf</code><br/>`output/active_actions_by_unified_agenda.png`</td>
         </tr>
       </table>
 </details>
@@ -383,15 +383,15 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         <tr>
       	  <td rowspan="2">Biennially:<br/>2nd week of Jan of odd years</td>
           <td>Data</td>
-          <td>`data/public_laws/`</td>
-          <td>`collect_public_law_data.py`</td>
-          <td>`public_law_word_count_by_congress.csv`</td>
+          <td><code>data/public_laws/</code></td>
+          <td><code>collect_public_law_data.py</code></td>
+          <td><code>public_law_word_count_by_congress.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
-          <td>`charts/`</td>
-          <td>`code/public_law_word_count_by_congress.Rmd`</td>
-          <td>`output/public_law_word_count_by_congress.pdf`<br/>`output/public_law_word_count_by_congress.png`</td>
+          <td><code>charts/</code></td>
+          <td><code>code/public_law_word_count_by_congress.Rmd</code></td>
+          <td><code>output/public_law_word_count_by_congress.pdf</code><br/>`output/public_law_word_count_by_congress.png`</td>
         </tr>
       </table>
 </details>
