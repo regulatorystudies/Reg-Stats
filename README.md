@@ -30,33 +30,6 @@ files and output corresponding to each data series in Reg Stats.
 After setting up the required Python or R environment (see instructions in each subdirectory), run the Python or R code
 in the "File" column, and an output dataset or chart in the "Output" column will be generated.
 
-#### Example 1: Economically Significant Final Rules Published by Presidential Year
-<table>
-  <tr>
-    <th>Update</th>
-    <th>Task</th>
-    <th>Location</th>
-    <th>File</th>
-    <th>Output</th>
-  </tr>
-  <tr>
-    <td rowspan="2">Annual:<br/>1st week of Feb</td>
-    <td>Data</td>
-    <td><code>data/es_rules/</code></td>
-    <td><code>update_es_rules.py</code></td>
-    <td><code>econ_significant_rules_by_presidential_year.csv</code></td>
-  </tr>
-  <tr>
-    <td>Chart</td>
-    <td><code>charts/</code></td>
-    <td><code>code/econ_significant_rules.Rmd</code></td>
-    <td>
-      <code>output/econ_significant_rules_published_by_presidential_year.pdf</code><br/>
-      <code>output/econ_significant_rules_published_by_presidential_year.png</code>
-    </td>
-  </tr>
-</table>
-
 <details>
   <summary><strong>Example 2: Economically Significant Final Rules Published by Presidential Year</strong></summary>
   <br/>
