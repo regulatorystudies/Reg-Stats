@@ -31,7 +31,7 @@ After setting up the required Python or R environment (see instructions in each 
 in the "File" column, and an output dataset or chart in the "Output" column will be generated.
 
 <details>
-  <summary><strong>Example 2: Economically Significant Final Rules Published by Presidential Year</strong></summary>
+  <summary><strong>Economically Significant Final Rules Published by Presidential Year</strong></summary>
   <br/>
   <table>
     <tr>
@@ -66,6 +66,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+	 <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
