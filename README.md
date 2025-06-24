@@ -297,7 +297,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annually:<br/>first few months of calendar year</td>
+      	  <td rowspan="2">Annually:<br/>during first months of calendar year</td>
           <td>Data</td>
           <td>`data/cfr_pages/`</td>
           <td>`update_cfr_pages.py`</td>
