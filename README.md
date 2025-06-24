@@ -297,7 +297,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Annual:<br/>The CFR pages data should be updated once a year. Since the date when the data for the latest year becomes available is unclear, check frequently during the first few months of each calendar year to see if the latest data are updated.</td>
           <td>Data</td>
           <td>`data/cfr_pages/`</td>
           <td>`update_cfr_pages.py`</td>
