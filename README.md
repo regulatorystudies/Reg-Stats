@@ -42,7 +42,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
     <tr>
-      <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      <td rowspan="2">Annually:<br/>1st week of Feb</td>
       <td>Data</td>
       <td><code>data/es_rules/</code></td>
       <td><code>update_es_rules.py</code></td>
@@ -73,7 +73,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/es_rules/`</td>
           <td>`by_agency/update_agency_es_rules.py`</td>
@@ -101,7 +101,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Monthly:<br/>1st week of month</td>
           <td>Data</td>
           <td>`data/monthly_es_rules/`</td>
           <td>`update_monthly_sig_rules_by_admin.py`</td>
@@ -129,7 +129,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Monthly:<br/>1st week of month</td>
           <td>Data</td>
           <td>`data/cumulative_es_rules/`</td>
           <td>`update_cumulative_es_rules.py`</td>
@@ -157,7 +157,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Monthly:<br/>1st week of month</td>
           <td>Data</td>
           <td>`data/cumulative_es_rules/`</td>
           <td>`update_cumulative_es_rules.py`</td>
@@ -185,7 +185,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/sig_rules/`</td>
           <td>`update_sig_rules.py`</td>
@@ -213,7 +213,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/major_rules/`</td>
           <td>`cradb/scraper.py`<br/>`cradb/process_data.py`</td>
@@ -241,7 +241,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/fr_rules/`</td>
           <td>`code/fr_rules_by_presidential_year.py`</td>
@@ -269,7 +269,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Annually:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/fr_rules/`</td>
           <td>`code/agency_fr_rules_by_presidential_year.py`</td>
@@ -297,7 +297,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>The CFR pages data should be updated once a year. Since the date when the data for the latest year becomes available is unclear, check frequently during the first few months of each calendar year to see if the latest data are updated.</td>
+      	  <td rowspan="2">Annually:<br/>first few months of calendar year</td>
           <td>Data</td>
           <td>`data/cfr_pages/`</td>
           <td>`update_cfr_pages.py`</td>
@@ -325,7 +325,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Annually:<br/>beginning of calendar year</td>
           <td>Data</td>
           <td>`data/fr_pages/`</td>
           <td>`update_fr_pages.py`</td>
@@ -353,7 +353,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Biannually:<br/>spring (may/jun) and fall (Nov/Dec)</td>
           <td>Data</td>
           <td>`data/ua_actions/`</td>
           <td>`update_ua_actions.py`</td>
@@ -381,7 +381,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
+      	  <td rowspan="2">Biennially:<br/>2nd week of Jan of odd years</td>
           <td>Data</td>
           <td>`data/public_laws/`</td>
           <td>`collect_public_law_data.py`</td>
