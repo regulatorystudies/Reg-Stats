@@ -66,13 +66,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
-	 <th>Update</th>
+	  <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/es_rules/`</td>
           <td>`by_agency/update_agency_es_rules.py`</td>
@@ -93,12 +94,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/monthly_es_rules/`</td>
           <td>`update_monthly_sig_rules_by_admin.py`</td>
@@ -119,12 +122,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/cumulative_es_rules/`</td>
           <td>`update_cumulative_es_rules.py`</td>
@@ -145,12 +150,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/cumulative_es_rules/`</td>
           <td>`update_cumulative_es_rules.py`</td>
@@ -171,12 +178,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/sig_rules/`</td>
           <td>`update_sig_rules.py`</td>
@@ -197,12 +206,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/major_rules/`</td>
           <td>`cradb/scraper.py`<br/>`cradb/process_data.py`</td>
@@ -223,12 +234,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/fr_rules/`</td>
           <td>`code/fr_rules_by_presidential_year.py`</td>
@@ -249,12 +262,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/fr_rules/`</td>
           <td>`code/agency_fr_rules_by_presidential_year.py`</td>
@@ -275,12 +290,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/cfr_pages/`</td>
           <td>`update_cfr_pages.py`</td>
@@ -301,12 +318,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/fr_pages/`</td>
           <td>`update_fr_pages.py`</td>
@@ -327,12 +346,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/ua_actions/`</td>
           <td>`update_ua_actions.py`</td>
@@ -353,12 +374,14 @@ in the "File" column, and an output dataset or chart in the "Output" column will
   <br/>
   <table>
     <tr>
+      <th>Update</th>
       <th>Task</th>
       <th>Location</th>
       <th>File</th>
       <th>Output</th>
     </tr>
         <tr>
+      	  <td rowspan="2">Annual:<br/>1st week of Feb</td>
           <td>Data</td>
           <td>`data/public_laws/`</td>
           <td>`collect_public_law_data.py`</td>
