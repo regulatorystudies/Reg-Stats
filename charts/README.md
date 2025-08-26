@@ -2,10 +2,10 @@
 
 ## Directory Structure
 
-This directory contains the R code, processed datasets, and style guides for generating Reg Stats charts. It also stores the output of the resulting data visualizations for posting to the RSC website. The structure of this directory is as follows:
+This directory contains the R code, processed datasets, and style guides for generating RegStats charts. It also stores the output of the resulting data visualizations for posting to the RSC website. The structure of this directory is as follows:
 
 - code/
-  - contains the R code for updating Reg Stats charts
+  - contains the R code for updating RegStats charts
   - each chart has a dedicated .Rmd file with code and accompanying descriptions
   - also includes R code and functions with cross-application to multiple files
 - data/
@@ -14,12 +14,12 @@ This directory contains the R code, processed datasets, and style guides for gen
 - output/
   - contains the data visualization outputs of the R code, generally in .pdf format
 - style/
-  - contains style guide information for Reg Stats charts, fonts, and a file of the RSC logo
+  - contains style guide information for RegStats charts, fonts, and a file of the RSC logo
   - note: the actual style.R template for ggplot2 is contained in the `code/` folder
 
 ## Instructions
 
-When updating Reg Stats charts, you will generally take the following steps:
+When updating RegStats charts, you will generally take the following steps:
 
 1. Set up your R environment
 
