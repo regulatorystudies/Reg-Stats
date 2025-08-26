@@ -1,6 +1,6 @@
-# Reg-Stats
+# RegStats
 
-This repository hosts the code to collect data and generate charts for [Reg Stats](https://regulatorystudies.columbian.gwu.edu/reg-stats).
+This repository hosts the code to collect data and generate charts for [RegStats](https://regulatorystudies.columbian.gwu.edu/reg-stats).
 
 ## Repository Structure
 
@@ -9,23 +9,23 @@ The project root contains several files, including an RStudio project (.Rproj), 
 In addition to these files, there are several directories:
 
 - charts/
-  - contains the R code for updating Reg Stats charts, chart style information, and data visualization output
+  - contains the R code for updating RegStats charts, chart style information, and data visualization output
   - see this sub-directory's README for more details
 - data/
-  - contains sub-directories for each Reg Stats chart and dataset
-  - each sub-directory contains instructions for updating each Reg Stats dataset (either automatically or manually), the Python code for collecting the data (when automated), and the data for each dataset
+  - contains sub-directories for each RegStats chart and dataset
+  - each sub-directory contains instructions for updating each RegStats dataset (either automatically or manually), the Python code for collecting the data (when automated), and the data for each dataset
   - see the README within each sub-directory for more details
 - renv/
   - contains the profiles associated with the project lockfiles; this is where package binaries will be installed on your local machine
 
 The structure of the repository is depicted below:
 
-![Map of Reg Stats Repository](charts/style/repo_map.png) 
+![Map of RegStats Repository](charts/style/repo_map.png) 
 
 ## Instructions for Updating Data and Charts
 
 For updating the data or charts, follow the instructions in each subdirectory. The following list provides a summary of
-files and output corresponding to each data series in Reg Stats.
+files and output corresponding to each data series in RegStats.
 
 After setting up the required Python or R environment (see instructions in each subdirectory), run the Python or R code
 in the "File" column, and an output dataset or chart in the "Output" column will be generated.
