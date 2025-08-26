@@ -1,0 +1,164 @@
+---
+title: "Public Law Word Count by Congress"
+author: "Henry Hirsch"
+date: "2025-06-06"
+output: html_document
+---
+
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+library(here)
+i_am("charts/code/public_law_word_count_by_congress.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file <- "public_law_word_count_by_congress.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+```
+
+## Load Data
+
+```{r load_data}
+# load csv using here
+count_by_congress0 <- read.csv(here("charts", "data", data_file))
+```
+
+# Process Data
+
+```{r code}
+# current date
+current_date <- format(Sys.Date(), "%B %d, %Y")
+
+# create caption text
+caption_text <- paste("Source: Congress.gov\n\nUpdated:", current_date)
+
+# make copy of dataframe
+count_by_congress1 <- count_by_congress0
+
+# change column names
+colnames(count_by_congress1) <- c("congress", "page_count", "word_count", "public_law_count")
+
+# make page count and word count integer variables
+count_by_congress1 <- count_by_congress1 %>%
+  mutate(across(c(page_count, word_count), as.integer))
+```
+
+
+# Plot Data
+
+```{r presidential administrations annotation function}
+# create presidential administrations data frame (ADD NEW PRESIDENTS HERE)
+pres_labels <- data.frame(
+  # lines positioned before the first congress under each presidential administration
+  line_position = c(NA, 94.5, 96.5, 100.5, 102.5, 106.5, 110.5, 114.5, 116.5), # NA for Ford because his administration begins prior to the 94th Congress  
+  # labels positioned at the midpoint of each presidential administration
+  label_position = c(93.5, 95.5, 98.5, 101.5, 104.5, 108.5, 112.5, 115.5, 117.5),
+  label = c("Ford", "Carter", "Reagan", "Bush 41", "Clinton", 
+            "Bush 43", "Obama", "Trump 45", "Biden")
+)
+
+# create function
+add_pres_annotations <- function(df, y_position = upper + 2e5, line_color = RSCdarkgray) {
+  text_annotation <- lapply(1:nrow(df), function(i) {
+    annotate_RSC(
+      geom = "text",
+      x = df$label_position[i],
+      y = y_position,
+      label = df$label[i],
+      size = 4,
+      hjust = 0.5,
+      vjust = 1
+    )
+  })
+
+  line_annotation <- lapply(1:nrow(df), function(i) {
+    annotate(
+      geom = "segment",
+      x = df$line_position[i], xend = df$line_position[i],
+      y = 0, yend = y_position,
+      linetype = "dashed",
+      linewidth = 0.50,
+      color = line_color
+    )
+  })
+
+  c(text_annotation, line_annotation)
+}
+```
+
+
+```{r generate_graph}
+# find upper
+upper <- ydynam(count_by_congress1, 1000000, 3)
+
+# set a higher ceiling to accommodate annotations
+annotation_y_max <- upper + 0.5e6
+
+# generate bar 1
+bar1 <- ggplot(count_by_congress1, aes(x = congress, y = word_count)) +
+  geom_bar(stat = "identity", fill = GWblue) +
+  ggtitle("Public Law Word Count by Congress") +
+  ylab("Millions of Words") +
+  xlab("Congress") +
+  add_pres_annotations(pres_labels) +
+  scale_y_continuous(
+    breaks = seq(0, annotation_y_max, by = 1e6),
+    expand = c(0, 0),
+    limits = c(0, annotation_y_max),
+    labels = function(x) ifelse(x == 0, "0", scales::label_number(scale = 1e-6)(x))
+  ) +
+
+  scale_x_continuous(
+    breaks = seq(min(count_by_congress1$congress),
+                 max(count_by_congress1$congress), by = 1),
+    limits = c(min(count_by_congress1$congress) - 1,
+               max(count_by_congress1$congress) + 1),
+    expand = c(0, 0)
+  ) +
+
+  labs(caption = caption_text) +
+  coord_cartesian(clip = "off") +
+  theme_RSC +
+  theme(
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
+    axis.line.x = element_line(linewidth = 1, color = RSCgray),
+    plot.title = element_text(margin = margin(b = -5))
+  )
+
+# supress warning
+suppressWarnings({bar2 <- ggdraw() +
+  draw_plot(bar1) +
+ draw_image(logo, x = 0.1, y = 0.06, halign = 0, valign = 0, width = 0.2)
+bar2})
+
+```
+
+```{r save}
+# create empty output folder if it doesn't already exist
+out <- here("charts", "output")
+if (!dir.exists(out)) {
+  dir.create(out, showWarnings = FALSE)
+}
+
+image_name = "public_law_word_count_by_congress"
+
+# save as pdf
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = bar2, width = 12, height = 9, dpi = 300)
+
+# save as png
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = bar2, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+
+```
+

@@ -41,7 +41,7 @@ To update the number of monthly economically significant rules for a new month d
 
 To check the number of monthly economically significant rules for the prior administrations:
 
-*Note: The data on Reginfo.gov may have been updated since the last update of Reg Stats, which occurs more often for more recent years. By using the Reginfo.gov data, we are assuming that the Regulatory Review database reflects all the significant rules published in the Federal Register.*
+*Note: The data on Reginfo.gov may have been updated since the last update of RegStats, which occurs more often for more recent years. By using the Reginfo.gov data, we are assuming that the Regulatory Review database reflects all the significant rules published in the Federal Register.*
 
 1. Go to Reginfo.gov; under the Regulatory Review tab, click on Search.  
 1. On the Search of Regulatory Review page, set the following search criteria:  
