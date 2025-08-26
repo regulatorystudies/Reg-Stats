@@ -39,7 +39,7 @@
   showtext_auto()
     # according to documentation, showtext_auto needed for this to work properly 
   
-# custom theme for RSC Reg Stats plots
+# custom theme for RSC RegStats plots
   theme_RSC <- theme_minimal(base_family = "avenir_lt_pro") +
     theme(
       plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
