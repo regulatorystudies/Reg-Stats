@@ -101,7 +101,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Monthly:<br/>1st week of month</td>
+      	  <td rowspan="2">Monthly:<br/>1st week of month (can change to subsequent admins)</td>
           <td>Data</td>
           <td><code>data/monthly_es_rules/</code></td>
           <td><code>update_monthly_sig_rules_by_admin.py</code></td>
