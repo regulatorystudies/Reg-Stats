@@ -41,7 +41,7 @@ To update the number of significant rules for a new presidential year after 2021
 
 To verify the data for years prior to 2021 (i.e., 1994-2020) from Reginfo.gov, follow these steps:
 
-*Note: The data on Reginfo.gov may been updated since the last update of Reg Stats, which occurs more often for more recent years. By using the Reginfo.gov data, we are assuming that the Regulatory Review database reflects all the significant rules published in the Federal Register.*
+*Note: The data on Reginfo.gov may been updated since the last update of RegStats, which occurs more often for more recent years. By using the Reginfo.gov data, we are assuming that the Regulatory Review database reflects all the significant rules published in the Federal Register.*
 
 1. Go to [Reginfo.gov](https://www.reginfo.gov/public/); under the Regulatory Review tab, click on [Search](https://www.reginfo.gov/public/do/eoAdvancedSearchMain).  
 1. On the Search of Regulatory Review page, set the following search criteria:
