@@ -1,10 +1,17 @@
-# py_funcs
+# Custom RegStats Python Functions
 
 ## Overview
+This
 
-## frcount.py
+### agencies.py
 
-## reginfo.py
+### frcount.py
 
-## update_annual.py
+### party.py
+
+### reginfo.py
+
+### update_admin.py
+
+### update_annual.py
 
