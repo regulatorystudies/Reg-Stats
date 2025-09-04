@@ -8,6 +8,7 @@ The RegInfo Advanced Search feature provides the ability to query regulatory dat
 In the future, it might be possible to use the [Federal Register API](https://www.federalregister.gov/reader-aids/developer-resources/rest-api) to scrape the body text of rules and add them to `fr_tracking.csv` for use as a training dataset in an ML model. The model could assist with future `fr_tracking.csv` rule significance determinations and might even be able to verify some of the earlier significance determinations (depending on how far back the Federal Register provides machine-searchable rule texts).
 
 ## agencies.py
+This script uses an XML file [downloaded from RegInfo](https://www.reginfo.gov/public/do/XMLReportList#:~:text=Agency%20Reference%20Information) to generate a python dictionary with the form 'ACRONYM': ('NAME', 'CODE') for all federal agencies. These agency codes are needed when scraping RegInfo using the [advanced search feature](https://www.reginfo.gov/public/do/eoAdvancedSearchMain). It also contains a second dictionary of agency acronyms paired with the corresponding name variations (e.g. "State Department" and "Department of State"). These name variations are used to aggregate agencies' annual regulatory activity from the 'fr_tracking.csv' dataset, in which agency names aren't always consistent.
 
 ## frcount.py
 
