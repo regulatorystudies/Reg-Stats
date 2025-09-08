@@ -12,6 +12,8 @@ This script uses an XML file [downloaded from RegInfo](https://www.reginfo.gov/p
 
 ## frcount.py
 This script contains functions that generate annual and monthly counts of significant and economically/3(f)(1) significant rules from the 'fr_tracking.csv' dataset.
+REVIEWED
+
 ## party.py
 This scripts contains several Python dictionaries 
 ## reginfo.py
