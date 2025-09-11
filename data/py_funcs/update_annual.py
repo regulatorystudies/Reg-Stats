@@ -57,8 +57,8 @@ def verify_previous_data(dir_path,df,col_update,earliest_year,last_year_with_dat
         # Compare with the original data
         print('Comparing newly collected data with original data. Differences (if any) will be shown here.')
         if agency_acronym =='':
-            old_data_original=dict(zip(df['Presidential Year (February 1 - January 31)'], # REVISIT lines 59-64 for documentation
-                                   df[col_update].fillna(-1).astype('int')))
+            old_data_original=dict(zip(df['Presidential Year (February 1 - January 31)'], # create dictionary by zipping together pres years and col_update values
+                                   df[col_update].fillna(-1).astype('int'))) # fillna(-1) to allow dtype to be int while still denoting missing values
         else:
             old_data_original=dict(zip(df[df['Agency Acronym']==agency_acronym]['Presidential Year (February 1 - January 31)'],
                                    df[df['Agency Acronym']==agency_acronym][col_update].fillna(-1).astype('int')))
