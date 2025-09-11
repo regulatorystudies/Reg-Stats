@@ -1,4 +1,4 @@
-# Custom RegStats Python Functions
+# Core Python Functions
 
 ## Overview
 This directory contains custom Python functions that are used by scripts in the individual data subfolders to collect and process data prior to visualization. Some data are collected from our manually updated `fr_tracking.csv`, while the rest are scraped from [reginfo.gov](https://www.reginfo.gov/). The data from these sources are combined using `update_annual.py` and `update_admin.py` to generate annual (and in some cases, monthly) counts of significant, economically significant, and major rules across administrations. 
