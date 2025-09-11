@@ -11,7 +11,7 @@ In the future, it might be possible to use the [Federal Register API](https://ww
 This script uses an XML file [downloaded from RegInfo](https://www.reginfo.gov/public/do/XMLReportList#:~:text=Agency%20Reference%20Information) to generate a Python dictionary with the form 'ACRONYM': ('NAME', 'CODE') for all federal agencies. These agency codes are needed to scrape RegInfo using the [advanced search feature](https://www.reginfo.gov/public/do/eoAdvancedSearchMain). It also contains a second dictionary of agency acronyms paired with the corresponding name variations (e.g. "State Department" and "Department of State"). These name variations are used to aggregate agencies' annual and monthly regulatory activity from the 'fr_tracking.csv' dataset, in which agency names aren't always consistent.
 
 ## frcount.py (REVIEWED)
-This script contains functions that generate annual and monthly counts of significant and economically/3(f)(1) significant rules from the 'fr_tracking.csv' dataset. That dataset **must be updated through the last weekday** of the month or presidential year (Feb 1 - Jan 31) for these functions to run. 
+This script contains functions that generate annual and monthly counts of significant and economically/3(f)(1) significant rules from the `fr_tracking.csv` dataset. That dataset **must be updated through the last weekday** of the month or presidential year (Feb 1 - Jan 31) for these functions to run. 
 
 ## party.py
 This script contains several Python dictionaries that identify the party of the president for any given year and the start and end years of specific presidential administrations. 
