@@ -103,7 +103,7 @@ server <- function(input, output) {
   # Reactive data filtering
   filtered_data <- reactive({
     if (is.null(input$selected_presidents)) {
-      return(cum_sig_long[FALSE, ])  # Return empty data frame if no presidents selected
+      return(cum_sig_long[FALSE, ])  
     }
 
     cum_sig_long %>%
@@ -161,13 +161,7 @@ server <- function(input, output) {
                       size = 4, hjust = 0, vjust = 0)
       }
 
-      # Add zero line if selected
-      if (input$show_zero_line) {
-        p <- p + annotate(geom = "segment",
-                         x = min(0), xend = max(filtered_data()$months_in_office),
-                         y = 0, yend = 0,
-                         linetype = "solid", linewidth = 1, color = RSCgray)
-      }
+      
 
       # Add president labels at line endpoints
       if (nrow(line_ends()) > 0) {
@@ -188,17 +182,17 @@ server <- function(input, output) {
                                      fill = alpha(c("white"), 0.8))
       }
 
-      # Add note
+      
       p <- p + annotate_RSC(geom = "text",
-                           x = 0, y = 0,
+                           x = 10, y = 10,
                            label = "\n\n\n\n\n\nNote: Data for month 0 include rules published between January 21 and January 31 of the administration's first year.",
                            size = 3.85, vjust = 0.5, hjust = 0)
 
-      # Add logo
+      
       suppressWarnings({
         p_with_logo <- ggdraw() +
           draw_plot(p) +
-          draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
+          draw_image(logo, x = 0.1, y = -0.001, halign = 0, valign = 0, width = 0.18)
       })
 
       p_with_logo
