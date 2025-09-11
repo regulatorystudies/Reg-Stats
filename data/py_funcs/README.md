@@ -10,9 +10,9 @@ In the future, it might be possible to use the [Federal Register API](https://ww
 ## agencies.py
 This script uses an XML file [downloaded from RegInfo](https://www.reginfo.gov/public/do/XMLReportList#:~:text=Agency%20Reference%20Information) to generate a Python dictionary with the form 'ACRONYM': ('NAME', 'CODE') for all federal agencies. These agency codes are needed to scrape RegInfo using the [advanced search feature](https://www.reginfo.gov/public/do/eoAdvancedSearchMain). It also contains a second dictionary of agency acronyms paired with the corresponding name variations (e.g. "State Department" and "Department of State"). These name variations are used to aggregate agencies' annual and monthly regulatory activity from the 'fr_tracking.csv' dataset, in which agency names aren't always consistent.
 
-## frcount.py
-This script contains functions that generate annual and monthly counts of significant and economically/3(f)(1) significant rules from the 'fr_tracking.csv' dataset.
-REVIEWED
+## frcount.py (REVIEWED)
+This script contains functions that generate annual and monthly counts of significant and economically/3(f)(1) significant rules from the 'fr_tracking.csv' dataset. That dataset **must be updated through the last weekday** of the month or presidential year (Feb 1 - Jan 31) for these functions to run. 
+
 
 ## party.py
 This scripts contains several Python dictionaries 
@@ -20,5 +20,5 @@ This scripts contains several Python dictionaries
 
 ## update_admin.py
 
-## update_annual.py
-REVIEWED
+## update_annual.py (REVIEWED)
+
