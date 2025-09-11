@@ -13,9 +13,9 @@ This script uses an XML file [downloaded from RegInfo](https://www.reginfo.gov/p
 ## frcount.py (REVIEWED)
 This script contains functions that generate annual and monthly counts of significant and economically/3(f)(1) significant rules from the 'fr_tracking.csv' dataset. That dataset **must be updated through the last weekday** of the month or presidential year (Feb 1 - Jan 31) for these functions to run. 
 
-
 ## party.py
-This scripts contains several Python dictionaries 
+This script contains several Python dictionaries that identify the party of the president for any given year and the start and end years of specific presidential administrations. 
+
 ## reginfo.py
 
 ## update_admin.py
