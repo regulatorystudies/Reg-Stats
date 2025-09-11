@@ -10,13 +10,13 @@ def update_data(dir_path,col_update,first_year_to_update,last_year_to_update,rul
         print(f"Collecting data from FR tracking for presidential years {first_year_to_update}-{last_year_to_update}...")
         new_data_dict=count_fr_annual(dir_path,first_year_to_update,last_year_to_update,rule_type,agency_acronym)
     else:    
-        print(f"Collecting data from reginfo.gov for presidential years {first_year_to_update}-2020...")
+        print(f"Collecting data from reginfo.gov for presidential years {first_year_to_update}-2020...") # presidential year is the term typically used to refer to one full year of an administration (Feb 1 - Jan 31)
         if agency_acronym=='':
             agency_code = '0000' # 0000 = agency code for "all agencies", the default code if no agency is specified
         else:
             agency_code=agency_dict[agency_acronym][1]
         new_data_dict=count_reginfo_annual(first_year_to_update,2020,agency_code,rule_type)
-        print(f"Collecting data from FR tracking for presidential years 2021-{last_year_to_update}...") # presidential year is the term typically used to refer to one full year of an administration (Feb 1 - Jan 31)
+        print(f"Collecting data from FR tracking for presidential years 2021-{last_year_to_update}...") 
         new_data_dict= new_data_dict | count_fr_annual(dir_path,2021,last_year_to_update,rule_type,agency_acronym)
 
     # Convert to dataframe
