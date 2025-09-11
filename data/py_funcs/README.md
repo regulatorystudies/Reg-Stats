@@ -17,9 +17,10 @@ This script contains functions that generate annual and monthly counts of signif
 This script contains several Python dictionaries that identify the party of the president for any given year and the start and end years of specific presidential administrations. 
 
 ## reginfo.py
-This script contains the functions needed to scrape RegInfo using the [advanced search feature](https://www.reginfo.gov/public/do/eoAdvancedSearchMain).
+This script contains the function that scrapes RegInfo using the [advanced search feature](https://www.reginfo.gov/public/do/eoAdvancedSearchMain). It also contains functions that perform this web scraping over multiple months or presidential years.
 
 ## update_admin.py
+This script contains several functions that are used to 
 
 ## update_annual.py (REVIEWED)
 
