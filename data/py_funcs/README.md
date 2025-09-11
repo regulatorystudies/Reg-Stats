@@ -23,4 +23,4 @@ This script contains the function that scrapes RegInfo using the [advanced searc
 This script contains several functions that import preexisting datasets as dataframes, compare old data to new data, report discrepancies, and update the dataframes with the new values. These functions are used when a policy analyst chooses to verify the data for previous presidential years or months when updating a dataset. As explained in the overview, this verification is sometimes necessary due to retroactive changes to the RegInfo database.
 
 ## update_annual.py (REVIEWED)
-COMPARE TO UPDATE_ADMIN.PY FUNCS TO DETERMINE DIFFERENCE
+This script contains the main function for initiating updates to all annual significant and economically significant rules datasets. It also contains associated functions that coordinate the collection and verification of data from RegInfo (prior to 2021) and `fr_tracking.csv` (2021 and onwards). As explained in the overview, this coordination is necessary due to discontinuity in RSC's data collection methods. 
