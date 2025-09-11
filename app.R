@@ -9,6 +9,7 @@ library(magick)
 library(ggrepel)
 library(showtext)
 
+
 # Source local functions and styles
 source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
