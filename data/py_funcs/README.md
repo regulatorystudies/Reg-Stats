@@ -20,7 +20,7 @@ This script contains several Python dictionaries that identify the party of the 
 This script contains the function that scrapes RegInfo using the [advanced search feature](https://www.reginfo.gov/public/do/eoAdvancedSearchMain). It also contains functions that perform this web scraping over multiple months or presidential years.
 
 ## update_admin.py
-This script contains several functions that are used to 
+This script contains several functions that import preexisting datasets as dataframes, compare old data to new data, report discrepancies, and update the dataframes with the new values. These functions are used when a user chooses to verify the data for previous years or months when updating a dataset.
 
 ## update_annual.py (REVIEWED)
 
