@@ -46,6 +46,12 @@ def get_reginfo_data(start_date,end_date,rule_type='es',agency_code='0000'):
     # print(content)
 
     # Extract Number Of Records Found
+    '''
+    When a RegInfo advanced search query is submitted, it returns a page of results 
+    with "Number of Records Found" indicated at the top. This gives a cumulative count
+    of all of the records (rules) that were returned for the criteria specified in the 
+    search query (start date, end date, rule type, agency).
+    '''
     try:
         result = re.search(r"Number Of Records Found:\s*(\d+)", content).group(1)
         result=int(result)
@@ -56,11 +62,16 @@ def get_reginfo_data(start_date,end_date,rule_type='es',agency_code='0000'):
     return result
 
 # %% Function to collect reginfo data for multiple presidential months
+'''
+To return a monthly count of rules, the get_reginfo_data function must be rerun for every individual month.
+All of the months are looped through and the start and end date search terms are updated after each month 
+is queried and Number of Records Found is entered into the dateframe.
+'''
 def count_reginfo_monthly(update_start_date, update_end_date, rule_type='es'):
     # Create a dataframe to store results
     df_update=pd.DataFrame(columns=['publication_year', 'publication_month',f'{rule_type}_count'])
 
-    # Literate through every month between update_start_date and update_end_date
+    # Iterate through every month between update_start_date and update_end_date
     # Initialize the start date
     start_date = update_start_date.replace(day=1)
 
@@ -90,6 +101,11 @@ def count_reginfo_monthly(update_start_date, update_end_date, rule_type='es'):
     return df_update
 
 # %% Function to collect reginfo data for multiple presidential years
+'''
+To return an annual count of rules, the get_reginfo_data function must be rerun for every individual presidential
+year. All of the years are looped through and the start and end date search terms are updated after each presidential 
+year is queried and Number of Records Found is entered into the dateframe.
+'''
 def count_reginfo_annual(start_year, end_year, agency_code, rule_type='es'):
     result_dict = {}
     for year in range(start_year, end_year + 1):
