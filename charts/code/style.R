@@ -34,11 +34,11 @@
 
 # logo ####
    # Prefer the new anniversary logo if present; otherwise fall back to the default
-   new_logo_path <- here("charts", "style", "rsc_15_years_logo.png")
+   new_logo_path <- here("charts", "style", "gw_ci_rsc_2cs_pos.png")
    if (file.exists(new_logo_path)) {
      logo <- image_read(new_logo_path)
    } else {
-     logo <- image_read(here("charts", "style", "rsc_15_years_logo.png"))
+     logo <- image_read(here("charts", "style", "gw_ci_rsc_2cs_pos.png"))
    }
     # ^ didn't do this in cowplot format, used old magick format, seems to work...
 

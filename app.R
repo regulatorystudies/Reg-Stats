@@ -1,4 +1,4 @@
-# Load required libraries
+#Load required libraries
 library(shiny)
 library(ggplot2)
 library(dplyr)
@@ -17,6 +17,9 @@ source(here("charts", "code", "style.R"))
 data_file <- "cumulative_econ_significant_rules_by_presidential_month.csv"
 copy_dataset(data_file, here("data"), here("charts", "data"))
 cum_sig <- read.csv(here("charts", "data", data_file))
+
+# Determine data "updated" date from the data file's last modified timestamp
+data_updated_date <- format(file.info(here("charts", "data", data_file))$mtime, "%B %d, %Y")
 
 # Define administration variables
 admins <- c("Reagan", "Bush_41", "Clinton", "Bush_43", "Obama", "Trump_45", "Biden", "Trump_47")
@@ -47,69 +50,95 @@ cum_sig_long <- cum_sig_long %>%
 # UI
 ui <- fluidPage(
   titlePanel("Cumulative Economically Significant Final Rules by Administration"),
-  
+
   sidebarLayout(
     # Left sidebar with controls
     sidebarPanel(
       width = 3,
-      h4("Controls"),
-      
+      h4("Select Administration to Display"),
+
       # President selection
       checkboxGroupInput(
         "selected_presidents",
-        "Select Presidents to Display:",
+        " ",
         choices = admin_labels,
         selected = admin_labels
       ),
-      
+
       # # First term line now auto-enables when any selected president has >= 48 months
       # (control removed per requirements)
-      
+
       # # Show/hide zero line
       # checkboxInput(
       #   "show_zero_line",
       #   "Show Zero Line",
       #   value = TRUE
       # ),
-      
+
       # Download button
       downloadButton("download_plot", "Download Plot"),
       br(), br(),
-      
+
+      # Clear all selections
+      actionButton("clear_all", "Clear All"),
+      br(), br(),
+
+      # RegStats external link button
+      actionButton(
+        inputId = "open_regstats",
+        label = "Open RegStats Page",
+        onclick = "window.open('https://regulatorystudies.columbian.gwu.edu/regstats', '_blank')"
+      ),
+
       # Data info
       # h5("Data Information"),
       # p("This dashboard shows cumulative economically significant final rules published by presidential administrations over time."),
       # p("Data sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations; Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations."),
       # p(paste("Updated:", format(Sys.Date(), "%B %d, %Y")))
     ),
-    
+
     # Main panel with plot
     mainPanel(
       width = 9,
-      plotOutput("main_plot", height = "700px")
+      div(
+        style = "border: 1px solid #cccccc; border-radius: 6px; padding: 12px; background-color: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.06);",
+        plotOutput("main_plot", height = "700px")
+      )
     )
   )
 )
 
 # Server
-server <- function(input, output) {
-  
+server <- function(input, output, session) {
+
+  # Clear all selected presidents
+  observeEvent(input$clear_all, {
+    updateCheckboxGroupInput(
+      session,
+      "selected_presidents",
+      selected = character(0)
+    )
+  })
+
   # Reactive data filtering
   filtered_data <- reactive({
     if (is.null(input$selected_presidents)) {
       return(cum_sig_long[FALSE, ])  # Return empty data frame if no presidents selected
     }
-    
+
     cum_sig_long %>%
       filter(president %in% input$selected_presidents)
   })
-  
+
   # Auto-toggle for first-term line: TRUE if any selected data include months >= 48
   show_first_term_line <- reactive({
     if (nrow(filtered_data()) == 0) return(FALSE)
-    suppressWarnings(max(filtered_data()$months_in_office, na.rm = TRUE) >= 48)
+    line_check <- filtered_data() %>%
+      group_by(president) %>%
+      summarise(max_months = suppressWarnings(max(months_in_office, na.rm = TRUE)), .groups = 'drop')
+    any(line_check$max_months > 48)
   })
-  
+
   # Calculate line endpoints for selected presidents
   line_ends <- reactive({
     filtered_data() %>%
@@ -118,7 +147,7 @@ server <- function(input, output) {
                 econ_rules_end = max(econ_rules),
                 .groups = 'drop')
   })
-  
+
   # Create the main plot
   output$main_plot <- renderPlot({
     if (nrow(filtered_data()) == 0) {
@@ -131,6 +160,8 @@ server <- function(input, output) {
         xlim(0, 1) + ylim(0, 1)
     } else {
       # Create the main plot
+      max_months <- suppressWarnings(max(filtered_data()$months_in_office, na.rm = TRUE))
+      x_breaks <- if (is.finite(max_months) && max_months >= 4) seq(0, max_months, by = 4) else unique(0:max_months)
       p <- ggplot(filtered_data(), aes(x = months_in_office, y = econ_rules,
                                        color = president, group = president)) +
         geom_line(linewidth = 0.75) +
@@ -147,10 +178,10 @@ server <- function(input, output) {
         scale_y_continuous(breaks = seq(0, ydynam(filtered_data(), 50, 3), by = 50),
                            expand = c(0, 0),
                            limits = c(-2, max(filtered_data()$econ_rules) + 50)) +
-        scale_x_continuous(breaks = seq(4, max(filtered_data()$months_in_office), by = 4),
+        scale_x_continuous(breaks = x_breaks,
                            expand = c(0, 0),
-                           limits = c(0, max(filtered_data()$months_in_office)))
-      
+                           limits = c(0, max_months))
+
       # Add first term line if auto-condition met
       if (show_first_term_line()) {
         p <- p + annotate(geom = "segment",
@@ -162,7 +193,7 @@ server <- function(input, output) {
                        label = "End of First Presidential Term",
                        size = 4, hjust = 0, vjust = 0)
       }
-      
+
       # # Add zero line if selected
       # if (input$show_zero_line) {
       #   p <- p + annotate(geom = "segment",
@@ -170,7 +201,7 @@ server <- function(input, output) {
       #                     y = 0, yend = 0,
       #                     linetype = "solid", linewidth = 1, color = RSCgray)
       # }
-      
+
       # Add president labels at line endpoints
       if (nrow(line_ends()) > 0) {
         p <- p + geom_label_repel_RSC(data = line_ends(),
@@ -189,27 +220,27 @@ server <- function(input, output) {
                                       label.r = 0,
                                       fill = alpha(c("white"), 0.8))
       }
-      
+
       # Compose footer with logo (left), note (above logo), and sources (right)
-      current_date <- format(Sys.Date(), "%B %d, %Y")
+      accessed_date <- format(Sys.Date(), "%B %d, %Y")
       footer_note <- "Note: Data for month 0 include rules published between January 21 and January 31 of the administration's first year."
       footer_sources <- paste0(
-        "\nSources: Office of the Federal Register (federalregister.gov) for Biden\n administration and all subsequent administrations; Office of Information\n and Regulatory Affairs (reginfo.gov) for all prior administrations.\nUpdated: ",
-        current_date
+        "\nSources: Office of the Federal Register (federalregister.gov) for Biden\n administration and all subsequent administrations; Office of Information\n and Regulatory Affairs (reginfo.gov) for all prior administrations.\nAccessed: ",
+        accessed_date
       )
-      
+
       suppressWarnings({
         p_with_logo <- ggdraw() +
           draw_plot(p, y = 0.13, height = 0.90) +
-          draw_image(logo, x = 0.05, y = 0.05, halign = 0, valign = 0, width = 0.3) +
-          draw_text(footer_note, x = 0.25, y = 0.18, hjust = 0, size = 12, family = "avenir_lt_pro") +
+          draw_image(logo, x = 0.05, y = 0.02, halign = 0, valign = 0, width = 0.25) +
+          draw_text(footer_note, x = 0.07, y = 0.18, hjust = 0, size = 12, family = "avenir_lt_pro") +
           draw_text(footer_sources, x = 0.95, y = 0.08, hjust = 1, size = 12, family = "avenir_lt_pro")
       })
-      
+
       p_with_logo
     }
   })
-  
+
   # Download handler
   output$download_plot <- downloadHandler(
     filename = function() {
@@ -225,6 +256,8 @@ server <- function(input, output) {
           theme_void() +
           xlim(0, 1) + ylim(0, 1)
       } else {
+        max_months <- suppressWarnings(max(filtered_data()$months_in_office, na.rm = TRUE))
+        x_breaks <- if (is.finite(max_months) && max_months >= 4) seq(0, max_months, by = 4) else unique(0:max_months)
         p <- ggplot(filtered_data(), aes(x = months_in_office, y = econ_rules,
                                          color = president, group = president)) +
           geom_line(linewidth = 0.75) +
@@ -241,10 +274,10 @@ server <- function(input, output) {
           scale_y_continuous(breaks = seq(0, ydynam(filtered_data(), 50, 3), by = 50),
                              expand = c(0, 0),
                              limits = c(-2, max(filtered_data()$econ_rules) + 50)) +
-          scale_x_continuous(breaks = seq(4, max(filtered_data()$months_in_office), by = 4),
+          scale_x_continuous(breaks = x_breaks,
                              expand = c(0, 0),
-                             limits = c(0, max(filtered_data()$months_in_office)))
-        
+                              limits = c(0, max_months))
+
         if (show_first_term_line()) {
           p <- p + annotate(geom = "segment",
                             x = 48, xend = 48,
@@ -255,14 +288,14 @@ server <- function(input, output) {
                          label = "End of First Presidential Term",
                          size = 4, hjust = 0, vjust = 0)
         }
-        
+
         # if (input$show_zero_line) {
         #   p <- p + annotate(geom = "segment",
         #                     x = min(0), xend = max(filtered_data()$months_in_office),
         #                     y = 0, yend = 0,
         #                     linetype = "solid", linewidth = 1, color = RSCgray)
         # }
-        
+
         if (nrow(line_ends()) > 0) {
           p <- p + geom_label_repel_RSC(data = line_ends(),
                                         aes(x = months_in_office_end, y = econ_rules_end,
@@ -280,14 +313,15 @@ server <- function(input, output) {
                                         label.r = 0,
                                         fill = alpha(c("white"), 0.8))
         }
-        
-        current_date <- format(Sys.Date(), "%B %d, %Y")
+
+        # Use the data file's modified time for the Updated date on downloads
+        updated_date <- data_updated_date
         footer_note <- "Note: Data for month 0 include rules published between January 21 and January 31 of the administration's first year."
         footer_sources <- paste0(
           "\nSources: Office of the Federal Register (federalregister.gov) for Biden\n administration and all subsequent administrations; Office of Information\n and Regulatory Affairs (reginfo.gov) for all prior administrations.\nUpdated: ",
-          current_date
+          updated_date
         )
-        
+
         suppressWarnings({
           p <- ggdraw() +
             draw_plot(p, y = 0.13, height = 0.90) +
@@ -296,7 +330,7 @@ server <- function(input, output) {
             draw_text(footer_sources, x = 0.95, y = 0.08, hjust = 1, size = 12, family = "avenir_lt_pro")
         })
       }
-      
+
       ggsave(file, plot = p, width = 12, height = 9, dpi = 300, device = "png", bg = "white")
     }
   )
@@ -304,3 +338,4 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
+
