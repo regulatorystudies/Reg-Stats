@@ -1,4 +1,4 @@
-#Load required libraries
+
 library(shiny)
 library(ggplot2)
 library(dplyr)
@@ -9,11 +9,11 @@ library(magick)
 library(ggrepel)
 library(showtext)
 
-# Source local functions and styles
+# changes made on 09/24
+
 source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
 
-# Load data
 data_file <- "cumulative_econ_significant_rules_by_presidential_month.csv"
 copy_dataset(data_file, here("data"), here("charts", "data"))
 cum_sig <- read.csv(here("charts", "data", data_file))
