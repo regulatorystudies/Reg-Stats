@@ -10,6 +10,7 @@ library(ggrepel)
 library(showtext)
 
 # changes made on 09/24
+# added the features 
 
 source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
