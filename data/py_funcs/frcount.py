@@ -50,10 +50,10 @@ def count_fr_monthly(dir_path,update_start_date,update_end_date):
     # Count monthly rules according to rule type
     # Count monthly economically/section 3(f)(1) significant rules
     '''
-    The first if statement checks whether the month being updated has one of the cutoff dates (2023/04/06 or 2025/01/20) within the month. 
-    If the first cutoff date (2023/04/06) falls within the month, it counts economically significant rules prior to that cutoff date and 3(f)(1) significant rules on 
-    the cutoff date and subsequent days in the month. If the second cutoff date (2025/01/20) falls within the month, it counts 3(f)(1) rules prior to that cutoff date
-    and econmically significant rules on that cutoff date and subsequent days in the month.
+    The first if statement checks whether the date range being updated has one of the cutoff dates (2023/04/06 or 2025/01/20) within the it. 
+    If the first cutoff date (2023/04/06) falls within the date range, it counts economically significant rules prior to that cutoff date and 3(f)(1) significant rules on 
+    the cutoff date and subsequent days in the date range. If the second cutoff date (2025/01/20) falls within the date range, it counts 3(f)(1) rules prior to and on that
+    cutoff date and econmically significant rules for subsequent days in the date range.
     '''
     if (min(df_fr['publication_date']) < date(2023, 4, 6) < max(df_fr['publication_date'])) | \
         (min(df_fr['publication_date']) < date(2025,1,20) < max(df_fr['publication_date'])):
@@ -76,14 +76,14 @@ def count_fr_monthly(dir_path,update_start_date,update_end_date):
         df_es=df_es.groupby(['publication_year', 'publication_month']).sum().reset_index().\
                     sort_values(['publication_year', 'publication_month'])
                     
- # If every day of the month being updated falls outside of the two cutoff dates, then use the economically significant count for all rules in that month.                   
+ # If every day of the date range being updated falls outside of the two cutoff dates, then use the economically significant count for all rules in that date range.                   
     elif (max(df_fr['publication_date']) < date(2023, 4, 6)) | (min(df_fr['publication_date']) > date(2025, 1, 20)):
         # "Economically significant" rules published before 4/6/2023 or after 1/20/2025
         df_es = df_fr[['publication_year', 'publication_month', 'econ_significant']]. \
                 groupby(['publication_year', 'publication_month']).sum().reset_index()
         df_es.rename(columns={'econ_significant': 'es_count'}, inplace=True)
 
-# If every day of the month being updated falls between the two cutoff dates, then use the 3(f)(1) count for all rules in that month.
+# If every day of the date range being updated falls between the two cutoff dates, then use the 3(f)(1) count for all rules in that date range.
     else:
         # "Section 3f1 significant" rules published between 4/6/2023 and 1/20/2025
         df_es = df_fr[['publication_year', 'publication_month', '3(f)(1) significant']]. \
