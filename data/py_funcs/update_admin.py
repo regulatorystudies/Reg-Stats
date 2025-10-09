@@ -8,7 +8,7 @@ from party import *
 
 #%% Function to compare two dataframes and report differences
 def compare_df(df_old_data_original,df_old_data_updated):
-    # Fill null values for comparison
+    # Fill null values for comparison (-1 value is a null value placeholder that allows you to keep integer data types)
     df_old_data_original=df_old_data_original.fillna(-1)
     df_old_data_updated=df_old_data_updated.fillna(-1)
 
@@ -43,6 +43,11 @@ def update_admin(dir_path,df,admin,first_month_no_data,update_start_date,update_
     # Append new data to the current dataset (cumulative or monthly)
     # Append according to data type
     if data_type=='cumulative':
+    '''
+    If there isn't previous monthly data to add the new data to, it will start the cumulative count at 0. 
+    If there is previous monthly data (it's not the first month in the admin), it continues the cumulative count
+    using the last non-null value in the column as a starting point. 
+    '''
         cum_count=0 if first_month_no_data==0 else df[df[admin].notnull()][admin].iloc[-1]
         for x in df_update[f'{rule_type}_count']:
             cum_count = cum_count + x
