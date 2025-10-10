@@ -106,6 +106,11 @@ def check_data(dir_path, df, col_update, earliest_year, last_year_with_data, rul
     return df, check
 
 #%% Main function to update annual (economically) significant rules
+'''
+dir_path, earliest_year, and rule_type are all variables that are set in the .py files of the various data 
+subfolders. Each subfolder assigns different values to these variables which are then passed into the main function
+when the .py files in the subfolders are run.
+'''
 def main(dir_path,file_path,earliest_year,rule_type,check=None,agency_acronym=''):
     # agency_acronym='' is the default value if no particular agency is specified (in other words, all agencies)
     
