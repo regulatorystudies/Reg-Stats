@@ -42,12 +42,12 @@ def update_admin(dir_path,df,admin,first_month_no_data,update_start_date,update_
 
     # Append new data to the current dataset (cumulative or monthly)
     # Append according to data type
-    if data_type=='cumulative':
     '''
     If there isn't previous monthly data to add the new data to, it will start the cumulative count at 0. 
     If there is previous monthly data (it's not the first month in the admin), it continues the cumulative count
-    using the last non-null value in the column as a starting point. 
-    '''
+    using the last non-null value in the column as a starting point.
+    ''' 
+    if data_type=='cumulative':
         cum_count=0 if first_month_no_data==0 else df[df[admin].notnull()][admin].iloc[-1]
         for x in df_update[f'{rule_type}_count']:
             cum_count = cum_count + x
@@ -97,6 +97,11 @@ def import_file(file_path):
     return df
 
 #%% Function to update data for all administrations in the dataset
+'''
+dir_path, file_path, rule_type, and data_type are all variables that are set in the .py files of the various data 
+subfolders. Each subfolder assigns different values to these variables which are then passed into the main function
+when the .py files in the subfolders are run.
+'''
 def main(dir_path,file_path,rule_type,data_type):
     # Report the admin coverage
     print(f"The current dataset covers the {', '.join(list(admin_year.keys()))} administrations.\n"
