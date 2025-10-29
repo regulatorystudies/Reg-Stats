@@ -1,8 +1,8 @@
-# Reg Stats Style Guide
+# RegStats Style Guide
 
-## Purpose of Reg Stats
+## Purpose of RegStats
 
-The purpose of the Reg Stats page is to provide visually appealing charts that accurately communicate data that is important to or featured in our research.
+The purpose of the RegStats page is to provide visually appealing charts that accurately communicate data that is important to or featured in our research.
 
 ### Color Scheme for Charts and Graphs
 
@@ -58,7 +58,7 @@ If a graph or chart calls for three or more colors, use the above colors in the 
 
 #### Fonts
 
-For all Reg Stats charts, the primary font is AvenirNext LT Pro Regular
+For all RegStats charts, the primary font is AvenirNext LT Pro Regular
 
 ```         
 ● If the font is too wide for axis labels, use Avenir Next LT Pro Condensed
