@@ -38,10 +38,10 @@ df_new.replace(r'‡', '***', regex=True, inplace=True)
 
 #%% Clean new dataset
 # Separate notes rows
-df_notes = df_new[pd.to_numeric(df_new['Year'], errors='coerce').isna()]
-df_notes=df_notes[df_notes['Year']!='\ufeff']
+df_notes = df_new[pd.to_numeric(df_new['Year'], errors='coerce').isna()] # try to convert values in year column to numeric, if can't will = NA, then create new df from NA rows
+df_notes=df_notes[df_notes['Year']!='\ufeff'] # if any of the year values are \ufeff then they are eliminated
 
-df_new = df_new[pd.to_numeric(df_new['Year'], errors='coerce').notna()]
+df_new = df_new[pd.to_numeric(df_new['Year'], errors='coerce').notna()] # try to convert values in year column to numeric, if can then create new df from those rows
 
 #%% Re-sort by year
 df_new.sort_values(['Year'],inplace=True)
