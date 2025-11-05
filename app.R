@@ -1,8 +1,8 @@
 
-library(shiny)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+library(shiny)
 library(here)
 library(cowplot)
 library(magick)
@@ -10,7 +10,7 @@ library(ggrepel)
 library(showtext)
 
 # changes made on 09/24
-# added the features 
+# added the features
 
 source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
@@ -77,12 +77,14 @@ ui <- fluidPage(
       # ),
 
       # Download button
+      actionButton("clear_all", "Deselect All"),
+      br(), br(),
+      
       downloadButton("download_plot", "Download Plot"),
       br(), br(),
 
       # Clear all selections
-      actionButton("clear_all", "Clear All"),
-      br(), br(),
+      
 
       # RegStats external link button
       actionButton(
@@ -91,11 +93,13 @@ ui <- fluidPage(
         onclick = "window.open('https://regulatorystudies.columbian.gwu.edu/regstats', '_blank')"
       ),
 
-      # Data info
-      # h5("Data Information"),
-      # p("This dashboard shows cumulative economically significant final rules published by presidential administrations over time."),
-      # p("Data sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations; Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations."),
-      # p(paste("Updated:", format(Sys.Date(), "%B %d, %Y")))
+      br(), br(),
+
+      # Information section
+      h5("About This Dashboard"),
+      p("This dashboard tracks cumulative economically significant rules published by administrations over time."),
+      p("Economically significant rules are regulations that have an estimated annual economic effect of $100 million or more, as defined in section 3(f)(1) of Executive Order (EO) 12866, as amended by EO 14094 (issued April 6, 2023 and rescinded January 20, 2025) and EO 14215 (issued February 18, 2025). "),
+
     ),
 
     # Main panel with plot
@@ -155,7 +159,7 @@ server <- function(input, output, session) {
       # Show empty plot with message
       ggplot() +
         annotate("text", x = 0.5, y = 0.5,
-                 label = "Please select at least one president to display",
+                 label = "Please select at least one presidential administration to display.",
                  size = 6) +
         theme_void() +
         xlim(0, 1) + ylim(0, 1)
@@ -219,7 +223,7 @@ server <- function(input, output, session) {
                                       label.size = NA,
                                       label.padding = 0,
                                       label.r = 0,
-                                      fill = alpha(c("white"), 0.8))
+                                      fill = alpha(c("#ffffff"), 0.8))
       }
 
       # Compose footer with logo (left), note (above logo), and sources (right)
@@ -233,7 +237,7 @@ server <- function(input, output, session) {
       suppressWarnings({
         p_with_logo <- ggdraw() +
           draw_plot(p, y = 0.13, height = 0.90) +
-          draw_image(logo, x = 0.05, y = 0.02, halign = 0, valign = 0, width = 0.25) +
+          draw_image(logo, x = 0.05, y = 0.02, halign = 0, valign = 0, width = 0.20) +
           draw_text(footer_note, x = 0.07, y = 0.18, hjust = 0, size = 12, family = "avenir_lt_pro") +
           draw_text(footer_sources, x = 0.95, y = 0.08, hjust = 1, size = 12, family = "avenir_lt_pro")
       })
@@ -312,7 +316,7 @@ server <- function(input, output, session) {
                                         label.size = NA,
                                         label.padding = 0,
                                         label.r = 0,
-                                        fill = alpha(c("white"), 0.8))
+                                        fill = alpha(c("#ffffff"), 0.8))
         }
 
         # Use the data file's modified time for the Updated date on downloads
@@ -332,7 +336,7 @@ server <- function(input, output, session) {
         })
       }
 
-      ggsave(file, plot = p, width = 12, height = 9, dpi = 300, device = "png", bg = "white")
+      ggsave(file, plot = p, width = 12, height = 9, dpi = 300, device = "png", bg = "#ffffff")
     }
   )
 }
