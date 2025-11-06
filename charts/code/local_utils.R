@@ -1,4 +1,4 @@
-# import libraries
+
 library(fs)
 library(grid)
 library(here)
@@ -6,7 +6,6 @@ library(png)
 library(dplyr)
 library(ggrepel)
 
-# function to load png file
 get_png <- function(filename) {
   
   grid::rasterGrob(png::readPNG(filename), interpolate = TRUE) # adjust logo size dimensions here

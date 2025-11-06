@@ -9,8 +9,8 @@ library(magick)
 library(ggrepel)
 library(showtext)
 
-# changes made on 09/24
-# added the features
+
+# changes made on 11/05
 
 source(here("charts", "code", "local_utils.R"))
 source(here("charts", "code", "style.R"))
@@ -79,17 +79,22 @@ ui <- fluidPage(
       # Download button
       actionButton("clear_all", "Deselect All"),
       br(), br(),
-      
+
+      # Show first 12 months only
+      actionButton("toggle_12_months", "Show First 12 Months Only"),
+
+      br(),br(),
+
       downloadButton("download_plot", "Download Plot"),
       br(), br(),
 
       # Clear all selections
-      
+
 
       # RegStats external link button
       actionButton(
         inputId = "open_regstats",
-        label = "Open RegStats Page",
+        label = "RegStats Page",
         onclick = "window.open('https://regulatorystudies.columbian.gwu.edu/regstats', '_blank')"
       ),
 
@@ -99,6 +104,9 @@ ui <- fluidPage(
       h5("About This Dashboard"),
       p("This dashboard tracks cumulative economically significant rules published by administrations over time."),
       p("Economically significant rules are regulations that have an estimated annual economic effect of $100 million or more, as defined in section 3(f)(1) of Executive Order (EO) 12866, as amended by EO 14094 (issued April 6, 2023 and rescinded January 20, 2025) and EO 14215 (issued February 18, 2025). "),
+      p(tags$a(href = "https://github.com/regulatorystudies/Reg-Stats/tree/main/data/cumulative_es_rules",
+               target = "_blank",
+               "More information on how we collect data")),
 
     ),
 
@@ -116,6 +124,20 @@ ui <- fluidPage(
 # Server
 server <- function(input, output, session) {
 
+  # Reactive value to track 12-month view state
+  show_12_months <- reactiveVal(FALSE)
+
+  # Toggle 12-month view when button is clicked
+  observeEvent(input$toggle_12_months, {
+    show_12_months(!show_12_months())
+    # Update button label based on state
+    if (show_12_months()) {
+      updateActionButton(session, "toggle_12_months", "Show Full Range")
+    } else {
+      updateActionButton(session, "toggle_12_months", "Show First 12 Months Only")
+    }
+  })
+
   # Clear all selected presidents
   observeEvent(input$clear_all, {
     updateCheckboxGroupInput(
@@ -131,8 +153,16 @@ server <- function(input, output, session) {
       return(cum_sig_long[FALSE, ])  # Return empty data frame if no presidents selected
     }
 
-    cum_sig_long %>%
+    data <- cum_sig_long %>%
       filter(president %in% input$selected_presidents)
+
+    # Filter to first 12 months if button is toggled
+    if (show_12_months()) {
+      data <- data %>%
+        filter(months_in_office <= 12)
+    }
+
+    return(data)
   })
 
   # Auto-toggle for first-term line: TRUE if any selected data include months >= 48
@@ -165,7 +195,11 @@ server <- function(input, output, session) {
         xlim(0, 1) + ylim(0, 1)
     } else {
       # Create the main plot
-      max_months <- suppressWarnings(max(filtered_data()$months_in_office, na.rm = TRUE))
+      max_months <- if (show_12_months()) {
+        12
+      } else {
+        suppressWarnings(max(filtered_data()$months_in_office, na.rm = TRUE))
+      }
       x_breaks <- if (is.finite(max_months) && max_months >= 4) seq(0, max_months, by = 4) else unique(0:max_months)
       p <- ggplot(filtered_data(), aes(x = months_in_office, y = econ_rules,
                                        color = president, group = president)) +
@@ -261,7 +295,11 @@ server <- function(input, output, session) {
           theme_void() +
           xlim(0, 1) + ylim(0, 1)
       } else {
-        max_months <- suppressWarnings(max(filtered_data()$months_in_office, na.rm = TRUE))
+        max_months <- if (show_12_months()) {
+          12
+        } else {
+          suppressWarnings(max(filtered_data()$months_in_office, na.rm = TRUE))
+        }
         x_breaks <- if (is.finite(max_months) && max_months >= 4) seq(0, max_months, by = 4) else unique(0:max_months)
         p <- ggplot(filtered_data(), aes(x = months_in_office, y = econ_rules,
                                          color = president, group = president)) +
