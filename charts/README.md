@@ -28,7 +28,7 @@ When updating RegStats charts, you will generally take the following steps:
        Steps:
         - [R](https://cran.rstudio.com/) version 4.2.2 or 4.3.1 (you need one of these versions of R to activate the environment properly).  
         - The [RStudio](https://posit.co/download/rstudio-desktop/) integrated development environment (IDE).  
-        - [renv](https://rstudio.github.io/renv/index.html) (currently using `renv@1.0.3`).  
+        - [renv](https://rstudio.github.io/renv/index.html) (currently using `renv@1.1.5`).  
         - You may also need tools for compiling R on your machine to build R packages from source. See details for [Windows](https://cran.rstudio.com/bin/windows/Rtools/rtools40.html) and [macOS](https://cran.r-project.org/bin/macosx/tools/).  
 
    2. Clone repository  
@@ -42,7 +42,7 @@ When updating RegStats charts, you will generally take the following steps:
    4. Activate the environment using renv  
 
        Steps:
-         - You will need to activate the renv profile associated with the version of R you're running. If using R 4.3.1, run the command `renv::activate(profile = "R_431")` to open the profile with the lockfile corresponding to R 4.3.1 packages. If using R 4.2.2, run `renv::activate(profile = "R_422")`. See the [renv docs](https://rstudio.github.io/renv/articles/profiles.html) for more information.  
+         - You will need to activate the renv profile associated with the version of R you're running. If using R 4.5.0, run the command `renv::activate(profile = "R_450")` to open the profile with the lockfile corresponding to R 4.3.1 packages. If using R 4.2.2, run `renv::activate(profile = "R_422")`. See the [renv docs](https://rstudio.github.io/renv/articles/profiles.html) for more information.  
          - Run `renv::restore()` to align your environment with the lockfile.  
          - If you continue to have issues restoring the environment, you may be able to skip this step and install required packages using `utils::install.packages()`.  
 
