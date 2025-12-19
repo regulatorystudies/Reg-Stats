@@ -46,10 +46,10 @@ def read_pdf(pdf_url,law_no,timeout=10):
     session.mount('https://', adapter)
 
     try:
-        response = session.get(pdf_url, timeout=timeout)
+        response = session.get(pdf_url, timeout=timeout) # get data for PDf from URL
         response.raise_for_status()
 
-        pdf_file = BytesIO(response.content)
+        pdf_file = BytesIO(response.content) # Use BytesIO to handle PDF in memory (RAM)
         try:
             reader = PdfReader(pdf_file, strict=False)
 
@@ -57,11 +57,11 @@ def read_pdf(pdf_url,law_no,timeout=10):
             total_words = sum(
                 len(page.extract_text().split())
                 for page in reader.pages
-                if page.extract_text()
+                if page.extract_text() # if the page has text content (extract text and sum words)
             )
 
         except PdfReadError as e:
-            print(f"PDF read error for public law {law_no}: {e}.\nRetrying with fitz...")
+            print(f"PDF read error for public law {law_no}: {e}.\nRetrying with fitz...") # fitz is another text extraction library
 
             try:
                 doc = fitz.open(stream=pdf_file, filetype="pdf")
