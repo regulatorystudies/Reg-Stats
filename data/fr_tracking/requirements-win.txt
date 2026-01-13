@@ -21,8 +21,6 @@ click==8.1.7
     #   rsconnect-python
     #   shiny
     #   uvicorn
-colorama==0.4.6
-    # via click
 cursor==1.3.5
     # via fr-toolbelt
 fr-toolbelt==0.1.3
@@ -73,7 +71,7 @@ pytz==2024.1
     # via pandas
 questionary==2.0.1
     # via shiny
-requests==2.32.3
+requests==2.32.4
     # via
     #   -r requirements.in
     #   fr-toolbelt
@@ -98,7 +96,7 @@ tzdata==2024.1
     # via pandas
 uc-micro-py==1.0.3
     # via linkify-it-py
-urllib3==2.2.2
+urllib3==2.6.3
     # via requests
 uvicorn==0.30.3
     # via shiny
