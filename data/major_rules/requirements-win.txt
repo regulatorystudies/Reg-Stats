@@ -12,8 +12,6 @@ certifi==2024.7.4
     # via requests
 charset-normalizer==3.3.2
     # via requests
-colorama==0.4.6
-    # via ipython
 comm==0.2.2
     # via ipykernel
 debugpy==1.8.2
@@ -54,12 +52,16 @@ pandas==2.2.2
     # via -r requirements.in
 parso==0.8.4
     # via jedi
+pexpect==4.9.0
+    # via ipython
 platformdirs==4.2.2
     # via jupyter-core
 prompt-toolkit==3.0.47
     # via ipython
 psutil==6.0.0
     # via ipykernel
+ptyprocess==0.7.0
+    # via pexpect
 pure-eval==0.2.3
     # via stack-data
 pygments==2.18.0
@@ -71,8 +73,6 @@ python-dateutil==2.9.0.post0
     #   pandas
 pytz==2024.1
     # via pandas
-pywin32==306
-    # via jupyter-core
 pyzmq==26.0.3
     # via
     #   ipykernel
@@ -103,7 +103,7 @@ typing-extensions==4.12.2
     # via ipython
 tzdata==2024.1
     # via pandas
-urllib3==2.2.2
+urllib3==2.6.3
     # via requests
 wcwidth==0.2.13
     # via prompt-toolkit
