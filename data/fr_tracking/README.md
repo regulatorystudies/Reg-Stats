@@ -2,7 +2,7 @@
 
 ## Last Updated
 
-README: 2024-06-12
+README: 2026-01-20
 
 Data: ~weekly
 
@@ -41,7 +41,7 @@ Data: ~weekly
   - To find the rule on reginfo.gov, click Document Details on the Federal Register page of the rule. If there is a RIN, which is often hyperlinked, click on it, and you will be directed to a reginfo.gov page with a list of Unified Agendas in which the rule appeared. Click on the latest Unified Agenda on the page, and look for the Priority field, which includes the significance designation from the Unified Agenda.
   - Note that the designation from the Unified Agenda is not always accurate and may be different from the Federal Register preamble. Because the Unified Agenda is forward-looking, agencies or OIRA may change the designation when the rule is actually published. Therefore, always use the Federal Register preamble as the primary source for this information, and use reginfo.gov as a supplementary source only (if at all).
  
-*Note: Significance classifications in the first few years of the `fr_tracking.csv` dataset may not be fully accurate, as the policy team was establishing classification practices during that period.*
+*Note: Significance classifications in the first few years of the `fr_tracking.csv` dataset may not be fully accurate, as the policy team was establishing classification practices during that period. See "Notes" column in dataset for more information.*
 
 ## Environment Set Up
 
