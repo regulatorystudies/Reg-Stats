@@ -98,7 +98,7 @@ plot_data <- function(df, agency_acronym, agency_name) {
             theme(
               plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 0, unit = "pt")),
               legend.position = "top",
-              legend.margin = margin(t = 10, b = -10),
+              legend.margin = margin(t = 10, b = 0),
               legend.text = element_text(size = 15),
               legend.key.size = unit(2, "lines"),    
               axis.text.x = element_text(angle = 65, hjust = 1),
