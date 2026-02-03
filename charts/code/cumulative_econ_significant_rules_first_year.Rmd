@@ -112,7 +112,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
         axis.line.x = element_line(linewidth = 1, color = RSCgray),
         plot.title = element_text(margin = margin(b = -50))
 ) +
-  annotate_RSC(geom = "text", x = 0, y = 0, label = "\n\n\n\n\n\nNote: Data for month 0 include rules published between January 21 and January 31 of the administration's first year.", size = 3.85, vjust = 0.5, hjust=0) +
+  annotate_RSC(geom = "text", x = 0, y = 0, label = "\n\n\n\n\n\n\nNote: Data for month 0 include rules published between January 21 and January 31 of the administration's first year.", size = 3.85, vjust = 0.5, hjust=0) +
   ylab("Number of Rules \n") +
   xlab("Months In Office") +
   ggtitle("Cumulative Economically Significant Final Rules Published \nby Administration in First Year") +
@@ -135,7 +135,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
 ```{r}
 suppressWarnings({new_bar <- ggdraw(xlim = c(0, 1), ylim = c(0, 1), clip = "off") +
       draw_plot(line1) +
-      draw_image(logo, x = 0.1, y = 0.05, halign = 0, valign = 0, width = 0.2)
+      draw_image(logo, x = 0.1, y = 0.06, halign = 0, valign = 0, width = 0.2)
 
 new_bar})
 ```
