@@ -134,13 +134,13 @@ bar1 <- ggplot(count_by_congress1, aes(x = congress, y = word_count)) +
     axis.ticks.x = element_blank(),
     axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
     axis.line.x = element_line(linewidth = 1, color = RSCgray),
-    plot.title = element_text(margin = margin(b = -5))
+    plot.title = element_text(margin = margin(b = 0))
   )
 
 # supress warning
 suppressWarnings({bar2 <- ggdraw() +
   draw_plot(bar1) +
- draw_image(logo, x = 0.1, y = 0.06, halign = 0, valign = 0, width = 0.2)
+ draw_image(logo, x = 0.1, y = 0.047, halign = 0, valign = 0, width = 0.2)
 bar2})
 
 ```
