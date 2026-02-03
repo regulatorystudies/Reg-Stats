@@ -87,7 +87,9 @@ line1 <- ggplot(rules_pub_long,
     legend.text = element_text(size = 15),
     legend.key.size = unit(2, "lines"),    
     axis.text.x = element_text(angle = 65, hjust = 1),
-    axis.ticks.x = element_blank()) +
+    axis.ticks.x = element_blank(),
+    plot.caption = element_text(margin = margin(t = 20)),
+    plot.caption.position = "plot") +
   xlab(element_blank()) +
   ylab("Number of Rules") +
   ggtitle("Rules Published in the Federal Register by Presidential Year") +
@@ -107,7 +109,7 @@ line1
 # add logo to plot
 suppressWarnings({line2 <- ggdraw() +
   draw_plot(line1) +
-  draw_image(logo, x = 0.1, y = 0.076, halign = 0, valign = 0, width = 0.2)
+  draw_image(logo, x = 0.1, y = 0.060, halign = 0, valign = 0, width = 0.2)
 line2})
 
 

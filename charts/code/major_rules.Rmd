@@ -93,7 +93,7 @@ bar1 <-
   #theme(panel.grid.minor = element_blank()) +
   #ylab("Major Rules Published") +
   ylab("Number of Rules") +
-  xlab("Note: This figure reflects the number of major rules that federal agencies submitted to the Government Accountability Office as required by the Congressional \nReview Act during each presidential year. The data may not match the number of major rules published in the Federal Register. \n") +
+  xlab("\nNote: This figure reflects the number of major rules that federal agencies submitted to the Government Accountability Office as required by the Congressional \nReview Act during each presidential year. The data may not match the number of major rules published in the Federal Register. \n") +
   scale_y_continuous(breaks = seq(0, max(num_fr$major_rules_published) + 25, by = 25), expand = c(0, 0),
                      limits = c(0, max(num_fr$major_rules_published) + 25)) +
   coord_cartesian(clip = "off") +
@@ -101,23 +101,21 @@ bar1 <-
   theme_minimal() +
   theme_RSC +
   theme(
-      plot.title = element_text(hjust = 0.5, margin = margin(b = 20), size = 20),
+      plot.title = element_text(hjust = 0.5, margin = margin(b = 5), size = 20),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
       axis.title.x = element_text(size = 10, angle = 0, vjust = 0.5, hjust = 0, margin = margin(t = 10)),
-      #axis.ticks.x = element_line(color = RSCgray),
+      axis.ticks.x = element_blank(),
       axis.line.x = element_line(linewidth = 1, color = RSCgray),
       #legend.position = "none",
 
       axis.text.y = element_text(size = 12),
-      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 20)),# modified margin to adjust the space between title and y-axis 
+      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 15)),# modified margin to adjust the space between title and y-axis 
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
       
-      plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
-
-      plot.margin = margin(50, 50, 50, 50)
+      plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11)
     )
   
 

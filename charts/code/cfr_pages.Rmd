@@ -88,27 +88,26 @@ bar2 <-
   theme_minimal() +
   theme_RSC + 
   theme(
-      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 20, unit = "pt"), size = 20),
+      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 25, unit = "pt"), size = 20),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
-      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 3)),
-      #axis.ticks.x = element_line(color = RSCgray),
+      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 0)),
+      axis.ticks.x = element_line(color = RSCgray),
       axis.text.y = element_text(size = 12),
       axis.line.x = element_line(linewidth = 1, color = RSCgray),
 
       axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 20)),# modified margin to adjust the space between title and y-axis 
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
-      plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
-      plot.margin = margin(50, 50, 50, 50)
+      plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11)
     )
 
 
 #logo 
 suppressWarnings({new_bar <- ggdraw() +
       draw_plot(bar2) +
-      draw_image(logo, x = 0.1, y = 0.05, halign = 0, valign = 0, width = 0.2)
+      draw_image(logo, x = 0.1, y = 0.062, halign = 0, valign = 0, width = 0.2)
 
 new_bar})
 

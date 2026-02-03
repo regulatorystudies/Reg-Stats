@@ -82,15 +82,19 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
   labs(caption = caption_text) +
   coord_cartesian(clip = "off") +
   theme_RSC +
-  theme(axis.ticks.x = element_blank(),
+  theme(
+        plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 25, unit = "pt"), size = 20),
+        axis.ticks.x = element_line(color = RSCgray),
         axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
-        axis.line.x = element_line(linewidth = 1, color = RSCgray))
+        axis.line.x = element_line(linewidth = 1, color = RSCgray),
+        plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 20, l = 6, unit = "pt"), size = 11)
+        )
 bar1
 
 # supress warning
 suppressWarnings({bar2 <- ggdraw() +
   draw_plot(bar1) +
- draw_image(logo, x = 0.1, y = 0.06, halign = 0, valign = 0, width = 0.2)
+ draw_image(logo, x = 0.09, y = 0.044, halign = 0, valign = 0, width = 0.2)
 bar2})
 
 ```
