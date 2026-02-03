@@ -87,8 +87,7 @@ bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
         axis.ticks.x = element_line(color = RSCgray),
         axis.text.x = element_text(angle = 65, hjust = 1, vjust = 1, size = 12),
         axis.line.x = element_line(linewidth = 1, color = RSCgray),
-        plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 20, l = 6, unit = "pt"), size = 11),
-        plot.margin = margin(50, 50, 50, 50)
+        plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 20, l = 6, unit = "pt"), size = 11)
         )
 bar1
 

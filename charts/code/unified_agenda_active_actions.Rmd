@@ -104,7 +104,7 @@ bar2 <- ggplot(df1_1a_complete,
   theme_minimal() +
   theme_RSC +
   theme(
-      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 30), size = 20),
+      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 25), size = 20),
       legend.position = "bottom",
       legend.title = element_blank(),
       legend.text = element_text(size = 12),
