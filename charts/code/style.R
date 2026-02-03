@@ -42,14 +42,14 @@
 # custom theme for RSC RegStats plots
   theme_RSC <- theme_minimal(base_family = "avenir_lt_pro") +
     theme(
-      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 10, unit = "pt"), size = 20),
+      plot.title = element_text(hjust = 0.5, vjust = 0, margin = margin(b = 25, unit = "pt"), size = 20),
       legend.position = "none",
       panel.grid.major.x = element_blank(),
       axis.text.x = element_text(angle = 65, hjust = 0.5, vjust = 1, size = 12),
-      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 10)),
+      axis.title.x = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(t = 15)),
       axis.ticks.x = element_line(color = RSCgray),
       axis.text.y = element_text(size = 12),
-      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 10)),
+      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 15)),
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
       plot.caption = element_text(hjust = 1, vjust = 0, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
