@@ -124,7 +124,8 @@ plot_data <- function(df, agency_acronym, agency_name) {
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
     panel.grid.minor = element_blank(),
-    plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 0, unit = "pt"))
+    plot.caption = element_text(hjust = 1, margin = margin(t = 0, l = 36, b = 0, unit = "pt")),
+    plot.caption.position = "plot"
   )
 
  # add logo to plot
