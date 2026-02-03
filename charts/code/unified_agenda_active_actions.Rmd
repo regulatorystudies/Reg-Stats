@@ -115,7 +115,7 @@ bar2 <- ggplot(df1_1a_complete,
 
       #axis.ticks.x = element_line(color = RSCgray),
       axis.text.y = element_text(size = 12),
-      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 10)),# modified margin to adjust the space between title and y-axis 
+      axis.title.y = element_text(size = 12, angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(r = 0)),
       panel.grid.major.y = element_line(color = RSCgray, linetype = "solid", linewidth = 0.50),
       panel.grid.minor = element_blank(),
       plot.caption = element_text(hjust = 1, vjust = 10, margin = margin(t = 10, l = 6, unit = "pt"), size = 11),
@@ -127,7 +127,7 @@ bar2 <- ggplot(df1_1a_complete,
 ```{r}
 suppressWarnings({new_bar <- ggdraw() +
       draw_plot(bar2) +
-      draw_image(logo, x = 0.125, y = 0.03, halign = 0, valign = 0, width = 0.2)
+      draw_image(logo, x = 0.125, y = 0.043, halign = 0, valign = 0, width = 0.2)
 
 new_bar})
 ```
