@@ -12,6 +12,8 @@ warnings.filterwarnings("ignore")
 print("Download the XLS file from the Federal Register Statistics page before running this script."
       " See README for instructions")
 
+# Federal Register Statistics has accurate page counts for past years, but it lags behind GovInfo for recent years
+
 #%% Import the latest dataset
 dir_path=os.path.dirname(os.path.realpath(__file__))
 df_full=pd.read_excel(f'{dir_path}/aggregated_charts_frstats.xlsx',sheet_name='CFR Vols',skiprows=4)
@@ -67,7 +69,7 @@ for year in range(start_year,end_year):
             url = f"https://www.govinfo.gov/content/pkg/CFR-{year}-title{title}-vol{vol}/pdf/CFR-{year}-title{title}-vol{vol}.pdf"
             file_path = f"{dir_path}/CFR-{year}-title{title}-vol{vol}.pdf"
 
-            downloaded=download_file(url,file_path)
+            downloaded=download_file(url,file_path) # this downloads the corresponding pdf from the the url to the file path
 
             if os.path.exists(file_path):
                 pages_list.append((year,title,vol,count_pages(file_path)))
@@ -97,20 +99,20 @@ df=pd.DataFrame(pages_list,columns=['year','title','vol','pages'])
 #print(df.info())
 
 #%% Save disaggregated data
-df_disagg=pd.read_csv(f'{dir_path}/cfr_pages_disaggregated.csv')
+df_disagg=pd.read_csv(f'{dir_path}/cfr_pages_disaggregated.csv') # this loads the existing disaggregated data
 
-df_disagg=pd.concat([df_disagg,df[df['year']>max(df_disagg['year'])]],ignore_index=True)
-df_disagg.to_csv(f"{dir_path}/cfr_pages_disaggregated.csv",index=False)
+df_disagg=pd.concat([df_disagg,df[df['year']>max(df_disagg['year'])]],ignore_index=True) # this appends the new data to the existing data
+df_disagg.to_csv(f"{dir_path}/cfr_pages_disaggregated.csv",index=False) # overwrites the existing data with the updated data
 
 #%% Load disaggregated data (if applicable)
 # df=pd.read_csv(f"data/cfr_pages/cfr_pages_disaggregated.csv")
 
 #%% Concatenate annual data
-df_year=df[['year','vol','pages']].groupby('year').agg({'vol':'size','pages':'sum'}).reset_index()
-df_year.rename(columns={'year':'Year','vol':'Total Volumes\n(Exc CFR Index)','pages':'Total Pages'},inplace=True)
+df_year=df[['year','vol','pages']].groupby('year').agg({'vol':'size','pages':'sum'}).reset_index() # this groups the data by year and counts the number of volumes and sums the number of pages
+df_year.rename(columns={'year':'Year','vol':'Total Volumes\n(Exc CFR Index)','pages':'Total Pages'},inplace=True) # this renames the columns to match the existing aggregated data csv
 #print(df_year)
 
-df_data=pd.concat([df_data,df_year[df_year['Year']>max(df_data['Year'])]],ignore_index=True)
+df_data=pd.concat([df_data,df_year[df_year['Year']>max(df_data['Year'])]],ignore_index=True) # only concatinate if the years of the aggregated data are greater than the last year of the existing data
 
 #%% Concatenate notes
 # Add data source
