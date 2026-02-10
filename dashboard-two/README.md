@@ -21,3 +21,9 @@ pip install -r requirements.txt
 python -m ipykernel install --user --name=dashboard2 --display-name "dashboard2"
 ```
 
+To-do
+- Convert utilis and style to python 
+- Create notebook to replicate static plot
+- resolve the import errors in utilis 
+- add documentation to the code 
+
