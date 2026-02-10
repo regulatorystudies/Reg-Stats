@@ -43,5 +43,5 @@ theme_RSC = theme_minimal(base_family=custom_font) + \
         panel_grid_major_y=element_line(color=GW_COLORS["RSCgray"], linetype="solid", size=0.5),
         panel_grid_minor=element_blank(),
         plot_caption=element_text(ha='right', va='bottom', margin={'t': 10}, size=11),
-        plot_margin=50 # Plotnine uses a single value or a dictionary for margins
+        plot_margin=50 
     )
