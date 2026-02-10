@@ -14,6 +14,15 @@ get_png <- function(filename) {
 }
 
 # function for copying all data recursively within a folder
+def get_png(filename):
+    img = Image.open(filename)
+    return offsetbox.OffsetBox(img, zoom=0.1)
+
+def copy_all_data(path, new_path, file_type = "*.csv", ignore_patter=f"fr_tracking", report=True):
+    file_list = glob.glob(os.path.join(path, "**", file_tyoe), recursive=True)
+
+    regex = re.compile
+
 copy_all_data <- function(path, new_path, file_type = "*.csv", recurse_levels = TRUE, report = TRUE, ignore_pattern = "fr_tracking.*[.]csv"){
   
   file_list <- dir_ls(path, recurse = recurse_levels, type = "file", glob = file_type)
