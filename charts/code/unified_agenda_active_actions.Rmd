@@ -124,7 +124,7 @@ bar2 <- ggplot(df1_1a_complete,
 ```{r}
 suppressWarnings({new_bar <- ggdraw() +
       draw_plot(bar2) +
-      draw_image(logo, x = 0.125, y = 0.043, halign = 0, valign = 0, width = 0.2)
+      draw_image(logo, x = 0.110, y = 0.043, halign = 0, valign = 0, width = 0.2)
 
 new_bar})
 ```

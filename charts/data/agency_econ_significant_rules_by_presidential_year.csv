@@ -1,224 +1,432 @@
-Agency Name,Agency Acronym,Presidential Year,Presidential Party,Economically Significant Rules
-Agriculture Department,USDA,1981,Republican,0.0
-Agriculture Department,USDA,1982,Republican,3.0
-Agriculture Department,USDA,1983,Republican,6.0
-Agriculture Department,USDA,1984,Republican,5.0
-Agriculture Department,USDA,1985,Republican,2.0
-Agriculture Department,USDA,1986,Republican,6.0
-Agriculture Department,USDA,1987,Republican,6.0
-Agriculture Department,USDA,1988,Republican,5.0
-Agriculture Department,USDA,1989,Republican,11.0
-Agriculture Department,USDA,1990,Republican,8.0
-Agriculture Department,USDA,1991,Republican,15.0
-Agriculture Department,USDA,1992,Republican,14.0
-Agriculture Department,USDA,1993,Democratic,16.0
-Agriculture Department,USDA,1994,Democratic,19.0
-Agriculture Department,USDA,1995,Democratic,9.0
-Agriculture Department,USDA,1996,Democratic,11.0
-Agriculture Department,USDA,1997,Democratic,6.0
-Agriculture Department,USDA,1998,Democratic,4.0
-Agriculture Department,USDA,1999,Democratic,6.0
-Agriculture Department,USDA,2000,Democratic,18.0
-Agriculture Department,USDA,2001,Republican,4.0
-Agriculture Department,USDA,2002,Republican,7.0
-Agriculture Department,USDA,2003,Republican,7.0
-Agriculture Department,USDA,2004,Republican,7.0
-Agriculture Department,USDA,2005,Republican,5.0
-Agriculture Department,USDA,2006,Republican,4.0
-Agriculture Department,USDA,2007,Republican,6.0
-Agriculture Department,USDA,2008,Republican,5.0
-Agriculture Department,USDA,2009,Democratic,8.0
-Agriculture Department,USDA,2010,Democratic,4.0
-Agriculture Department,USDA,2011,Democratic,6.0
-Agriculture Department,USDA,2012,Democratic,1.0
-Agriculture Department,USDA,2013,Democratic,7.0
-Agriculture Department,USDA,2014,Democratic,8.0
-Agriculture Department,USDA,2015,Democratic,6.0
-Agriculture Department,USDA,2016,Democratic,9.0
-Agriculture Department,USDA,2017,Republican,0.0
-Agriculture Department,USDA,2018,Republican,6.0
-Agriculture Department,USDA,2019,Republican,8.0
-Agriculture Department,USDA,2020,Republican,8.0
-Agriculture Department,USDA,2021,Democratic,4.0
-Agriculture Department,USDA,2022,Democratic,3.0
-Agriculture Department,USDA,2023,Democratic,5.0
-Agriculture Department,USDA,2024,Democratic,3.0
-Commerce Department,DOC,1981,Republican,0.0
-Commerce Department,DOC,1982,Republican,1.0
-Commerce Department,DOC,1983,Republican,0.0
-Commerce Department,DOC,1984,Republican,0.0
-Commerce Department,DOC,1985,Republican,0.0
-Commerce Department,DOC,1986,Republican,0.0
-Commerce Department,DOC,1987,Republican,0.0
-Commerce Department,DOC,1988,Republican,0.0
-Commerce Department,DOC,1989,Republican,1.0
-Commerce Department,DOC,1990,Republican,0.0
-Commerce Department,DOC,1991,Republican,0.0
-Commerce Department,DOC,1992,Republican,0.0
-Commerce Department,DOC,1993,Democratic,0.0
-Commerce Department,DOC,1994,Democratic,2.0
-Commerce Department,DOC,1995,Democratic,2.0
-Commerce Department,DOC,1996,Democratic,3.0
-Commerce Department,DOC,1997,Democratic,0.0
-Commerce Department,DOC,1998,Democratic,1.0
-Commerce Department,DOC,1999,Democratic,0.0
-Commerce Department,DOC,2000,Democratic,2.0
-Commerce Department,DOC,2001,Republican,1.0
-Commerce Department,DOC,2002,Republican,0.0
-Commerce Department,DOC,2003,Republican,1.0
-Commerce Department,DOC,2004,Republican,1.0
-Commerce Department,DOC,2005,Republican,2.0
-Commerce Department,DOC,2006,Republican,1.0
-Commerce Department,DOC,2007,Republican,1.0
-Commerce Department,DOC,2008,Republican,1.0
-Commerce Department,DOC,2009,Democratic,3.0
-Commerce Department,DOC,2010,Democratic,0.0
-Commerce Department,DOC,2011,Democratic,0.0
-Commerce Department,DOC,2012,Democratic,1.0
-Commerce Department,DOC,2013,Democratic,1.0
-Commerce Department,DOC,2014,Democratic,0.0
-Commerce Department,DOC,2015,Democratic,0.0
-Commerce Department,DOC,2016,Democratic,0.0
-Commerce Department,DOC,2017,Republican,2.0
-Commerce Department,DOC,2018,Republican,1.0
-Commerce Department,DOC,2019,Republican,0.0
-Commerce Department,DOC,2020,Republican,2.0
-Commerce Department,DOC,2021,Democratic,1.0
-Commerce Department,DOC,2022,Democratic,1.0
-Commerce Department,DOC,2023,Democratic,6.0
-Commerce Department,DOC,2024,Democratic,3.0
-Defense Department,DOD,1981,Republican,0.0
-Defense Department,DOD,1982,Republican,0.0
-Defense Department,DOD,1983,Republican,0.0
-Defense Department,DOD,1984,Republican,0.0
-Defense Department,DOD,1985,Republican,0.0
-Defense Department,DOD,1986,Republican,0.0
-Defense Department,DOD,1987,Republican,1.0
-Defense Department,DOD,1988,Republican,0.0
-Defense Department,DOD,1989,Republican,0.0
-Defense Department,DOD,1990,Republican,0.0
-Defense Department,DOD,1991,Republican,1.0
-Defense Department,DOD,1992,Republican,0.0
-Defense Department,DOD,1993,Democratic,1.0
-Defense Department,DOD,1994,Democratic,0.0
-Defense Department,DOD,1995,Democratic,1.0
-Defense Department,DOD,1996,Democratic,0.0
-Defense Department,DOD,1997,Democratic,0.0
-Defense Department,DOD,1998,Democratic,0.0
-Defense Department,DOD,1999,Democratic,0.0
-Defense Department,DOD,2000,Democratic,0.0
-Defense Department,DOD,2001,Republican,2.0
-Defense Department,DOD,2002,Republican,2.0
-Defense Department,DOD,2003,Republican,2.0
-Defense Department,DOD,2004,Republican,1.0
-Defense Department,DOD,2005,Republican,1.0
-Defense Department,DOD,2006,Republican,0.0
-Defense Department,DOD,2007,Republican,0.0
-Defense Department,DOD,2008,Republican,1.0
-Defense Department,DOD,2009,Democratic,1.0
-Defense Department,DOD,2010,Democratic,4.0
-Defense Department,DOD,2011,Democratic,0.0
-Defense Department,DOD,2012,Democratic,1.0
-Defense Department,DOD,2013,Democratic,2.0
-Defense Department,DOD,2014,Democratic,1.0
-Defense Department,DOD,2015,Democratic,2.0
-Defense Department,DOD,2016,Democratic,0.0
-Defense Department,DOD,2017,Republican,1.0
-Defense Department,DOD,2018,Republican,0.0
-Defense Department,DOD,2019,Republican,0.0
-Defense Department,DOD,2020,Republican,2.0
-Defense Department,DOD,2021,Democratic,0.0
-Defense Department,DOD,2022,Democratic,0.0
-Defense Department,DOD,2023,Democratic,2.0
-Defense Department,DOD,2024,Democratic,2.0
-Education Department,ED,1981,Republican,0.0
-Education Department,ED,1982,Republican,0.0
-Education Department,ED,1983,Republican,0.0
-Education Department,ED,1984,Republican,1.0
-Education Department,ED,1985,Republican,0.0
-Education Department,ED,1986,Republican,0.0
-Education Department,ED,1987,Republican,0.0
-Education Department,ED,1988,Republican,0.0
-Education Department,ED,1989,Republican,0.0
-Education Department,ED,1990,Republican,0.0
-Education Department,ED,1991,Republican,0.0
-Education Department,ED,1992,Republican,0.0
-Education Department,ED,1993,Democratic,0.0
-Education Department,ED,1994,Democratic,0.0
-Education Department,ED,1995,Democratic,0.0
-Education Department,ED,1996,Democratic,0.0
-Education Department,ED,1997,Democratic,0.0
-Education Department,ED,1998,Democratic,0.0
-Education Department,ED,1999,Democratic,1.0
-Education Department,ED,2000,Democratic,0.0
-Education Department,ED,2001,Republican,0.0
-Education Department,ED,2002,Republican,0.0
-Education Department,ED,2003,Republican,0.0
-Education Department,ED,2004,Republican,0.0
-Education Department,ED,2005,Republican,0.0
-Education Department,ED,2006,Republican,4.0
-Education Department,ED,2007,Republican,1.0
-Education Department,ED,2008,Republican,2.0
-Education Department,ED,2009,Democratic,6.0
-Education Department,ED,2010,Democratic,4.0
-Education Department,ED,2011,Democratic,2.0
-Education Department,ED,2012,Democratic,4.0
-Education Department,ED,2013,Democratic,7.0
-Education Department,ED,2014,Democratic,1.0
-Education Department,ED,2015,Democratic,3.0
-Education Department,ED,2016,Democratic,3.0
-Education Department,ED,2017,Republican,1.0
-Education Department,ED,2018,Republican,0.0
-Education Department,ED,2019,Republican,2.0
-Education Department,ED,2020,Republican,2.0
-Education Department,ED,2021,Democratic,7.0
-Education Department,ED,2022,Democratic,4.0
-Education Department,ED,2023,Democratic,2.0
-Education Department,ED,2024,Democratic,1.0
-Energy Department,DOE,1981,Republican,0.0
-Energy Department,DOE,1982,Republican,0.0
-Energy Department,DOE,1983,Republican,2.0
-Energy Department,DOE,1984,Republican,0.0
-Energy Department,DOE,1985,Republican,1.0
-Energy Department,DOE,1986,Republican,0.0
-Energy Department,DOE,1987,Republican,0.0
-Energy Department,DOE,1988,Republican,0.0
-Energy Department,DOE,1989,Republican,0.0
-Energy Department,DOE,1990,Republican,0.0
-Energy Department,DOE,1991,Republican,1.0
-Energy Department,DOE,1992,Republican,0.0
-Energy Department,DOE,1993,Democratic,0.0
-Energy Department,DOE,1994,Democratic,0.0
-Energy Department,DOE,1995,Democratic,0.0
-Energy Department,DOE,1996,Democratic,0.0
-Energy Department,DOE,1997,Democratic,1.0
-Energy Department,DOE,1998,Democratic,0.0
-Energy Department,DOE,1999,Democratic,0.0
-Energy Department,DOE,2000,Democratic,4.0
-Energy Department,DOE,2001,Republican,0.0
-Energy Department,DOE,2002,Republican,1.0
-Energy Department,DOE,2003,Republican,0.0
-Energy Department,DOE,2004,Republican,0.0
-Energy Department,DOE,2005,Republican,0.0
-Energy Department,DOE,2006,Republican,0.0
-Energy Department,DOE,2007,Republican,2.0
-Energy Department,DOE,2008,Republican,2.0
-Energy Department,DOE,2009,Democratic,5.0
-Energy Department,DOE,2010,Democratic,2.0
-Energy Department,DOE,2011,Democratic,4.0
-Energy Department,DOE,2012,Democratic,1.0
-Energy Department,DOE,2013,Democratic,2.0
-Energy Department,DOE,2014,Democratic,8.0
-Energy Department,DOE,2015,Democratic,4.0
-Energy Department,DOE,2016,Democratic,4.0
-Energy Department,DOE,2017,Republican,2.0
-Energy Department,DOE,2018,Republican,1.0
-Energy Department,DOE,2019,Republican,3.0
-Energy Department,DOE,2020,Republican,0.0
-Energy Department,DOE,2021,Democratic,0.0
-Energy Department,DOE,2022,Democratic,4.0
-Energy Department,DOE,2023,Democratic,7.0
-Energy Department,DOE,2024,Democratic,13.0
+Agency Name,Agency Acronym,Presidential Year (February 1 - January 31),Presidential Party,Economically Significant Rules Published
+Department of Homeland Security,DHS,2003,Republican,6.0
+Department of Homeland Security,DHS,2004,Republican,2.0
+Department of Homeland Security,DHS,2005,Republican,3.0
+Department of Homeland Security,DHS,2006,Republican,3.0
+Department of Homeland Security,DHS,2007,Republican,5.0
+Department of Homeland Security,DHS,2008,Republican,6.0
+Department of Homeland Security,DHS,2009,Democratic,2.0
+Department of Homeland Security,DHS,2010,Democratic,2.0
+Department of Homeland Security,DHS,2011,Democratic,0.0
+Department of Homeland Security,DHS,2012,Democratic,2.0
+Department of Homeland Security,DHS,2013,Democratic,0.0
+Department of Homeland Security,DHS,2014,Democratic,2.0
+Department of Homeland Security,DHS,2015,Democratic,2.0
+Department of Homeland Security,DHS,2016,Democratic,6.0
+Department of Homeland Security,DHS,2017,Republican,0.0
+Department of Homeland Security,DHS,2018,Republican,2.0
+Department of Homeland Security,DHS,2019,Republican,2.0
+Department of Homeland Security,DHS,2020,Republican,7.0
+Department of Homeland Security,DHS,2021,Democratic,2.0
+Department of Homeland Security,DHS,2022,Democratic,9.0
+Department of Homeland Security,DHS,2023,Democratic,4.0
+Department of Homeland Security,DHS,2024,Democratic,4.0
+Department of Homeland Security,DHS,2025,Republican,4.0
+Department of Commerce,DOC,1981,Republican,0.0
+Department of Commerce,DOC,1982,Republican,1.0
+Department of Commerce,DOC,1983,Republican,0.0
+Department of Commerce,DOC,1984,Republican,0.0
+Department of Commerce,DOC,1985,Republican,0.0
+Department of Commerce,DOC,1986,Republican,0.0
+Department of Commerce,DOC,1987,Republican,0.0
+Department of Commerce,DOC,1988,Republican,0.0
+Department of Commerce,DOC,1989,Republican,1.0
+Department of Commerce,DOC,1990,Republican,0.0
+Department of Commerce,DOC,1991,Republican,0.0
+Department of Commerce,DOC,1992,Republican,0.0
+Department of Commerce,DOC,1993,Democratic,0.0
+Department of Commerce,DOC,1994,Democratic,2.0
+Department of Commerce,DOC,1995,Democratic,2.0
+Department of Commerce,DOC,1996,Democratic,3.0
+Department of Commerce,DOC,1997,Democratic,0.0
+Department of Commerce,DOC,1998,Democratic,1.0
+Department of Commerce,DOC,1999,Democratic,1.0
+Department of Commerce,DOC,2000,Democratic,2.0
+Department of Commerce,DOC,2001,Republican,1.0
+Department of Commerce,DOC,2002,Republican,0.0
+Department of Commerce,DOC,2003,Republican,1.0
+Department of Commerce,DOC,2004,Republican,1.0
+Department of Commerce,DOC,2005,Republican,2.0
+Department of Commerce,DOC,2006,Republican,1.0
+Department of Commerce,DOC,2007,Republican,1.0
+Department of Commerce,DOC,2008,Republican,1.0
+Department of Commerce,DOC,2009,Democratic,3.0
+Department of Commerce,DOC,2010,Democratic,0.0
+Department of Commerce,DOC,2011,Democratic,0.0
+Department of Commerce,DOC,2012,Democratic,1.0
+Department of Commerce,DOC,2013,Democratic,1.0
+Department of Commerce,DOC,2014,Democratic,0.0
+Department of Commerce,DOC,2015,Democratic,0.0
+Department of Commerce,DOC,2016,Democratic,0.0
+Department of Commerce,DOC,2017,Republican,2.0
+Department of Commerce,DOC,2018,Republican,1.0
+Department of Commerce,DOC,2019,Republican,0.0
+Department of Commerce,DOC,2020,Republican,2.0
+Department of Commerce,DOC,2021,Democratic,1.0
+Department of Commerce,DOC,2022,Democratic,1.0
+Department of Commerce,DOC,2023,Democratic,6.0
+Department of Commerce,DOC,2024,Democratic,3.0
+Department of Commerce,DOC,2025,Republican,0.0
+Department of Defense,DOD,1981,Republican,0.0
+Department of Defense,DOD,1982,Republican,0.0
+Department of Defense,DOD,1983,Republican,0.0
+Department of Defense,DOD,1984,Republican,0.0
+Department of Defense,DOD,1985,Republican,0.0
+Department of Defense,DOD,1986,Republican,0.0
+Department of Defense,DOD,1987,Republican,1.0
+Department of Defense,DOD,1988,Republican,0.0
+Department of Defense,DOD,1989,Republican,0.0
+Department of Defense,DOD,1990,Republican,0.0
+Department of Defense,DOD,1991,Republican,1.0
+Department of Defense,DOD,1992,Republican,0.0
+Department of Defense,DOD,1993,Democratic,1.0
+Department of Defense,DOD,1994,Democratic,0.0
+Department of Defense,DOD,1995,Democratic,1.0
+Department of Defense,DOD,1996,Democratic,0.0
+Department of Defense,DOD,1997,Democratic,0.0
+Department of Defense,DOD,1998,Democratic,0.0
+Department of Defense,DOD,1999,Democratic,0.0
+Department of Defense,DOD,2000,Democratic,0.0
+Department of Defense,DOD,2001,Republican,2.0
+Department of Defense,DOD,2002,Republican,2.0
+Department of Defense,DOD,2003,Republican,2.0
+Department of Defense,DOD,2004,Republican,1.0
+Department of Defense,DOD,2005,Republican,1.0
+Department of Defense,DOD,2006,Republican,0.0
+Department of Defense,DOD,2007,Republican,0.0
+Department of Defense,DOD,2008,Republican,1.0
+Department of Defense,DOD,2009,Democratic,1.0
+Department of Defense,DOD,2010,Democratic,4.0
+Department of Defense,DOD,2011,Democratic,0.0
+Department of Defense,DOD,2012,Democratic,1.0
+Department of Defense,DOD,2013,Democratic,2.0
+Department of Defense,DOD,2014,Democratic,1.0
+Department of Defense,DOD,2015,Democratic,2.0
+Department of Defense,DOD,2016,Democratic,0.0
+Department of Defense,DOD,2017,Republican,1.0
+Department of Defense,DOD,2018,Republican,0.0
+Department of Defense,DOD,2019,Republican,0.0
+Department of Defense,DOD,2020,Republican,2.0
+Department of Defense,DOD,2021,Democratic,0.0
+Department of Defense,DOD,2022,Democratic,0.0
+Department of Defense,DOD,2023,Democratic,2.0
+Department of Defense,DOD,2024,Democratic,2.0
+Department of Defense,DOD,2025,Republican,0.0
+Department of Energy,DOE,1981,Republican,0.0
+Department of Energy,DOE,1982,Republican,0.0
+Department of Energy,DOE,1983,Republican,2.0
+Department of Energy,DOE,1984,Republican,0.0
+Department of Energy,DOE,1985,Republican,1.0
+Department of Energy,DOE,1986,Republican,0.0
+Department of Energy,DOE,1987,Republican,0.0
+Department of Energy,DOE,1988,Republican,0.0
+Department of Energy,DOE,1989,Republican,0.0
+Department of Energy,DOE,1990,Republican,0.0
+Department of Energy,DOE,1991,Republican,1.0
+Department of Energy,DOE,1992,Republican,0.0
+Department of Energy,DOE,1993,Democratic,0.0
+Department of Energy,DOE,1994,Democratic,0.0
+Department of Energy,DOE,1995,Democratic,0.0
+Department of Energy,DOE,1996,Democratic,0.0
+Department of Energy,DOE,1997,Democratic,1.0
+Department of Energy,DOE,1998,Democratic,0.0
+Department of Energy,DOE,1999,Democratic,0.0
+Department of Energy,DOE,2000,Democratic,4.0
+Department of Energy,DOE,2001,Republican,0.0
+Department of Energy,DOE,2002,Republican,1.0
+Department of Energy,DOE,2003,Republican,0.0
+Department of Energy,DOE,2004,Republican,0.0
+Department of Energy,DOE,2005,Republican,0.0
+Department of Energy,DOE,2006,Republican,0.0
+Department of Energy,DOE,2007,Republican,2.0
+Department of Energy,DOE,2008,Republican,2.0
+Department of Energy,DOE,2009,Democratic,5.0
+Department of Energy,DOE,2010,Democratic,2.0
+Department of Energy,DOE,2011,Democratic,4.0
+Department of Energy,DOE,2012,Democratic,1.0
+Department of Energy,DOE,2013,Democratic,2.0
+Department of Energy,DOE,2014,Democratic,8.0
+Department of Energy,DOE,2015,Democratic,4.0
+Department of Energy,DOE,2016,Democratic,4.0
+Department of Energy,DOE,2017,Republican,2.0
+Department of Energy,DOE,2018,Republican,1.0
+Department of Energy,DOE,2019,Republican,3.0
+Department of Energy,DOE,2020,Republican,0.0
+Department of Energy,DOE,2021,Democratic,0.0
+Department of Energy,DOE,2022,Democratic,4.0
+Department of Energy,DOE,2023,Democratic,7.0
+Department of Energy,DOE,2024,Democratic,13.0
+Department of Energy,DOE,2025,Republican,1.0
+Department of the Interior,DOI,1981,Republican,0.0
+Department of the Interior,DOI,1982,Republican,1.0
+Department of the Interior,DOI,1983,Republican,1.0
+Department of the Interior,DOI,1984,Republican,0.0
+Department of the Interior,DOI,1985,Republican,0.0
+Department of the Interior,DOI,1986,Republican,0.0
+Department of the Interior,DOI,1987,Republican,0.0
+Department of the Interior,DOI,1988,Republican,0.0
+Department of the Interior,DOI,1989,Republican,0.0
+Department of the Interior,DOI,1990,Republican,1.0
+Department of the Interior,DOI,1991,Republican,1.0
+Department of the Interior,DOI,1992,Republican,2.0
+Department of the Interior,DOI,1993,Democratic,2.0
+Department of the Interior,DOI,1994,Democratic,1.0
+Department of the Interior,DOI,1995,Democratic,2.0
+Department of the Interior,DOI,1996,Democratic,2.0
+Department of the Interior,DOI,1997,Democratic,2.0
+Department of the Interior,DOI,1998,Democratic,2.0
+Department of the Interior,DOI,1999,Democratic,2.0
+Department of the Interior,DOI,2000,Democratic,5.0
+Department of the Interior,DOI,2001,Republican,2.0
+Department of the Interior,DOI,2002,Republican,2.0
+Department of the Interior,DOI,2003,Republican,3.0
+Department of the Interior,DOI,2004,Republican,3.0
+Department of the Interior,DOI,2005,Republican,2.0
+Department of the Interior,DOI,2006,Republican,2.0
+Department of the Interior,DOI,2007,Republican,2.0
+Department of the Interior,DOI,2008,Republican,5.0
+Department of the Interior,DOI,2009,Democratic,3.0
+Department of the Interior,DOI,2010,Democratic,3.0
+Department of the Interior,DOI,2011,Democratic,2.0
+Department of the Interior,DOI,2012,Democratic,3.0
+Department of the Interior,DOI,2013,Democratic,2.0
+Department of the Interior,DOI,2014,Democratic,2.0
+Department of the Interior,DOI,2015,Democratic,2.0
+Department of the Interior,DOI,2016,Democratic,4.0
+Department of the Interior,DOI,2017,Republican,1.0
+Department of the Interior,DOI,2018,Republican,2.0
+Department of the Interior,DOI,2019,Republican,2.0
+Department of the Interior,DOI,2020,Republican,4.0
+Department of the Interior,DOI,2021,Democratic,5.0
+Department of the Interior,DOI,2022,Democratic,3.0
+Department of the Interior,DOI,2023,Democratic,3.0
+Department of the Interior,DOI,2024,Democratic,5.0
+Department of the Interior,DOI,2025,Republican,2.0
+Department of Justice,DOJ,1981,Republican,0.0
+Department of Justice,DOJ,1982,Republican,0.0
+Department of Justice,DOJ,1983,Republican,0.0
+Department of Justice,DOJ,1984,Republican,0.0
+Department of Justice,DOJ,1985,Republican,0.0
+Department of Justice,DOJ,1986,Republican,0.0
+Department of Justice,DOJ,1987,Republican,1.0
+Department of Justice,DOJ,1988,Republican,0.0
+Department of Justice,DOJ,1989,Republican,0.0
+Department of Justice,DOJ,1990,Republican,0.0
+Department of Justice,DOJ,1991,Republican,2.0
+Department of Justice,DOJ,1992,Republican,0.0
+Department of Justice,DOJ,1993,Democratic,0.0
+Department of Justice,DOJ,1994,Democratic,1.0
+Department of Justice,DOJ,1995,Democratic,2.0
+Department of Justice,DOJ,1996,Democratic,0.0
+Department of Justice,DOJ,1997,Democratic,1.0
+Department of Justice,DOJ,1998,Democratic,1.0
+Department of Justice,DOJ,1999,Democratic,0.0
+Department of Justice,DOJ,2000,Democratic,0.0
+Department of Justice,DOJ,2001,Republican,1.0
+Department of Justice,DOJ,2002,Republican,3.0
+Department of Justice,DOJ,2003,Republican,0.0
+Department of Justice,DOJ,2004,Republican,1.0
+Department of Justice,DOJ,2005,Republican,1.0
+Department of Justice,DOJ,2006,Republican,0.0
+Department of Justice,DOJ,2007,Republican,0.0
+Department of Justice,DOJ,2008,Republican,0.0
+Department of Justice,DOJ,2009,Democratic,0.0
+Department of Justice,DOJ,2010,Democratic,3.0
+Department of Justice,DOJ,2011,Democratic,1.0
+Department of Justice,DOJ,2012,Democratic,1.0
+Department of Justice,DOJ,2013,Democratic,0.0
+Department of Justice,DOJ,2014,Democratic,0.0
+Department of Justice,DOJ,2015,Democratic,0.0
+Department of Justice,DOJ,2016,Democratic,1.0
+Department of Justice,DOJ,2017,Republican,1.0
+Department of Justice,DOJ,2018,Republican,1.0
+Department of Justice,DOJ,2019,Republican,0.0
+Department of Justice,DOJ,2020,Republican,1.0
+Department of Justice,DOJ,2021,Democratic,0.0
+Department of Justice,DOJ,2022,Democratic,2.0
+Department of Justice,DOJ,2023,Democratic,0.0
+Department of Justice,DOJ,2024,Democratic,3.0
+Department of Justice,DOJ,2025,Republican,0.0
+Department of Labor,DOL,1981,Republican,1.0
+Department of Labor,DOL,1982,Republican,0.0
+Department of Labor,DOL,1983,Republican,3.0
+Department of Labor,DOL,1984,Republican,0.0
+Department of Labor,DOL,1985,Republican,1.0
+Department of Labor,DOL,1986,Republican,1.0
+Department of Labor,DOL,1987,Republican,3.0
+Department of Labor,DOL,1988,Republican,4.0
+Department of Labor,DOL,1989,Republican,4.0
+Department of Labor,DOL,1990,Republican,4.0
+Department of Labor,DOL,1991,Republican,3.0
+Department of Labor,DOL,1992,Republican,5.0
+Department of Labor,DOL,1993,Democratic,2.0
+Department of Labor,DOL,1994,Democratic,2.0
+Department of Labor,DOL,1995,Democratic,1.0
+Department of Labor,DOL,1996,Democratic,2.0
+Department of Labor,DOL,1997,Democratic,3.0
+Department of Labor,DOL,1998,Democratic,1.0
+Department of Labor,DOL,1999,Democratic,0.0
+Department of Labor,DOL,2000,Democratic,7.0
+Department of Labor,DOL,2001,Republican,1.0
+Department of Labor,DOL,2002,Republican,2.0
+Department of Labor,DOL,2003,Republican,0.0
+Department of Labor,DOL,2004,Republican,2.0
+Department of Labor,DOL,2005,Republican,1.0
+Department of Labor,DOL,2006,Republican,3.0
+Department of Labor,DOL,2007,Republican,3.0
+Department of Labor,DOL,2008,Republican,4.0
+Department of Labor,DOL,2009,Democratic,1.0
+Department of Labor,DOL,2010,Democratic,8.0
+Department of Labor,DOL,2011,Democratic,1.0
+Department of Labor,DOL,2012,Democratic,3.0
+Department of Labor,DOL,2013,Democratic,4.0
+Department of Labor,DOL,2014,Democratic,3.0
+Department of Labor,DOL,2015,Democratic,3.0
+Department of Labor,DOL,2016,Democratic,9.0
+Department of Labor,DOL,2017,Republican,1.0
+Department of Labor,DOL,2018,Republican,1.0
+Department of Labor,DOL,2019,Republican,3.0
+Department of Labor,DOL,2020,Republican,10.0
+Department of Labor,DOL,2021,Democratic,10.0
+Department of Labor,DOL,2022,Democratic,4.0
+Department of Labor,DOL,2023,Democratic,7.0
+Department of Labor,DOL,2024,Democratic,14.0
+Department of Labor,DOL,2025,Republican,2.0
+Department of State,STATE,1981,Republican,0.0
+Department of State,STATE,1982,Republican,0.0
+Department of State,STATE,1983,Republican,0.0
+Department of State,STATE,1984,Republican,0.0
+Department of State,STATE,1985,Republican,0.0
+Department of State,STATE,1986,Republican,0.0
+Department of State,STATE,1987,Republican,0.0
+Department of State,STATE,1988,Republican,0.0
+Department of State,STATE,1989,Republican,0.0
+Department of State,STATE,1990,Republican,0.0
+Department of State,STATE,1991,Republican,0.0
+Department of State,STATE,1992,Republican,0.0
+Department of State,STATE,1993,Democratic,0.0
+Department of State,STATE,1994,Democratic,0.0
+Department of State,STATE,1995,Democratic,0.0
+Department of State,STATE,1996,Democratic,0.0
+Department of State,STATE,1997,Democratic,0.0
+Department of State,STATE,1998,Democratic,0.0
+Department of State,STATE,1999,Democratic,0.0
+Department of State,STATE,2000,Democratic,0.0
+Department of State,STATE,2001,Republican,0.0
+Department of State,STATE,2002,Republican,0.0
+Department of State,STATE,2003,Republican,0.0
+Department of State,STATE,2004,Republican,0.0
+Department of State,STATE,2005,Republican,0.0
+Department of State,STATE,2006,Republican,0.0
+Department of State,STATE,2007,Republican,0.0
+Department of State,STATE,2008,Republican,0.0
+Department of State,STATE,2009,Democratic,0.0
+Department of State,STATE,2010,Democratic,1.0
+Department of State,STATE,2011,Democratic,0.0
+Department of State,STATE,2012,Democratic,0.0
+Department of State,STATE,2013,Democratic,0.0
+Department of State,STATE,2014,Democratic,0.0
+Department of State,STATE,2015,Democratic,0.0
+Department of State,STATE,2016,Democratic,0.0
+Department of State,STATE,2017,Republican,1.0
+Department of State,STATE,2018,Republican,0.0
+Department of State,STATE,2019,Republican,0.0
+Department of State,STATE,2020,Republican,0.0
+Department of State,STATE,2021,Democratic,1.0
+Department of State,STATE,2022,Democratic,0.0
+Department of State,STATE,2023,Democratic,3.0
+Department of State,STATE,2024,Democratic,0.0
+Department of State,STATE,2025,Republican,3.0
+Department of Transportation,DOT,1981,Republican,0.0
+Department of Transportation,DOT,1982,Republican,2.0
+Department of Transportation,DOT,1983,Republican,3.0
+Department of Transportation,DOT,1984,Republican,4.0
+Department of Transportation,DOT,1985,Republican,4.0
+Department of Transportation,DOT,1986,Republican,3.0
+Department of Transportation,DOT,1987,Republican,2.0
+Department of Transportation,DOT,1988,Republican,5.0
+Department of Transportation,DOT,1989,Republican,2.0
+Department of Transportation,DOT,1990,Republican,6.0
+Department of Transportation,DOT,1991,Republican,8.0
+Department of Transportation,DOT,1992,Republican,3.0
+Department of Transportation,DOT,1993,Democratic,3.0
+Department of Transportation,DOT,1994,Democratic,10.0
+Department of Transportation,DOT,1995,Democratic,5.0
+Department of Transportation,DOT,1996,Democratic,1.0
+Department of Transportation,DOT,1997,Democratic,2.0
+Department of Transportation,DOT,1998,Democratic,4.0
+Department of Transportation,DOT,1999,Democratic,5.0
+Department of Transportation,DOT,2000,Democratic,4.0
+Department of Transportation,DOT,2001,Republican,5.0
+Department of Transportation,DOT,2002,Republican,5.0
+Department of Transportation,DOT,2003,Republican,5.0
+Department of Transportation,DOT,2004,Republican,4.0
+Department of Transportation,DOT,2005,Republican,3.0
+Department of Transportation,DOT,2006,Republican,2.0
+Department of Transportation,DOT,2007,Republican,3.0
+Department of Transportation,DOT,2008,Republican,8.0
+Department of Transportation,DOT,2009,Democratic,8.0
+Department of Transportation,DOT,2010,Democratic,6.0
+Department of Transportation,DOT,2011,Democratic,2.0
+Department of Transportation,DOT,2012,Democratic,5.0
+Department of Transportation,DOT,2013,Democratic,3.0
+Department of Transportation,DOT,2014,Democratic,4.0
+Department of Transportation,DOT,2015,Democratic,3.0
+Department of Transportation,DOT,2016,Democratic,8.0
+Department of Transportation,DOT,2017,Republican,0.0
+Department of Transportation,DOT,2018,Republican,2.0
+Department of Transportation,DOT,2019,Republican,1.0
+Department of Transportation,DOT,2020,Republican,3.0
+Department of Transportation,DOT,2021,Democratic,0.0
+Department of Transportation,DOT,2022,Democratic,3.0
+Department of Transportation,DOT,2023,Democratic,4.0
+Department of Transportation,DOT,2024,Democratic,7.0
+Department of Transportation,DOT,2025,Republican,1.0
+Department of Education,ED,1981,Republican,0.0
+Department of Education,ED,1982,Republican,0.0
+Department of Education,ED,1983,Republican,0.0
+Department of Education,ED,1984,Republican,1.0
+Department of Education,ED,1985,Republican,0.0
+Department of Education,ED,1986,Republican,0.0
+Department of Education,ED,1987,Republican,0.0
+Department of Education,ED,1988,Republican,0.0
+Department of Education,ED,1989,Republican,0.0
+Department of Education,ED,1990,Republican,0.0
+Department of Education,ED,1991,Republican,0.0
+Department of Education,ED,1992,Republican,0.0
+Department of Education,ED,1993,Democratic,0.0
+Department of Education,ED,1994,Democratic,0.0
+Department of Education,ED,1995,Democratic,0.0
+Department of Education,ED,1996,Democratic,0.0
+Department of Education,ED,1997,Democratic,0.0
+Department of Education,ED,1998,Democratic,0.0
+Department of Education,ED,1999,Democratic,1.0
+Department of Education,ED,2000,Democratic,0.0
+Department of Education,ED,2001,Republican,0.0
+Department of Education,ED,2002,Republican,0.0
+Department of Education,ED,2003,Republican,0.0
+Department of Education,ED,2004,Republican,0.0
+Department of Education,ED,2005,Republican,0.0
+Department of Education,ED,2006,Republican,4.0
+Department of Education,ED,2007,Republican,1.0
+Department of Education,ED,2008,Republican,2.0
+Department of Education,ED,2009,Democratic,6.0
+Department of Education,ED,2010,Democratic,4.0
+Department of Education,ED,2011,Democratic,2.0
+Department of Education,ED,2012,Democratic,4.0
+Department of Education,ED,2013,Democratic,7.0
+Department of Education,ED,2014,Democratic,1.0
+Department of Education,ED,2015,Democratic,3.0
+Department of Education,ED,2016,Democratic,3.0
+Department of Education,ED,2017,Republican,1.0
+Department of Education,ED,2018,Republican,0.0
+Department of Education,ED,2019,Republican,2.0
+Department of Education,ED,2020,Republican,2.0
+Department of Education,ED,2021,Democratic,7.0
+Department of Education,ED,2022,Democratic,4.0
+Department of Education,ED,2023,Democratic,2.0
+Department of Education,ED,2024,Democratic,1.0
+Department of Education,ED,2025,Republican,1.0
 Environmental Protection Agency,EPA,1981,Republican,0.0
 Environmental Protection Agency,EPA,1982,Republican,4.0
 Environmental Protection Agency,EPA,1983,Republican,2.0
@@ -247,7 +455,7 @@ Environmental Protection Agency,EPA,2005,Republican,5.0
 Environmental Protection Agency,EPA,2006,Republican,4.0
 Environmental Protection Agency,EPA,2007,Republican,2.0
 Environmental Protection Agency,EPA,2008,Republican,8.0
-Environmental Protection Agency,EPA,2009,Democratic,3.0
+Environmental Protection Agency,EPA,2009,Democratic,4.0
 Environmental Protection Agency,EPA,2010,Democratic,10.0
 Environmental Protection Agency,EPA,2011,Democratic,7.0
 Environmental Protection Agency,EPA,2012,Democratic,7.0
@@ -263,248 +471,97 @@ Environmental Protection Agency,EPA,2021,Democratic,3.0
 Environmental Protection Agency,EPA,2022,Democratic,4.0
 Environmental Protection Agency,EPA,2023,Democratic,11.0
 Environmental Protection Agency,EPA,2024,Democratic,24.0
-Health And Human Services Department,HHS,1981,Republican,0.0
-Health And Human Services Department,HHS,1982,Republican,1.0
-Health And Human Services Department,HHS,1983,Republican,6.0
-Health And Human Services Department,HHS,1984,Republican,1.0
-Health And Human Services Department,HHS,1985,Republican,3.0
-Health And Human Services Department,HHS,1986,Republican,5.0
-Health And Human Services Department,HHS,1987,Republican,2.0
-Health And Human Services Department,HHS,1988,Republican,2.0
-Health And Human Services Department,HHS,1989,Republican,3.0
-Health And Human Services Department,HHS,1990,Republican,3.0
-Health And Human Services Department,HHS,1991,Republican,9.0
-Health And Human Services Department,HHS,1992,Republican,31.0
-Health And Human Services Department,HHS,1993,Democratic,6.0
-Health And Human Services Department,HHS,1994,Democratic,3.0
-Health And Human Services Department,HHS,1995,Democratic,4.0
-Health And Human Services Department,HHS,1996,Democratic,6.0
-Health And Human Services Department,HHS,1997,Democratic,9.0
-Health And Human Services Department,HHS,1998,Democratic,12.0
-Health And Human Services Department,HHS,1999,Democratic,7.0
-Health And Human Services Department,HHS,2000,Democratic,18.0
-Health And Human Services Department,HHS,2001,Republican,8.0
-Health And Human Services Department,HHS,2002,Republican,12.0
-Health And Human Services Department,HHS,2003,Republican,17.0
-Health And Human Services Department,HHS,2004,Republican,15.0
-Health And Human Services Department,HHS,2005,Republican,16.0
-Health And Human Services Department,HHS,2006,Republican,8.0
-Health And Human Services Department,HHS,2007,Republican,15.0
-Health And Human Services Department,HHS,2008,Republican,25.0
-Health And Human Services Department,HHS,2009,Democratic,9.0
-Health And Human Services Department,HHS,2010,Democratic,19.0
-Health And Human Services Department,HHS,2011,Democratic,21.0
-Health And Human Services Department,HHS,2012,Democratic,19.0
-Health And Human Services Department,HHS,2013,Democratic,22.0
-Health And Human Services Department,HHS,2014,Democratic,21.0
-Health And Human Services Department,HHS,2015,Democratic,20.0
-Health And Human Services Department,HHS,2016,Democratic,37.0
-Health And Human Services Department,HHS,2017,Republican,8.0
-Health And Human Services Department,HHS,2018,Republican,16.0
-Health And Human Services Department,HHS,2019,Republican,23.0
-Health And Human Services Department,HHS,2020,Republican,33.0
-Health And Human Services Department,HHS,2021,Democratic,23.0
-Health And Human Services Department,HHS,2022,Democratic,16.0
-Health And Human Services Department,HHS,2023,Democratic,18.0
-Health And Human Services Department,HHS,2024,Democratic,34.0
-Homeland Security Department,DHS,2003,Republican,6.0
-Homeland Security Department,DHS,2004,Republican,2.0
-Homeland Security Department,DHS,2005,Republican,3.0
-Homeland Security Department,DHS,2006,Republican,3.0
-Homeland Security Department,DHS,2007,Republican,5.0
-Homeland Security Department,DHS,2008,Republican,6.0
-Homeland Security Department,DHS,2009,Democratic,2.0
-Homeland Security Department,DHS,2010,Democratic,2.0
-Homeland Security Department,DHS,2011,Democratic,0.0
-Homeland Security Department,DHS,2012,Democratic,2.0
-Homeland Security Department,DHS,2013,Democratic,0.0
-Homeland Security Department,DHS,2014,Democratic,2.0
-Homeland Security Department,DHS,2015,Democratic,2.0
-Homeland Security Department,DHS,2016,Democratic,6.0
-Homeland Security Department,DHS,2017,Republican,0.0
-Homeland Security Department,DHS,2018,Republican,2.0
-Homeland Security Department,DHS,2019,Republican,2.0
-Homeland Security Department,DHS,2020,Republican,7.0
-Homeland Security Department,DHS,2021,Democratic,2.0
-Homeland Security Department,DHS,2022,Democratic,8.0
-Homeland Security Department,DHS,2023,Democratic,4.0
-Homeland Security Department,DHS,2024,Democratic,4.0
-Housing And Urban Development Department,HUD,1981,Republican,0.0
-Housing And Urban Development Department,HUD,1982,Republican,0.0
-Housing And Urban Development Department,HUD,1983,Republican,2.0
-Housing And Urban Development Department,HUD,1984,Republican,2.0
-Housing And Urban Development Department,HUD,1985,Republican,0.0
-Housing And Urban Development Department,HUD,1986,Republican,2.0
-Housing And Urban Development Department,HUD,1987,Republican,1.0
-Housing And Urban Development Department,HUD,1988,Republican,4.0
-Housing And Urban Development Department,HUD,1989,Republican,0.0
-Housing And Urban Development Department,HUD,1990,Republican,0.0
-Housing And Urban Development Department,HUD,1991,Republican,2.0
-Housing And Urban Development Department,HUD,1992,Republican,3.0
-Housing And Urban Development Department,HUD,1993,Democratic,2.0
-Housing And Urban Development Department,HUD,1994,Democratic,0.0
-Housing And Urban Development Department,HUD,1995,Democratic,1.0
-Housing And Urban Development Department,HUD,1996,Democratic,2.0
-Housing And Urban Development Department,HUD,1997,Democratic,0.0
-Housing And Urban Development Department,HUD,1998,Democratic,0.0
-Housing And Urban Development Department,HUD,1999,Democratic,1.0
-Housing And Urban Development Department,HUD,2000,Democratic,1.0
-Housing And Urban Development Department,HUD,2001,Republican,0.0
-Housing And Urban Development Department,HUD,2002,Republican,0.0
-Housing And Urban Development Department,HUD,2003,Republican,0.0
-Housing And Urban Development Department,HUD,2004,Republican,1.0
-Housing And Urban Development Department,HUD,2005,Republican,1.0
-Housing And Urban Development Department,HUD,2006,Republican,0.0
-Housing And Urban Development Department,HUD,2007,Republican,0.0
-Housing And Urban Development Department,HUD,2008,Republican,3.0
-Housing And Urban Development Department,HUD,2009,Democratic,0.0
-Housing And Urban Development Department,HUD,2010,Democratic,0.0
-Housing And Urban Development Department,HUD,2011,Democratic,3.0
-Housing And Urban Development Department,HUD,2012,Democratic,0.0
-Housing And Urban Development Department,HUD,2013,Democratic,0.0
-Housing And Urban Development Department,HUD,2014,Democratic,1.0
-Housing And Urban Development Department,HUD,2015,Democratic,0.0
-Housing And Urban Development Department,HUD,2016,Democratic,3.0
-Housing And Urban Development Department,HUD,2017,Republican,0.0
-Housing And Urban Development Department,HUD,2018,Republican,0.0
-Housing And Urban Development Department,HUD,2019,Republican,0.0
-Housing And Urban Development Department,HUD,2020,Republican,0.0
-Housing And Urban Development Department,HUD,2021,Democratic,0.0
-Housing And Urban Development Department,HUD,2022,Democratic,0.0
-Housing And Urban Development Department,HUD,2023,Democratic,0.0
-Housing And Urban Development Department,HUD,2024,Democratic,1.0
-Interior Department,DOI,1981,Republican,0.0
-Interior Department,DOI,1982,Republican,0.0
-Interior Department,DOI,1983,Republican,1.0
-Interior Department,DOI,1984,Republican,0.0
-Interior Department,DOI,1985,Republican,0.0
-Interior Department,DOI,1986,Republican,0.0
-Interior Department,DOI,1987,Republican,0.0
-Interior Department,DOI,1988,Republican,0.0
-Interior Department,DOI,1989,Republican,0.0
-Interior Department,DOI,1990,Republican,1.0
-Interior Department,DOI,1991,Republican,1.0
-Interior Department,DOI,1992,Republican,2.0
-Interior Department,DOI,1993,Democratic,2.0
-Interior Department,DOI,1994,Democratic,1.0
-Interior Department,DOI,1995,Democratic,2.0
-Interior Department,DOI,1996,Democratic,2.0
-Interior Department,DOI,1997,Democratic,2.0
-Interior Department,DOI,1998,Democratic,2.0
-Interior Department,DOI,1999,Democratic,2.0
-Interior Department,DOI,2000,Democratic,5.0
-Interior Department,DOI,2001,Republican,2.0
-Interior Department,DOI,2002,Republican,2.0
-Interior Department,DOI,2003,Republican,3.0
-Interior Department,DOI,2004,Republican,3.0
-Interior Department,DOI,2005,Republican,2.0
-Interior Department,DOI,2006,Republican,2.0
-Interior Department,DOI,2007,Republican,2.0
-Interior Department,DOI,2008,Republican,5.0
-Interior Department,DOI,2009,Democratic,3.0
-Interior Department,DOI,2010,Democratic,3.0
-Interior Department,DOI,2011,Democratic,2.0
-Interior Department,DOI,2012,Democratic,3.0
-Interior Department,DOI,2013,Democratic,2.0
-Interior Department,DOI,2014,Democratic,2.0
-Interior Department,DOI,2015,Democratic,2.0
-Interior Department,DOI,2016,Democratic,4.0
-Interior Department,DOI,2017,Republican,1.0
-Interior Department,DOI,2018,Republican,2.0
-Interior Department,DOI,2019,Republican,2.0
-Interior Department,DOI,2020,Republican,4.0
-Interior Department,DOI,2021,Democratic,5.0
-Interior Department,DOI,2022,Democratic,0.0
-Interior Department,DOI,2023,Democratic,3.0
-Interior Department,DOI,2024,Democratic,5.0
-Justice Department,DOJ,1981,Republican,0.0
-Justice Department,DOJ,1982,Republican,0.0
-Justice Department,DOJ,1983,Republican,0.0
-Justice Department,DOJ,1984,Republican,0.0
-Justice Department,DOJ,1985,Republican,0.0
-Justice Department,DOJ,1986,Republican,0.0
-Justice Department,DOJ,1987,Republican,1.0
-Justice Department,DOJ,1988,Republican,0.0
-Justice Department,DOJ,1989,Republican,0.0
-Justice Department,DOJ,1990,Republican,0.0
-Justice Department,DOJ,1991,Republican,2.0
-Justice Department,DOJ,1992,Republican,0.0
-Justice Department,DOJ,1993,Democratic,0.0
-Justice Department,DOJ,1994,Democratic,1.0
-Justice Department,DOJ,1995,Democratic,2.0
-Justice Department,DOJ,1996,Democratic,0.0
-Justice Department,DOJ,1997,Democratic,1.0
-Justice Department,DOJ,1998,Democratic,1.0
-Justice Department,DOJ,1999,Democratic,0.0
-Justice Department,DOJ,2000,Democratic,0.0
-Justice Department,DOJ,2001,Republican,1.0
-Justice Department,DOJ,2002,Republican,3.0
-Justice Department,DOJ,2003,Republican,0.0
-Justice Department,DOJ,2004,Republican,1.0
-Justice Department,DOJ,2005,Republican,1.0
-Justice Department,DOJ,2006,Republican,0.0
-Justice Department,DOJ,2007,Republican,0.0
-Justice Department,DOJ,2008,Republican,0.0
-Justice Department,DOJ,2009,Democratic,0.0
-Justice Department,DOJ,2010,Democratic,3.0
-Justice Department,DOJ,2011,Democratic,1.0
-Justice Department,DOJ,2012,Democratic,1.0
-Justice Department,DOJ,2013,Democratic,0.0
-Justice Department,DOJ,2014,Democratic,0.0
-Justice Department,DOJ,2015,Democratic,0.0
-Justice Department,DOJ,2016,Democratic,1.0
-Justice Department,DOJ,2017,Republican,1.0
-Justice Department,DOJ,2018,Republican,1.0
-Justice Department,DOJ,2019,Republican,0.0
-Justice Department,DOJ,2020,Republican,1.0
-Justice Department,DOJ,2021,Democratic,0.0
-Justice Department,DOJ,2022,Democratic,2.0
-Justice Department,DOJ,2023,Democratic,0.0
-Justice Department,DOJ,2024,Democratic,3.0
-Labor Department,DOL,1981,Republican,1.0
-Labor Department,DOL,1982,Republican,0.0
-Labor Department,DOL,1983,Republican,3.0
-Labor Department,DOL,1984,Republican,0.0
-Labor Department,DOL,1985,Republican,1.0
-Labor Department,DOL,1986,Republican,1.0
-Labor Department,DOL,1987,Republican,3.0
-Labor Department,DOL,1988,Republican,4.0
-Labor Department,DOL,1989,Republican,4.0
-Labor Department,DOL,1990,Republican,4.0
-Labor Department,DOL,1991,Republican,3.0
-Labor Department,DOL,1992,Republican,5.0
-Labor Department,DOL,1993,Democratic,2.0
-Labor Department,DOL,1994,Democratic,2.0
-Labor Department,DOL,1995,Democratic,1.0
-Labor Department,DOL,1996,Democratic,2.0
-Labor Department,DOL,1997,Democratic,3.0
-Labor Department,DOL,1998,Democratic,1.0
-Labor Department,DOL,1999,Democratic,0.0
-Labor Department,DOL,2000,Democratic,7.0
-Labor Department,DOL,2001,Republican,1.0
-Labor Department,DOL,2002,Republican,2.0
-Labor Department,DOL,2003,Republican,0.0
-Labor Department,DOL,2004,Republican,2.0
-Labor Department,DOL,2005,Republican,1.0
-Labor Department,DOL,2006,Republican,3.0
-Labor Department,DOL,2007,Republican,3.0
-Labor Department,DOL,2008,Republican,4.0
-Labor Department,DOL,2009,Democratic,1.0
-Labor Department,DOL,2010,Democratic,8.0
-Labor Department,DOL,2011,Democratic,1.0
-Labor Department,DOL,2012,Democratic,3.0
-Labor Department,DOL,2013,Democratic,4.0
-Labor Department,DOL,2014,Democratic,3.0
-Labor Department,DOL,2015,Democratic,3.0
-Labor Department,DOL,2016,Democratic,9.0
-Labor Department,DOL,2017,Republican,1.0
-Labor Department,DOL,2018,Republican,1.0
-Labor Department,DOL,2019,Republican,3.0
-Labor Department,DOL,2020,Republican,10.0
-Labor Department,DOL,2021,Democratic,9.0
-Labor Department,DOL,2022,Democratic,4.0
-Labor Department,DOL,2023,Democratic,7.0
-Labor Department,DOL,2024,Democratic,14.0
+Environmental Protection Agency,EPA,2025,Republican,5.0
+Department of Health and Human Services,HHS,1981,Republican,0.0
+Department of Health and Human Services,HHS,1982,Republican,1.0
+Department of Health and Human Services,HHS,1983,Republican,6.0
+Department of Health and Human Services,HHS,1984,Republican,1.0
+Department of Health and Human Services,HHS,1985,Republican,3.0
+Department of Health and Human Services,HHS,1986,Republican,5.0
+Department of Health and Human Services,HHS,1987,Republican,2.0
+Department of Health and Human Services,HHS,1988,Republican,2.0
+Department of Health and Human Services,HHS,1989,Republican,3.0
+Department of Health and Human Services,HHS,1990,Republican,3.0
+Department of Health and Human Services,HHS,1991,Republican,9.0
+Department of Health and Human Services,HHS,1992,Republican,31.0
+Department of Health and Human Services,HHS,1993,Democratic,6.0
+Department of Health and Human Services,HHS,1994,Democratic,3.0
+Department of Health and Human Services,HHS,1995,Democratic,4.0
+Department of Health and Human Services,HHS,1996,Democratic,6.0
+Department of Health and Human Services,HHS,1997,Democratic,9.0
+Department of Health and Human Services,HHS,1998,Democratic,12.0
+Department of Health and Human Services,HHS,1999,Democratic,7.0
+Department of Health and Human Services,HHS,2000,Democratic,18.0
+Department of Health and Human Services,HHS,2001,Republican,8.0
+Department of Health and Human Services,HHS,2002,Republican,12.0
+Department of Health and Human Services,HHS,2003,Republican,17.0
+Department of Health and Human Services,HHS,2004,Republican,15.0
+Department of Health and Human Services,HHS,2005,Republican,16.0
+Department of Health and Human Services,HHS,2006,Republican,8.0
+Department of Health and Human Services,HHS,2007,Republican,15.0
+Department of Health and Human Services,HHS,2008,Republican,25.0
+Department of Health and Human Services,HHS,2009,Democratic,9.0
+Department of Health and Human Services,HHS,2010,Democratic,19.0
+Department of Health and Human Services,HHS,2011,Democratic,21.0
+Department of Health and Human Services,HHS,2012,Democratic,19.0
+Department of Health and Human Services,HHS,2013,Democratic,22.0
+Department of Health and Human Services,HHS,2014,Democratic,21.0
+Department of Health and Human Services,HHS,2015,Democratic,20.0
+Department of Health and Human Services,HHS,2016,Democratic,37.0
+Department of Health and Human Services,HHS,2017,Republican,8.0
+Department of Health and Human Services,HHS,2018,Republican,16.0
+Department of Health and Human Services,HHS,2019,Republican,23.0
+Department of Health and Human Services,HHS,2020,Republican,33.0
+Department of Health and Human Services,HHS,2021,Democratic,24.0
+Department of Health and Human Services,HHS,2022,Democratic,16.0
+Department of Health and Human Services,HHS,2023,Democratic,18.0
+Department of Health and Human Services,HHS,2024,Democratic,34.0
+Department of Health and Human Services,HHS,2025,Republican,11.0
+Department of Housing and Urban Development,HUD,1981,Republican,0.0
+Department of Housing and Urban Development,HUD,1982,Republican,0.0
+Department of Housing and Urban Development,HUD,1983,Republican,2.0
+Department of Housing and Urban Development,HUD,1984,Republican,2.0
+Department of Housing and Urban Development,HUD,1985,Republican,0.0
+Department of Housing and Urban Development,HUD,1986,Republican,2.0
+Department of Housing and Urban Development,HUD,1987,Republican,1.0
+Department of Housing and Urban Development,HUD,1988,Republican,4.0
+Department of Housing and Urban Development,HUD,1989,Republican,0.0
+Department of Housing and Urban Development,HUD,1990,Republican,0.0
+Department of Housing and Urban Development,HUD,1991,Republican,2.0
+Department of Housing and Urban Development,HUD,1992,Republican,3.0
+Department of Housing and Urban Development,HUD,1993,Democratic,2.0
+Department of Housing and Urban Development,HUD,1994,Democratic,0.0
+Department of Housing and Urban Development,HUD,1995,Democratic,1.0
+Department of Housing and Urban Development,HUD,1996,Democratic,2.0
+Department of Housing and Urban Development,HUD,1997,Democratic,0.0
+Department of Housing and Urban Development,HUD,1998,Democratic,0.0
+Department of Housing and Urban Development,HUD,1999,Democratic,1.0
+Department of Housing and Urban Development,HUD,2000,Democratic,1.0
+Department of Housing and Urban Development,HUD,2001,Republican,0.0
+Department of Housing and Urban Development,HUD,2002,Republican,0.0
+Department of Housing and Urban Development,HUD,2003,Republican,0.0
+Department of Housing and Urban Development,HUD,2004,Republican,1.0
+Department of Housing and Urban Development,HUD,2005,Republican,1.0
+Department of Housing and Urban Development,HUD,2006,Republican,0.0
+Department of Housing and Urban Development,HUD,2007,Republican,0.0
+Department of Housing and Urban Development,HUD,2008,Republican,2.0
+Department of Housing and Urban Development,HUD,2009,Democratic,0.0
+Department of Housing and Urban Development,HUD,2010,Democratic,0.0
+Department of Housing and Urban Development,HUD,2011,Democratic,3.0
+Department of Housing and Urban Development,HUD,2012,Democratic,0.0
+Department of Housing and Urban Development,HUD,2013,Democratic,0.0
+Department of Housing and Urban Development,HUD,2014,Democratic,1.0
+Department of Housing and Urban Development,HUD,2015,Democratic,0.0
+Department of Housing and Urban Development,HUD,2016,Democratic,3.0
+Department of Housing and Urban Development,HUD,2017,Republican,0.0
+Department of Housing and Urban Development,HUD,2018,Republican,0.0
+Department of Housing and Urban Development,HUD,2019,Republican,0.0
+Department of Housing and Urban Development,HUD,2020,Republican,0.0
+Department of Housing and Urban Development,HUD,2021,Democratic,0.0
+Department of Housing and Urban Development,HUD,2022,Democratic,0.0
+Department of Housing and Urban Development,HUD,2023,Democratic,0.0
+Department of Housing and Urban Development,HUD,2024,Democratic,1.0
+Department of Housing and Urban Development,HUD,2025,Republican,0.0
 Small Business Administration,SBA,1981,Republican,0.0
 Small Business Administration,SBA,1982,Republican,0.0
 Small Business Administration,SBA,1983,Republican,1.0
@@ -549,179 +606,139 @@ Small Business Administration,SBA,2021,Democratic,6.0
 Small Business Administration,SBA,2022,Democratic,0.0
 Small Business Administration,SBA,2023,Democratic,1.0
 Small Business Administration,SBA,2024,Democratic,0.0
-State Department,DOS,1981,Republican,0.0
-State Department,DOS,1982,Republican,0.0
-State Department,DOS,1983,Republican,0.0
-State Department,DOS,1984,Republican,0.0
-State Department,DOS,1985,Republican,0.0
-State Department,DOS,1986,Republican,0.0
-State Department,DOS,1987,Republican,0.0
-State Department,DOS,1988,Republican,0.0
-State Department,DOS,1989,Republican,0.0
-State Department,DOS,1990,Republican,0.0
-State Department,DOS,1991,Republican,0.0
-State Department,DOS,1992,Republican,0.0
-State Department,DOS,1993,Democratic,0.0
-State Department,DOS,1994,Democratic,0.0
-State Department,DOS,1995,Democratic,0.0
-State Department,DOS,1996,Democratic,0.0
-State Department,DOS,1997,Democratic,0.0
-State Department,DOS,1998,Democratic,0.0
-State Department,DOS,1999,Democratic,0.0
-State Department,DOS,2000,Democratic,0.0
-State Department,DOS,2001,Republican,0.0
-State Department,DOS,2002,Republican,0.0
-State Department,DOS,2003,Republican,0.0
-State Department,DOS,2004,Republican,0.0
-State Department,DOS,2005,Republican,0.0
-State Department,DOS,2006,Republican,0.0
-State Department,DOS,2007,Republican,0.0
-State Department,DOS,2008,Republican,0.0
-State Department,DOS,2009,Democratic,0.0
-State Department,DOS,2010,Democratic,1.0
-State Department,DOS,2011,Democratic,0.0
-State Department,DOS,2012,Democratic,0.0
-State Department,DOS,2013,Democratic,0.0
-State Department,DOS,2014,Democratic,0.0
-State Department,DOS,2015,Democratic,0.0
-State Department,DOS,2016,Democratic,0.0
-State Department,DOS,2017,Republican,1.0
-State Department,DOS,2018,Republican,0.0
-State Department,DOS,2019,Republican,0.0
-State Department,DOS,2020,Republican,0.0
-State Department,DOS,2021,Democratic,1.0
-State Department,DOS,2022,Democratic,0.0
-State Department,DOS,2023,Democratic,3.0
-State Department,DOS,2024,Democratic,0.0
-Transportation Department,DOT,1981,Republican,0.0
-Transportation Department,DOT,1982,Republican,2.0
-Transportation Department,DOT,1983,Republican,3.0
-Transportation Department,DOT,1984,Republican,4.0
-Transportation Department,DOT,1985,Republican,4.0
-Transportation Department,DOT,1986,Republican,3.0
-Transportation Department,DOT,1987,Republican,2.0
-Transportation Department,DOT,1988,Republican,5.0
-Transportation Department,DOT,1989,Republican,2.0
-Transportation Department,DOT,1990,Republican,6.0
-Transportation Department,DOT,1991,Republican,8.0
-Transportation Department,DOT,1992,Republican,3.0
-Transportation Department,DOT,1993,Democratic,3.0
-Transportation Department,DOT,1994,Democratic,10.0
-Transportation Department,DOT,1995,Democratic,5.0
-Transportation Department,DOT,1996,Democratic,1.0
-Transportation Department,DOT,1997,Democratic,2.0
-Transportation Department,DOT,1998,Democratic,4.0
-Transportation Department,DOT,1999,Democratic,5.0
-Transportation Department,DOT,2000,Democratic,4.0
-Transportation Department,DOT,2001,Republican,5.0
-Transportation Department,DOT,2002,Republican,5.0
-Transportation Department,DOT,2003,Republican,5.0
-Transportation Department,DOT,2004,Republican,4.0
-Transportation Department,DOT,2005,Republican,3.0
-Transportation Department,DOT,2006,Republican,2.0
-Transportation Department,DOT,2007,Republican,3.0
-Transportation Department,DOT,2008,Republican,8.0
-Transportation Department,DOT,2009,Democratic,8.0
-Transportation Department,DOT,2010,Democratic,6.0
-Transportation Department,DOT,2011,Democratic,2.0
-Transportation Department,DOT,2012,Democratic,5.0
-Transportation Department,DOT,2013,Democratic,3.0
-Transportation Department,DOT,2014,Democratic,4.0
-Transportation Department,DOT,2015,Democratic,3.0
-Transportation Department,DOT,2016,Democratic,8.0
-Transportation Department,DOT,2017,Republican,0.0
-Transportation Department,DOT,2018,Republican,2.0
-Transportation Department,DOT,2019,Republican,1.0
-Transportation Department,DOT,2020,Republican,3.0
-Transportation Department,DOT,2021,Democratic,0.0
-Transportation Department,DOT,2022,Democratic,2.0
-Transportation Department,DOT,2023,Democratic,4.0
-Transportation Department,DOT,2024,Democratic,7.0
-Treasury Department,TREAS,1981,Republican,0.0
-Treasury Department,TREAS,1982,Republican,0.0
-Treasury Department,TREAS,1983,Republican,0.0
-Treasury Department,TREAS,1984,Republican,0.0
-Treasury Department,TREAS,1985,Republican,1.0
-Treasury Department,TREAS,1986,Republican,0.0
-Treasury Department,TREAS,1987,Republican,0.0
-Treasury Department,TREAS,1988,Republican,0.0
-Treasury Department,TREAS,1989,Republican,0.0
-Treasury Department,TREAS,1990,Republican,0.0
-Treasury Department,TREAS,1991,Republican,0.0
-Treasury Department,TREAS,1992,Republican,0.0
-Treasury Department,TREAS,1993,Democratic,1.0
-Treasury Department,TREAS,1994,Democratic,0.0
-Treasury Department,TREAS,1995,Democratic,0.0
-Treasury Department,TREAS,1996,Democratic,0.0
-Treasury Department,TREAS,1997,Democratic,2.0
-Treasury Department,TREAS,1998,Democratic,1.0
-Treasury Department,TREAS,1999,Democratic,0.0
-Treasury Department,TREAS,2000,Democratic,0.0
-Treasury Department,TREAS,2001,Republican,0.0
-Treasury Department,TREAS,2002,Republican,0.0
-Treasury Department,TREAS,2003,Republican,1.0
-Treasury Department,TREAS,2004,Republican,0.0
-Treasury Department,TREAS,2005,Republican,0.0
-Treasury Department,TREAS,2006,Republican,0.0
-Treasury Department,TREAS,2007,Republican,2.0
-Treasury Department,TREAS,2008,Republican,1.0
-Treasury Department,TREAS,2009,Democratic,1.0
-Treasury Department,TREAS,2010,Democratic,2.0
-Treasury Department,TREAS,2011,Democratic,1.0
-Treasury Department,TREAS,2012,Democratic,1.0
-Treasury Department,TREAS,2013,Democratic,1.0
-Treasury Department,TREAS,2014,Democratic,1.0
-Treasury Department,TREAS,2015,Democratic,2.0
-Treasury Department,TREAS,2016,Democratic,2.0
-Treasury Department,TREAS,2017,Republican,1.0
-Treasury Department,TREAS,2018,Republican,1.0
-Treasury Department,TREAS,2019,Republican,10.0
-Treasury Department,TREAS,2020,Republican,16.0
-Treasury Department,TREAS,2021,Democratic,9.0
-Treasury Department,TREAS,2022,Democratic,3.0
-Treasury Department,TREAS,2023,Democratic,3.0
-Treasury Department,TREAS,2024,Democratic,5.0
-Veterans Affairs Department,VA,1981,Republican,0.0
-Veterans Affairs Department,VA,1982,Republican,0.0
-Veterans Affairs Department,VA,1983,Republican,0.0
-Veterans Affairs Department,VA,1984,Republican,0.0
-Veterans Affairs Department,VA,1985,Republican,0.0
-Veterans Affairs Department,VA,1986,Republican,0.0
-Veterans Affairs Department,VA,1987,Republican,0.0
-Veterans Affairs Department,VA,1988,Republican,0.0
-Veterans Affairs Department,VA,1989,Republican,0.0
-Veterans Affairs Department,VA,1990,Republican,0.0
-Veterans Affairs Department,VA,1991,Republican,0.0
-Veterans Affairs Department,VA,1992,Republican,0.0
-Veterans Affairs Department,VA,1993,Democratic,0.0
-Veterans Affairs Department,VA,1994,Democratic,0.0
-Veterans Affairs Department,VA,1995,Democratic,1.0
-Veterans Affairs Department,VA,1996,Democratic,0.0
-Veterans Affairs Department,VA,1997,Democratic,1.0
-Veterans Affairs Department,VA,1998,Democratic,0.0
-Veterans Affairs Department,VA,1999,Democratic,0.0
-Veterans Affairs Department,VA,2000,Democratic,0.0
-Veterans Affairs Department,VA,2001,Republican,2.0
-Veterans Affairs Department,VA,2002,Republican,0.0
-Veterans Affairs Department,VA,2003,Republican,0.0
-Veterans Affairs Department,VA,2004,Republican,0.0
-Veterans Affairs Department,VA,2005,Republican,1.0
-Veterans Affairs Department,VA,2006,Republican,0.0
-Veterans Affairs Department,VA,2007,Republican,1.0
-Veterans Affairs Department,VA,2008,Republican,0.0
-Veterans Affairs Department,VA,2009,Democratic,1.0
-Veterans Affairs Department,VA,2010,Democratic,2.0
-Veterans Affairs Department,VA,2011,Democratic,3.0
-Veterans Affairs Department,VA,2012,Democratic,0.0
-Veterans Affairs Department,VA,2013,Democratic,1.0
-Veterans Affairs Department,VA,2014,Democratic,3.0
-Veterans Affairs Department,VA,2015,Democratic,4.0
-Veterans Affairs Department,VA,2016,Democratic,2.0
-Veterans Affairs Department,VA,2017,Republican,1.0
-Veterans Affairs Department,VA,2018,Republican,3.0
-Veterans Affairs Department,VA,2019,Republican,2.0
-Veterans Affairs Department,VA,2020,Republican,1.0
-Veterans Affairs Department,VA,2021,Democratic,3.0
-Veterans Affairs Department,VA,2022,Democratic,0.0
-Veterans Affairs Department,VA,2023,Democratic,4.0
-Veterans Affairs Department,VA,2024,Democratic,5.0
+Small Business Administration,SBA,2025,Republican,0.0
+Department of the Treasury,TREAS,1981,Republican,0.0
+Department of the Treasury,TREAS,1982,Republican,0.0
+Department of the Treasury,TREAS,1983,Republican,0.0
+Department of the Treasury,TREAS,1984,Republican,0.0
+Department of the Treasury,TREAS,1985,Republican,1.0
+Department of the Treasury,TREAS,1986,Republican,0.0
+Department of the Treasury,TREAS,1987,Republican,0.0
+Department of the Treasury,TREAS,1988,Republican,0.0
+Department of the Treasury,TREAS,1989,Republican,0.0
+Department of the Treasury,TREAS,1990,Republican,0.0
+Department of the Treasury,TREAS,1991,Republican,0.0
+Department of the Treasury,TREAS,1992,Republican,0.0
+Department of the Treasury,TREAS,1993,Democratic,1.0
+Department of the Treasury,TREAS,1994,Democratic,0.0
+Department of the Treasury,TREAS,1995,Democratic,0.0
+Department of the Treasury,TREAS,1996,Democratic,0.0
+Department of the Treasury,TREAS,1997,Democratic,2.0
+Department of the Treasury,TREAS,1998,Democratic,1.0
+Department of the Treasury,TREAS,1999,Democratic,0.0
+Department of the Treasury,TREAS,2000,Democratic,0.0
+Department of the Treasury,TREAS,2001,Republican,0.0
+Department of the Treasury,TREAS,2002,Republican,0.0
+Department of the Treasury,TREAS,2003,Republican,1.0
+Department of the Treasury,TREAS,2004,Republican,0.0
+Department of the Treasury,TREAS,2005,Republican,0.0
+Department of the Treasury,TREAS,2006,Republican,0.0
+Department of the Treasury,TREAS,2007,Republican,2.0
+Department of the Treasury,TREAS,2008,Republican,1.0
+Department of the Treasury,TREAS,2009,Democratic,1.0
+Department of the Treasury,TREAS,2010,Democratic,2.0
+Department of the Treasury,TREAS,2011,Democratic,1.0
+Department of the Treasury,TREAS,2012,Democratic,1.0
+Department of the Treasury,TREAS,2013,Democratic,1.0
+Department of the Treasury,TREAS,2014,Democratic,1.0
+Department of the Treasury,TREAS,2015,Democratic,2.0
+Department of the Treasury,TREAS,2016,Democratic,2.0
+Department of the Treasury,TREAS,2017,Republican,1.0
+Department of the Treasury,TREAS,2018,Republican,1.0
+Department of the Treasury,TREAS,2019,Republican,10.0
+Department of the Treasury,TREAS,2020,Republican,16.0
+Department of the Treasury,TREAS,2021,Democratic,10.0
+Department of the Treasury,TREAS,2022,Democratic,3.0
+Department of the Treasury,TREAS,2023,Democratic,3.0
+Department of the Treasury,TREAS,2024,Democratic,5.0
+Department of the Treasury,TREAS,2025,Republican,2.0
+Department of Agriculture,USDA,1981,Republican,0.0
+Department of Agriculture,USDA,1982,Republican,3.0
+Department of Agriculture,USDA,1983,Republican,6.0
+Department of Agriculture,USDA,1984,Republican,5.0
+Department of Agriculture,USDA,1985,Republican,2.0
+Department of Agriculture,USDA,1986,Republican,6.0
+Department of Agriculture,USDA,1987,Republican,6.0
+Department of Agriculture,USDA,1988,Republican,5.0
+Department of Agriculture,USDA,1989,Republican,11.0
+Department of Agriculture,USDA,1990,Republican,8.0
+Department of Agriculture,USDA,1991,Republican,15.0
+Department of Agriculture,USDA,1992,Republican,14.0
+Department of Agriculture,USDA,1993,Democratic,16.0
+Department of Agriculture,USDA,1994,Democratic,19.0
+Department of Agriculture,USDA,1995,Democratic,9.0
+Department of Agriculture,USDA,1996,Democratic,11.0
+Department of Agriculture,USDA,1997,Democratic,6.0
+Department of Agriculture,USDA,1998,Democratic,4.0
+Department of Agriculture,USDA,1999,Democratic,6.0
+Department of Agriculture,USDA,2000,Democratic,18.0
+Department of Agriculture,USDA,2001,Republican,4.0
+Department of Agriculture,USDA,2002,Republican,7.0
+Department of Agriculture,USDA,2003,Republican,7.0
+Department of Agriculture,USDA,2004,Republican,7.0
+Department of Agriculture,USDA,2005,Republican,5.0
+Department of Agriculture,USDA,2006,Republican,4.0
+Department of Agriculture,USDA,2007,Republican,6.0
+Department of Agriculture,USDA,2008,Republican,5.0
+Department of Agriculture,USDA,2009,Democratic,8.0
+Department of Agriculture,USDA,2010,Democratic,4.0
+Department of Agriculture,USDA,2011,Democratic,6.0
+Department of Agriculture,USDA,2012,Democratic,1.0
+Department of Agriculture,USDA,2013,Democratic,7.0
+Department of Agriculture,USDA,2014,Democratic,8.0
+Department of Agriculture,USDA,2015,Democratic,6.0
+Department of Agriculture,USDA,2016,Democratic,9.0
+Department of Agriculture,USDA,2017,Republican,0.0
+Department of Agriculture,USDA,2018,Republican,6.0
+Department of Agriculture,USDA,2019,Republican,8.0
+Department of Agriculture,USDA,2020,Republican,8.0
+Department of Agriculture,USDA,2021,Democratic,4.0
+Department of Agriculture,USDA,2022,Democratic,3.0
+Department of Agriculture,USDA,2023,Democratic,5.0
+Department of Agriculture,USDA,2024,Democratic,3.0
+Department of Agriculture,USDA,2025,Republican,5.0
+Department of Veterans Affairs,VA,1981,Republican,0.0
+Department of Veterans Affairs,VA,1982,Republican,0.0
+Department of Veterans Affairs,VA,1983,Republican,0.0
+Department of Veterans Affairs,VA,1984,Republican,0.0
+Department of Veterans Affairs,VA,1985,Republican,0.0
+Department of Veterans Affairs,VA,1986,Republican,0.0
+Department of Veterans Affairs,VA,1987,Republican,0.0
+Department of Veterans Affairs,VA,1988,Republican,0.0
+Department of Veterans Affairs,VA,1989,Republican,0.0
+Department of Veterans Affairs,VA,1990,Republican,0.0
+Department of Veterans Affairs,VA,1991,Republican,0.0
+Department of Veterans Affairs,VA,1992,Republican,0.0
+Department of Veterans Affairs,VA,1993,Democratic,0.0
+Department of Veterans Affairs,VA,1994,Democratic,0.0
+Department of Veterans Affairs,VA,1995,Democratic,1.0
+Department of Veterans Affairs,VA,1996,Democratic,0.0
+Department of Veterans Affairs,VA,1997,Democratic,1.0
+Department of Veterans Affairs,VA,1998,Democratic,0.0
+Department of Veterans Affairs,VA,1999,Democratic,0.0
+Department of Veterans Affairs,VA,2000,Democratic,0.0
+Department of Veterans Affairs,VA,2001,Republican,2.0
+Department of Veterans Affairs,VA,2002,Republican,2.0
+Department of Veterans Affairs,VA,2003,Republican,0.0
+Department of Veterans Affairs,VA,2004,Republican,0.0
+Department of Veterans Affairs,VA,2005,Republican,1.0
+Department of Veterans Affairs,VA,2006,Republican,0.0
+Department of Veterans Affairs,VA,2007,Republican,1.0
+Department of Veterans Affairs,VA,2008,Republican,0.0
+Department of Veterans Affairs,VA,2009,Democratic,1.0
+Department of Veterans Affairs,VA,2010,Democratic,2.0
+Department of Veterans Affairs,VA,2011,Democratic,3.0
+Department of Veterans Affairs,VA,2012,Democratic,0.0
+Department of Veterans Affairs,VA,2013,Democratic,1.0
+Department of Veterans Affairs,VA,2014,Democratic,3.0
+Department of Veterans Affairs,VA,2015,Democratic,4.0
+Department of Veterans Affairs,VA,2016,Democratic,2.0
+Department of Veterans Affairs,VA,2017,Republican,1.0
+Department of Veterans Affairs,VA,2018,Republican,3.0
+Department of Veterans Affairs,VA,2019,Republican,2.0
+Department of Veterans Affairs,VA,2020,Republican,1.0
+Department of Veterans Affairs,VA,2021,Democratic,3.0
+Department of Veterans Affairs,VA,2022,Democratic,0.0
+Department of Veterans Affairs,VA,2023,Democratic,4.0
+Department of Veterans Affairs,VA,2024,Democratic,5.0
+Department of Veterans Affairs,VA,2025,Republican,2.0

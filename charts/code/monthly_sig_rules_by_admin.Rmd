@@ -36,8 +36,8 @@ monthly_sig0 <- read.csv(here("charts","data", data_file))
 
 # Manipulate Data
 ```{r}
-# manually set desired presidential admin (e.g. "Biden", "Trump 47", etc.)
-Presidential.Admin = "Biden"
+# manually set desired presidential admin for chart visualization (e.g. "Biden", "Trump 47", etc.)
+Presidential.Admin = "Trump 47"
 
 # copy data frame
 monthly_sig1 <- monthly_sig0
