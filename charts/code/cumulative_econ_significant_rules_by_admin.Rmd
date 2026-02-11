@@ -113,7 +113,7 @@ line1 <- ggplot(cum_sig_long, aes(x = months_in_office, y = econ_rules, color = 
   theme(
     plot.title = element_text(hjust = 0.5, margin = margin(b = 0, unit = "pt")),
     axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5)) +
-  xlab("Months In Office") +
+  xlab("Months in Office") +
   ylab("Number of Rules") +
   ggtitle("Cumulative Economically Significant Final Rules Published by Administration") +
   annotate_RSC(geom = "text", x = 48, y = max(cum_sig_long$econ_rules) + 12, label = "End of First Presidential Term", size = 4, hjust = 0, vjust = 0) +
