@@ -60,7 +60,7 @@ current_date <- format(Sys.Date(), "%B %d, %Y")
 
 ```{r plot_data, results='markup'}
 # create caption text
-caption_text <- paste("Sources: GovInfo.gov for the years 2022 and onwards; Federal Register Statistics for all the prior years. \n\nUpdated:", current_date)
+caption_text <- paste("Sources: GovInfo.gov for the years 2024 and onwards; Federal Register Statistics for all the prior years. \n\nUpdated:", current_date)
 
 # format wrapping setting for caption text
 wrapped_caption <- paste(strwrap(caption_text, width = 55), collapse = "\n")
