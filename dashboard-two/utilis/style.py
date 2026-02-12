@@ -10,7 +10,6 @@ GW_COLORS = {
     "GWbuff": "#A69362",
     "lightblue": "#0073AA",
     "lightyellow": "#F8E08E",
-    # Secondary colors
     "darkyellow": "#FFC72C",
     "brown": "#A75523",
     "darkgreen": "#008364",
