@@ -49,6 +49,9 @@ colnames(agency_es_rules_NA) <- c("name", "acronym", "year", "party", "rules")
 # remove rows with NA values
 agency_es_rules <- agency_es_rules_NA[complete.cases(agency_es_rules_NA), ]
 
+# in the acronym column of the df, change all "STATE" to "DOS"
+agency_es_rules$acronym[agency_es_rules$acronym == "STATE"] <- "DOS"
+
 # set current date
 current_date <- format(Sys.Date(), "%B %d, %Y")
 ```
