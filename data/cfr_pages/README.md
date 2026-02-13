@@ -9,6 +9,7 @@ Follow these steps to update the dataset:
 1. Visit the [Federal Register Statistics](https://www.federalregister.gov/reader-aids/federal-register-statistics) page. 
 1. Click CFR Volumes and Page Breakdown to download the latest year_CFR_Charts.XLSX file and save it to this folder as "aggregated_charts_frstats.xlsx" (replace the existing file if necessary).
 1. Run the Python script `update_cfr_pages.py` in your preferred IDE to update the dataset.
+1. Update the caption_text in the corresponding cfr_pages.Rmd file to reflect the last year of data in the latest Federal Register Statistics XLSX file.
 
 #### Environment Set Up
 
