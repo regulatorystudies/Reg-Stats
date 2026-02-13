@@ -22,8 +22,7 @@ python -m ipykernel install --user --name=dashboard2 --display-name "dashboard2"
 ```
 
 To-do
-- Convert utilis and style to python 
-- Create notebook to replicate static plot
-- resolve the import errors in utilis 
+- Add snippet that will download the plot into png and pdf format to check logo
+- layout the dashbaord streamlit code
 - add documentation to the code 
 
