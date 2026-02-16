@@ -25,4 +25,7 @@ python -m ipykernel install --user --name=dashboard2 --display-name "dashboard2"
 ```aiignore
 pip install requirements.txt
 ```
-
+## TO run the app
+```aiignore
+streamlit run app1.py
+```
