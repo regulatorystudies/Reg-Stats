@@ -21,5 +21,8 @@ pip install -r requirements.txt
 python -m ipykernel install --user --name=dashboard2 --display-name "dashboard2"
 ```
 
-
+## Install dependancies 
+```aiignore
+pip install requirements.txt
+```
 
