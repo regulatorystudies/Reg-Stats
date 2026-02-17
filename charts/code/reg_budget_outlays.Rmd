@@ -25,7 +25,6 @@ data_file = "regulatory_agency_budget_outlays_by_fy.csv"
 
 # refresh dataset
 copy_dataset(data_file, here("data"), here("charts", "data"))
-
 ```
 
 ## Load Data
@@ -38,7 +37,6 @@ fig1 <- read.csv(here("charts", "data", data_file))
 ## Process Data
 
 ```{r code}
-
 # drop junk columns if present
 fig1 <- fig1 %>% select(-any_of("X"))
 
@@ -179,16 +177,6 @@ fig1_plot <- ggplot(fig1_long, aes(x = year, y = value, fill = category)) +
     limits = c(min(fig1$year, na.rm = TRUE), max(fig1$year, na.rm = TRUE)),
     expand = c(0, 0)
   )
-
-annotate(
-  geom = "segment",
-  x = min(fig1$year, na.rm = TRUE),
-  xend = max(fig1$year, na.rm = TRUE),
-  y = 0, yend = 0,
-  linetype = "solid",
-  linewidth = 1,
-  color = RSCgray
-)
 
 fig1_plot
 
