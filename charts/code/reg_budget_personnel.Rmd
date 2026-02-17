@@ -184,7 +184,7 @@ fig2_plot
 suppressWarnings({
   fig2_plot2 <- ggdraw() +
     draw_plot(fig2_plot) +
-    draw_image(logo, x = 0.095, y = 0.040, halign = 0, valign = 0, width = 0.2)
+    draw_image(logo, x = 0.1, y = 0.040, halign = 0, valign = 0, width = 0.2)
 })
 
 fig2_plot2
