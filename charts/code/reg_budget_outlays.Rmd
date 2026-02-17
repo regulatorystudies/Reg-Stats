@@ -1,0 +1,208 @@
+---
+title: "Regulatory Agency Budget Outlays by Fiscal Year"
+author: "Henry Hirsch"
+date: "2026-02-13"
+output: html_document
+---
+
+## Initialize
+
+The `i_am` function identifies where the Rmd is located within the main project directory. All future calls to files are based on their relative location to the project root.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set location of this file in project directory
+library(here)
+i_am("charts/code/reg_budget_outlays.Rmd")
+
+# import local functions
+source(here("charts", "code", "local_utils.R"))
+source(here("charts", "code", "style.R"))
+
+# point to dataset
+data_file = "regulatory_agency_budget_outlays_by_fy.csv"
+
+# refresh dataset
+copy_dataset(data_file, here("data"), here("charts", "data"))
+```
+
+## Load Data
+
+```{r load data}
+# load csv using here
+fig1 <- read.csv(here("charts", "data", data_file))
+```
+
+## Process Data
+
+```{r code}
+# drop junk columns if present
+fig1 <- fig1 %>% select(-any_of("X"))
+
+# clean types: year int; others numeric; blanks -> 0
+fig1 <- fig1 %>%
+  mutate(
+    year = as.integer(.data$year),
+    across(where(is.character), readr::parse_number),
+    across(where(is.numeric) & !matches("^year$"), ~ tidyr::replace_na(.x, 0))
+  )
+
+# scale to billions (divide everything numeric except year)
+fig1 <- fig1 %>%
+  mutate(across(where(is.numeric) & !matches("^year$"), ~ .x / 1000))
+
+# recalculate new total from components
+fig1 <- fig1 %>%
+  mutate(real_total = economic_regulation + social_reg_adjusted + tsa)
+
+current_date <- format(Sys.Date(), "%B %d, %Y")
+caption_text <- paste("Source: FY 2024 Regulators' Budget report", "\n\nUpdated:", current_date)
+```
+
+## Plot Data
+
+```{r generate graph}
+# long format (components)
+fig1_long <- fig1 %>%
+  select(year, economic_regulation, social_reg_adjusted, tsa) %>%
+  pivot_longer(-year, names_to = "category", values_to = "value") %>%
+  mutate(
+    category = factor(
+      category,
+      levels = c("economic_regulation", # bottom
+                 "social_reg_adjusted", # middle
+                 "tsa") # top
+    )
+  )
+
+# y-axis based on stacked total
+fig1_stack <- fig1 %>%
+  transmute(year, stack_total = economic_regulation + social_reg_adjusted + tsa)
+
+yd_df   <- fig1_stack %>% filter(is.finite(stack_total)) %>% select(stack_total)
+y_upper <- ydynam(yd_df, 10, 1)
+
+# label positions (default = y midpoint at last year, but manually overridable)
+last_year <- max(fig1$year, na.rm = TRUE)
+
+label_df <- fig1 %>%
+  filter(year == last_year) %>%
+  transmute(
+    year,
+    economic_regulation,
+    social_reg_adjusted,
+    tsa
+  ) %>%
+  tidyr::pivot_longer(-year, names_to = "category", values_to = "value") %>%
+  mutate(
+    category = factor(category, levels = levels(fig1_long$category))
+  ) %>%
+  arrange(category) %>%
+  mutate(
+    cum = cumsum(value),
+    y_default = cum - value / 2,
+    x_default = year - 5,
+    label = dplyr::recode(
+      category,
+      economic_regulation = "Economic",
+      social_reg_adjusted = "Social",
+      tsa                 = "TSA"
+    )
+  )
+
+# MANUAL OVERRIDES (can edit these numbers, NA = use the default value)
+manual_pos <- tibble::tribble(
+  ~category,               ~x,    ~y,
+  "economic_regulation",   NA,   NA,
+  "social_reg_adjusted",   NA,  NA,
+  "tsa",                   NA, 72
+) %>%
+  mutate(category = factor(category, levels = levels(fig1_long$category)))
+
+# join overrides; if x/y provided, use them, else fall back to defaults
+label_df <- label_df %>%
+  left_join(manual_pos, by = "category") %>%
+  mutate(
+    x = dplyr::coalesce(x, x_default),
+    y = dplyr::coalesce(y, y_default)
+  )
+
+# plot
+fig1_plot <- ggplot(fig1_long, aes(x = year, y = value, fill = category)) +
+  geom_area(position = position_stack(reverse = TRUE), color = NA) +
+   annotate(
+    "segment",
+    x = min(fig1$year, na.rm = TRUE),
+    xend = max(fig1$year, na.rm = TRUE),
+    y = 0, yend = 0,
+    linewidth = 1,
+    color = RSCgray
+  ) +
+  geom_text(
+    data = label_df,
+    aes(x = x, y = y, label = label),
+    inherit.aes = FALSE,
+    size = 6,
+    fontface = "plain",
+    color = c("white", "white", "black")  # Economic/Social white; TSA black
+  ) +
+  scale_fill_manual(
+    values = c(
+      economic_regulation = "#0d9bd8",  # Economic
+      social_reg_adjusted = "#0d4a6d",  # Social
+      tsa                 = "#497690"   # TSA
+    )
+  ) +
+  coord_cartesian(clip = "off") +
+  theme_RSC +
+  theme(
+    plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 25)),
+    axis.title.x = element_text(size = 10, angle = 0, vjust = 0.5, hjust = 0, margin = margin(t = 3)),
+    axis.text.x = element_text(angle = 65, hjust = 1),
+    axis.ticks.x = element_blank(),
+    plot.caption = element_text(margin = margin(t = 15)),
+    plot.caption.position = "plot"
+  ) +
+  ggtitle("Regulatory Agency Budget Outlays by Fiscal Year") +
+  ylab("Billions of Constant 2012 US Dollars") +
+  xlab("\nNote: The Transportation Security Administration (TSA) is displayed separately from social regulation as it has features that differ from other regulatory agencies.") +
+  labs(fill = NULL, caption = caption_text) +
+  scale_y_continuous(
+    breaks = seq(0, y_upper, by = 10),
+    expand = c(0, 0),
+    limits = c(0, y_upper)
+  ) +
+  scale_x_continuous(
+    breaks = seq(min(fig1$year, na.rm = TRUE), max(fig1$year, na.rm = TRUE), by = 2),
+    limits = c(min(fig1$year, na.rm = TRUE), max(fig1$year, na.rm = TRUE)),
+    expand = c(0, 0)
+  )
+
+fig1_plot
+
+suppressWarnings({
+  fig1_plot2 <- ggdraw() +
+    draw_plot(fig1_plot) +
+    draw_image(logo, x = 0.095, y = 0.040, halign = 0, valign = 0, width = 0.2)
+})
+
+fig1_plot2
+```
+
+```{r save}
+# create empty output folder if it doesn't already exist
+out = here("charts", "output")
+if (!dir.exists(out)){
+  dir.create(out, showWarnings = FALSE)
+}
+
+image_name = "regulatory_agency_budget_outlays_by_fy"
+
+# save as pdf
+ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = fig1_plot2, width = 12, height = 9, dpi = 300)
+
+# save as png
+ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = fig1_plot2, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
+
+```
