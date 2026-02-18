@@ -30,6 +30,11 @@ pip install requirements.txt
 ```aiignore
 streamlit run app1.py
 ```
-=======
 
->>>>>>> Stashed changes
+admin order - done 
+source text gap - done 
+x and y axis thicker 
+hover feat
+logo fix 
+line above the highest point 
+
