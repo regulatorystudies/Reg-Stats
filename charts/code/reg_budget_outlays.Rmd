@@ -165,7 +165,7 @@ fig1_plot <- ggplot(fig1_long, aes(x = year, y = value, fill = category)) +
     plot.caption.position = "plot"
   ) +
   ggtitle("Regulatory Agency Budget Outlays by Fiscal Year") +
-  ylab("Billions of Constant 2012 US Dollars") +
+  ylab("Billions of Constant 2012 U.S. Dollars") +
   xlab("\nNote: The Transportation Security Administration (TSA) is displayed separately from social regulation as it has features that differ from other regulatory agencies.") +
   labs(fill = NULL, caption = caption_text) +
   scale_y_continuous(
