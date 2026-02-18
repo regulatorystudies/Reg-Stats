@@ -5,6 +5,8 @@ significant rules plot (same data, styling, and utils as monthly_sig.ipynb).
 import io
 import sys
 from pathlib import Path
+BASE = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE))
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
@@ -15,13 +17,29 @@ import streamlit as st
 from PIL import Image
 
 # Resolve paths when running from dashboard-two (or repo root)
-BASE = Path(__file__).resolve().parent
-sys.path.insert(0, str(BASE))
-from utilis.style import GW_COLORS
+try:
+    from utilis.style import GW_COLORS
+except (FileNotFoundError, OSError):
+    # Fallback if style.py fails (e.g., logo path issue)
+    GW_COLORS = {
+        "GWblue": "#033C5A",
+        "GWbuff": "#A69362",
+        "lightblue": "#0073AA",
+        "lightyellow": "#F8E08E",
+        "darkyellow": "#FFC72C",
+        "brown": "#A75523",
+        "darkgreen": "#008364",
+        "lightgreen": "#78BE20",
+        "red": "#C9102F",
+        "RSCgray": "#E0E0E0",
+        "RSCdarkgray": "#bdbdbd",
+        "fill": "#B2DDF4"
+    }
 
 # Font (same as notebook)
 import matplotlib as mpl
 import matplotlib.font_manager as fm
+
 FONT_PATH = BASE / "utilis" / "style" / "a-avenir-next-lt-pro.otf"
 if FONT_PATH.exists():
     fm.fontManager.addfont(str(FONT_PATH))
@@ -101,7 +119,7 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     ax.margins(x=0)
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %y"))
     plt.setp(ax.get_xticklabels(), rotation=60, ha="right")
-    ax.grid(True, axis="y", linewidth=1.5, alpha=0.6)
+    ax.grid(True, axis="y", linewidth=1.0, alpha=0.4)
     ax.grid(False, axis="x")
     sns.despine(ax=ax)
     ax.legend(frameon=False)
@@ -118,7 +136,7 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     fig.text(
         0.93,
         0.07,
-        "Source: Office of the Federal Register (federalregister.gov)\nUpdated February 11, 2025",
+        "Source: Office of the Federal Register (federalregister.gov)\n\nUpdated February 11, 2025",
         ha="right",
         va="bottom",
         fontsize=12,
@@ -128,12 +146,12 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
 
 def main():
     df = load_data()
-    admins = sorted(df["Admin"].dropna().unique().tolist())
+    admins = ["Trump 47","Biden", "Trump 45", "Obama", "Bush 43","Clinton","Bush 41","Regan"]
     if not admins:
         st.warning("No administrations found in the data.")
         return
 
-    st.title("Monthly Significant Final Rules by Administration")
+    st.title("Monthly Significant Final Rules by Administration",text_alignment = "center")
 
     # Left: control panel | Right: plot
     col_controls, col_plot = st.columns([1, 4], gap="large")
@@ -143,14 +161,14 @@ def main():
         admin = st.selectbox(
             "Administration",
             admins,
-            index=admins.index("Biden") if "Biden" in admins else 0,
+            index=admins.index("Trump 47") if "Trump 47" in admins else 0,
             label_visibility="collapsed",
         )
         st.markdown("---")
         st.markdown("**Download plot**")
         download_fmt = st.selectbox(
             "Format",
-            ["PNG", "SVG", "PDF"],
+            ["PNG", "PDF"],
             label_visibility="collapsed",
         )
 
@@ -168,7 +186,7 @@ def main():
     with col_controls:
         buf = io.BytesIO()
         fmt = download_fmt.lower()
-        fig.savefig(buf, format=fmt, bbox_inches="tight", dpi=150)
+        fig.savefig(buf, format=fmt, bbox_inches="tight", dpi=300)
         buf.seek(0)
         st.download_button(
             label=f"Download as {download_fmt}",
@@ -178,7 +196,6 @@ def main():
         )
 
     plt.close(fig)
-
 
 if __name__ == "__main__":
     main()
