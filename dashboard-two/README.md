@@ -21,6 +21,7 @@ pip install -r requirements.txt
 python -m ipykernel install --user --name=dashboard2 --display-name "dashboard2"
 ```
 
+<<<<<<< Updated upstream
 ## Install dependancies 
 ```aiignore
 pip install requirements.txt
@@ -29,3 +30,6 @@ pip install requirements.txt
 ```aiignore
 streamlit run app1.py
 ```
+=======
+
+>>>>>>> Stashed changes
