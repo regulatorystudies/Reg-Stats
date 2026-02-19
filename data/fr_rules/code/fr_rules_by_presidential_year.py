@@ -4,9 +4,10 @@ from pathlib import Path
 from pandas import DataFrame, to_datetime, concat
 from fr_toolbelt.api_requests import get_documents_by_date
 from filter_documents import filter_corrections
+
 p = Path(__file__)
-MAIN_DIR = p.parents[1]                 # output folder
-API_DIR = p.parents[1].joinpath("_api") # API cache folder
+MAIN_DIR = p.parents[1]                 
+API_DIR = p.parents[1].joinpath("_api") 
 API_DIR.mkdir(parents=True, exist_ok=True)
 
 # Presidential year Y = Feb 1, Y → Jan 31, Y+1
@@ -56,7 +57,7 @@ def retrieve_documents_pres_years(
             fields=fields,
             handle_duplicates="flag",
         )
-        # Save yearly cache so that the code does not run again and fetches older data
+        # Save yearly cache in _API
         with open(file_name, "w", encoding="utf-8") as f:
             json.dump(documents, f, indent=4)
 
