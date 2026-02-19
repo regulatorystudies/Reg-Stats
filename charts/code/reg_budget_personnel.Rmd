@@ -83,7 +83,7 @@ fig2_stack <- fig2 %>%
 yd_df   <- fig2_stack %>% filter(is.finite(stack_total)) %>% select(stack_total)
 y_upper <- ydynam(yd_df, 50, 1)
 
-# label positions (default = y midpoint at last year, but manually overridable)
+# label positions (default = y midpoint at last year, but can manually override)
 last_year <- max(fig2$year, na.rm = TRUE)
 
 label_df <- fig2 %>%
