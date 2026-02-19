@@ -1,6 +1,7 @@
 # federal_register_rules_by_presidential_year.py
 
 import json
+import time
 from pathlib import Path
 
 from pandas import DataFrame, to_datetime, concat
@@ -9,20 +10,23 @@ from fr_toolbelt.api_requests import get_documents_by_date
 from filter_documents import filter_corrections
 
 
-# ------------------
+# ============================================================
 # Paths
+# ============================================================
 
 p = Path(__file__)
-MAIN_DIR = p.parents[1]  # main folder for Reg Stats chart; store output data here
-API_DIR = p.parents[1].joinpath("_api")  # folder for storing retrieved API data
+MAIN_DIR = p.parents[1]                 # output folder
+API_DIR = p.parents[1].joinpath("_api") # API cache folder
 API_DIR.mkdir(parents=True, exist_ok=True)
 
 
-# ------------------
+# ============================================================
 # Constants
+# ============================================================
 
-# Output presidential years: 1995..2025 inclusive
-PRESIDENTIAL_YEARS = [str(yr) for yr in range(1995, 2026)]
+# Presidential years to INCLUDE in output
+# Presidential year Y = Feb 1, Y → Jan 31, Y+1
+PRESIDENTIAL_YEARS = [str(y) for y in range(1995, 2026)]
 
 FIELDS = [
     "action", "agencies", "agency_names", "citation", "correction_of", "corrections",
@@ -33,8 +37,9 @@ SAVE_NAME_CSV = "federal_register_rules_by_presidential_year.csv"
 SAVE_CORRECTIONS_CSV = "federal_register_corrections.csv"
 
 
-# ------------------
-# Functions
+# ============================================================
+# Retrieval
+# ============================================================
 
 def retrieve_documents_pres_years(
     presidential_years: list[str],
@@ -44,30 +49,42 @@ def retrieve_documents_pres_years(
     replace_existing: bool = True,
 ) -> list[dict]:
     """
-    Retrieve documents in presidential-year windows:
-      presidential year Y = Y-02-01 to (Y+1)-01-31 (inclusive)
+    Retrieve Federal Register documents by PRESIDENTIAL YEAR.
 
-    Retrieves year-by-year to avoid API pagination/limit truncation.
-    Caches each presidential year as a separate JSON file.
+    Presidential year Y = Y-02-01 → (Y+1)-01-31
+
+    A fixed 2-second pause is applied between API requests
+    to avoid rate-limit issues. This value can be safely
+    adjusted if needed.
     """
-    type_list = [doctype.upper()]  # API expects uppercase document type
+    type_list = [doctype.upper()]
     all_documents: list[dict] = []
 
-    for y_str in presidential_years:
+    for idx, y_str in enumerate(presidential_years):
         y = int(y_str)
         start_date = f"{y}-02-01"
         end_date = f"{y + 1}-01-31"
 
         file_name = save_path / f"documents_endpoint_{doctype}_presyear_{y}.json"
 
-        # Load from cache if present and we are not replacing
+        # Load cached file if present and not replacing
         if file_name.is_file() and not replace_existing:
             with open(file_name, "r", encoding="utf-8") as f:
                 documents = json.load(f)
             all_documents.extend(documents)
             continue
 
-        print(f"Retrieving type={doctype} for presidential_year={y} ({start_date} to {end_date})...")
+        # ----------------------------------------------------
+        # Pause between API calls to avoid rate limiting
+        # Adjust this value if needed
+        # ----------------------------------------------------
+        if idx > 0:
+            time.sleep(2.0)  # seconds
+
+        print(
+            f"Retrieving {doctype} | presidential_year={y} "
+            f"({start_date} → {end_date})"
+        )
 
         documents, _ = get_documents_by_date(
             start_date,
@@ -77,63 +94,56 @@ def retrieve_documents_pres_years(
             handle_duplicates="flag",
         )
 
-        dups = sum(1 for r in documents if r.get("duplicate", False) is True)
-        if dups > 0:
-            print(f"Flagged {dups} duplicate documents for {doctype} presyear {y}.")
-
+        # Save yearly cache
         with open(file_name, "w", encoding="utf-8") as f:
             json.dump(documents, f, indent=4)
 
         all_documents.extend(documents)
 
-    print(f"Done. Retrieved total {len(all_documents)} docs for {doctype}.")
+    print(f"Retrieved {len(all_documents)} total documents for {doctype}")
     return all_documents
 
-#%%
+
+# ============================================================
+# Merge yearly JSONs → single JSON per category
+# ============================================================
+
 def merge_presidential_year_jsons(
     presidential_years: list[str],
     doctype: str,
     raw_path: Path,
     delete_individual_files: bool = True,
 ) -> Path:
-    """
-    Merge all per-presidential-year JSON files for a doctype into one file.
-    Optionally delete the individual year files after merging.
+    merged_docs: list[dict] = []
 
-    Returns:
-        Path: path to the merged JSON file
-    """
-    merged_documents: list[dict] = []
-
-    for y_str in presidential_years:
-        file_name = raw_path / f"documents_endpoint_{doctype}_presyear_{y_str}.json"
-        if not file_name.is_file():
+    for y in presidential_years:
+        file_name = raw_path / f"documents_endpoint_{doctype}_presyear_{y}.json"
+        if not file_name.exists():
             continue
 
         with open(file_name, "r", encoding="utf-8") as f:
-            docs = json.load(f)
-        merged_documents.extend(docs)
+            merged_docs.extend(json.load(f))
 
         if delete_individual_files:
             file_name.unlink()
 
     merged_file = raw_path / f"documents_endpoint_{doctype}_all_presyears.json"
     with open(merged_file, "w", encoding="utf-8") as f:
-        json.dump(merged_documents, f, indent=4)
+        json.dump(merged_docs, f, indent=4)
 
-    print(f"Merged {len(merged_documents)} documents into {merged_file.name}")
+    print(f"Merged JSON written: {merged_file.name}")
     return merged_file
-#%%
+
+
+# ============================================================
+# Formatting & grouping
+# ============================================================
 
 def format_documents(documents: list[dict]) -> DataFrame:
-    """Format docs and compute presidential_year = Feb 1 .. Jan 31."""
     if not documents:
         return DataFrame()
 
     df = DataFrame(documents)
-
-    if "publication_date" not in df.columns:
-        return DataFrame()
 
     df["publication_dt"] = to_datetime(df["publication_date"], errors="coerce")
     df = df.loc[df["publication_dt"].notna()].copy()
@@ -141,7 +151,8 @@ def format_documents(documents: list[dict]) -> DataFrame:
     df["pub_year"] = df["publication_dt"].dt.year
     df["pub_month"] = df["publication_dt"].dt.month
 
-    # Presidential year boundary is Feb 1; January belongs to previous year.
+    # Presidential year logic:
+    # January belongs to the previous presidential year
     df["presidential_year"] = df["pub_year"]
     df.loc[df["pub_month"] == 1, "presidential_year"] = df["pub_year"] - 1
 
@@ -152,25 +163,28 @@ def group_documents(
     df: DataFrame,
     group_column: str = "presidential_year",
     value_column: str = "document_number",
-    return_column: str = None,
+    return_column: str | None = None,
 ) -> DataFrame:
-    """Group Federal Register documents by presidential year (Feb 1 to Jan 31)."""
     if df.empty:
         out = DataFrame(columns=[return_column or value_column])
         out.index.name = group_column
         return out
 
-    grouped_df = (
+    grouped = (
         df.loc[:, [group_column, value_column]]
-          .groupby(group_column)
-          .agg("count")
+        .groupby(group_column)
+        .agg("count")
     )
 
-    if return_column is not None:
-        grouped_df = grouped_df.rename(columns={value_column: return_column})
+    if return_column:
+        grouped = grouped.rename(columns={value_column: return_column})
 
-    return grouped_df
+    return grouped
 
+
+# ============================================================
+# Main pipeline
+# ============================================================
 
 def main(
     presidential_years: list[str],
@@ -180,77 +194,80 @@ def main(
     processed_file_name: str,
     replace_existing: bool = True,
 ):
-    """Runs pipeline to retrieve and process documents by presidential year."""
-    print(f"Main folder for processed data: {processed_path}")
-    print(f"Folder for API data: {raw_path}")
+    print(f"API cache directory: {raw_path}")
+    print(f"Output directory:   {processed_path}")
 
-    df_list, corrections_list = [], []
-    doctypes = {"RULE": "final_rules", "PRORULE": "proposed_rules"}
+    df_list = []
+    corrections_list = []
 
-    for doctype, fieldname in doctypes.items():
-        # Retrieve (year-by-year cache files)
+    doctypes = {
+        "RULE": "final_rules",
+        "PRORULE": "proposed_rules",
+    }
+
+    for doctype, outcol in doctypes.items():
         documents = retrieve_documents_pres_years(
-            presidential_years=presidential_years,
-            doctype=doctype,
-            fields=fields,
-            save_path=raw_path,
-            replace_existing=replace_existing,
+            presidential_years,
+            doctype,
+            fields,
+            raw_path,
+            replace_existing,
         )
 
-        # Merge the yearly JSONs into ONE per category and delete the individual files
         merge_presidential_year_jsons(
-            presidential_years=presidential_years,
-            doctype=doctype,
-            raw_path=raw_path,
+            presidential_years,
+            doctype,
+            raw_path,
             delete_individual_files=True,
         )
 
-        # Process
         df = format_documents(documents)
         df, corrections = filter_corrections(df)
 
         if not corrections.empty:
             corrections = corrections.copy()
-            corrections.loc[:, "type"] = doctype
+            corrections["type"] = doctype
         corrections_list.append(corrections)
 
-        df_grouped = group_documents(df, return_column=fieldname)
+        df_grouped = group_documents(df, return_column=outcol)
         df_list.append(df_grouped)
 
-    # Join non-correction counts
+    # Join final + proposed rules
     dfPrez = df_list[0].join(df_list[1], how="outer").fillna(0)
     dfPrez = dfPrez.reset_index()
 
-    # Keep exactly 1995..2025
-    dfPrez = dfPrez.query("presidential_year >= 1995 and presidential_year <= 2025").copy()
+    # Keep only 1995–2025
+    dfPrez = dfPrez.query(
+        "presidential_year >= 1995 and presidential_year <= 2025"
+    ).copy()
 
-    # Cast counts to int
-    for col in ["final_rules", "proposed_rules"]:
-        if col in dfPrez.columns:
-            dfPrez[col] = dfPrez[col].astype(int)
+    dfPrez["final_rules"] = dfPrez["final_rules"].astype(int)
+    dfPrez["proposed_rules"] = dfPrez["proposed_rules"].astype(int)
 
-    print(dfPrez.tail())
-
-    # Save counts CSV
-    file_name = processed_path / processed_file_name
-    with open(file_name, "w", encoding="utf-8") as f:
-        dfPrez.to_csv(f, index=False, lineterminator="\n")
+    # Save main CSV
+    out_csv = processed_path / processed_file_name
+    dfPrez.to_csv(out_csv, index=False, lineterminator="\n")
 
     # Save corrections CSV
     dfCorrections = concat(
         [c for c in corrections_list if not c.empty],
-        axis=0,
         ignore_index=True,
-    ) if any((not c.empty) for c in corrections_list) else DataFrame()
+    ) if any(not c.empty for c in corrections_list) else DataFrame()
 
-    corr_file = processed_path / SAVE_CORRECTIONS_CSV
-    with open(corr_file, "w", encoding="utf-8") as f:
-        dfCorrections.to_csv(f, index=False, lineterminator="\n")
+    corr_csv = processed_path / SAVE_CORRECTIONS_CSV
+    dfCorrections.to_csv(corr_csv, index=False, lineterminator="\n")
 
-    print(f"\nWrote:\n- {file_name}\n- {corr_file}")
-    print(f"API merged JSONs:\n- {raw_path / 'documents_endpoint_RULE_all_presyears.json'}"
-          f"\n- {raw_path / 'documents_endpoint_PRORULE_all_presyears.json'}")
+    print("\nFinished successfully.")
+    print(f"Counts CSV: {out_csv}")
+    print(f"Corrections CSV: {corr_csv}")
+    print("Merged API JSONs:")
+    print(f" - documents_endpoint_RULE_all_presyears.json")
+    print(f" - documents_endpoint_PRORULE_all_presyears.json")
 
+
+# ============================================================
+# Entry point
+# ============================================================
 
 if __name__ == "__main__":
     main(
@@ -259,5 +276,5 @@ if __name__ == "__main__":
         raw_path=API_DIR,
         processed_path=MAIN_DIR,
         processed_file_name=SAVE_NAME_CSV,
-        replace_existing=True,  # set False to reuse cached year files (if you keep them)
+        replace_existing=True,
     )
