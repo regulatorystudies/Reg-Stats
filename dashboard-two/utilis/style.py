@@ -21,11 +21,11 @@ GW_COLORS = {
 }
 
 # logo
-logo_path = here("dashboard-two/utilis/style/gw_ci_rsc_2cs_pos.png")
+logo_path = here("/utilis/style/gw_ci_rsc_2cs_pos.png")
 logo = Image.open(logo_path)
 
 # font
-font_path = str(here("dashboard-two/utilis/style/a-avenir-next-lt-pro.otf"))
+font_path = str(here("/utilis/style/a-avenir-next-lt-pro.otf"))
 fm.fontManager.addfont(font_path)
 custom_font = fm.FontProperties(fname=font_path).get_name()
 
