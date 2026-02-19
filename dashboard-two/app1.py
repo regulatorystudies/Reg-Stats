@@ -69,7 +69,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 @st.cache_data
 def load_data():
     df = pd.read_csv(DATA_PATH)
@@ -87,7 +86,7 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     df[OTHER_COL] = pd.to_numeric(df[OTHER_COL], errors="coerce").fillna(0)
 
     sns.set_style("whitegrid")
-    fig, ax = plt.subplots(figsize=(14, 7))
+    fig, ax = plt.subplots(figsize=(12, 6), dpi=200)
     bar_width_days = 25
     econ_color = GW_COLORS["GWblue"]
     other_color = GW_COLORS["GWbuff"]
@@ -109,10 +108,13 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
         color=other_color,
         align="center",
     )
+    y_max = (df[ECON_COL] + df[OTHER_COL]).max()
+    y_top = int(np.ceil(y_max / 5) * 5) + 5 if y_max > 0 else 10  # next multiple of 5, plus one tick
+    ax.set_ylim(0, y_top)
     ax.set_title(
         f"Significant Final Rules Published Each Month\nunder the {admin_name} Administration",
-        fontsize=16,
-        pad=18,
+        fontsize=15,
+        pad=15,
     )
     ax.set_ylabel("Number of Rules")
     ax.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
@@ -122,24 +124,31 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     ax.grid(True, axis="y", linewidth=1.0, alpha=0.4)
     ax.grid(False, axis="x")
     sns.despine(ax=ax)
+    # Darker axis lines and ticks
+    ax.spines["bottom"].set_color("#333333")
+    ax.spines["left"].set_color("#333333")
+    ax.spines["bottom"].set_linewidth(1.2)
+    ax.spines["left"].set_linewidth(1.2)
+    ax.tick_params(axis="both", colors="#333333", width=1.2, length=4)
     ax.legend(frameon=False)
     fig.subplots_adjust(bottom=0.22)
-    ax.set_position([0.08, 0.26, 0.88, 0.64])
+    ax.set_position([0.10, 0.26, 0.88, 0.64])
 
     if LOGO_PATH.exists():
         im = Image.open(LOGO_PATH).convert("RGBA")
-        footer_logo_ax = fig.add_axes([0.03, 0.05, 0.30, 0.14])
-        footer_logo_ax.imshow(np.asarray(im), interpolation="lanczos")
+        arr = np.array(im)
+        footer_logo_ax = fig.add_axes([0.03, 0.05, 0.24, 0.11])
+        footer_logo_ax.imshow(arr, interpolation="bilinear")
         footer_logo_ax.axis("off")
         footer_logo_ax.set_aspect("equal", adjustable="box")
 
     fig.text(
         0.93,
-        0.07,
+        0.045,
         "Source: Office of the Federal Register (federalregister.gov)\n\nUpdated February 11, 2025",
         ha="right",
         va="bottom",
-        fontsize=12,
+        fontsize=11,
     )
     return fig
 
@@ -154,15 +163,16 @@ def main():
     st.title("Monthly Significant Final Rules by Administration",text_alignment = "center")
 
     # Left: control panel | Right: plot
-    col_controls, col_plot = st.columns([1, 4], gap="large")
+    col_controls, col_plot = st.columns([1.25, 3.25], gap="large")
 
     with col_controls:
-        st.markdown("### Controls")
+        st.markdown("### Select Adminstration")
         admin = st.selectbox(
             "Administration",
             admins,
             index=admins.index("Trump 47") if "Trump 47" in admins else 0,
             label_visibility="collapsed",
+
         )
         st.markdown("---")
         st.markdown("**Download plot**")
@@ -171,6 +181,7 @@ def main():
             ["PNG", "PDF"],
             label_visibility="collapsed",
         )
+
 
     df_admin = df[df["Admin"] == admin]
     if df_admin.empty:
@@ -194,6 +205,8 @@ def main():
             file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.{fmt}",
             mime="image/png" if fmt == "png" else "image/svg+xml" if fmt == "svg" else "application/pdf",
         )
+        st.markdown(
+            "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the Trump 47 administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$ 100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)")
 
     plt.close(fig)
 
