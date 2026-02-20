@@ -6,7 +6,8 @@ The economically significant rules by agency data are on a yearly frequency and 
 
 *Note: We rely on the Federal Register for the data starting 2021 and Reginfo.gov for all the prior years. This is because there is a data update lag in the Published Date on Reginfo.gov, which makes the data for recent years incomplete on Reginfo.gov.*
 
-*Note: Due to EO 14215, independent regulatory agencies are now subject to OIRA review for all types of signifcant rules as defined under EO 12866 (including economically significant rules). In the coming years, we should consider including these previously unaccounted for agencies in the scrapper and visualization scripts.*
+*Note: Due to EO 14215, independent regulatory agencies are now subject to OIRA review for all types of significant rules as defined under EO 12866 (including economically significant rules). In the coming years, we should consider including these previously unaccounted for agencies in the scrapper and visualization scripts.*
+
 
 ### Automated Process
 
