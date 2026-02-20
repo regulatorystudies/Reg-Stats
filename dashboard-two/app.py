@@ -133,7 +133,7 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     ax.tick_params(axis="y", colors="#333333", width=1.2, length=4)
     # X-axis: tick marks match x-axis color, labels stay dark
     ax.tick_params(axis="x", which="major", colors="#CCCCCC", width=1.0, length=5, direction="out", bottom=True, labelcolor="#333333")
-    ax.legend(frameon=False, loc="upper left")
+    ax.legend(frameon=True, loc="upper left", facecolor="white", edgecolor="#CCCCCC", framealpha=1.0)
     fig.subplots_adjust(bottom=0.25)  # More space at bottom for logo and padding
     ax.set_position([0.10, 0.26, 0.88, 0.64])
 
