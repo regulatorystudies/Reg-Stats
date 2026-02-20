@@ -78,8 +78,10 @@ def load_data():
 
 def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     df = df_admin.copy()
+    # Handle abbreviated month names (e.g., "Jun", "Jan")
     df["Date"] = pd.to_datetime(
-        df["Year"].astype(str) + "-" + df["Month"].astype(str) + "-01"
+        df["Year"].astype(str) + "-" + df["Month"].astype(str) + "-01",
+        format="mixed"
     )
     df = df.sort_values("Date")
     df[ECON_COL] = pd.to_numeric(df[ECON_COL], errors="coerce").fillna(0)
@@ -124,27 +126,28 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     ax.grid(True, axis="y", linewidth=1.0, alpha=0.4)
     ax.grid(False, axis="x")
     sns.despine(ax=ax)
-    # Darker axis lines and ticks
-    ax.spines["bottom"].set_color("#333333")
-    ax.spines["left"].set_color("#333333")
-    ax.spines["bottom"].set_linewidth(1.2)
-    ax.spines["left"].set_linewidth(1.2)
+    # Remove y-axis line, make x-axis same color as grid but thicker
+    ax.spines["left"].set_visible(False)
+    ax.spines["bottom"].set_color("#CCCCCC")  # Match grid color
+    ax.spines["bottom"].set_linewidth(2.0)
     ax.tick_params(axis="both", colors="#333333", width=1.2, length=4)
     ax.legend(frameon=False)
-    fig.subplots_adjust(bottom=0.22)
+    fig.subplots_adjust(bottom=0.25)  # More space at bottom for logo and padding
     ax.set_position([0.10, 0.26, 0.88, 0.64])
 
     if LOGO_PATH.exists():
         im = Image.open(LOGO_PATH).convert("RGBA")
         arr = np.array(im)
-        footer_logo_ax = fig.add_axes([0.03, 0.05, 0.24, 0.11])
+        # Align logo with y-axis (left=0.10), move lower (bottom=0.02), add padding below
+        footer_logo_ax = fig.add_axes([0.06, 0.02, 0.24, 0.11])
         footer_logo_ax.imshow(arr, interpolation="bilinear")
         footer_logo_ax.axis("off")
         footer_logo_ax.set_aspect("equal", adjustable="box")
 
+    # Align source note bottom with logo bottom (y=0.02)
     fig.text(
-        0.93,
-        0.045,
+        0.98,
+        0.02,
         "Source: Office of the Federal Register (federalregister.gov)\n\nUpdated February 11, 2025",
         ha="right",
         va="bottom",
@@ -189,7 +192,33 @@ def main():
             st.warning(f"No data for {admin}.")
         return
 
-    fig = plot_admin(df_admin, admin)
+    # Prepare date column for filtering
+    df_admin = df_admin.copy()
+    df_admin["Date"] = pd.to_datetime(
+        df_admin["Year"].astype(str) + "-" + df_admin["Month"].astype(str) + "-01",
+        format="mixed"
+    )
+    df_admin = df_admin.sort_values("Date")
+    
+    # Get number of months available
+    total_months = len(df_admin)
+    
+    with col_controls:
+        st.markdown("---")
+        st.markdown("**Number of months**")
+        num_months = st.slider(
+            "Months to display",
+            min_value=6,
+            max_value=total_months,
+            value=total_months,
+            step=1,
+            label_visibility="collapsed",
+        )
+    
+    # Filter to most recent N months
+    df_admin_filtered = df_admin.tail(num_months).copy()
+
+    fig = plot_admin(df_admin_filtered, admin)
 
     with col_plot:
         st.pyplot(fig)
