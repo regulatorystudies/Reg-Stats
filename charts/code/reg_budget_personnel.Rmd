@@ -157,17 +157,24 @@ fig2_plot <- ggplot(fig2_long, aes(x = year, y = value, fill = category)) +
   coord_cartesian(clip = "off") +
   theme_RSC +
   theme(
-    plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 25)),
+    plot.title = element_text(size = 20, 
+                              hjust = 0.5, 
+                              margin = margin(b = 25)),
+    plot.subtitle = element_text(size = 14, # COMMENT OUT plot.subtitle when generating the RegStats chart; DO THE INVERSE for the Regulators' Budget report
+                              hjust = 0.5,
+                              margin = margin(t = -12.5, b = 12.5)),  # negative top margin pulls it upward
     axis.title.x = element_text(size = 10, angle = 0, vjust = 0.5, hjust = 0, margin = margin(t = 3)),
     axis.text.x = element_text(angle = 65, hjust = 1),
     axis.ticks.x = element_blank(),
     plot.caption = element_text(margin = margin(t = 15)),
     plot.caption.position = "plot"
   ) +
-  ggtitle("Regulatory Agency Staffing by Fiscal Year") +
+  ggtitle("Figure 2") + # SET TO "Figure 2" for Regulators' Budget report; SET TO "Regulatory Agency Staffing by Fiscal Year" for RegStats chart
   ylab("Thousands of Full-Time Equivalent Personnel") +
   xlab("\nNote: The Transportation Security Administration (TSA) is displayed separately from social regulation as it has features that differ from other regulatory agencies.") +
-  labs(fill = NULL, caption = caption_text) +
+  labs(fill = NULL, 
+       caption = caption_text,
+              subtitle = "Regulatory Agency Staffing by Fiscal Year") + # SET TO "Regulatory Agency Staffing by Fiscal Year" for Regulators' Budget report; COMMENT OUT subtitle for RegStats chart
   scale_y_continuous(
     breaks = seq(0, y_upper, by = 50),
     expand = c(0, 0),

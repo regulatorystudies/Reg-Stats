@@ -160,21 +160,21 @@ fig1_plot <- ggplot(fig1_long, aes(x = year, y = value, fill = category)) +
     plot.title = element_text(size = 20, 
                               hjust = 0.5, 
                               margin = margin(b = 25)),
-    plot.subtitle = element_text(size = 14,
+    plot.subtitle = element_text(size = 14, # COMMENT OUT plot.subtitle when generating the RegStats chart; DO THE INVERSE for the Regulators' Budget report
                               hjust = 0.5,
-                              margin = margin(t = -5, b = 15)),  # negative top margin pulls it upward
+                              margin = margin(t = -12.5, b = 12.5)),  # negative top margin pulls it upward
     axis.title.x = element_text(size = 10, angle = 0, vjust = 0.5, hjust = 0, margin = margin(t = 3)),
     axis.text.x = element_text(angle = 65, hjust = 1),
     axis.ticks.x = element_blank(),
     plot.caption = element_text(margin = margin(t = 15)),
     plot.caption.position = "plot"
   ) +
-  ggtitle("Figure 1") + # set to "Figure 1" for Regulators' Budget report, set to "Regulatory Agency Budget Outlays by Fiscal Year" for RegStats chart
+  ggtitle("Figure 1") + # SET TO "Figure 1" for Regulators' Budget report; SET TO "Regulatory Agency Budget Outlays by Fiscal Year" for RegStats chart
   ylab("Billions of Constant 2012 U.S. Dollars") +
   xlab("\nNote: The Transportation Security Administration (TSA) is displayed separately from social regulation as it has features that differ from other regulatory agencies.") +
   labs(fill = NULL, 
        caption = caption_text, 
-       subtitle = "Regulatory Agency Budget Outlays by Fiscal Year") + # set to "Regulatory Agency Budget Outlays by Fiscal Year" for Regulators' Budget report, comment out subtitle for RegStats chart
+       subtitle = "Regulatory Agency Budget Outlays by Fiscal Year") + # SET TO "Regulatory Agency Budget Outlays by Fiscal Year" for Regulators' Budget report; COMMENT OUT subtitle for RegStats chart
   scale_y_continuous(
     breaks = seq(0, y_upper, by = 10),
     expand = c(0, 0),
