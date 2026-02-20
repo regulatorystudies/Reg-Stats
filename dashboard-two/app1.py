@@ -131,7 +131,7 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     ax.spines["bottom"].set_color("#CCCCCC")  # Match grid color
     ax.spines["bottom"].set_linewidth(2.0)
     ax.tick_params(axis="both", colors="#333333", width=1.2, length=4)
-    ax.legend(frameon=False)
+    ax.legend(frameon=False, loc="upper left")
     fig.subplots_adjust(bottom=0.25)  # More space at bottom for logo and padding
     ax.set_position([0.10, 0.26, 0.88, 0.64])
 
@@ -199,10 +199,10 @@ def main():
         format="mixed"
     )
     df_admin = df_admin.sort_values("Date")
-    
+
     # Get number of months available
     total_months = len(df_admin)
-    
+
     with col_controls:
         st.markdown("---")
         st.markdown("**Number of months**")
@@ -214,7 +214,7 @@ def main():
             step=1,
             label_visibility="collapsed",
         )
-    
+
     # Filter to most recent N months
     df_admin_filtered = df_admin.tail(num_months).copy()
 
