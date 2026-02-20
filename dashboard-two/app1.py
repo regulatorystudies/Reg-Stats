@@ -119,7 +119,7 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
         pad=15,
     )
     ax.set_ylabel("Number of Rules")
-    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
+    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
     ax.margins(x=0)
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %y"))
     plt.setp(ax.get_xticklabels(), rotation=60, ha="right")
@@ -130,7 +130,9 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     ax.spines["left"].set_visible(False)
     ax.spines["bottom"].set_color("#CCCCCC")  # Match grid color
     ax.spines["bottom"].set_linewidth(2.0)
-    ax.tick_params(axis="both", colors="#333333", width=1.2, length=4)
+    ax.tick_params(axis="y", colors="#333333", width=1.2, length=4)
+    # X-axis: tick marks match x-axis color, labels stay dark
+    ax.tick_params(axis="x", which="major", colors="#CCCCCC", width=1.0, length=5, direction="out", bottom=True, labelcolor="#333333")
     ax.legend(frameon=False, loc="upper left")
     fig.subplots_adjust(bottom=0.25)  # More space at bottom for logo and padding
     ax.set_position([0.10, 0.26, 0.88, 0.64])
@@ -147,11 +149,11 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     # Align source note bottom with logo bottom (y=0.02)
     fig.text(
         0.98,
-        0.02,
-        "Source: Office of the Federal Register (federalregister.gov)\n\nUpdated February 11, 2025",
+        0.08,
+        "Source: Office of the Federal Register (federalregister.gov)\nUpdated February 11, 2025",
         ha="right",
         va="bottom",
-        fontsize=11,
+        fontsize=10,
     )
     return fig
 
