@@ -158,7 +158,7 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
 
 def main():
     df = load_data()
-    admins = ["Trump 47","Biden", "Trump 45", "Obama", "Bush 43","Clinton","Bush 41","Regan"]
+    admins = ["Trump 47","Biden", "Trump 45", "Obama", "Bush 43","Clinton","Bush 41","Reagan"]
     if not admins:
         st.warning("No administrations found in the data.")
         return
