@@ -31,10 +31,5 @@ pip install requirements.txt
 streamlit run app1.py
 ```
 
-admin order - done 
-source text gap - done 
-x and y axis thicker 
-hover feat
-logo fix 
-line above the highest point 
+
 
