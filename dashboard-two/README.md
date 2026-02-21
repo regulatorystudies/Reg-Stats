@@ -1,6 +1,9 @@
-# Dashboard two steps 
+# Monthly Significant rules by administration
+This dashboard helps the user with keeping the track of monthly significant rules made by administration by giving options to choose the administration and the time period they want using the slider <br>
+Also the created custom plot can be downloaded using the given data download button in two formats (PNG and PDF)<br>
+Data download button is also provided in the dashboard 
 
-## make sure to create the virtual env
+## Make sure to create the virtual env in your root directory 
 ```aiignore
 # Create the environment
 python -m venv dashboard2
@@ -21,15 +24,11 @@ pip install -r requirements.txt
 python -m ipykernel install --user --name=dashboard2 --display-name "dashboard2"
 ```
 
-<<<<<<< Updated upstream
 ## Install dependancies 
 ```aiignore
 pip install requirements.txt
 ```
 ## TO run the app
 ```aiignore
-streamlit run app1.py
+streamlit run app.py
 ```
-
-
-
