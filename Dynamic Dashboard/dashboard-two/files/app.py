@@ -37,7 +37,7 @@ except (FileNotFoundError, OSError):
 import matplotlib as mpl
 import matplotlib.font_manager as fm
 
-FONT_PATH = DASHBOARD_ROOT / "utilis" / "style" / "a-avenir-next-lt-pro.otf"
+FONT_PATH = DASHBOARD_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
 if FONT_PATH.exists():
     fm.fontManager.addfont(str(FONT_PATH))
     avenir = fm.FontProperties(fname=str(FONT_PATH))
@@ -45,8 +45,10 @@ if FONT_PATH.exists():
 mpl.rcParams["pdf.fonttype"] = 42
 mpl.rcParams["ps.fonttype"] = 42
 
-DATA_PATH = DASHBOARD_ROOT / "data" / "monthly_significant_rules_by_admin.csv"
-LOGO_PATH = DASHBOARD_ROOT / "utilis" / "style" / "gw_ci_rsc_2cs_pos.png"
+
+DATA_ROOT = Path(__file__).resolve().parents[3]
+DATA_PATH = DATA_ROOT / "charts"/ "data" / "monthly_significant_rules_by_admin.csv"
+LOGO_PATH = DASHBOARD_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 ECON_COL = "Economically Significant"
 OTHER_COL = "Other Significant"
 
