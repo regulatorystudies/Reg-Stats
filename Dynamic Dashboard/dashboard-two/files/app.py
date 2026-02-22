@@ -1,9 +1,11 @@
-
 import io
 import sys
 from pathlib import Path
+
+# app.py lives in files/; utilis is in dashboard-two/utilis/
 BASE = Path(__file__).resolve().parent
-sys.path.insert(0, str(BASE))
+DASHBOARD_ROOT = BASE.parent
+sys.path.insert(0, str(DASHBOARD_ROOT))
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
@@ -32,11 +34,10 @@ except (FileNotFoundError, OSError):
         "fill": "#B2DDF4"
     }
 
-# Font (same as notebook)
 import matplotlib as mpl
 import matplotlib.font_manager as fm
 
-FONT_PATH = BASE / "utilis" / "style" / "a-avenir-next-lt-pro.otf"
+FONT_PATH = DASHBOARD_ROOT / "utilis" / "style" / "a-avenir-next-lt-pro.otf"
 if FONT_PATH.exists():
     fm.fontManager.addfont(str(FONT_PATH))
     avenir = fm.FontProperties(fname=str(FONT_PATH))
@@ -44,8 +45,8 @@ if FONT_PATH.exists():
 mpl.rcParams["pdf.fonttype"] = 42
 mpl.rcParams["ps.fonttype"] = 42
 
-DATA_PATH = BASE / "data" / "monthly_significant_rules_by_admin.csv"
-LOGO_PATH = BASE / "utilis" / "style" / "gw_ci_rsc_2cs_pos.png"
+DATA_PATH = DASHBOARD_ROOT / "data" / "monthly_significant_rules_by_admin.csv"
+LOGO_PATH = DASHBOARD_ROOT / "utilis" / "style" / "gw_ci_rsc_2cs_pos.png"
 ECON_COL = "Economically Significant"
 OTHER_COL = "Other Significant"
 
