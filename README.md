@@ -381,7 +381,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annually:<br/>February/March</td>
+      	  <td rowspan="2">Annually:<br/>Feb/Mar</td>
           <td>Data</td>
           <td><code>data/reg_budget/</code></td>
           <td><code>README.md</code></td>
@@ -409,7 +409,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
       <th>Output</th>
     </tr>
         <tr>
-      	  <td rowspan="2">Annually:<br/>February/March</td>
+      	  <td rowspan="2">Annually:<br/>Feb/Mar</td>
           <td>Data</td>
           <td><code>data/reg_budget/</code></td>
           <td><code>README.md</code></td>
