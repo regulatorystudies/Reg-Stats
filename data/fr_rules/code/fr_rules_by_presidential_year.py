@@ -4,15 +4,19 @@ from pathlib import Path
 from pandas import DataFrame, to_datetime, concat
 from fr_toolbelt.api_requests import get_documents_by_date
 from filter_documents import filter_corrections
+from datetime import date
 
 # finds parent directory and sets it here
+# set file paths
 p = Path(__file__)
-MAIN_DIR = p.parents[1]                 
-API_DIR = p.parents[1].joinpath("_api") 
+MAIN_DIR = p.parents[1] # main folder for Reg Stats chart; store output data here                 
+API_DIR = p.parents[1].joinpath("_api") # folder for storing retrieved API data
 API_DIR.mkdir(parents=True, exist_ok=True)
 
-# Presidential year Y = Feb 1, Y → Jan 31, Y+1
-PRESIDENTIAL_YEARS = [str(y) for y in range(1995, 2026)]
+# Presidential year starts Feb 1 ends Jan 31 of the next year 
+# set year range for update 
+current_year = date.today().year
+PRESIDENTIAL_YEARS = [str(y) for y in range(1995, current_year)]
 
 FIELDS = [
     "action", "agencies", "agency_names", "citation", "correction_of", "corrections",
@@ -22,6 +26,7 @@ FIELDS = [
 SAVE_NAME_CSV = "federal_register_rules_by_presidential_year.csv"
 SAVE_CORRECTIONS_CSV = "federal_register_corrections.csv"
 
+# define functions 
 def retrieve_documents_pres_years(
     presidential_years,
     doctype,
@@ -29,6 +34,19 @@ def retrieve_documents_pres_years(
     save_path,
     replace_existing: bool = True,
 ):
+    
+    """Retrieve documents from Federal Register API; save JSON; return results.
+
+    Args:
+        years (list): Retrieve documents from this list of years, based on publication date.
+        type (str): Document type to retrieve.
+        fields (list): Fields to retrieve.
+        save_path (Path): Path to save JSON data.
+
+    Returns:
+        list[dict]: List of retrieved documents.
+    """
+    
     type_list = [doctype.upper()]
     all_documents: list[dict] = []
 
@@ -37,16 +55,22 @@ def retrieve_documents_pres_years(
         start_date = f"{y}-02-01"
         end_date = f"{y + 1}-01-31"
 
+        # set file names for each indivisual year 
+        # this is because each presidential year has its own seperate API call 
+        
         file_name = save_path / f"documents_endpoint_{doctype}_presyear_{y}.json"
         if file_name.is_file() and not replace_existing:
             with open(file_name, "r", encoding="utf-8") as f:
                 documents = json.load(f)
             all_documents.extend(documents)
             continue
-        # pause between two api calls
+            
+        # pause between API calls to avoid rate limit 
         # set to two seconds here
         if idx > 0:
             time.sleep(2.0) # this is the pause timer here
+
+        # query endpoint for indivisual presidential year documents 
         print(
             f"Retrieving {doctype} | presidential_year={y} "
             f"({start_date} → {end_date})"
@@ -64,9 +88,11 @@ def retrieve_documents_pres_years(
 
         all_documents.extend(documents)
 
+    # return list of documents 
     print(f"Retrieved {len(all_documents)} total documents for {doctype}")
     return all_documents
 
+# function to merge presidential year JSON's into one JSON for entire update range 
 def merge_presidential_year_jsons(
     presidential_years,
     doctype,
@@ -93,6 +119,16 @@ def merge_presidential_year_jsons(
     return merged_file
 
 def format_documents(documents):
+    
+    """Format Federal Register documents to generate count by presidential year.
+
+    Args:
+        documents (list[dict]): List of documents.
+
+    Returns:
+        DataFrame: Pandas DataFrame with formatted data.
+    """
+    
     if not documents:
         return DataFrame()
 
@@ -109,8 +145,18 @@ def group_documents(
     df,
     group_column= "presidential_year",
     value_column= "document_number",
-    return_column = None,
-):
+    return_column = None):
+     """Group Federal Register documents by presidential year. 
+    A [presidential year](https://regulatorystudies.columbian.gwu.edu/reg-stats) is defined as Feb. 1 to Jan. 31.
+
+    Args:
+        df (DataFrame): Input data for grouping.
+        return_column (str): Name of grouped column to return.
+
+    Returns:
+        DataFrame: Documents grouped by presidential year.
+    """
+    
     if df.empty:
         out = DataFrame(columns=[return_column or value_column])
         out.index.name = group_column
@@ -132,11 +178,23 @@ def main(
     raw_path,
     processed_path,
     processed_file_name,
-    replace_existing= True,
-):
+    replace_existing= True):
+    """Runs entire pipeline to retrieve and process documents by presidential year.
+
+    Args:
+        years (list): Years of interest.
+        fields (list): Fields to retrieve.
+        raw_path (Path): Path for saving API data.
+        processed_path (Path): Path for saving processed data.
+        processed_file_name (str): File name for processed data.
+        replace_existing (bool, optional): Overwrite existing API data. Defaults to True.
+    """
+
+    # print directory paths 
     print(f"API cache directory: {raw_path}")
     print(f"Output directory:   {processed_path}")
 
+    # get and process documents 
     df_list = []
     corrections_list = []
 
@@ -180,14 +238,17 @@ def main(
     dfPrez["final_rules"] = dfPrez["final_rules"].astype(int)
     dfPrez["proposed_rules"] = dfPrez["proposed_rules"].astype(int)
 
+    # save csv file 
     out_csv = processed_path / processed_file_name
     dfPrez.to_csv(out_csv, index=False, lineterminator="\n")
 
+    # append dataframes
     dfCorrections = concat(
         [c for c in corrections_list if not c.empty],
         ignore_index=True,
     ) if any(not c.empty for c in corrections_list) else DataFrame()
 
+    # save csv file
     corr_csv = processed_path / SAVE_CORRECTIONS_CSV
     dfCorrections.to_csv(corr_csv, index=False, lineterminator="\n")
 
