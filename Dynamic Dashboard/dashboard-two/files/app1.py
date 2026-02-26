@@ -33,7 +33,9 @@ except (FileNotFoundError, OSError):
 FONT_FAMILY = "Avenir Next LT Pro"
 
 
+
 DATA_ROOT = Path(__file__).resolve().parents[3]
+
 DATA_PATH = DATA_ROOT / "charts"/ "data" / "monthly_significant_rules_by_admin.csv"
 LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 ECON_COL = "Economically Significant"
@@ -100,14 +102,14 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     ))
 
     y_max = (df[ECON_COL] + df[OTHER_COL]).max()
-    y_top = int(np.ceil(y_max / 5) * 5) + 5 if y_max > 0 else 10
+    y_top = int(np.ceil(y_max / 5) * 5) if y_max > 0 else 10
 
     fig.update_layout(
         barmode="stack",
         height=575,
         title=dict(
             text=f"Significant Final Rules Published Each Month<br>under the {admin_name} Administration",
-            font=dict(size=17, color="#333333", family=FONT_FAMILY),
+            font=dict(size=17, color=GW_COLORS['GWblue'], family=FONT_FAMILY),
             x=0.5,
             xanchor="center",
         ),
@@ -115,16 +117,16 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             title=dict(text="Number of Rules", font=dict(color="#333333", family=FONT_FAMILY)),
             range=[0, y_top],
             gridcolor="rgba(204, 204, 204, 0.4)",
-            gridwidth=1,
+            gridwidth=0,
             showline=False,
             tickfont=dict(color="#333333", family=FONT_FAMILY),
-            ticks="outside",
+            #ticks="",
             ticklen=4,
             tickwidth=1.2,
             tickcolor="#333333",
-            zeroline=True,
-            zerolinecolor="#CCCCCC",
-            zerolinewidth=2,
+            zeroline=False,
+            #zerolinecolor="#CCCCCC",
+            #zerolinewidth=2,
         ),
         xaxis=dict(
             tickformat="%y %b",
@@ -207,7 +209,7 @@ def main():
     col_controls, col_plot = st.columns([1.25, 3.25], gap="large")
 
     with col_controls:
-        st.markdown("### Select Adminstration")
+        st.markdown("### Select Administration")
         admin = st.selectbox(
             "Administration",
             admins,
@@ -215,15 +217,6 @@ def main():
             label_visibility="collapsed",
             help="Choose the presidential administration to view monthly significant final rules.",
         )
-        st.markdown("---")
-        st.markdown("**Download plot**")
-        download_fmt = st.selectbox(
-            "Format",
-            ["PNG", "PDF"],
-            label_visibility="collapsed",
-            help="Select file format for the downloaded plot.",
-        )
-
 
     df_admin = df[df["Admin"] == admin]
     if df_admin.empty:
@@ -240,11 +233,11 @@ def main():
     df_admin = df_admin.sort_values("Date")
 
     # Get number of months available
-    total_months = len(df_admin)
+    total_months = len(df_admin) - 1
 
     with col_controls:
         st.markdown("---")
-        st.markdown("**Number of months**")
+        st.markdown("**Number of Months**")
         num_months = st.slider(
             "Months to display",
             min_value=6,
@@ -252,18 +245,22 @@ def main():
             value=total_months,
             step=1,
             label_visibility="collapsed",
-            help="Show only the most recent N months of data. Drag to adjust.",
+            help="Show the first N months of data from the start of the administration. Drag to adjust.",
         )
-
-    # Filter to most recent N months
-    df_admin_filtered = df_admin.tail(num_months).copy()
+    # Filter to first N months (from the start)
+    df_admin_filtered = df_admin.head(num_months).copy()
 
     fig_plotly = plot_admin_plotly(df_admin_filtered, admin)
 
-    with col_plot:
-        st.plotly_chart(fig_plotly, use_container_width=True)
-
     with col_controls:
+        st.markdown("---")
+        st.markdown("**Download plot**")
+        download_fmt = st.selectbox(
+            "Format",
+            ["PNG", "PDF"],
+            label_visibility="collapsed",
+            help="Select file format for the downloaded plot.",
+        )
         fmt = download_fmt.lower()
         if fmt == "png":
             buf = io.BytesIO()
@@ -283,8 +280,21 @@ def main():
             mime=mime,
             help="Save the current plot to your device.",
         )
+
+    with col_plot:
+        st.plotly_chart(fig_plotly, use_container_width=True)
         st.markdown(
             "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the Trump 47 administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$ 100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)")
+
+        # Download data button below the plot
+        csv_data = df_admin_filtered[["Year", "Month", ECON_COL, OTHER_COL]].to_csv(index=False)
+        st.download_button(
+            label="Download Data (CSV)",
+            data=csv_data,
+            file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}_data.csv",
+            mime="text/csv",
+            help="Download the filtered data as a CSV file.",
+        )
 
 if __name__ == "__main__":
     main()
