@@ -370,6 +370,62 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
+  <summary><strong>Agency Budget Outlays by Fiscal Year</strong></summary>
+  <br/>
+  <table>
+    <tr>
+      <th>Update</th>
+      <th>Task</th>
+      <th>Location</th>
+      <th>File</th>
+      <th>Output</th>
+    </tr>
+        <tr>
+      	  <td rowspan="2">Annually:<br/>Feb/Mar</td>
+          <td>Data</td>
+          <td><code>data/reg_budget/</code></td>
+          <td><code>README.md</code></td>
+          <td><code>regulatory_agency_budget_outlays_by_fy.csv</code></td>
+        </tr>
+        <tr>
+          <td>Chart</td>
+          <td><code>charts/</code></td>
+          <td><code>code/reg_budget_outlays.Rmd</code></td>
+          <td><code>output/regulatory_agency_budget_outlays_by_fy.pdf</code><br/><code>output/regulatory_agency_budget_outlays_by_fy.png</code></td>
+        </tr>
+      </table>
+</details>
+
+
+<details>
+  <summary><strong>Full-Time Equivalent Personnel by Fiscal Year</strong></summary>
+  <br/>
+  <table>
+    <tr>
+      <th>Update</th>
+      <th>Task</th>
+      <th>Location</th>
+      <th>File</th>
+      <th>Output</th>
+    </tr>
+        <tr>
+      	  <td rowspan="2">Annually:<br/>Feb/Mar</td>
+          <td>Data</td>
+          <td><code>data/reg_budget/</code></td>
+          <td><code>README.md</code></td>
+          <td><code>regulatory_agency_staffing_by_fy.csv</code></td>
+        </tr>
+        <tr>
+          <td>Chart</td>
+          <td><code>charts/</code></td>
+          <td><code>code/reg_budget_personnel.Rmd</code></td>
+          <td><code>output/regulatory_agency_staffing_by_fy.pdf</code><br/><code>output/regulatory_agency_staffing_by_fy.png</code></td>
+        </tr>
+      </table>
+</details>
+
+
+<details>
   <summary><strong>Word Count of Public Laws by Congress</strong></summary>
   <br/>
   <table>
