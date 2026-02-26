@@ -1,8 +1,12 @@
 import io
 import sys
 from pathlib import Path
+
+# app.py lives in files/; utilis is in dashboard-two/utilis/
+
 BASE = Path(__file__).resolve().parent
-sys.path.insert(0, str(BASE))
+DASHBOARD_ROOT = BASE.parent
+sys.path.insert(0, str(DASHBOARD_ROOT))
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
@@ -12,11 +16,9 @@ import seaborn as sns
 import streamlit as st
 from PIL import Image
 
-# Resolve paths when running from dashboard-two (or repo root)
 try:
     from utilis.style import GW_COLORS
 except (FileNotFoundError, OSError):
-    # Fallback if style.py fails (e.g., logo path issue)
     GW_COLORS = {
         "GWblue": "#033C5A",
         "GWbuff": "#A69362",
@@ -32,11 +34,10 @@ except (FileNotFoundError, OSError):
         "fill": "#B2DDF4"
     }
 
-# Font (same as notebook)
 import matplotlib as mpl
 import matplotlib.font_manager as fm
 
-FONT_PATH = BASE / "utilis" / "style" / "a-avenir-next-lt-pro.otf"
+FONT_PATH = DASHBOARD_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
 if FONT_PATH.exists():
     fm.fontManager.addfont(str(FONT_PATH))
     avenir = fm.FontProperties(fname=str(FONT_PATH))
@@ -44,8 +45,10 @@ if FONT_PATH.exists():
 mpl.rcParams["pdf.fonttype"] = 42
 mpl.rcParams["ps.fonttype"] = 42
 
-DATA_PATH = BASE / "data" / "monthly_significant_rules_by_admin.csv"
-LOGO_PATH = BASE / "utilis" / "style" / "gw_ci_rsc_2cs_pos.png"
+
+DATA_ROOT = Path(__file__).resolve().parents[3]
+DATA_PATH = DATA_ROOT / "charts"/ "data" / "monthly_significant_rules_by_admin.csv"
+LOGO_PATH = DASHBOARD_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 ECON_COL = "Economically Significant"
 OTHER_COL = "Other Significant"
 
@@ -72,9 +75,9 @@ def load_data():
     return df
 
 
-def plot_admin(df_admin: pd.DataFrame, admin_name: str):
+def _prep_plot_df(df_admin: pd.DataFrame):
+    """Return dataframe with Date and numeric econ/other for plotting."""
     df = df_admin.copy()
-    # Handle abbreviated month names (e.g., "Jun", "Jan")
     df["Date"] = pd.to_datetime(
         df["Year"].astype(str) + "-" + df["Month"].astype(str) + "-01",
         format="mixed"
@@ -82,7 +85,11 @@ def plot_admin(df_admin: pd.DataFrame, admin_name: str):
     df = df.sort_values("Date")
     df[ECON_COL] = pd.to_numeric(df[ECON_COL], errors="coerce").fillna(0)
     df[OTHER_COL] = pd.to_numeric(df[OTHER_COL], errors="coerce").fillna(0)
+    return df
 
+
+def plot_admin(df_admin: pd.DataFrame, admin_name: str):
+    df = _prep_plot_df(df_admin)
     sns.set_style("whitegrid")
     fig, ax = plt.subplots(figsize=(12, 6), dpi=200)
     bar_width_days = 25
@@ -173,7 +180,7 @@ def main():
             admins,
             index=admins.index("Trump 47") if "Trump 47" in admins else 0,
             label_visibility="collapsed",
-
+            help="Choose the presidential administration to view monthly significant final rules.",
         )
         st.markdown("---")
         st.markdown("**Download plot**")
@@ -181,6 +188,7 @@ def main():
             "Format",
             ["PNG", "PDF"],
             label_visibility="collapsed",
+            help="Select file format for the downloaded plot.",
         )
 
 
@@ -211,6 +219,7 @@ def main():
             value=total_months,
             step=1,
             label_visibility="collapsed",
+            help="Show only the most recent N months of data. Drag to adjust.",
         )
 
     # Filter to most recent N months
@@ -231,6 +240,7 @@ def main():
             data=buf,
             file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.{fmt}",
             mime="image/png" if fmt == "png" else "image/svg+xml" if fmt == "svg" else "application/pdf",
+            help="Save the current plot to your device.",
         )
         st.markdown(
             "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the Trump 47 administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$ 100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)")
