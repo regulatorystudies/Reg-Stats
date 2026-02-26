@@ -5,6 +5,7 @@ from pandas import DataFrame, to_datetime, concat
 from fr_toolbelt.api_requests import get_documents_by_date
 from filter_documents import filter_corrections
 
+# finds parent directory and sets it here
 p = Path(__file__)
 MAIN_DIR = p.parents[1]                 
 API_DIR = p.parents[1].joinpath("_api") 
@@ -22,12 +23,12 @@ SAVE_NAME_CSV = "federal_register_rules_by_presidential_year.csv"
 SAVE_CORRECTIONS_CSV = "federal_register_corrections.csv"
 
 def retrieve_documents_pres_years(
-    presidential_years: list[str],
-    doctype: str,
-    fields: list,
-    save_path: Path,
+    presidential_years,
+    doctype,
+    fields,
+    save_path,
     replace_existing: bool = True,
-) -> list[dict]:
+):
     type_list = [doctype.upper()]
     all_documents: list[dict] = []
 
@@ -45,7 +46,7 @@ def retrieve_documents_pres_years(
         # pause between two api calls
         # set to two seconds here
         if idx > 0:
-            time.sleep(2.0)
+            time.sleep(2.0) # this is the pause timer here
         print(
             f"Retrieving {doctype} | presidential_year={y} "
             f"({start_date} → {end_date})"
@@ -67,12 +68,11 @@ def retrieve_documents_pres_years(
     return all_documents
 
 def merge_presidential_year_jsons(
-    presidential_years: list[str],
-    doctype: str,
-    raw_path: Path,
-    delete_individual_files: bool = True,
-) -> Path:
-    merged_docs: list[dict] = []
+    presidential_years,
+    doctype,
+    raw_path,
+    delete_individual_files: bool = True):
+    merged_docs = []
 
     for y in presidential_years:
         file_name = raw_path / f"documents_endpoint_{doctype}_presyear_{y}.json"
@@ -92,29 +92,25 @@ def merge_presidential_year_jsons(
     print(f"Merged JSON written: {merged_file.name}")
     return merged_file
 
-
-def format_documents(documents: list[dict]) -> DataFrame:
+def format_documents(documents):
     if not documents:
         return DataFrame()
 
     df = DataFrame(documents)
-
     df["publication_dt"] = to_datetime(df["publication_date"], errors="coerce")
     df = df.loc[df["publication_dt"].notna()].copy()
-
     df["pub_year"] = df["publication_dt"].dt.year
     df["pub_month"] = df["publication_dt"].dt.month
     df["presidential_year"] = df["pub_year"]
     df.loc[df["pub_month"] == 1, "presidential_year"] = df["pub_year"] - 1
-
     return df
 
 def group_documents(
-    df: DataFrame,
-    group_column: str = "presidential_year",
-    value_column: str = "document_number",
-    return_column: str | None = None,
-) -> DataFrame:
+    df,
+    group_column= "presidential_year",
+    value_column= "document_number",
+    return_column = None,
+):
     if df.empty:
         out = DataFrame(columns=[return_column or value_column])
         out.index.name = group_column
@@ -128,16 +124,15 @@ def group_documents(
 
     if return_column:
         grouped = grouped.rename(columns={value_column: return_column})
-
     return grouped
 
 def main(
-    presidential_years: list[str],
-    fields: list,
-    raw_path: Path,
-    processed_path: Path,
-    processed_file_name: str,
-    replace_existing: bool = True,
+    presidential_years,
+    fields,
+    raw_path,
+    processed_path,
+    processed_file_name,
+    replace_existing= True,
 ):
     print(f"API cache directory: {raw_path}")
     print(f"Output directory:   {processed_path}")
@@ -158,14 +153,12 @@ def main(
             raw_path,
             replace_existing,
         )
-
         merge_presidential_year_jsons(
             presidential_years,
             doctype,
             raw_path,
             delete_individual_files=True,
         )
-
         df = format_documents(documents)
         df, corrections = filter_corrections(df)
 
