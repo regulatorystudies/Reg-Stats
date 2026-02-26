@@ -1,20 +1,16 @@
+import base64
 import io
 import sys
 from pathlib import Path
-
-# app.py lives in files/; utilis is in dashboard-two/utilis/
 
 BASE = Path(__file__).resolve().parent
 DASHBOARD_ROOT = BASE.parent
 sys.path.insert(0, str(DASHBOARD_ROOT))
 
-import matplotlib.dates as mdates
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
+import plotly.graph_objects as go
 import streamlit as st
-from PIL import Image
 
 try:
     from utilis.style import GW_COLORS
@@ -34,21 +30,12 @@ except (FileNotFoundError, OSError):
         "fill": "#B2DDF4"
     }
 
-import matplotlib as mpl
-import matplotlib.font_manager as fm
-
-FONT_PATH = DASHBOARD_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
-if FONT_PATH.exists():
-    fm.fontManager.addfont(str(FONT_PATH))
-    avenir = fm.FontProperties(fname=str(FONT_PATH))
-    mpl.rcParams["font.family"] = avenir.get_name()
-mpl.rcParams["pdf.fonttype"] = 42
-mpl.rcParams["ps.fonttype"] = 42
+FONT_FAMILY = "Avenir Next LT Pro"
 
 
 DATA_ROOT = Path(__file__).resolve().parents[3]
 DATA_PATH = DATA_ROOT / "charts"/ "data" / "monthly_significant_rules_by_admin.csv"
-LOGO_PATH = DASHBOARD_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
+LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 ECON_COL = "Economically Significant"
 OTHER_COL = "Other Significant"
 
@@ -88,76 +75,122 @@ def _prep_plot_df(df_admin: pd.DataFrame):
     return df
 
 
-def plot_admin(df_admin: pd.DataFrame, admin_name: str):
+def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
+    """Create an interactive Plotly stacked bar chart with hover."""
     df = _prep_plot_df(df_admin)
-    sns.set_style("whitegrid")
-    fig, ax = plt.subplots(figsize=(12, 6), dpi=200)
-    bar_width_days = 25
     econ_color = GW_COLORS["GWblue"]
     other_color = GW_COLORS["GWbuff"]
 
-    ax.bar(
-        df["Date"],
-        df[ECON_COL],
-        width=bar_width_days,
-        label="Economically Significant",
-        color=econ_color,
-        align="center",
-    )
-    ax.bar(
-        df["Date"],
-        df[OTHER_COL],
-        width=bar_width_days,
-        bottom=df[ECON_COL],
-        label="Other Significant",
-        color=other_color,
-        align="center",
-    )
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=df["Date"],
+        y=df[ECON_COL],
+        name="Economically Significant",
+        marker_color=econ_color,
+        hovertemplate="<b>%{x|%b %Y}</b><br>Economically Significant: %{y}<extra></extra>",
+    ))
+
+    fig.add_trace(go.Bar(
+        x=df["Date"],
+        y=df[OTHER_COL],
+        name="Other Significant",
+        marker_color=other_color,
+        hovertemplate="<b>%{x|%b %Y}</b><br>Other Significant: %{y}<extra></extra>",
+    ))
+
     y_max = (df[ECON_COL] + df[OTHER_COL]).max()
-    y_top = int(np.ceil(y_max / 5) * 5) + 5 if y_max > 0 else 10  # next multiple of 5, plus one tick
-    ax.set_ylim(0, y_top)
-    ax.set_title(
-        f"Significant Final Rules Published Each Month\nunder the {admin_name} Administration",
-        fontsize=15,
-        pad=15,
-    )
-    ax.set_ylabel("Number of Rules")
-    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
-    ax.margins(x=0)
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %y"))
-    plt.setp(ax.get_xticklabels(), rotation=60, ha="right")
-    ax.grid(True, axis="y", linewidth=1.0, alpha=0.4)
-    ax.grid(False, axis="x")
-    sns.despine(ax=ax)
-    # Remove y-axis line, make x-axis same color as grid but thicker
-    ax.spines["left"].set_visible(False)
-    ax.spines["bottom"].set_color("#CCCCCC")  # Match grid color
-    ax.spines["bottom"].set_linewidth(2.0)
-    ax.tick_params(axis="y", colors="#333333", width=1.2, length=4)
-    # X-axis: tick marks match x-axis color, labels stay dark
-    ax.tick_params(axis="x", which="major", colors="#CCCCCC", width=1.0, length=5, direction="out", bottom=True, labelcolor="#333333")
-    ax.legend(frameon=True, loc="upper left", facecolor="white", edgecolor="#CCCCCC", framealpha=1.0)
-    fig.subplots_adjust(bottom=0.25)  # More space at bottom for logo and padding
-    ax.set_position([0.10, 0.26, 0.88, 0.64])
+    y_top = int(np.ceil(y_max / 5) * 5) + 5 if y_max > 0 else 10
 
+    fig.update_layout(
+        barmode="stack",
+        height=575,
+        title=dict(
+            text=f"Significant Final Rules Published Each Month<br>under the {admin_name} Administration",
+            font=dict(size=17, color="#333333", family=FONT_FAMILY),
+            x=0.5,
+            xanchor="center",
+        ),
+        yaxis=dict(
+            title=dict(text="Number of Rules", font=dict(color="#333333", family=FONT_FAMILY)),
+            range=[0, y_top],
+            gridcolor="rgba(204, 204, 204, 0.4)",
+            gridwidth=1,
+            showline=False,
+            tickfont=dict(color="#333333", family=FONT_FAMILY),
+            ticks="outside",
+            ticklen=4,
+            tickwidth=1.2,
+            tickcolor="#333333",
+            zeroline=True,
+            zerolinecolor="#CCCCCC",
+            zerolinewidth=2,
+        ),
+        xaxis=dict(
+            tickformat="%y %b",
+            tickangle=50,
+            showgrid=False,
+            showline=False,
+            tickfont=dict(color="#333333", family=FONT_FAMILY),
+            ticks="outside",
+            ticklen=5,
+            tickwidth=1,
+            tickcolor="#CCCCCC",
+            dtick="M3",
+        ),
+        legend=dict(
+            orientation="h",
+            yanchor="top",
+            y=-0.20,
+            xanchor="center",
+            x=0.43,
+            bgcolor="rgba(255,255,255,0)",
+            borderwidth=0,
+            font=dict(color="#333333", family=FONT_FAMILY),
+        ),
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+        margin=dict(l=60, r=40, t=80, b=180),
+        hoverlabel=dict(
+            bgcolor="white",
+            font_size=13,
+            font_color="#333333",
+            font_family=FONT_FAMILY,
+        ),
+    )
+
+    # Add source text annotation (bottom right)
+    fig.add_annotation(
+        text="Source: Office of the Federal Register (federalregister.gov)<br>Updated February 11, 2026",
+        xref="paper",
+        yref="paper",
+        x=1.0,
+        y=-0.22,
+        showarrow=False,
+        font=dict(size=11.5, color="#333333", family=FONT_FAMILY),
+        align="right",
+        xanchor="right",
+        yanchor="top",
+    )
+
+    # Add logo image (bottom left)
     if LOGO_PATH.exists():
-        im = Image.open(LOGO_PATH).convert("RGBA")
-        arr = np.array(im)
-        # Align logo with y-axis (left=0.10), move lower (bottom=0.02), add padding below
-        footer_logo_ax = fig.add_axes([0.06, 0.02, 0.24, 0.11])
-        footer_logo_ax.imshow(arr, interpolation="bilinear")
-        footer_logo_ax.axis("off")
-        footer_logo_ax.set_aspect("equal", adjustable="box")
+        with open(LOGO_PATH, "rb") as f:
+            logo_base64 = base64.b64encode(f.read()).decode("utf-8")
+        fig.add_layout_image(
+            dict(
+                source=f"data:image/png;base64,{logo_base64}",
+                xref="paper",
+                yref="paper",
+                x=-0.02,
+                y=-0.22,
+                sizex=0.35,
+                sizey=0.23,
+                xanchor="left",
+                yanchor="top",
+            )
+        )
 
-    # Align source note bottom with logo bottom (y=0.02)
-    fig.text(
-        0.98,
-        0.08,
-        "Source: Office of the Federal Register (federalregister.gov)\nUpdated February 11, 2025",
-        ha="right",
-        va="bottom",
-        fontsize=10,
-    )
     return fig
 
 
@@ -225,27 +258,33 @@ def main():
     # Filter to most recent N months
     df_admin_filtered = df_admin.tail(num_months).copy()
 
-    fig = plot_admin(df_admin_filtered, admin)
+    fig_plotly = plot_admin_plotly(df_admin_filtered, admin)
 
     with col_plot:
-        st.pyplot(fig)
+        st.plotly_chart(fig_plotly, use_container_width=True)
 
     with col_controls:
-        buf = io.BytesIO()
         fmt = download_fmt.lower()
-        fig.savefig(buf, format=fmt, bbox_inches="tight", dpi=300)
-        buf.seek(0)
+        if fmt == "png":
+            buf = io.BytesIO()
+            fig_plotly.write_image(buf, format="png", width=1000, height=600, scale=2)
+            buf.seek(0)
+            mime = "image/png"
+        else:
+            buf = io.BytesIO()
+            fig_plotly.write_image(buf, format="pdf", width=1000, height=600)
+            buf.seek(0)
+            mime = "application/pdf"
+
         st.download_button(
             label=f"Download as {download_fmt}",
             data=buf,
             file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.{fmt}",
-            mime="image/png" if fmt == "png" else "image/svg+xml" if fmt == "svg" else "application/pdf",
+            mime=mime,
             help="Save the current plot to your device.",
         )
         st.markdown(
             "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the Trump 47 administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$ 100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)")
-
-    plt.close(fig)
 
 if __name__ == "__main__":
     main()
