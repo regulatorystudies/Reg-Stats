@@ -40,12 +40,9 @@ ECON_COL = "Economically Significant"
 OTHER_COL = "Other Significant"
 
 st.set_page_config(page_title="Monthly Significant Rules by Administration", layout="wide")
-
-# Theme: GWblue background, GWbuff text
 BG_COLOR = GW_COLORS["GWblue"]
 TEXT_COLOR = GW_COLORS["GWbuff"]
 
-# Load custom font as base64 for embedding
 font_base64 = ""
 if FONT_PATH.exists():
     with open(FONT_PATH, "rb") as f:
@@ -102,19 +99,15 @@ def _prep_plot_df(df_admin: pd.DataFrame):
 
 
 def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
-    """Create an interactive Plotly stacked bar chart with hover."""
     df = _prep_plot_df(df_admin)
     econ_color = GW_COLORS["GWblue"]
     other_color = GW_COLORS["GWbuff"]
-
     # Check if there's any Other Significant data
     has_other_sig = df[OTHER_COL].sum() > 0
-
     # Create custom data for hover
     custom_data = list(zip(df[ECON_COL].astype(int), df[OTHER_COL].astype(int)))
 
     fig = go.Figure()
-
     if has_other_sig:
         # Both categories exist - show both in hover, only on top bar
         fig.add_trace(go.Bar(
@@ -135,7 +128,6 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             hovertemplate="<b>%{x|%b %Y}</b><br>Economically Significant: %{customdata[0]}<br>Other Significant: %{customdata[1]}<extra></extra>",
         ))
     else:
-        # Only Economically Significant data - show hover on the only bar
         fig.add_trace(go.Bar(
             x=df["Date"],
             y=df[ECON_COL],
@@ -144,7 +136,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             customdata=custom_data,
             hovertemplate="<b>%{x|%b %Y}</b><br>Economically Significant: %{customdata[0]}<extra></extra>",
         ))
-
+    # ydynam for dashboard
     y_max = (df[ECON_COL] + df[OTHER_COL]).max()
     y_top = int(np.ceil(y_max / 5) * 5) if y_max > 0 else 10
 
@@ -220,7 +212,6 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         yanchor="top",
     )
 
-
     if LOGO_PATH.exists():
         with open(LOGO_PATH, "rb") as f:
             logo_base64 = base64.b64encode(f.read()).decode("utf-8")
@@ -237,9 +228,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
                 yanchor="top",
             )
         )
-
     return fig
-
 
 def main():
     df = load_data()
@@ -249,8 +238,6 @@ def main():
         return
 
     st.title("Monthly Significant Final Rules by Administration",text_alignment = "center")
-
-    # Left: control panel | Right: plot
     col_controls, col_plot = st.columns([1.25, 3.25], gap="large")
 
     with col_controls:
@@ -262,14 +249,12 @@ def main():
             label_visibility="collapsed",
             help="Choose the presidential administration to view monthly significant final rules.",
         )
-
     df_admin = df[df["Admin"] == admin]
     if df_admin.empty:
         with col_plot:
             st.warning(f"No data for {admin}.")
         return
 
-    # Prepare date column for filtering
     df_admin = df_admin.copy()
     df_admin["Date"] = pd.to_datetime(
         df_admin["Year"].astype(str) + "-" + df_admin["Month"].astype(str) + "-01",
@@ -277,7 +262,6 @@ def main():
     )
     df_admin = df_admin.sort_values("Date")
 
-    # Get number of months available
     total_months = len(df_admin) - 1
 
     with col_controls:
@@ -292,7 +276,6 @@ def main():
             label_visibility="collapsed",
             help="Show the first N months of data from the start of the administration. Drag to adjust.",
         )
-    # Filter to first N months (from the start)
     df_admin_filtered = df_admin.head(num_months).copy()
 
     fig_plotly = plot_admin_plotly(df_admin_filtered, admin)
@@ -300,8 +283,6 @@ def main():
     with col_controls:
         st.markdown("---")
         st.markdown("**Download plot**")
-        
-        # Format selector and download button side by side
         fmt_col, btn_col = st.columns(2)
         with fmt_col:
             download_fmt = st.selectbox(
@@ -310,7 +291,6 @@ def main():
                 label_visibility="collapsed",
                 help="Select file format for the downloaded plot."
             )
-        
         fmt = download_fmt.lower()
         if fmt == "png":
             buf = io.BytesIO()
@@ -331,8 +311,7 @@ def main():
                 mime=mime,
                 help="Save the current plot to your device.",
             )
-        
-        # Download data button below
+
         csv_data = df_admin_filtered[["Year", "Month", ECON_COL, OTHER_COL]].to_csv(index=False)
         st.download_button(
             label="Download Data (CSV)",
@@ -346,7 +325,7 @@ def main():
     with col_plot:
         st.plotly_chart(fig_plotly, use_container_width=True, config={"displayModeBar": False})
         st.markdown(
-            "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the Trump 47 administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$ 100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)")
-
+            "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the Trump 47 administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$ 100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)",
+        text_alignment = "justify")
 if __name__ == "__main__":
     main()
