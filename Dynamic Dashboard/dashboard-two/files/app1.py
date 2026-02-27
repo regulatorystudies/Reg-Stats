@@ -30,11 +30,9 @@ except (FileNotFoundError, OSError):
         "fill": "#B2DDF4"
     }
 
-FONT_FAMILY = "Avenir Next LT Pro"
-
-
-
 DATA_ROOT = Path(__file__).resolve().parents[3]
+FONT_PATH = DATA_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
+FONT_FAMILY = "Avenir Next LT Pro, Avenir, Helvetica Neue, Arial, sans-serif"
 
 DATA_PATH = DATA_ROOT / "charts"/ "data" / "monthly_significant_rules_by_admin.csv"
 LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
@@ -46,12 +44,38 @@ st.set_page_config(page_title="Monthly Significant Rules by Administration", lay
 # Theme: GWblue background, GWbuff text
 BG_COLOR = GW_COLORS["GWblue"]
 TEXT_COLOR = GW_COLORS["GWbuff"]
+
+# Load custom font as base64 for embedding
+font_base64 = ""
+if FONT_PATH.exists():
+    with open(FONT_PATH, "rb") as f:
+        font_base64 = base64.b64encode(f.read()).decode("utf-8")
+
 st.markdown(
     f"""
     <style>
+    @font-face {{
+        font-family: 'Avenir Next LT Pro';
+        src: url(data:font/otf;base64,{font_base64}) format('opentype');
+        font-weight: normal;
+        font-style: normal;
+    }}
     .stApp, [data-testid="stAppViewContainer"] {{ background-color: {BG_COLOR}; }}
-    html, body, [class*="css"] {{ color: {TEXT_COLOR}; }}
-    h1, h2, h3, h4, p, span, label, div {{ color: {TEXT_COLOR}; }}
+    html, body, [class*="css"] {{ 
+        color: {TEXT_COLOR}; 
+        font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif;
+    }}
+    h1, h2, h3, h4, p, span, label, div {{ 
+        color: {TEXT_COLOR}; 
+        font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif;
+    }}
+    .js-plotly-plot .plotly .gtitle, 
+    .js-plotly-plot .plotly .xtick text, 
+    .js-plotly-plot .plotly .ytick text,
+    .js-plotly-plot .plotly .legend text,
+    .js-plotly-plot .plotly .annotation-text {{
+        font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif !important;
+    }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -83,23 +107,43 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     econ_color = GW_COLORS["GWblue"]
     other_color = GW_COLORS["GWbuff"]
 
+    # Check if there's any Other Significant data
+    has_other_sig = df[OTHER_COL].sum() > 0
+
+    # Create custom data for hover
+    custom_data = list(zip(df[ECON_COL].astype(int), df[OTHER_COL].astype(int)))
+
     fig = go.Figure()
 
-    fig.add_trace(go.Bar(
-        x=df["Date"],
-        y=df[ECON_COL],
-        name="Economically Significant",
-        marker_color=econ_color,
-        hovertemplate="<b>%{x|%b %Y}</b><br>Economically Significant: %{y}<extra></extra>",
-    ))
+    if has_other_sig:
+        # Both categories exist - show both in hover, only on top bar
+        fig.add_trace(go.Bar(
+            x=df["Date"],
+            y=df[ECON_COL],
+            name="Economically Significant",
+            marker_color=econ_color,
+            customdata=custom_data,
+            hoverinfo="skip",
+        ))
 
-    fig.add_trace(go.Bar(
-        x=df["Date"],
-        y=df[OTHER_COL],
-        name="Other Significant",
-        marker_color=other_color,
-        hovertemplate="<b>%{x|%b %Y}</b><br>Other Significant: %{y}<extra></extra>",
-    ))
+        fig.add_trace(go.Bar(
+            x=df["Date"],
+            y=df[OTHER_COL],
+            name="Other Significant",
+            marker_color=other_color,
+            customdata=custom_data,
+            hovertemplate="<b>%{x|%b %Y}</b><br>Economically Significant: %{customdata[0]}<br>Other Significant: %{customdata[1]}<extra></extra>",
+        ))
+    else:
+        # Only Economically Significant data - show hover on the only bar
+        fig.add_trace(go.Bar(
+            x=df["Date"],
+            y=df[ECON_COL],
+            name="Economically Significant",
+            marker_color=econ_color,
+            customdata=custom_data,
+            hovertemplate="<b>%{x|%b %Y}</b><br>Economically Significant: %{customdata[0]}<extra></extra>",
+        ))
 
     y_max = (df[ECON_COL] + df[OTHER_COL]).max()
     y_top = int(np.ceil(y_max / 5) * 5) if y_max > 0 else 10
@@ -107,6 +151,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     fig.update_layout(
         barmode="stack",
         height=575,
+        font=dict(family=FONT_FAMILY),
         title=dict(
             text=f"Significant Final Rules Published Each Month<br>under the {admin_name} Administration",
             font=dict(size=17, color=GW_COLORS['GWblue'], family=FONT_FAMILY),
@@ -117,16 +162,16 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             title=dict(text="Number of Rules", font=dict(color="#333333", family=FONT_FAMILY)),
             range=[0, y_top],
             gridcolor="rgba(204, 204, 204, 0.4)",
-            gridwidth=0,
+            gridwidth=1,
             showline=False,
             tickfont=dict(color="#333333", family=FONT_FAMILY),
-            #ticks="",
+            ticks="outside",
             ticklen=4,
             tickwidth=1.2,
             tickcolor="#333333",
-            zeroline=False,
-            #zerolinecolor="#CCCCCC",
-            #zerolinewidth=2,
+            zeroline=True,
+            zerolinecolor="#CCCCCC",
+            zerolinewidth=2,
         ),
         xaxis=dict(
             tickformat="%y %b",
@@ -159,9 +204,9 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             font_color="#333333",
             font_family=FONT_FAMILY,
         ),
+        hovermode="closest",
     )
 
-    # Add source text annotation (bottom right)
     fig.add_annotation(
         text="Source: Office of the Federal Register (federalregister.gov)<br>Updated February 11, 2026",
         xref="paper",
@@ -169,13 +214,13 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         x=1.0,
         y=-0.22,
         showarrow=False,
-        font=dict(size=11.5, color="#333333", family=FONT_FAMILY),
+        font=dict(size=11, color="#333333", family=FONT_FAMILY),
         align="right",
         xanchor="right",
         yanchor="top",
     )
 
-    # Add logo image (bottom left)
+
     if LOGO_PATH.exists():
         with open(LOGO_PATH, "rb") as f:
             logo_base64 = base64.b64encode(f.read()).decode("utf-8")
@@ -255,12 +300,17 @@ def main():
     with col_controls:
         st.markdown("---")
         st.markdown("**Download plot**")
-        download_fmt = st.selectbox(
-            "Format",
-            ["PNG", "PDF"],
-            label_visibility="collapsed",
-            help="Select file format for the downloaded plot.",
-        )
+        
+        # Format selector and download button side by side
+        fmt_col, btn_col = st.columns(2)
+        with fmt_col:
+            download_fmt = st.selectbox(
+                "Format",
+                ["PNG", "PDF"],
+                label_visibility="collapsed",
+                help="Select file format for the downloaded plot."
+            )
+        
         fmt = download_fmt.lower()
         if fmt == "png":
             buf = io.BytesIO()
@@ -273,20 +323,16 @@ def main():
             buf.seek(0)
             mime = "application/pdf"
 
-        st.download_button(
-            label=f"Download as {download_fmt}",
-            data=buf,
-            file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.{fmt}",
-            mime=mime,
-            help="Save the current plot to your device.",
-        )
-
-    with col_plot:
-        st.plotly_chart(fig_plotly, use_container_width=True)
-        st.markdown(
-            "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the Trump 47 administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$ 100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)")
-
-        # Download data button below the plot
+        with btn_col:
+            st.download_button(
+                label=f"Download {download_fmt}",
+                data=buf,
+                file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.{fmt}",
+                mime=mime,
+                help="Save the current plot to your device.",
+            )
+        
+        # Download data button below
         csv_data = df_admin_filtered[["Year", "Month", ECON_COL, OTHER_COL]].to_csv(index=False)
         st.download_button(
             label="Download Data (CSV)",
@@ -294,7 +340,13 @@ def main():
             file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}_data.csv",
             mime="text/csv",
             help="Download the filtered data as a CSV file.",
+            use_container_width=True
         )
+
+    with col_plot:
+        st.plotly_chart(fig_plotly, use_container_width=True, config={"displayModeBar": False})
+        st.markdown(
+            "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the Trump 47 administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$ 100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)")
 
 if __name__ == "__main__":
     main()
