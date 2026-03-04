@@ -138,7 +138,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         ))
     # ydynam for dashboard
     y_max = (df[ECON_COL] + df[OTHER_COL]).max()
-    y_top = int(np.ceil(y_max / 5) * 5) if y_max > 0 else 10
+    y_top = int(np.ceil(y_max / 5)*5) if y_max > 0 else 10
 
     fig.update_layout(
         barmode="stack",
@@ -158,7 +158,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             showline=False,
             tickfont=dict(color="#333333", family=FONT_FAMILY),
             ticks="outside",
-            ticklen=4,
+            ticklen=0,
             tickwidth=1.2,
             tickcolor="#333333",
             zeroline=True,
@@ -167,13 +167,13 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         ),
         xaxis=dict(
             tickformat="%y %b",
-            tickangle=50,
+            tickangle=65,
             showgrid=False,
             showline=False,
             tickfont=dict(color="#333333", family=FONT_FAMILY),
             ticks="outside",
-            ticklen=5,
-            tickwidth=1,
+            ticklen=0,
+            tickwidth=2,
             tickcolor="#CCCCCC",
             dtick="M3",
         ),
@@ -262,7 +262,7 @@ def main():
     )
     df_admin = df_admin.sort_values("Date")
 
-    total_months = len(df_admin) - 1
+    total_months = len(df_admin)
 
     with col_controls:
         st.markdown("---")
@@ -271,7 +271,7 @@ def main():
             "Months to display",
             min_value=6,
             max_value=total_months,
-            value=total_months,
+            value=total_months-1,
             step=1,
             label_visibility="collapsed",
             help="Show the first N months of data from the start of the administration. Drag to adjust.",
@@ -282,7 +282,7 @@ def main():
 
     with col_controls:
         st.markdown("---")
-        st.markdown("**Download plot**")
+        st.markdown("**Download Plot**")
         fmt_col, btn_col = st.columns(2)
         with fmt_col:
             download_fmt = st.selectbox(
@@ -312,11 +312,11 @@ def main():
                 help="Save the current plot to your device.",
             )
 
-        csv_data = df_admin_filtered[["Year", "Month", ECON_COL, OTHER_COL]].to_csv(index=False)
+        csv_data = df.to_csv(index=False)
         st.download_button(
             label="Download Data (CSV)",
             data=csv_data,
-            file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}_data.csv",
+            file_name=f"monthly_significant_rules_by_admin.csv",
             mime="text/csv",
             help="Download the filtered data as a CSV file.",
             use_container_width=True
@@ -325,7 +325,7 @@ def main():
     with col_plot:
         st.plotly_chart(fig_plotly, use_container_width=True, config={"displayModeBar": False})
         st.markdown(
-            "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the Trump 47 administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$ 100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)",
+            "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the selected administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$ 100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)",
         text_alignment = "justify")
 if __name__ == "__main__":
     main()
