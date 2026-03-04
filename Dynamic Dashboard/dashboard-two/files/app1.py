@@ -58,16 +58,16 @@ st.markdown(
         font-style: normal;
     }}
     .stApp, [data-testid="stAppViewContainer"] {{ background-color: {BG_COLOR}; }}
-    html, body, [class*="css"] {{ 
-        color: {TEXT_COLOR}; 
+    html, body, [class*="css"] {{
+        color: {TEXT_COLOR};
         font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif;
     }}
-    h1, h2, h3, h4, p, span, label, div {{ 
-        color: {TEXT_COLOR}; 
+    h1, h2, h3, h4, p, span, label, div {{
+        color: {TEXT_COLOR};
         font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif;
     }}
-    .js-plotly-plot .plotly .gtitle, 
-    .js-plotly-plot .plotly .xtick text, 
+    .js-plotly-plot .plotly .gtitle,
+    .js-plotly-plot .plotly .xtick text,
     .js-plotly-plot .plotly .ytick text,
     .js-plotly-plot .plotly .legend text,
     .js-plotly-plot .plotly .annotation-text {{
@@ -108,25 +108,28 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     custom_data = list(zip(df[ECON_COL].astype(int), df[OTHER_COL].astype(int)))
 
     fig = go.Figure()
+    hover_both = "<b>%{x|%b %Y}</b><br>Economically Significant: %{customdata[0]}<br>Other Significant: %{customdata[1]}<extra></extra>"
+
     if has_other_sig:
-        # Both categories exist - show both in hover, only on top bar
+        # Both categories - show same hover on both bar segments
         fig.add_trace(go.Bar(
             x=df["Date"],
             y=df[ECON_COL],
             name="Economically Significant",
             marker_color=econ_color,
             customdata=custom_data,
-            hoverinfo="skip",
+            hovertemplate='<b>%{x|%b %Y}</b><br>Economically Significant: %{customdata[0]}<extra></extra>',
         ))
-
         fig.add_trace(go.Bar(
             x=df["Date"],
             y=df[OTHER_COL],
             name="Other Significant",
             marker_color=other_color,
+            marker=dict(color=other_color, line=dict(color='white', width=0.75)),
             customdata=custom_data,
-            hovertemplate="<b>%{x|%b %Y}</b><br>Economically Significant: %{customdata[0]}<br>Other Significant: %{customdata[1]}<extra></extra>",
+            hovertemplate=hover_both,
         ))
+
     else:
         fig.add_trace(go.Bar(
             x=df["Date"],
@@ -135,6 +138,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             marker_color=econ_color,
             customdata=custom_data,
             hovertemplate="<b>%{x|%b %Y}</b><br>Economically Significant: %{customdata[0]}<extra></extra>",
+            showlegend=True,
         ))
     # ydynam for dashboard
     y_max = (df[ECON_COL] + df[OTHER_COL]).max()
@@ -146,7 +150,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         font=dict(family=FONT_FAMILY),
         title=dict(
             text=f"Significant Final Rules Published Each Month<br>under the {admin_name} Administration",
-            font=dict(size=17, color=GW_COLORS['GWblue'], family=FONT_FAMILY),
+            font=dict(size=17, color='black', family=FONT_FAMILY),
             x=0.5,
             xanchor="center",
         ),
@@ -167,7 +171,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         ),
         xaxis=dict(
             tickformat="%y %b",
-            tickangle=65,
+            tickangle=-45,
             showgrid=False,
             showline=False,
             tickfont=dict(color="#333333", family=FONT_FAMILY),
@@ -180,13 +184,16 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         legend=dict(
             orientation="h",
             yanchor="top",
-            y=-0.20,
+            y=-0.18,
             xanchor="center",
             x=0.43,
+            traceorder="normal",
+            # showlegend=True,
             bgcolor="rgba(255,255,255,0)",
             borderwidth=0,
             font=dict(color="#333333", family=FONT_FAMILY),
         ),
+        showlegend=True,
         plot_bgcolor="white",
         paper_bgcolor="white",
         margin=dict(l=60, r=40, t=80, b=180),
@@ -204,7 +211,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         xref="paper",
         yref="paper",
         x=1.0,
-        y=-0.22,
+        y=-0.26,
         showarrow=False,
         font=dict(size=11, color="#333333", family=FONT_FAMILY),
         align="right",
@@ -221,7 +228,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
                 xref="paper",
                 yref="paper",
                 x=-0.02,
-                y=-0.22,
+                y=-0.26,
                 sizex=0.35,
                 sizey=0.23,
                 xanchor="left",
