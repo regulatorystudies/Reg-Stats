@@ -1,4 +1,5 @@
-# updated code with rate limit 
+# updated code with rate limit of two seconds 
+# creates two json files 
 
 import json
 import time
