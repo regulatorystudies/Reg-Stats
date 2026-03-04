@@ -18,7 +18,7 @@ API_DIR.mkdir(parents=True, exist_ok=True)
 # Presidential year starts Feb 1 ends Jan 31 of the next year 
 # set year range for update 
 current_year = date.today().year
-PRESIDENTIAL_YEARS = [str(y) for y in range(1995, current_year)]
+PRESIDENTIAL_YEARS = [str(y) for y in range(1995, current_year + 1)]
 
 FIELDS = [
     "action", "agencies", "agency_names", "citation", "correction_of", "corrections",
@@ -36,7 +36,6 @@ def retrieve_documents_pres_years(
     save_path,
     replace_existing: bool = True,
 ):
-    
     """Retrieve documents from Federal Register API; save JSON; return results.
 
     Args:
@@ -57,9 +56,7 @@ def retrieve_documents_pres_years(
         start_date = f"{y}-02-01"
         end_date = f"{y + 1}-01-31"
 
-        # set file names for each indivisual year 
-        # this is because each presidential year has its own seperate API call 
-        
+        # set file names for each individual year 
         file_name = save_path / f"documents_endpoint_{doctype}_presyear_{y}.json"
         if file_name.is_file() and not replace_existing:
             with open(file_name, "r", encoding="utf-8") as f:
@@ -68,11 +65,10 @@ def retrieve_documents_pres_years(
             continue
             
         # pause between API calls to avoid rate limit 
-        # set to two seconds here
         if idx > 0:
-            time.sleep(2.0) # this is the pause timer here
+            time.sleep(2.0) 
 
-        # query endpoint for indivisual presidential year documents 
+        # query endpoint for individual presidential year documents 
         print(
             f"Retrieving {doctype} | presidential_year={y} "
             f"({start_date} → {end_date})"
@@ -94,7 +90,6 @@ def retrieve_documents_pres_years(
     print(f"Retrieved {len(all_documents)} total documents for {doctype}")
     return all_documents
 
-# function to merge presidential year JSON's into one JSON for entire update range 
 def merge_presidential_year_jsons(
     presidential_years,
     doctype,
@@ -121,7 +116,6 @@ def merge_presidential_year_jsons(
     return merged_file
 
 def format_documents(documents):
-    
     """Format Federal Register documents to generate count by presidential year.
 
     Args:
@@ -130,7 +124,6 @@ def format_documents(documents):
     Returns:
         DataFrame: Pandas DataFrame with formatted data.
     """
-    
     if not documents:
         return DataFrame()
 
@@ -145,11 +138,11 @@ def format_documents(documents):
 
 def group_documents(
     df,
-    group_column= "presidential_year",
-    value_column= "document_number",
-    return_column = None):
-     """Group Federal Register documents by presidential year. 
-    A [presidential year](https://regulatorystudies.columbian.gwu.edu/reg-stats) is defined as Feb. 1 to Jan. 31.
+    group_column="presidential_year",
+    value_column="document_number",
+    return_column=None):
+    """Group Federal Register documents by presidential year. 
+    A presidential year is defined as Feb. 1 to Jan. 31.
 
     Args:
         df (DataFrame): Input data for grouping.
@@ -158,7 +151,6 @@ def group_documents(
     Returns:
         DataFrame: Documents grouped by presidential year.
     """
-    
     if df.empty:
         out = DataFrame(columns=[return_column or value_column])
         out.index.name = group_column
@@ -180,18 +172,8 @@ def main(
     raw_path,
     processed_path,
     processed_file_name,
-    replace_existing= True):
-    """Runs entire pipeline to retrieve and process documents by presidential year.
-
-    Args:
-        years (list): Years of interest.
-        fields (list): Fields to retrieve.
-        raw_path (Path): Path for saving API data.
-        processed_path (Path): Path for saving processed data.
-        processed_file_name (str): File name for processed data.
-        replace_existing (bool, optional): Overwrite existing API data. Defaults to True.
-    """
-
+    replace_existing=True):
+    
     # print directory paths 
     print(f"API cache directory: {raw_path}")
     print(f"Output directory:   {processed_path}")
@@ -233,8 +215,9 @@ def main(
     dfPrez = df_list[0].join(df_list[1], how="outer").fillna(0)
     dfPrez = dfPrez.reset_index()
 
+    # Dynamic year filtering based on provided range
     dfPrez = dfPrez.query(
-        "presidential_year >= 1995 and presidential_year <= 2025"
+        "presidential_year >= 1995"
     ).copy()
 
     dfPrez["final_rules"] = dfPrez["final_rules"].astype(int)
@@ -257,9 +240,6 @@ def main(
     print("\nFinished successfully.")
     print(f"Counts CSV: {out_csv}")
     print(f"Corrections CSV: {corr_csv}")
-    print("Merged API JSONs:")
-    print(f" - documents_endpoint_RULE_all_presyears.json")
-    print(f" - documents_endpoint_PRORULE_all_presyears.json")
 
 if __name__ == "__main__":
     main(
@@ -270,3 +250,4 @@ if __name__ == "__main__":
         processed_file_name=SAVE_NAME_CSV,
         replace_existing=True,
     )
+    
