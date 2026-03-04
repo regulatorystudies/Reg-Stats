@@ -75,7 +75,7 @@ def retrieve_documents_pres_years(
         # query endpoint for indivisual presidential year documents 
         print(
             f"Retrieving {doctype} | presidential_year={y} "
-            f"({start_date} → {end_date})"
+            f"({start_date} → {end_date})" 
         )
         documents, _ = get_documents_by_date(
             start_date,
