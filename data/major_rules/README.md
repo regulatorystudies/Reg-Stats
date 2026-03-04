@@ -2,7 +2,7 @@
 
 ## Last Updated
 
-README: 2024-07-30
+README: 2026-03-04
 
 ## Update Instructions
 
@@ -42,23 +42,24 @@ If you notice that the program is failing, ensure that GAO's database url has no
 
 ### Manual Process
 
-Note: This method can only be used to update the data based on the received date, not the published date.
+*Note: This method can only be used to update the data based on the date received by GAO, not the published date.*
 
 1. Update data in the spreadsheet `major_rules_by_presidential_year.csv`:
+    a. To update the major_rules_received column:
+       - Go to GAO’s Congressional Review Act (CRA) database of rules [page](https://www.gao.gov/legal/congressional-review-act/search-database-of-rules).  
+       - Fill in the following fields to get the number of major rules for the specified year:  
+           - Rule Type: select “Major”
+           - Rule Priority: select “All” for updating “Total Major Rules” or “Significant/Substantive” for updating “Total Major Rules, excluding non-significant”
+           - Input “Date Received by GAO” by presidential year, so for example, “02/01/2021” to “02/01/2022” for Presidential Year 2021 (the database excludes documents received on the end date from the results).
+       - Click SEARCH and get the total number of results from “Displaying 1 - 20 of X”.  
+       - Add/update the new data into the spreadsheet.
 
-    - Go to GAO’s Congressional Review Act (CRA) database of rules [page](https://www.gao.gov/legal/congressional-review-act/search-database-of-rules).  
-    - Fill in the following fields to get the number of major rules for the specified year:  
-      - Rule Type: select “Major”
-      - Rule Priority: select “All” for updating “Total Major Rules” or “Significant/Substantive” for updating “Total Major Rules, excluding non-significant”
-      - Input “Date Received by GAO” by presidential year, so for example, “02/01/2021” to “02/01/2022” for Presidential Year 2021 (the database excludes documents received on the end date from the results).
-    - Click SEARCH and get the total number of results from “Displaying 1 - 20 of X”.  
-    - Add/update the new data into the spreadsheet.  
-    - The sum and avg statistics should be automatically updated based on the pre-written formulas, but double check if the data range in the formulas include the new data you just added.  
-    - Update the “Date retrieved” at the end of the spreadsheet.  
+       *Note: the GAO may update the underlying data from the CRA database, so always check whether the data for previous years in the spreadsheet still match the current version of the GAO database and update the data if necessary.*
 
-    Note: the GAO may update the underlying data from the CRA database, so always check whether the data for previous years in the spreadsheet still match the current version of the GAO database and update the data if necessary.
+   b. To update the major_rules_published column:
+       - open the ```fr_tracking.csv``` file 
 
-2. Save the CSV (Comma delimited) file.
+3. Save the CSV (Comma delimited) file.
 
 ## Environment Set Up
 
