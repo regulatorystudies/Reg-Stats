@@ -44,7 +44,7 @@ If you notice that the program is failing, ensure that GAO's database url has no
 
 *Note: Not every major rule that is published is submitted to GAO for review. Therefore, the set of major rules published in a presidential year is sometimes larger than the set of major rules submitted to GAO in the same presidential year. Therefore, we track both the number of major rules published and the number of major rules received by GAO in the `major_rules_by_presidential_year.csv` spreadsheet.*
 
-1. Update data in the major_rules_received column of the `major_rules_by_presidential_year.csv` spreadsheet:
+1. Update data in the **major_rules_received column** of the `major_rules_by_presidential_year.csv` spreadsheet:
 
     - Go to GAO’s Congressional Review Act (CRA) database of rules [page](https://www.gao.gov/legal/congressional-review-act/search-database-of-rules).  
     - Fill in the following fields to get the number of major rules for the specified year:  
@@ -58,7 +58,7 @@ If you notice that the program is failing, ensure that GAO's database url has no
 
     *Note: the GAO may update the underlying data from the CRA database, so always check whether the data for previous years in the spreadsheet still match the current version of the GAO database and update the data if necessary.*
 
-2. Update data in the major_rules_published column of the `major_rules_by_presidential_year.csv` spreadsheet:
+2. Update data in the **major_rules_published column** of the `major_rules_by_presidential_year.csv` spreadsheet:
 
 3. Save the CSV (Comma delimited) file.
 
