@@ -90,7 +90,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Monthly Significant Final Rules under the Biden Administration</strong></summary>
+  <summary><strong>Monthly Significant Final Rules under the Trump 47 Administration</strong></summary>
   <br/>
   <table>
     <tr>
