@@ -16,19 +16,19 @@ Data: ~annually
 
 Follow these procedures to update the data:
 
-1. Determine whether the data filess and chart can be incremented by another year. The data for the prior presidential year can be updated on or after the first business day of February.
+1. Determine whether the data files and chart can be incremented by another year. The data for the prior presidential year can be updated on or after the first business day of February.
 
 1. Ensure whether Python and the relevant packages are installed on your computer's environment (see instructions below).
 
 1. Retrieve the raw data from the Federal Register API to update the presidential year data:
     - Aggregate data
-      - Run the python code in `fr_rules_presidential_year.py` as a script (it can be executed in the IDE or editor of your choice or from the command line)
+      - Run the python code in `fr_rules_by_presidential_year.py` as a script (it can be executed in the IDE or editor of your choice or from the command line)
       - Ensure that the code is executed correctly; if errors, troubleshoot
       - Ensure that data saved in JSON and CSV files
         - The JSON files will be located in an untracked `fr_rules/_api/` folder, and the CSV files will be located in the `fr_rules/` root folder
     - Agency-level data
       - This code relies on the retrieved API data, so it is necessary to run the aggregate data script first
-      - Run the `agency_fr_rules_presidential_year.py` script from an IDE or the command line
+      - Run the `agency_fr_rules_by_presidential_year.py` script from an IDE or the command line
       - The ouput CSV file will be located in the `fr_rules/` root folder
 
 ## Environment Set Up
