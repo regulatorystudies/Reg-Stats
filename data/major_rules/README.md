@@ -2,7 +2,7 @@
 
 ## Last Updated
 
-README: 2024-07-30
+README: 2026-03-05
 
 ## Update Instructions
 
@@ -42,9 +42,9 @@ If you notice that the program is failing, ensure that GAO's database url has no
 
 ### Manual Process
 
-Note: This method can only be used to update the data based on the received date, not the published date.
+*Note: Not every major rule that is published is submitted to GAO for review. Therefore, the set of major rules published in a presidential year is sometimes larger than the set of major rules submitted to GAO in the same presidential year. Therefore, we track both the number of major rules published and the number of major rules received by GAO in the `major_rules_by_presidential_year.csv` spreadsheet.*
 
-1. Update data in the spreadsheet `major_rules_by_presidential_year.csv`:
+1. Update data in the major_rules_received column of the `major_rules_by_presidential_year.csv` spreadsheet:
 
     - Go to GAO’s Congressional Review Act (CRA) database of rules [page](https://www.gao.gov/legal/congressional-review-act/search-database-of-rules).  
     - Fill in the following fields to get the number of major rules for the specified year:  
@@ -56,9 +56,11 @@ Note: This method can only be used to update the data based on the received date
     - The sum and avg statistics should be automatically updated based on the pre-written formulas, but double check if the data range in the formulas include the new data you just added.  
     - Update the “Date retrieved” at the end of the spreadsheet.  
 
-    Note: the GAO may update the underlying data from the CRA database, so always check whether the data for previous years in the spreadsheet still match the current version of the GAO database and update the data if necessary.
+    *Note: the GAO may update the underlying data from the CRA database, so always check whether the data for previous years in the spreadsheet still match the current version of the GAO database and update the data if necessary.*
 
-2. Save the CSV (Comma delimited) file.
+2. Update data in the major_rules_published column of the `major_rules_by_presidential_year.csv` spreadsheet:
+
+3. Save the CSV (Comma delimited) file.
 
 ## Environment Set Up
 
