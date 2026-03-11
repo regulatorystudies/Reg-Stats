@@ -90,7 +90,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Monthly Significant Final Rules under the Biden Administration</strong></summary>
+  <summary><strong>Monthly Significant Final Rules under the Trump 47 Administration</strong></summary>
   <br/>
   <table>
     <tr>
@@ -111,7 +111,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/monthly_sig_rules_by_admin.Rmd</code></td>
-          <td><code>output/monthly_significant_rules_biden.pdf</code><br/><code>output/monthly_significant_rules_biden.png</code></td>
+          <td><code>output/monthly_significant_rules_trump_47.pdf</code><br/><code>output/monthly_significant_rules_trump_47.png</code></td>
         </tr>
       </table>
 </details>
