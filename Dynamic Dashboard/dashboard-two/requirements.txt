@@ -44,7 +44,7 @@ patchworklib==0.6.6
 pathlib==1.0.1
 patsy==1.0.2
 pexpect==4.9.0
-pillow==12.1.0
+pillow==12.1.1
 platformdirs==4.5.1
 plotnine==0.15.3
 prompt_toolkit==3.0.52
