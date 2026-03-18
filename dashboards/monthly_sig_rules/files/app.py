@@ -2,7 +2,7 @@ import io
 import sys
 from pathlib import Path
 
-# app.py lives in files/; utilis is in dashboard-two/utilis/
+# app.py lives in files/; utilis is in monthly_sig_rules/utilis/
 BASE = Path(__file__).resolve().parent
 DASHBOARD_ROOT = BASE.parent
 sys.path.insert(0, str(DASHBOARD_ROOT))
@@ -15,7 +15,7 @@ import seaborn as sns
 import streamlit as st
 from PIL import Image
 
-# Resolve paths when running from dashboard-two (or repo root)
+# Resolve paths when running from monthly_sig_rules (or repo root)
 try:
     from utilis.style import GW_COLORS
 except (FileNotFoundError, OSError):
