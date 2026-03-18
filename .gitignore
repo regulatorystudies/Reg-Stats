@@ -60,4 +60,4 @@ rsconnect/
 
 # Pycharm folder
 .idea/
-dashboard-two/dashboard2/bin/plotly_get_chrome
+monthly_sig_rules/dashboard2/bin/plotly_get_chrome
