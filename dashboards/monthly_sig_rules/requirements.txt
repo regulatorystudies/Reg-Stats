@@ -8,3 +8,4 @@ Pillow
 pyprojroot
 adjustText
 kaleido
+altair<5
