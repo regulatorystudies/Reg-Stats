@@ -9,3 +9,4 @@ pyprojroot
 adjustText
 kaleido
 altair<5
+standard-imghdr
