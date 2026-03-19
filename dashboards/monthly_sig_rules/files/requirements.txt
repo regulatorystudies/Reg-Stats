@@ -1,4 +1,10 @@
-streamlit
 pandas
 numpy
 plotly
+streamlit
+matplotlib
+plotnine
+Pillow
+pyprojroot
+adjustText
+kaleido
