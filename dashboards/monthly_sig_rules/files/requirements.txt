@@ -1,7 +1,7 @@
 pandas
 numpy
 plotly
-streamlit
+streamlit>=1.30
 matplotlib
 plotnine
 Pillow
@@ -9,4 +9,3 @@ pyprojroot
 adjustText
 kaleido
 altair<5
-standard-imghdr
