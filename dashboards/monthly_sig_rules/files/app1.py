@@ -290,6 +290,7 @@ def main():
     with col_controls:
         st.markdown("---")
         st.markdown("**Download Plot**")
+
         fmt_col, btn_col = st.columns(2)
         with fmt_col:
             download_fmt = st.selectbox(
@@ -298,35 +299,60 @@ def main():
                 label_visibility="collapsed",
                 help="Select file format for the downloaded plot."
             )
+
         fmt = download_fmt.lower()
-        if fmt == "png":
+        export_bytes = None
+        mime = None
+        export_available = True
+
+        try:
             buf = io.BytesIO()
-            fig_plotly.write_image(buf, format="png", width=1000, height=600, scale=2)
+            if fmt == "png":
+                fig_plotly.write_image(buf, format="png", width=1000, height=600, scale=2)
+                mime = "image/png"
+            else:
+                fig_plotly.write_image(buf, format="pdf", width=1000, height=600)
+                mime = "application/pdf"
             buf.seek(0)
-            mime = "image/png"
-        else:
-            buf = io.BytesIO()
-            fig_plotly.write_image(buf, format="pdf", width=1000, height=600)
-            buf.seek(0)
-            mime = "application/pdf"
+            export_bytes = buf.getvalue()
+        except Exception:
+            export_available = False
 
         with btn_col:
-            st.download_button(
-                label=f"Download {download_fmt}",
-                data=buf,
-                file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.{fmt}",
-                mime=mime,
-                help="Save the current plot to your device.",
+            if export_available and export_bytes is not None:
+                st.download_button(
+                    label=f"Download {download_fmt}",
+                    data=export_bytes,
+                    file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.{fmt}",
+                    mime=mime,
+                    help="Save the current plot to your device.",
+                )
+            else:
+                st.button(f"Download {download_fmt}", disabled=True)
+
+        if not export_available:
+            st.warning(
+                f"{download_fmt} export is unavailable in this deployment because Chrome is not installed for Kaleido."
             )
+
+        html_data = fig_plotly.to_html(full_html=True, include_plotlyjs="cdn")
+        st.download_button(
+            label="Download Interactive Plot (HTML)",
+            data=html_data,
+            file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.html",
+            mime="text/html",
+            help="Download an interactive version of the plot.",
+            use_container_width=True,
+        )
 
         csv_data = df.to_csv(index=False)
         st.download_button(
             label="Download Data (CSV)",
             data=csv_data,
-            file_name=f"monthly_significant_rules_by_admin.csv",
+            file_name="monthly_significant_rules_by_admin.csv",
             mime="text/csv",
-            help="Download the filtered data as a CSV file.",
-            use_container_width=True
+            help="Download the data as a CSV file.",
+            use_container_width=True,
         )
 
     with col_plot:
