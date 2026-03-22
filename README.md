@@ -370,7 +370,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Agency Budget Outlays by Fiscal Year</strong></summary>
+  <summary><strong>Regulators' Budget Report: Agency Budget Outlays by Fiscal Year</strong></summary>
   <br/>
   <table>
     <tr>
@@ -398,7 +398,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Full-Time Equivalent Personnel by Fiscal Year</strong></summary>
+  <summary><strong>Regulators' Budget Report: Full-Time Equivalent Personnel by Fiscal Year</strong></summary>
   <br/>
   <table>
     <tr>
