@@ -413,13 +413,13 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Data</td>
           <td><code>data/reg_budget/</code></td>
           <td><code>README.md</code></td>
-          <td><code>regulatory_agency_staffing_by_fy.csv</code></td>
+          <td><code>regulatory_agency_personnel_by_fy.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/reg_budget_personnel.Rmd</code></td>
-          <td><code>output/regulatory_agency_staffing_by_fy.pdf</code><br/><code>output/regulatory_agency_staffing_by_fy.png</code></td>
+          <td><code>output/regulatory_agency_personnel_by_fy.pdf</code><br/><code>output/regulatory_agency_personnel_by_fy.png</code></td>
         </tr>
       </table>
 </details>
