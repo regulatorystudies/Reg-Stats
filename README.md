@@ -146,7 +146,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Cumulative Economically Significant Final Rules Published by Administration in First Year</strong></summary>
+  <summary><strong>Cumulative Economically Significant Final Rules by Administration in First Year</strong></summary>
   <br/>
   <table>
     <tr>
