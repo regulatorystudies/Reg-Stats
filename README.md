@@ -146,7 +146,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Cumulative Economically Significant Final Rules Published by Administration in First Year</strong></summary>
+  <summary><strong>Cumulative Economically Significant Final Rules by Administration in First Year</strong></summary>
   <br/>
   <table>
     <tr>
@@ -370,7 +370,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Agency Budget Outlays by Fiscal Year</strong></summary>
+  <summary><strong>Regulators' Budget Report: Agency Budget Outlays by Fiscal Year</strong></summary>
   <br/>
   <table>
     <tr>
@@ -398,7 +398,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Full-Time Equivalent Personnel by Fiscal Year</strong></summary>
+  <summary><strong>Regulators' Budget Report: Full-Time Equivalent Personnel by Fiscal Year</strong></summary>
   <br/>
   <table>
     <tr>
@@ -413,13 +413,13 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Data</td>
           <td><code>data/reg_budget/</code></td>
           <td><code>README.md</code></td>
-          <td><code>regulatory_agency_staffing_by_fy.csv</code></td>
+          <td><code>regulatory_agency_personnel_by_fy.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/reg_budget_personnel.Rmd</code></td>
-          <td><code>output/regulatory_agency_staffing_by_fy.pdf</code><br/><code>output/regulatory_agency_staffing_by_fy.png</code></td>
+          <td><code>output/regulatory_agency_personnel_by_fy.pdf</code><br/><code>output/regulatory_agency_personnel_by_fy.png</code></td>
         </tr>
       </table>
 </details>
