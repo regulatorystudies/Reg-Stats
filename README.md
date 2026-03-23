@@ -90,7 +90,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Monthly Significant Final Rules under the Biden Administration</strong></summary>
+  <summary><strong>Monthly Significant Final Rules under the Trump 47 Administration</strong></summary>
   <br/>
   <table>
     <tr>
@@ -111,7 +111,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Chart</td>
           <td><code>charts/</code></td>
           <td><code>code/monthly_sig_rules_by_admin.Rmd</code></td>
-          <td><code>output/monthly_significant_rules_biden.pdf</code><br/><code>output/monthly_significant_rules_biden.png</code></td>
+          <td><code>output/monthly_significant_rules_trump_47.pdf</code><br/><code>output/monthly_significant_rules_trump_47.png</code></td>
         </tr>
       </table>
 </details>
@@ -146,7 +146,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Cumulative Economically Significant Final Rules Published by Administration in First Year</strong></summary>
+  <summary><strong>Cumulative Economically Significant Final Rules by Administration in First Year</strong></summary>
   <br/>
   <table>
     <tr>
@@ -364,6 +364,62 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td><code>charts/</code></td>
           <td><code>code/unified_agenda_active_actions.Rmd</code></td>
           <td><code>output/active_actions_by_unified_agenda.pdf</code><br/><code>output/active_actions_by_unified_agenda.png</code></td>
+        </tr>
+      </table>
+</details>
+
+
+<details>
+  <summary><strong>Regulators' Budget Report: Agency Budget Outlays by Fiscal Year</strong></summary>
+  <br/>
+  <table>
+    <tr>
+      <th>Update</th>
+      <th>Task</th>
+      <th>Location</th>
+      <th>File</th>
+      <th>Output</th>
+    </tr>
+        <tr>
+      	  <td rowspan="2">Annually:<br/>Feb/Mar</td>
+          <td>Data</td>
+          <td><code>data/reg_budget/</code></td>
+          <td><code>README.md</code></td>
+          <td><code>regulatory_agency_budget_outlays_by_fy.csv</code></td>
+        </tr>
+        <tr>
+          <td>Chart</td>
+          <td><code>charts/</code></td>
+          <td><code>code/reg_budget_outlays.Rmd</code></td>
+          <td><code>output/regulatory_agency_budget_outlays_by_fy.pdf</code><br/><code>output/regulatory_agency_budget_outlays_by_fy.png</code></td>
+        </tr>
+      </table>
+</details>
+
+
+<details>
+  <summary><strong>Regulators' Budget Report: Full-Time Equivalent Personnel by Fiscal Year</strong></summary>
+  <br/>
+  <table>
+    <tr>
+      <th>Update</th>
+      <th>Task</th>
+      <th>Location</th>
+      <th>File</th>
+      <th>Output</th>
+    </tr>
+        <tr>
+      	  <td rowspan="2">Annually:<br/>Feb/Mar</td>
+          <td>Data</td>
+          <td><code>data/reg_budget/</code></td>
+          <td><code>README.md</code></td>
+          <td><code>regulatory_agency_personnel_by_fy.csv</code></td>
+        </tr>
+        <tr>
+          <td>Chart</td>
+          <td><code>charts/</code></td>
+          <td><code>code/reg_budget_personnel.Rmd</code></td>
+          <td><code>output/regulatory_agency_personnel_by_fy.pdf</code><br/><code>output/regulatory_agency_personnel_by_fy.png</code></td>
         </tr>
       </table>
 </details>

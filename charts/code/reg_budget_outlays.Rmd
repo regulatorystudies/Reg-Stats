@@ -83,7 +83,7 @@ fig1_stack <- fig1 %>%
 yd_df   <- fig1_stack %>% filter(is.finite(stack_total)) %>% select(stack_total)
 y_upper <- ydynam(yd_df, 10, 1)
 
-# label positions (default = y midpoint at last year, but manually overridable)
+# label positions (default = y midpoint at last year, but can manually override)
 last_year <- max(fig1$year, na.rm = TRUE)
 
 label_df <- fig1 %>%
@@ -157,14 +157,16 @@ fig1_plot <- ggplot(fig1_long, aes(x = year, y = value, fill = category)) +
   coord_cartesian(clip = "off") +
   theme_RSC +
   theme(
-    plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 25)),
+    plot.title = element_text(size = 20, 
+                              hjust = 0.5, 
+                              margin = margin(b = 25)),
     axis.title.x = element_text(size = 10, angle = 0, vjust = 0.5, hjust = 0, margin = margin(t = 3)),
     axis.text.x = element_text(angle = 65, hjust = 1),
     axis.ticks.x = element_blank(),
     plot.caption = element_text(margin = margin(t = 15)),
     plot.caption.position = "plot"
   ) +
-  ggtitle("Regulatory Agency Budget Outlays by Fiscal Year") +
+  ggtitle("Figure 1: Regulatory Agency Budget Outlays by Fiscal Year") + # FOR REGULATORS' BUDGET add "Figure 1:" at the beginning, FOR REGSTATS remove "Figure 1:" from the beginning 
   ylab("Billions of Constant 2012 U.S. Dollars") +
   xlab("\nNote: The Transportation Security Administration (TSA) is displayed separately from social regulation as it has features that differ from other regulatory agencies.") +
   labs(fill = NULL, caption = caption_text) +
