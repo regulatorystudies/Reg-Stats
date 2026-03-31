@@ -291,49 +291,45 @@ def main():
         st.markdown("---")
         st.markdown("**Download Plot**")
 
-        fmt_col, btn_col = st.columns(2)
-        with fmt_col:
-            download_fmt = st.selectbox(
-                "Format",
-                ["PNG", "PDF"],
-                label_visibility="collapsed",
-                help="Select file format for the downloaded plot."
-            )
-
-        fmt = download_fmt.lower()
-        export_bytes = None
-        mime = None
-        export_available = True
-
-        try:
-            buf = io.BytesIO()
-            if fmt == "png":
-                fig_plotly.write_image(buf, format="png", width=1000, height=600, scale=2)
-                mime = "image/png"
-            else:
-                fig_plotly.write_image(buf, format="pdf", width=1000, height=600)
-                mime = "application/pdf"
-            buf.seek(0)
-            export_bytes = buf.getvalue()
-        except Exception:
-            export_available = False
-
-        with btn_col:
-            if export_available and export_bytes is not None:
-                st.download_button(
-                    label=f"Download {download_fmt}",
-                    data=export_bytes,
-                    file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.{fmt}",
-                    mime=mime,
-                    help="Save the current plot to your device.",
-                )
-            else:
-                st.button(f"Download {download_fmt}", disabled=True)
-
-        if not export_available:
-            st.warning(
-                f"{download_fmt} export is unavailable in this deployment because Chrome is not installed for Kaleido."
-            )
+        # Browser-side PNG export via Plotly JS — no kaleido/Chrome needed
+        plot_json = fig_plotly.to_json()
+        filename_safe = f"monthly_sig_rules_{admin.replace(' ', '_')}"
+        st.components.v1.html(
+            f"""
+            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+            <div id="hidden-plot" style="display:none;"></div>
+            <button
+                onclick="triggerDownload()"
+                style="
+                    width: 100%;
+                    padding: 8px 0;
+                    background-color: #A69362;
+                    color: #033C5A;
+                    border: none;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    font-family: Avenir, Arial, sans-serif;
+                "
+            >⬇ Download PNG</button>
+            <script>
+                var figData = {plot_json};
+                function triggerDownload() {{
+                    Plotly.newPlot('hidden-plot', figData.data, figData.layout).then(function(gd) {{
+                        Plotly.downloadImage(gd, {{
+                            format: 'png',
+                            width: 1400,
+                            height: 800,
+                            scale: 2,
+                            filename: '{filename_safe}'
+                        }});
+                    }});
+                }}
+            </script>
+            """,
+            height=45,
+        )
 
         html_data = fig_plotly.to_html(full_html=True, include_plotlyjs="cdn")
         st.download_button(
