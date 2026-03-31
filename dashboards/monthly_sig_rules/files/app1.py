@@ -10,6 +10,10 @@ sys.path.insert(0, str(DASHBOARD_ROOT))
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import streamlit as st
 
 try:
@@ -102,16 +106,13 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     df = _prep_plot_df(df_admin)
     econ_color = GW_COLORS["GWblue"]
     other_color = GW_COLORS["GWbuff"]
-    # Check if there's any Other Significant data
     has_other_sig = df[OTHER_COL].sum() > 0
-    # Create custom data for hover
     custom_data = list(zip(df[ECON_COL].astype(int), df[OTHER_COL].astype(int)))
 
     fig = go.Figure()
     hover_both = "<b>%{x|%b %Y}</b><br>Economically Significant: %{customdata[0]}<br>Other Significant: %{customdata[1]}<extra></extra>"
 
     if has_other_sig:
-        # Both categories - show same hover on both bar segments
         fig.add_trace(go.Bar(
             x=df["Date"],
             y=df[ECON_COL],
@@ -129,7 +130,6 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             customdata=custom_data,
             hovertemplate=hover_both,
         ))
-
     else:
         fig.add_trace(go.Bar(
             x=df["Date"],
@@ -140,7 +140,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             hovertemplate="<b>%{x|%b %Y}</b><br>Economically Significant: %{customdata[0]}<extra></extra>",
             showlegend=True,
         ))
-    # ydynam for dashboard
+
     y_max = (df[ECON_COL] + df[OTHER_COL]).max()
     y_top = int(np.ceil(y_max / 5)*5) if y_max > 0 else 10
 
@@ -188,7 +188,6 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             xanchor="center",
             x=0.43,
             traceorder="normal",
-            # showlegend=True,
             bgcolor="rgba(255,255,255,0)",
             borderwidth=0,
             font=dict(color="#333333", family=FONT_FAMILY),
@@ -236,6 +235,82 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             )
         )
     return fig
+
+
+def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
+    """Render the chart server-side with matplotlib and return PNG bytes."""
+    df = _prep_plot_df(df_filtered)
+    has_other_sig = df[OTHER_COL].sum() > 0
+
+    econ_vals = df[ECON_COL].values
+    other_vals = df[OTHER_COL].values
+    dates = df["Date"].dt.strftime("%b '%y").values
+    x = np.arange(len(dates))
+    bar_width = 0.7
+
+    fig, ax = plt.subplots(figsize=(14, 7))
+    fig.patch.set_facecolor("white")
+    ax.set_facecolor("white")
+
+    ax.bar(x, econ_vals, width=bar_width, color=GW_COLORS["GWblue"], label="Economically Significant")
+    if has_other_sig:
+        ax.bar(x, other_vals, width=bar_width, bottom=econ_vals, color=GW_COLORS["GWbuff"],
+               label="Other Significant", linewidth=0.75, edgecolor="white")
+
+    y_max = (econ_vals + other_vals).max()
+    y_top = int(np.ceil(y_max / 5) * 5) if y_max > 0 else 10
+    ax.set_ylim(0, y_top)
+
+    # x-axis: show every 3rd label to match dtick=M3
+    step = 3
+    shown = list(range(0, len(dates), step))
+    ax.set_xticks(shown)
+    ax.set_xticklabels([dates[i] for i in shown], rotation=-45, ha="left", fontsize=9, color="#333333")
+
+    ax.set_ylabel("Number of Rules", color="#333333", fontsize=11)
+    ax.tick_params(axis="y", colors="#333333", labelsize=9)
+    ax.set_title(
+        f"Significant Final Rules Published Each Month\nunder the {admin_name} Administration",
+        fontsize=14, color="black", pad=16
+    )
+
+    ax.yaxis.grid(True, color="#CCCCCC", linewidth=0.8, alpha=0.6)
+    ax.set_axisbelow(True)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["left"].set_visible(False)
+    ax.spines["bottom"].set_color("#CCCCCC")
+    ax.axhline(0, color="#CCCCCC", linewidth=1.5)
+
+    ax.legend(
+        loc="upper center",
+        bbox_to_anchor=(0.43, -0.18),
+        ncol=2,
+        frameon=False,
+        fontsize=10,
+        labelcolor="#333333",
+    )
+
+    fig.text(
+        0.98, 0.01,
+        "Source: Office of the Federal Register (federalregister.gov)\nUpdated February 11, 2026",
+        ha="right", va="bottom", fontsize=8, color="#333333"
+    )
+
+    if LOGO_PATH.exists():
+        from matplotlib.image import imread
+        logo_img = imread(str(LOGO_PATH))
+        logo_ax = fig.add_axes([0.01, 0.01, 0.18, 0.1])
+        logo_ax.imshow(logo_img)
+        logo_ax.axis("off")
+
+    plt.tight_layout(rect=[0, 0.08, 1, 1])
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=150, bbox_inches="tight", facecolor="white")
+    plt.close(fig)
+    buf.seek(0)
+    return buf.getvalue()
+
 
 def main():
     df = load_data()
@@ -291,44 +366,14 @@ def main():
         st.markdown("---")
         st.markdown("**Download Plot**")
 
-        # Browser-side PNG export via Plotly JS — no kaleido/Chrome needed
-        plot_json = fig_plotly.to_json()
-        filename_safe = f"monthly_sig_rules_{admin.replace(' ', '_')}"
-        st.components.v1.html(
-            f"""
-            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-            <div id="hidden-plot" style="display:none;"></div>
-            <button
-                onclick="triggerDownload()"
-                style="
-                    width: 100%;
-                    padding: 8px 0;
-                    background-color: #A69362;
-                    color: #033C5A;
-                    border: none;
-                    border-radius: 4px;
-                    font-size: 14px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    font-family: Avenir, Arial, sans-serif;
-                "
-            >⬇ Download PNG</button>
-            <script>
-                var figData = {plot_json};
-                function triggerDownload() {{
-                    Plotly.newPlot('hidden-plot', figData.data, figData.layout).then(function(gd) {{
-                        Plotly.downloadImage(gd, {{
-                            format: 'png',
-                            width: 1400,
-                            height: 800,
-                            scale: 2,
-                            filename: '{filename_safe}'
-                        }});
-                    }});
-                }}
-            </script>
-            """,
-            height=45,
+        png_bytes = fig_to_png_bytes(df_admin_filtered, admin)
+        st.download_button(
+            label="Download PNG",
+            data=png_bytes,
+            file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.png",
+            mime="image/png",
+            use_container_width=True,
+            help="Save the current plot as a PNG image.",
         )
 
         html_data = fig_plotly.to_html(full_html=True, include_plotlyjs="cdn")

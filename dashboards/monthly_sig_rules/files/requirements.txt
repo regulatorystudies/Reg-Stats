@@ -7,5 +7,6 @@ plotnine
 Pillow
 pyprojroot
 adjustText
-kaleido
+
 altair<5
+matplotlib
