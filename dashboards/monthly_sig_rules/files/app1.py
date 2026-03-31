@@ -38,12 +38,15 @@ DATA_ROOT = Path(__file__).resolve().parents[3]
 FONT_PATH = DATA_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
 FONT_FAMILY = "Avenir Next LT Pro, Avenir, Helvetica Neue, Arial, sans-serif"
 
-DATA_PATH = DATA_ROOT / "charts"/ "data" / "monthly_significant_rules_by_admin.csv"
+DATA_PATH = DATA_ROOT / "charts" / "data" / "monthly_significant_rules_by_admin.csv"
 LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 ECON_COL = "Economically Significant"
 OTHER_COL = "Other Significant"
 
-st.set_page_config(page_title="Monthly Significant Rules by Administration", layout="wide")
+st.set_page_config(
+    page_title="Monthly Significant Rules by Administration",
+    layout="wide",
+)
 BG_COLOR = GW_COLORS["GWblue"]
 TEXT_COLOR = GW_COLORS["GWbuff"]
 
@@ -77,10 +80,51 @@ st.markdown(
     .js-plotly-plot .plotly .annotation-text {{
         font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif !important;
     }}
+
+    /* ── WCAG 2.1 AA: Keyboard focus ring ── */
+    /* Streamlit removes outlines by default which fails WCAG 2.4.7.  */
+    /* This restores a visible focus indicator on all interactive elements. */
+    a:focus,
+    button:focus,
+    [role="button"]:focus,
+    select:focus,
+    input:focus,
+    [data-testid="stSelectbox"]:focus-within,
+    [data-testid="stSlider"] input:focus,
+    [data-testid="stDownloadButton"] button:focus {{
+        outline: 3px solid #F8E08E !important;
+        outline-offset: 2px !important;
+        box-shadow: 0 0 0 3px #F8E08E !important;
+    }}
+
+    /* ── WCAG 2.1 AA: Skip-to-content link ── */
+    /* Hidden until focused by keyboard — lets screen reader/keyboard users */
+    /* jump straight to the chart without tabbing through all controls.     */
+    .skip-link {{
+        position: absolute;
+        top: -999px;
+        left: 0;
+        background: #F8E08E;
+        color: #033C5A;
+        padding: 8px 16px;
+        font-weight: 700;
+        font-size: 14px;
+        z-index: 9999;
+        border-radius: 0 0 4px 0;
+        text-decoration: none;
+    }}
+    .skip-link:focus {{
+        top: 0;
+        outline: 3px solid #033C5A !important;
+    }}
     </style>
+
+    <!-- Skip navigation link (WCAG 2.4.1) -->
+    <a class="skip-link" href="#chart-region">Skip to chart</a>
     """,
     unsafe_allow_html=True,
 )
+
 
 @st.cache_data
 def load_data():
@@ -100,6 +144,36 @@ def _prep_plot_df(df_admin: pd.DataFrame):
     df[ECON_COL] = pd.to_numeric(df[ECON_COL], errors="coerce").fillna(0)
     df[OTHER_COL] = pd.to_numeric(df[OTHER_COL], errors="coerce").fillna(0)
     return df
+
+
+def build_aria_summary(df_filtered: pd.DataFrame, admin_name: str) -> str:
+    """
+    Build a plain-text data summary for screen readers.
+    Injected as an aria-live region so it updates when the user
+    changes the administration or the month slider.
+    """
+    df = _prep_plot_df(df_filtered)
+    total_econ  = int(df[ECON_COL].sum())
+    total_other = int(df[OTHER_COL].sum())
+    total_all   = total_econ + total_other
+    n_months    = len(df)
+    start       = df["Date"].min().strftime("%B %Y")
+    end         = df["Date"].max().strftime("%B %Y")
+
+    peak_row  = df.loc[(df[ECON_COL] + df[OTHER_COL]).idxmax()]
+    peak_date = peak_row["Date"].strftime("%B %Y")
+    peak_val  = int(peak_row[ECON_COL] + peak_row[OTHER_COL])
+
+    lines = [
+        f"Chart summary for the {admin_name} Administration.",
+        f"Showing {n_months} months from {start} to {end}.",
+        f"Total significant rules published: {total_all}.",
+        f"  Economically Significant: {total_econ}.",
+    ]
+    if total_other > 0:
+        lines.append(f"  Other Significant: {total_other}.")
+    lines.append(f"Peak month: {peak_date} with {peak_val} rules.")
+    return " ".join(lines)
 
 
 def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
@@ -261,7 +335,6 @@ def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
     y_top = int(np.ceil(y_max / 5) * 5) if y_max > 0 else 10
     ax.set_ylim(0, y_top)
 
-    # x-axis: show every 3rd label to match dtick=M3
     step = 3
     shown = list(range(0, len(dates), step))
     ax.set_xticks(shown)
@@ -314,23 +387,37 @@ def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
 
 def main():
     df = load_data()
-    admins = ["Trump 47","Biden", "Trump 45", "Obama", "Bush 43","Clinton","Bush 41","Reagan"]
+    admins = ["Trump 47", "Biden", "Trump 45", "Obama", "Bush 43", "Clinton", "Bush 41", "Reagan"]
     if not admins:
         st.warning("No administrations found in the data.")
         return
 
+    # ── Page landmark: main heading ──────────────────────────────────────────
+    # role="main" gives screen readers a named landmark to jump to (WCAG 1.3.1)
+    st.markdown(
+        '<div role="main" id="main-content">',
+        unsafe_allow_html=True,
+    )
     st.title("Monthly Significant Final Rules by Administration")
+
     col_controls, col_plot = st.columns([1.25, 3.25], gap="large")
 
     with col_controls:
+        # ── aria-label on the control region (WCAG 1.3.1) ───────────────────
+        st.markdown(
+            '<div role="region" aria-label="Chart controls">',
+            unsafe_allow_html=True,
+        )
         st.markdown("### Select Administration")
         admin = st.selectbox(
             "Administration",
             admins,
             index=admins.index("Trump 47") if "Trump 47" in admins else 0,
-            label_visibility="collapsed",
+            # label_visibility="visible" so the label is read by screen readers
+            label_visibility="visible",
             help="Choose the presidential administration to view monthly significant final rules.",
         )
+
     df_admin = df[df["Admin"] == admin]
     if df_admin.empty:
         with col_plot:
@@ -343,7 +430,6 @@ def main():
         format="mixed"
     )
     df_admin = df_admin.sort_values("Date")
-
     total_months = len(df_admin)
 
     with col_controls:
@@ -353,14 +439,20 @@ def main():
             "Months to display",
             min_value=6,
             max_value=total_months,
-            value=total_months-1,
+            value=total_months - 1,
             step=1,
-            label_visibility="collapsed",
+            # label_visibility="visible" ensures the slider label is announced
+            label_visibility="visible",
             help="Show the first N months of data from the start of the administration. Drag to adjust.",
         )
-    df_admin_filtered = df_admin.head(num_months).copy()
 
+    df_admin_filtered = df_admin.head(num_months).copy()
     fig_plotly = plot_admin_plotly(df_admin_filtered, admin)
+
+    # ── Screen reader summary (WCAG 1.1.1, 1.3.1) ───────────────────────────
+    # aria-live="polite" means the summary is announced when it changes
+    # without interrupting whatever the screen reader is currently saying.
+    aria_summary = build_aria_summary(df_admin_filtered, admin)
 
     with col_controls:
         st.markdown("---")
@@ -396,9 +488,76 @@ def main():
             use_container_width=True,
         )
 
+        # Close the controls region div
+        st.markdown("</div>", unsafe_allow_html=True)
+
     with col_plot:
-        st.plotly_chart(fig_plotly, use_container_width=True, config={"displayModeBar": False})
+        # ── Chart landmark with aria-label and skip-link target (WCAG 2.4.1) ─
         st.markdown(
-            "This graph tracks the number of [economically significant](https://regulatorystudies.columbian.gwu.edu/terminology) final rules and other significant final rules published each month during the selected administration. Economically significant rules are regulations that have an estimated annual economic effect of \\$100 million or more, as defined in section 3(f)(1) of Executive Order 12866. However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \\$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025)")
+            f"""
+            <div id="chart-region"
+                 role="region"
+                 aria-label="Bar chart: significant final rules by month, {admin} Administration">
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.plotly_chart(fig_plotly, use_container_width=True, config={"displayModeBar": False})
+
+        # ── aria-live text summary for screen readers (WCAG 1.1.1) ───────────
+        # Visually hidden but fully readable by assistive technology.
+        st.markdown(
+            f"""
+            <div aria-live="polite"
+                 aria-atomic="true"
+                 style="
+                     position: absolute;
+                     width: 1px;
+                     height: 1px;
+                     padding: 0;
+                     margin: -1px;
+                     overflow: hidden;
+                     clip: rect(0,0,0,0);
+                     white-space: nowrap;
+                     border: 0;
+                 ">
+                {aria_summary}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # ── Logo alt text (WCAG 1.1.1) ────────────────────────────────────────
+        # The Plotly layout_image has no alt attribute. We inject a labelled
+        # version below the chart so screen readers get the logo description.
+        if LOGO_PATH.exists():
+            with open(LOGO_PATH, "rb") as f:
+                logo_b64 = base64.b64encode(f.read()).decode("utf-8")
+            st.markdown(
+                f"""
+                <img src="data:image/png;base64,{logo_b64}"
+                     alt="GW Regulatory Studies Center logo"
+                     style="display:none;"
+                     aria-hidden="false" />
+                """,
+                unsafe_allow_html=True,
+            )
+
+        st.markdown(
+            "This graph tracks the number of [economically significant]"
+            "(https://regulatorystudies.columbian.gwu.edu/terminology) final rules "
+            "and other significant final rules published each month during the selected "
+            "administration. Economically significant rules are regulations that have an "
+            "estimated annual economic effect of \\$100 million or more, as defined in "
+            "section 3(f)(1) of Executive Order 12866. However, rules published between "
+            "April 6, 2023, and January 20, 2025, are defined as economically significant "
+            "if they meet a higher threshold of \\$200 million, in accordance with Executive "
+            "Order 14094 (which was rescinded on January 20, 2025)."
+        )
+
+        # Close chart region and main divs
+        st.markdown("</div></div>", unsafe_allow_html=True)
+
+
 if __name__ == "__main__":
     main()
