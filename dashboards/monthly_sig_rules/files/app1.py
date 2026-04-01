@@ -200,7 +200,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
             y=df[OTHER_COL],
             name="Other Significant",
             marker_color=other_color,
-            marker=dict(color=other_color, line=dict(color='white', width=0.75)),
+            marker=dict(color=other_color, line=dict(width=0)),
             customdata=custom_data,
             hovertemplate=hover_both,
         ))
@@ -329,7 +329,7 @@ def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
     ax.bar(x, econ_vals, width=bar_width, color=GW_COLORS["GWblue"], label="Economically Significant")
     if has_other_sig:
         ax.bar(x, other_vals, width=bar_width, bottom=econ_vals, color=GW_COLORS["GWbuff"],
-               label="Other Significant", linewidth=0.75, edgecolor="white")
+               label="Other Significant", linewidth=0)
 
     y_max = (econ_vals + other_vals).max()
     y_top = int(np.ceil(y_max / 5) * 5) if y_max > 0 else 10
