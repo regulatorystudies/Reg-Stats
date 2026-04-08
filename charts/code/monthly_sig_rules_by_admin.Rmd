@@ -55,12 +55,12 @@ monthly_sig1 <- monthly_sig1 %>%
 
 # convert to a long data frame
 monthly_sig2 <- monthly_sig1 %>%
-  pivot_longer(cols = c(Economically.Significant, Other.Significant),   
-               names_to = "Rule.Type",   
+  pivot_longer(cols = c(Economically.Significant, Other.Significant),
+               names_to = "Rule.Type",
                values_to = "Rule.Number")
 
 # convert Rule.Type column to factor
-monthly_sig2$Rule.Type <- factor(monthly_sig2$Rule.Type, 
+monthly_sig2$Rule.Type <- factor(monthly_sig2$Rule.Type,
                                  levels = c("Other.Significant", "Economically.Significant"))
 
 # trim data frame so that it only includes rows for selected presidential admin
@@ -79,13 +79,13 @@ caption_text <- paste("Source: Office of the Federal Register (federalregister.g
 wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
 
 # plot
-bar1 <- ggplot(monthly_sig3,aes(x = Date, y = Rule.Number, fill = Rule.Type)) + 
+bar1 <- ggplot(monthly_sig3,aes(x = Date, y = Rule.Number, fill = Rule.Type)) +
   geom_bar(stat = "identity", color = "white", linewidth = 0.3) +
  scale_fill_manual(
    values = c("Economically.Significant" = GWblue, "Other.Significant" = GWbuff),
-   labels = c("Economically.Significant" = "Economically Significant", 
+   labels = c("Economically.Significant" = "Economically Significant",
              "Other.Significant" = "Other Significant")
-   ) +  
+   ) +
   ggtitle(paste("Significant Final Rules Published Each Month \n under the", Presidential.Admin, "Administration")) +
   ylab("Number of Rules") +
   xlab("") +
@@ -105,15 +105,15 @@ bar1 <- ggplot(monthly_sig3,aes(x = Date, y = Rule.Number, fill = Rule.Type)) +
     panel.grid.major.x = element_blank(),
     panel.grid.major.y = element_line(color = RSCgray, linetype = "solid"),
     panel.grid.minor = element_blank(),
-    legend.position = "bottom", 
+    legend.position = "bottom",
     legend.direction = "horizontal",
     legend.margin = margin(t = -15, unit = "pt"),
     legend.title = element_blank(),
     legend.text = element_text(size = 12),
     ) +
   guides(fill = guide_legend(reverse = TRUE)) + # this line reverses the order of econ sig and other sig in the legend
-  coord_cartesian(clip = "off") 
-  
+  coord_cartesian(clip = "off")
+
 suppressWarnings({bar2 <- ggdraw() +
       draw_plot(bar1) +
       draw_image(logo, x = 0.085, y = 0.04, halign = 0, valign = 0, width = 0.2)
@@ -135,4 +135,3 @@ ggsave(here("charts", "output", paste0(image_name, ".pdf")), plot = bar2, width 
 ggsave(here("charts", "output", paste0(image_name, ".png")), device = "png", plot = bar2, width = 1200, height = 900, units = "px", dpi = 96, bg = "white")
 
 ```
-
