@@ -47,8 +47,8 @@ st.set_page_config(
     page_title="Monthly Significant Rules by Administration",
     layout="wide",
 )
-BG_COLOR = GW_COLORS["GWblue"]
-TEXT_COLOR = GW_COLORS["GWbuff"]
+BG_COLOR = "white" #GW_COLORS["GWblue"]
+TEXT_COLOR =GW_COLORS["GWblue"]
 
 font_base64 = ""
 if FONT_PATH.exists():
@@ -84,6 +84,13 @@ st.markdown(
     /* ── WCAG 2.1 AA: Keyboard focus ring ── */
     /* Streamlit removes outlines by default which fails WCAG 2.4.7.  */
     /* This restores a visible focus indicator on all interactive elements. */
+    [data-testid="stDownloadButton"] button,
+    [data-testid="stBaseButton-secondary"],
+    [data-testid="stDownloadButton"] button p,
+    [data-testid="stSelectbox"] div[data-baseweb="select"] span,
+    [data-testid="stSelectbox"] div[data-baseweb="select"] div {{
+        color: #ffffff !important;
+    }}
     a:focus,
     button:focus,
     [role="button"]:focus,
@@ -92,7 +99,7 @@ st.markdown(
     [data-testid="stSelectbox"]:focus-within,
     [data-testid="stSlider"] input:focus,
     [data-testid="stDownloadButton"] button:focus {{
-        outline: 3px solid #F8E08E !important;
+        outline: 3px solid #7FBAE3 !important;
         outline-offset: 2px !important;
         box-shadow: 0 0 0 3px #F8E08E !important;
     }}

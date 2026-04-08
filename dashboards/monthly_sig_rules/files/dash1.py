@@ -1,5 +1,3 @@
-# app.py
-
 import io
 import os
 from pathlib import Path
@@ -14,10 +12,6 @@ from adjustText import adjust_text
 from PIL import Image
 import plotly.graph_objects as go
 
-# -----------------------------------------------------------------------------
-# Config / equivalents for sourced R helpers
-# Replace these values/paths with the exact ones from your style.R/local_utils.R
-# -----------------------------------------------------------------------------
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = Path("/Users/sayam_palrecha/Desktop/RSC-Git/data/cumulative_es_rules")
@@ -131,49 +125,6 @@ if "show_12_months" not in st.session_state:
 st.title("Cumulative Economically Significant Final Rules Published by Administration")
 
 left, right = st.columns([3, 9], gap="large")
-
-with left:
-    st.subheader("Select Administration to Display")
-
-    selected_presidents = st.multiselect(
-        " ",
-        options=admin_labels,
-        default=st.session_state.selected_presidents,
-        key="selected_presidents"
-    )
-
-    def _deselect_all():
-        st.session_state.selected_presidents = []
-
-    st.button("Deselect All", on_click=_deselect_all)
-
-    toggle_label = "Show Full Range" if st.session_state.show_12_months else "Show First 12 Months Only"
-    if st.button(toggle_label):
-        st.session_state.show_12_months = not st.session_state.show_12_months
-        st.rerun()
-
-    st.markdown("---")
-    st.link_button("RegStats Page", "https://regulatorystudies.columbian.gwu.edu/regstats#cumulativeES")
-
-    st.markdown("---")
-    st.subheader("About This Dashboard")
-    st.write(
-        "This dashboard tracks cumulative economically significant rules published by administrations over time."
-    )
-    st.write(
-        "Economically significant rules are regulations that have an estimated annual economic effect of "
-        "$100 million or more, as [defined](https://regulatorystudies.columbian.gwu.edu/terminology) "
-        "in section 3(f)(1) of Executive Order (EO) 12866."
-    )
-    st.write(
-        "[More information on how we collect data]"
-        "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
-    )
-    st.write(
-        "[Download Data]"
-        "(https://regulatorystudies.columbian.gwu.edu/sites/g/files/zaxdzs4751/files/2025-07/"
-        "cumulative_econ_significant_rules_by_presidential_month.csv)"
-    )
 font_base64 = load_font_base64(FONT_PATH)
 
 st.markdown(
@@ -339,10 +290,10 @@ def make_plot(data_dl: pd.DataFrame, selected_presidents_dl, show_12_months_dl: 
     x_breaks = np.arange(0, max_months + 1, 4) if max_months >= 4 else np.arange(0, max_months + 1, 1)
 
     # Figure = blue dashboard area
-    fig = plt.figure(figsize=(12, 10) if for_download else (12, 7), facecolor=fig_bg)
+    fig = plt.figure(figsize=(14, 8.5) if for_download else (12, 7), facecolor=fig_bg)
 
     # White plot "card" background that includes chart + logo + footnotes
-    card = fig.add_axes([0.04, 0.06, 0.92, 0.86] if for_download else [0.03, 0.06, 0.94, 0.88], zorder=0)
+    card = fig.add_axes([0.03, 0.03, 0.94, 0.94] if for_download else [0.03, 0.06, 0.94, 0.88], zorder=0)
     card.set_facecolor(plot_bg)
     card.set_xticks([])
     card.set_yticks([])
@@ -350,7 +301,7 @@ def make_plot(data_dl: pd.DataFrame, selected_presidents_dl, show_12_months_dl: 
         spine.set_visible(False)
 
     # Main chart area inside the white card
-    ax = fig.add_axes([0.10, 0.30, 0.82, 0.50] if for_download else [0.08, 0.24, 0.86, 0.64], zorder=1)
+    ax = fig.add_axes([0.09, 0.22, 0.84, 0.64] if for_download else [0.08, 0.26, 0.86, 0.62], zorder=1)
     ax.set_facecolor(plot_bg)
 
     for president in selected_presidents_dl:
@@ -463,43 +414,56 @@ def make_plot(data_dl: pd.DataFrame, selected_presidents_dl, show_12_months_dl: 
     footer_sources = (
         "Sources: Office of the Federal Register (federalregister.gov) for Biden\n"
         "administration and all subsequent administrations; Office of Information\n"
-        "and Regulatory Affairs (reginfo.gov) for all prior administrations.\n"
-        + (f"Updated: {data_updated_date}" if for_download else f"Accessed: {date.today().strftime('%B %d, %Y')}")
+        "and Regulatory Affairs (reginfo.gov) for all prior administrations."
     )
 
-    # Footer note inside white card
+    footer_date = (
+        f"Updated: {data_updated_date}" if for_download
+        else f"Accessed: {date.today().strftime('%B %d, %Y')}"
+    )
+
+    # Footer note — bottom-left
     fig.text(
-        0.08 if for_download else 0.06,
-        0.16 if for_download else 0.11,
+        0.07 if for_download else 0.06,
+        0.155 if for_download else 0.13,
         footer_note,
-        ha="left",
-        va="center",
-        fontsize=9 if for_download else 8.5,
+        ha="left", va="bottom",
+        fontsize=8.5,
         color=axis_text,
         fontproperties=FONT_PROP
     )
 
-    # Footer sources inside white card
+    # Sources (3 lines) — bottom-right
     fig.text(
-        0.92 if for_download else 0.94,
-        0.12 if for_download else 0.08,
+        0.93 if for_download else 0.94,
+        0.135 if for_download else 0.10,
         footer_sources,
-        ha="right",
-        va="center",
-        fontsize=9.5 if for_download else 8.5,
+        ha="right", va="bottom",
+        fontsize=8.5,
         color=axis_text,
         linespacing=1.35,
         fontproperties=FONT_PROP
     )
 
-    # Logo inside white card, bottom-left
+    # Date line — directly below sources
+    fig.text(
+        0.93 if for_download else 0.94,
+        0.065 if for_download else 0.055,
+        footer_date,
+        ha="right", va="bottom",
+        fontsize=8.5,
+        color=axis_text,
+        fontproperties=FONT_PROP
+    )
+
+    # Logo — bottom-left, below note
     if LOGO_PATH.exists():
         try:
             logo = Image.open(LOGO_PATH)
-            imagebox = OffsetImage(logo, zoom=0.22 if for_download else 0.18)
+            imagebox = OffsetImage(logo, zoom=0.20 if for_download else 0.18)
             ab = AnnotationBbox(
                 imagebox,
-                (0.17 if for_download else 0.15, 0.14 if for_download else 0.07),
+                (0.14 if for_download else 0.13, 0.09 if for_download else 0.07),
                 xycoords="figure fraction",
                 frameon=False,
                 box_alignment=(0.5, 0.5),
@@ -927,10 +891,10 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
             font=dict(size=11, color=admin_color_map.get(str(row["president"]), "#333333"))
         )
 
-    # --- footer note (sits just above the logo row) ---
+    # --- footer note ---
     fig.add_annotation(
         xref="paper", yref="paper",
-        x=0.06, y=0.27,
+        x=0.06, y=0.175,
         text=(
             "Note: Data for month 0 include rules published between January 21 and January 31 "
             "of the administration's first year."
@@ -939,21 +903,29 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
         font=dict(size=8.5, color=axis_text), align="left"
     )
 
-    # --- footer sources (bottom-right, aligned with logo row) ---
+    # --- footer sources (3 lines, no date) ---
     fig.add_annotation(
         xref="paper", yref="paper",
-        x=0.94, y=0.24,
+        x=0.94, y=0.175,
         text=(
             "Sources: Office of the Federal Register (federalregister.gov) for Biden<br>"
             "administration and all subsequent administrations; Office of Information<br>"
-            "and Regulatory Affairs (reginfo.gov) for all prior administrations.<br>"
-            f"Accessed: {date.today().strftime('%B %d, %Y')}"
+            "and Regulatory Affairs (reginfo.gov) for all prior administrations."
         ),
         showarrow=False, xanchor="right", yanchor="top",
         font=dict(size=8.5, color=axis_text), align="right"
     )
 
-    # --- logo (larger, firmly in lower-left footer area) ---
+    # --- date line (separate, below sources) ---
+    fig.add_annotation(
+        xref="paper", yref="paper",
+        x=0.94, y=0.08,
+        text=f"Accessed: {date.today().strftime('%B %d, %Y')}",
+        showarrow=False, xanchor="right", yanchor="bottom",
+        font=dict(size=8.5, color=axis_text), align="right"
+    )
+
+    # --- logo ---
     _logo_path = Path(LOGO_PATH)
     if _logo_path.exists():
         try:
@@ -963,15 +935,15 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
             fig.add_layout_image(
                 source=f"data:{_mime};base64,{_logo_b64}",
                 xref="paper", yref="paper",
-                x=0.04, y=0.245,
-                sizex=0.22, sizey=0.20,
+                x=0.07, y=0.17,
+                sizex=0.18, sizey=0.15,
                 xanchor="left", yanchor="top",
                 sizing="contain", layer="above"
             )
         except Exception:
             pass
 
-    # --- layout: axis domains mirror fig.add_axes([0.08, 0.24, 0.86, 0.64]) ---
+    # --- layout ---
     fig.update_layout(
         plot_bgcolor="#ffffff",
         paper_bgcolor=GWblue,
@@ -993,7 +965,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
             tickvals=y_ticks,
             gridcolor=grid_color, showgrid=True,
             zeroline=False, showline=False,
-            domain=[0.30, 0.88]
+            domain=[0.32, 0.88]
         ),
         showlegend=False,
         hovermode="closest",
@@ -1004,36 +976,82 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
     return fig
 
 
-with right:
-    with right:
-        plotly_fig = make_plotly_chart(
-            data_dl=filtered_data,
-            selected_presidents_dl=selected_presidents,
-            show_12_months_dl=st.session_state.show_12_months
-        )
-        st.plotly_chart(plotly_fig, use_container_width=True)
+# --- Generate download buffer (needs filtered_data and make_plot defined above) ---
+download_fig = make_plot(
+    data_dl=filtered_data,
+    selected_presidents_dl=selected_presidents,
+    show_12_months_dl=st.session_state.show_12_months,
+    for_download=True
+)
+buf = io.BytesIO()
+download_fig.savefig(
+    buf,
+    format="png",
+    dpi=300,
+    facecolor=download_fig.get_facecolor(),
+    edgecolor="none"
+)
+plt.close(download_fig)
+buf.seek(0)
 
-        download_fig = make_plot(
-            data_dl=filtered_data,
-            selected_presidents_dl=selected_presidents,
-            show_12_months_dl=st.session_state.show_12_months,
-            for_download=True
-        )
+# --- Left column ---
+with left:
+    st.subheader("Select Administration to Display")
 
-        buf = io.BytesIO()
-        download_fig.savefig(
-            buf,
-            format="png",
-            dpi=300,
-            facecolor=download_fig.get_facecolor(),
-            edgecolor="none"
-        )
-        plt.close(download_fig)
-        buf.seek(0)
+    selected_presidents = st.multiselect(
+        " ",
+        options=admin_labels,
+        default=st.session_state.selected_presidents,
+        key="selected_presidents"
+    )
 
+    def _deselect_all():
+        st.session_state.selected_presidents = []
+
+    st.button("Deselect All", on_click=_deselect_all)
+
+    toggle_label = "Show Full Range" if st.session_state.show_12_months else "Show First 12 Months Only"
+    if st.button(toggle_label):
+        st.session_state.show_12_months = not st.session_state.show_12_months
+        st.rerun()
+
+    st.markdown("---")
+    btn_col1, btn_col2 = st.columns(2)
+    with btn_col1:
+        st.link_button("RegStats Page", "https://regulatorystudies.columbian.gwu.edu/regstats#cumulativeES")
+    with btn_col2:
         st.download_button(
             label="Download Plot",
             data=buf,
             file_name=f"cumulative_econ_significant_rules_{date.today().isoformat()}.png",
             mime="image/png"
         )
+
+    st.markdown("---")
+    st.subheader("About This Dashboard")
+    st.write(
+        "This dashboard tracks cumulative economically significant rules published by administrations over time."
+    )
+    st.write(
+        "Economically significant rules are regulations that have an estimated annual economic effect of "
+        "$100 million or more, as [defined](https://regulatorystudies.columbian.gwu.edu/terminology) "
+        "in section 3(f)(1) of Executive Order (EO) 12866."
+    )
+    st.write(
+        "[More information on how we collect data]"
+        "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
+    )
+    st.write(
+        "[Download Data]"
+        "(https://regulatorystudies.columbian.gwu.edu/sites/g/files/zaxdzs4751/files/2025-07/"
+        "cumulative_econ_significant_rules_by_presidential_month.csv)"
+    )
+
+# --- Right column ---
+with right:
+    plotly_fig = make_plotly_chart(
+        data_dl=filtered_data,
+        selected_presidents_dl=selected_presidents,
+        show_12_months_dl=st.session_state.show_12_months
+    )
+    st.plotly_chart(plotly_fig, use_container_width=True)
