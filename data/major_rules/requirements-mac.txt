@@ -36,7 +36,7 @@ jupyter-core==5.7.2
     # via
     #   ipykernel
     #   jupyter-client
-lxml==5.2.2
+lxml==6.1.0
     # via -r requirements.in
 matplotlib-inline==0.1.7
     # via
