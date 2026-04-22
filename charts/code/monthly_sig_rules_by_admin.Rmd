@@ -73,10 +73,10 @@ monthly_sig3 <- monthly_sig2[monthly_sig2$Admin == Presidential.Admin, ]
 current_date <- format(Sys.Date(), "%B %d, %Y")
 
 # set caption text
-caption_text <- paste("Source: Office of the Federal Register (federalregister.gov)\n\nUpdated", current_date)
+caption_text <- paste("\nSources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations; Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated:", current_date)
 
 # set wrapped caption width
-wrapped_caption <- paste(strwrap(caption_text, width = 65), collapse = "\n")
+wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 # plot
 bar1 <- ggplot(monthly_sig3,aes(x = Date, y = Rule.Number, fill = Rule.Type)) +
@@ -116,7 +116,7 @@ bar1 <- ggplot(monthly_sig3,aes(x = Date, y = Rule.Number, fill = Rule.Type)) +
 
 suppressWarnings({bar2 <- ggdraw() +
       draw_plot(bar1) +
-      draw_image(logo, x = 0.085, y = 0.04, halign = 0, valign = 0, width = 0.2)
+      draw_image(logo, x = 0.085, y = 0.075, halign = 0, valign = 0, width = 0.2)
 bar2})
 
 ```

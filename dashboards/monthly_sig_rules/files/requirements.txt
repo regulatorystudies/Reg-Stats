@@ -1,4 +1,12 @@
-streamlit
 pandas
 numpy
 plotly
+streamlit>=1.30
+matplotlib
+plotnine
+Pillow
+pyprojroot
+adjustText
+
+altair<5
+matplotlib
