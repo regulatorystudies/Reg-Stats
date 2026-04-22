@@ -58,6 +58,31 @@ if FONT_PATH.exists():
 st.markdown(
     f"""
     <style>
+    /* Dropdown option list background */
+    /* Dropdown option list background */
+    [data-baseweb="popover"] [data-baseweb="menu"],
+    [data-baseweb="popover"] ul {{
+        background-color: #E8DDC6 !important;
+    }}
+    
+    /* Individual option text */
+    [data-baseweb="popover"] [data-baseweb="menu"] li,
+    [data-baseweb="popover"] ul li {{
+        background-color: #E8DDC6 !important;
+        color: #033C5A !important;
+    }}
+    
+    /* Hovered option */
+    [data-baseweb="popover"] ul li:hover {{
+        background-color: #A69362 !important;
+        color: #ffffff !important;
+    }}
+    
+    /* Currently selected option */
+    [data-baseweb="popover"] ul li[aria-selected="true"] {{
+        background-color: #033C5A !important;
+        color: #ffffff !important;
+    }}
     @font-face {{
         font-family: 'Avenir Next LT Pro';
         src: url(data:font/otf;base64,{font_base64}) format('opentype');
@@ -80,7 +105,7 @@ st.markdown(
     .js-plotly-plot .plotly .annotation-text {{
         font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif !important;
     }}
-
+    
     /* ── WCAG 2.1 AA: Keyboard focus ring ── */
     /* Streamlit removes outlines by default which fails WCAG 2.4.7.  */
     /* This restores a visible focus indicator on all interactive elements. */
@@ -89,7 +114,7 @@ st.markdown(
     [data-testid="stDownloadButton"] button p,
     [data-testid="stSelectbox"] div[data-baseweb="select"] span,
     [data-testid="stSelectbox"] div[data-baseweb="select"] div {{
-        color: #ffffff !important;
+        color: #E8DDC6 !important;
         background-color: #033C5A !important;  /* ADD THIS */
         border-color: #033C5A !important;      /* ADD THIS */
     }}
@@ -122,10 +147,15 @@ st.markdown(
         border-radius: 0 0 4px 0;
         text-decoration: none;
     }}
+    [data-testid="stTooltipContent"] {{
+    background-color: #E8DDC6 !important;
+    color: #E8DDC6 !important;
+    }}
     .skip-link:focus {{
         top: 0;
         outline: 3px solid #033C5A !important;
     }}
+    
     </style>
 
     <!-- Skip navigation link (WCAG 2.4.1) -->
