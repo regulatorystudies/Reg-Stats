@@ -47,7 +47,7 @@ st.set_page_config(
     page_title="Monthly Significant Rules by Administration",
     layout="wide",
 )
-BG_COLOR = "white" #GW_COLORS["GWblue"]
+BG_COLOR = "#E8DDC6" #GW_COLORS["GWblue"]
 TEXT_COLOR =GW_COLORS["GWblue"]
 
 font_base64 = ""
@@ -90,6 +90,8 @@ st.markdown(
     [data-testid="stSelectbox"] div[data-baseweb="select"] span,
     [data-testid="stSelectbox"] div[data-baseweb="select"] div {{
         color: #ffffff !important;
+        background-color: #033C5A !important;  /* ADD THIS */
+        border-color: #033C5A !important;      /* ADD THIS */
     }}
     a:focus,
     button:focus,
@@ -99,7 +101,7 @@ st.markdown(
     [data-testid="stSelectbox"]:focus-within,
     [data-testid="stSlider"] input:focus,
     [data-testid="stDownloadButton"] button:focus {{
-        outline: 3px solid #7FBAE3 !important;
+        outline: 3px solid #033C5A !important;
         outline-offset: 2px !important;
         box-shadow: 0 0 0 3px #F8E08E !important;
     }}
@@ -231,7 +233,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         font=dict(family=FONT_FAMILY),
         title=dict(
             text=f"Significant Final Rules Published Each Month<br>under the {admin_name} Administration",
-            font=dict(size=17, color='black', family=FONT_FAMILY),
+            font=dict(size=17, color='#033C5A', family=FONT_FAMILY),
             x=0.5,
             xanchor="center",
         ),
@@ -351,7 +353,7 @@ def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
     ax.tick_params(axis="y", colors="#333333", labelsize=9)
     ax.set_title(
         f"Significant Final Rules Published Each Month\nunder the {admin_name} Administration",
-        fontsize=14, color="black", pad=16
+        fontsize=14, color="#033C5A", pad=16
     )
 
     ax.yaxis.grid(True, color="#CCCCCC", linewidth=0.8, alpha=0.6)
