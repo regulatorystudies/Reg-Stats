@@ -152,7 +152,7 @@ def main(
     df_list = []
     doctypes = {"RULE": "final_rules", "PRORULE": "proposed_rules"}
     for doctype, fieldname in doctypes.items():
-        file = f"documents_endpoint_{doctype}_1995_{final_year}.json"
+        file = f"documents_endpoint_{doctype}_all_presyears.json"
         documents = read_json(api_dir, file)
         df = format_documents(documents, agency_column=agency_column)
         df, _ = filter_corrections(df)

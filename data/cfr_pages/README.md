@@ -7,7 +7,8 @@ The CFR pages data should be updated **once a year**. Since the date when the da
 Follow these steps to update the dataset:
 
 1. Visit the [Federal Register Statistics](https://www.federalregister.gov/reader-aids/federal-register-statistics) page. 
-1. Click CFR Volumes and Page Breakdown to download the latest year_CFR_Charts.XLSX file and save it to this folder as "aggregated_charts_frstats.xlsx" (replace the existing file if necessary).
+1. Click CFR Volumes and Page Breakdown to download the latest year_CFR_Charts.xlsx file and save it to this folder as "aggregated_charts_frstats.xlsx" (replace the existing file if necessary).
+1. If the latest year in the CFR Vols tab doesn't have a value in the Total Pages column, delete that entire row from the dataset and save the file again. 
 1. Run the Python script `update_cfr_pages.py` in your preferred IDE to update the dataset.
 1. Update the caption_text in the corresponding cfr_pages.Rmd file to reflect the last year of data in the CFR Vols tab of the latest aggregated_charts_frstats.xlsx file. E.g. if the last year of data is 2023, then the caption_text should read "Sources: GovInfo.gov for the years 2024 and onwards; Federal Register Statistics for all the prior years."
 
