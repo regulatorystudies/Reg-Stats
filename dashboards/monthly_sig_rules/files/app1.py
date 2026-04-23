@@ -405,7 +405,7 @@ def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
 
     fig.text(
         0.98, 0.01,
-        "Source: Office of the Federal Register (federalregister.gov)\nUpdated February 11, 2026",
+        "Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations; Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated: April 22, 2026",
         ha="right", va="bottom", fontsize=8, color="#333333"
     )
 
