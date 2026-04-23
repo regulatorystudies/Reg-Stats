@@ -155,6 +155,33 @@ st.markdown(
         top: 0;
         outline: 3px solid #033C5A !important;
     }}
+    /* Focused/active option highlight */
+    [data-baseweb="popover"] ul li:focus,
+    [data-baseweb="popover"] ul li[data-highlighted="true"],
+    [data-baseweb="menu"] [role="option"]:focus,
+    [data-baseweb="menu"] [role="option"][aria-activedescendant] {{
+        background-color: #E8DDC6 !important;
+        color: #E8DDC6 !important;
+    }}
+    /* Highlighted row when navigating */
+    [data-baseweb="menu"] ul li:hover,
+    [data-baseweb="menu"] ul li:focus,
+    [data-baseweb="menu"] ul li[aria-selected="true"],
+    [data-baseweb="popover"] ul li:hover,
+    [data-baseweb="popover"] ul li:focus,
+    [data-baseweb="popover"] ul li[aria-selected="true"] {{
+        background-color: #DAC8A3 !important;
+        color: #ffffff !important;
+    }}
+    
+    /* BaseWeb internal highlight override */
+    [data-baseweb="menu"] [role="option"]:hover,
+    [data-baseweb="menu"] [role="option"].highlighted,
+    [data-baseweb="menu"] [role="option"][data-highlighted],
+    [data-baseweb="menu"] [role="option"]:focus {{
+        background-color: #DAC8A3 !important;
+        color: #ffffff !important;
+    }}
     
     </style>
 
@@ -319,7 +346,8 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     )
 
     fig.add_annotation(
-        text="Source: Office of the Federal Register (federalregister.gov)<br>Updated February 11, 2026",
+        text="Sources: Office of the Federal Register (federalregister.gov) for Biden administration and <br>" 
+             "all subsequent administrations Office of Information and Regulatory Affairs (reginfo.gov)<br> for all prior administrations. Updated: April 22, 2026",
         xref="paper",
         yref="paper",
         x=1.0,
@@ -449,11 +477,11 @@ def main():
         )
         st.markdown("### Select Administration")
         admin = st.selectbox(
-            "Administration",
+            "Selected Adminstration",
             admins,
             index=admins.index("Trump 47") if "Trump 47" in admins else 0,
             # label_visibility="visible" so the label is read by screen readers
-            label_visibility="visible",
+            label_visibility="hidden",
             help="Choose the presidential administration to view monthly significant final rules.",
         )
 
@@ -473,15 +501,15 @@ def main():
 
     with col_controls:
         st.markdown("---")
-        st.markdown("**Number of Months**")
+        st.markdown("### Number of Months to display")
         num_months = st.slider(
-            "Months to display",
+            "Number of Months to display",
             min_value=6,
             max_value=total_months,
             value=total_months - 1,
             step=1,
             # label_visibility="visible" ensures the slider label is announced
-            label_visibility="visible",
+            label_visibility="collapsed",
             help="Show the first N months of data from the start of the administration. Drag to adjust.",
         )
 
@@ -495,7 +523,7 @@ def main():
 
     with col_controls:
         st.markdown("---")
-        st.markdown("**Download Plot**")
+        st.markdown("### Download Plot")
 
         png_bytes = fig_to_png_bytes(df_admin_filtered, admin)
         st.download_button(
