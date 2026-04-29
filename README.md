@@ -426,7 +426,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Regulators' Budget Report By Regulatory Subcategory: Outlays</strong></summary>
+  <summary><strong>Regulators' Budget Report By Regulatory Subcategory: Agency Budget Outlays by Fiscal Year</strong></summary>
   <br/>
   <table>
     <tr>
