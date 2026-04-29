@@ -47,7 +47,7 @@ st.set_page_config(
     page_title="Monthly Significant Rules by Administration",
     layout="wide",
 )
-BG_COLOR = "white" #GW_COLORS["GWblue"]
+BG_COLOR = "#E8DDC6" #GW_COLORS["GWblue"]
 TEXT_COLOR =GW_COLORS["GWblue"]
 
 font_base64 = ""
@@ -58,6 +58,31 @@ if FONT_PATH.exists():
 st.markdown(
     f"""
     <style>
+    /* Dropdown option list background */
+    /* Dropdown option list background */
+    [data-baseweb="popover"] [data-baseweb="menu"],
+    [data-baseweb="popover"] ul {{
+        background-color: #E8DDC6 !important;
+    }}
+    
+    /* Individual option text */
+    [data-baseweb="popover"] [data-baseweb="menu"] li,
+    [data-baseweb="popover"] ul li {{
+        background-color: #E8DDC6 !important;
+        color: #033C5A !important;
+    }}
+    
+    /* Hovered option */
+    [data-baseweb="popover"] ul li:hover {{
+        background-color: #A69362 !important;
+        color: #ffffff !important;
+    }}
+    
+    /* Currently selected option */
+    [data-baseweb="popover"] ul li[aria-selected="true"] {{
+        background-color: #033C5A !important;
+        color: #ffffff !important;
+    }}
     @font-face {{
         font-family: 'Avenir Next LT Pro';
         src: url(data:font/otf;base64,{font_base64}) format('opentype');
@@ -80,7 +105,7 @@ st.markdown(
     .js-plotly-plot .plotly .annotation-text {{
         font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif !important;
     }}
-
+    
     /* ── WCAG 2.1 AA: Keyboard focus ring ── */
     /* Streamlit removes outlines by default which fails WCAG 2.4.7.  */
     /* This restores a visible focus indicator on all interactive elements. */
@@ -89,7 +114,9 @@ st.markdown(
     [data-testid="stDownloadButton"] button p,
     [data-testid="stSelectbox"] div[data-baseweb="select"] span,
     [data-testid="stSelectbox"] div[data-baseweb="select"] div {{
-        color: #ffffff !important;
+        color: #E8DDC6 !important;
+        background-color: #033C5A !important;  /* ADD THIS */
+        border-color: #033C5A !important;      /* ADD THIS */
     }}
     a:focus,
     button:focus,
@@ -99,7 +126,7 @@ st.markdown(
     [data-testid="stSelectbox"]:focus-within,
     [data-testid="stSlider"] input:focus,
     [data-testid="stDownloadButton"] button:focus {{
-        outline: 3px solid #7FBAE3 !important;
+        outline: 3px solid #033C5A !important;
         outline-offset: 2px !important;
         box-shadow: 0 0 0 3px #F8E08E !important;
     }}
@@ -120,10 +147,42 @@ st.markdown(
         border-radius: 0 0 4px 0;
         text-decoration: none;
     }}
+    [data-testid="stTooltipContent"] {{
+    background-color: #E8DDC6 !important;
+    color: #E8DDC6 !important;
+    }}
     .skip-link:focus {{
         top: 0;
         outline: 3px solid #033C5A !important;
     }}
+    /* Focused/active option highlight */
+    [data-baseweb="popover"] ul li:focus,
+    [data-baseweb="popover"] ul li[data-highlighted="true"],
+    [data-baseweb="menu"] [role="option"]:focus,
+    [data-baseweb="menu"] [role="option"][aria-activedescendant] {{
+        background-color: #E8DDC6 !important;
+        color: #E8DDC6 !important;
+    }}
+    /* Highlighted row when navigating */
+    [data-baseweb="menu"] ul li:hover,
+    [data-baseweb="menu"] ul li:focus,
+    [data-baseweb="menu"] ul li[aria-selected="true"],
+    [data-baseweb="popover"] ul li:hover,
+    [data-baseweb="popover"] ul li:focus,
+    [data-baseweb="popover"] ul li[aria-selected="true"] {{
+        background-color: #DAC8A3 !important;
+        color: #ffffff !important;
+    }}
+    
+    /* BaseWeb internal highlight override */
+    [data-baseweb="menu"] [role="option"]:hover,
+    [data-baseweb="menu"] [role="option"].highlighted,
+    [data-baseweb="menu"] [role="option"][data-highlighted],
+    [data-baseweb="menu"] [role="option"]:focus {{
+        background-color: #DAC8A3 !important;
+        color: #ffffff !important;
+    }}
+    
     </style>
 
     <!-- Skip navigation link (WCAG 2.4.1) -->
@@ -231,7 +290,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         font=dict(family=FONT_FAMILY),
         title=dict(
             text=f"Significant Final Rules Published Each Month<br>under the {admin_name} Administration",
-            font=dict(size=17, color='black', family=FONT_FAMILY),
+            font=dict(size=17, color='#033C5A', family=FONT_FAMILY),
             x=0.5,
             xanchor="center",
         ),
@@ -287,7 +346,8 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     )
 
     fig.add_annotation(
-        text="Source: Office of the Federal Register (federalregister.gov)<br>Updated February 11, 2026",
+        text="Sources: Office of the Federal Register (federalregister.gov) for Biden administration and <br>" 
+             "all subsequent administrations Office of Information and Regulatory Affairs (reginfo.gov)<br> for all prior administrations. Updated: April 22, 2026",
         xref="paper",
         yref="paper",
         x=1.0,
@@ -351,7 +411,7 @@ def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
     ax.tick_params(axis="y", colors="#333333", labelsize=9)
     ax.set_title(
         f"Significant Final Rules Published Each Month\nunder the {admin_name} Administration",
-        fontsize=14, color="black", pad=16
+        fontsize=14, color="#033C5A", pad=16
     )
 
     ax.yaxis.grid(True, color="#CCCCCC", linewidth=0.8, alpha=0.6)
@@ -373,7 +433,7 @@ def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
 
     fig.text(
         0.98, 0.01,
-        "Source: Office of the Federal Register (federalregister.gov)\nUpdated February 11, 2026",
+        "Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations; Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated: April 22, 2026",
         ha="right", va="bottom", fontsize=8, color="#333333"
     )
 
@@ -417,11 +477,11 @@ def main():
         )
         st.markdown("### Select Administration")
         admin = st.selectbox(
-            "Administration",
+            "Selected Adminstration",
             admins,
             index=admins.index("Trump 47") if "Trump 47" in admins else 0,
             # label_visibility="visible" so the label is read by screen readers
-            label_visibility="visible",
+            label_visibility="hidden",
             help="Choose the presidential administration to view monthly significant final rules.",
         )
 
@@ -441,15 +501,15 @@ def main():
 
     with col_controls:
         st.markdown("---")
-        st.markdown("**Number of Months**")
+        st.markdown("### Number of Months to display")
         num_months = st.slider(
-            "Months to display",
+            "Number of Months to display",
             min_value=6,
             max_value=total_months,
             value=total_months - 1,
             step=1,
             # label_visibility="visible" ensures the slider label is announced
-            label_visibility="visible",
+            label_visibility="collapsed",
             help="Show the first N months of data from the start of the administration. Drag to adjust.",
         )
 
@@ -463,7 +523,7 @@ def main():
 
     with col_controls:
         st.markdown("---")
-        st.markdown("**Download Plot**")
+        st.markdown("### Download Plot")
 
         png_bytes = fig_to_png_bytes(df_admin_filtered, admin)
         st.download_button(
