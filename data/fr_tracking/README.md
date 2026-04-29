@@ -4,7 +4,7 @@
 
 README: 2026-01-20
 
-Data: ~weekly
+Data: 2x per week - Tuesday (for the Thursday - Tuesday data) and Wednesday morning, before the FR clippings are collected (for the Wednesday data) 
 
 ## Update Instructions
 
