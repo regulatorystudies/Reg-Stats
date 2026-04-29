@@ -167,7 +167,7 @@ fig1_plot <- ggplot(fig1_long, aes(x = year, y = value, fill = category)) +
     plot.caption = element_text(margin = margin(t = 15)),
     plot.caption.position = "plot"
   ) +
-  ggtitle("Regulatory Agency Budget Outlays by Fiscal Year") + # FOR REGULATORS' BUDGET REPORT add "Figure 1:" at the beginning, FOR REGSTATS remove "Figure 1:" from the beginning 
+  ggtitle("Regulatory Agency Budget Outlays by Fiscal Year") + # FOR REGULATORS' BUDGET REPORT add "Figure 1:" at the beginning, FOR REGSTATS PAGE remove "Figure 1:" from the beginning 
   ylab("Billions of Constant 2012 U.S. Dollars") +
   xlab("\nNote: The Transportation Security Administration (TSA) is displayed separately from Social Regulation as it has features that differ from other regulatory agencies.") +
   labs(fill = NULL, caption = caption_text) +
