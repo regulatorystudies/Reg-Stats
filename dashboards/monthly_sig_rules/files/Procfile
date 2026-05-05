@@ -1,1 +1,1 @@
-web: streamlit run app1.py --server.port=$PORT --server.address=0.0.0.0
+web: streamlit run dashboards/monthly_sig_rules/files/app1.py --server.port $PORT --server.address 0.0.0.0
