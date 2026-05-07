@@ -560,14 +560,17 @@ def main():
 
     with col_plot:
         # ── Chart landmark with aria-label and skip-link target (WCAG 2.4.1) ─
-        st.markdown(
-            f"""
-            <div id="chart-region"
-                 role="region"
-                 aria-label="Bar chart: significant final rules by month, {admin} Administration">
-            """,
-            unsafe_allow_html=True,
-        )
+        with col_plot:
+            # ── Chart landmark with aria-label and skip-link target (WCAG 2.4.1) ─
+            st.markdown(
+                f"""
+                <div id="chart-region"
+                     role="region"
+                     aria-label="Bar chart: significant final rules by month, {admin} Administration"
+                     style="border: 3px solid #033C5A; border-radius: 6px; padding: 10px; background-color: white;">
+                """,
+                unsafe_allow_html=True,
+            )
 
         st.plotly_chart(fig_plotly, use_container_width=True, config={"displayModeBar": False})
 

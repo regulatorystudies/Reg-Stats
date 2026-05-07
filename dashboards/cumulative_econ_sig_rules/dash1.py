@@ -2,6 +2,7 @@ import io
 import os
 from pathlib import Path
 from datetime import date
+import base64
 import matplotlib.font_manager as fm
 import numpy as np
 import pandas as pd
@@ -14,9 +15,20 @@ import plotly.graph_objects as go
 
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = Path("/Users/sayam_palrecha/Desktop/RSC-Git/data/cumulative_es_rules")
+
+
+def _find_repo_root(start: Path) -> Path:
+    """Find repo root by looking for expected top-level folders."""
+    for candidate in [start, *start.parents]:
+        if (candidate / "data").exists() and (candidate / "charts").exists():
+            return candidate
+    return start
+
+
+REPO_ROOT = _find_repo_root(BASE_DIR)
+DATA_DIR = REPO_ROOT / "data" / "cumulative_es_rules"
 DATA_FILE = "cumulative_econ_significant_rules_by_presidential_month.csv"
-LOGO_PATH = Path("/Users/sayam_palrecha/Desktop/RSC-Git/charts/style/gw_ci_rsc_2cs_pos.png")
+LOGO_PATH = REPO_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 
 # Colors from style.R placeholders — replace with exact values
 red = "#b22222"
@@ -34,20 +46,23 @@ admin_labels = ["Reagan", "Bush 41", "Clinton", "Bush 43", "Obama", "Trump 45", 
 admin_colors = [red, darkgreen, GWblue, GWbuff, lightblue, darkyellow, lightgreen, brown]
 admin_color_map = dict(zip(admin_labels, admin_colors))
 
-FONT_PATH = "/Users/sayam_palrecha/Desktop/RSC-Git/charts/style/a-avenir-next-lt-pro.otf"
-# Register font with matplotlib
-fm.fontManager.addfont(str(FONT_PATH))
-FONT_PROP = fm.FontProperties(fname=str(FONT_PATH))
-FONT_FAMILY = FONT_PROP.get_name()
+FONT_PATH = REPO_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
+# Register custom font only if available in deployment environment
+if FONT_PATH.exists():
+    fm.fontManager.addfont(str(FONT_PATH))
+    FONT_PROP = fm.FontProperties(fname=str(FONT_PATH))
+else:
+    FONT_PROP = fm.FontProperties()
+FONT_FAMILY = FONT_PROP.get_name() or "sans-serif"
 plt.rcParams["font.family"] = FONT_FAMILY
 
 # Plot colors
 PLOT_BG = "#ffffff"
 GRID = "#d0d0d0"
 
-import base64
-
 def load_font_base64(path):
+    if not Path(path).exists():
+        return ""
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
@@ -73,6 +88,9 @@ def alpha_hex(hex_color: str, alpha: float):
 # -----------------------------------------------------------------------------
 
 data_path = DATA_DIR / DATA_FILE
+if not data_path.exists():
+    st.error(f"Data file not found: {data_path}")
+    st.stop()
 cum_sig = pd.read_csv(data_path)
 
 data_updated_date = pd.to_datetime(os.path.getmtime(data_path), unit="s").strftime("%B %d, %Y")
@@ -126,26 +144,22 @@ st.title("Cumulative Economically Significant Final Rules Published by Administr
 
 left, right = st.columns([3, 9], gap="large")
 font_base64 = load_font_base64(FONT_PATH)
+font_family_css = "'AvenirCustom', sans-serif" if font_base64 else "sans-serif"
 
 st.markdown(
     f"""
     <style>
-    @font-face {{
-        font-family: 'AvenirCustom';
-        src: url(data:font/opentype;base64,{font_base64}) format('opentype');
-        font-weight: normal;
-        font-style: normal;
-    }}
+    {"@font-face { font-family: 'AvenirCustom'; src: url(data:font/opentype;base64," + font_base64 + ") format('opentype'); font-weight: normal; font-style: normal; }" if font_base64 else ""}
 
 
     html, body, [class*="css"] {{
-        font-family: 'AvenirCustom', sans-serif !important;
+        font-family: {font_family_css} !important;
     }}
 
     .stApp {{
-        background-color: {GWblue};
-        color: {GWbuff};
-        font-family: 'AvenirCustom', sans-serif !important;
+        background-color: {"#E8DDC6"};
+        color: {"#E8DDC6"};
+        font-family: {font_family_css} !important;
     }}
 
     [data-testid="stSidebar"] {{
@@ -153,22 +167,22 @@ st.markdown(
     }}
 
     [data-testid="stSidebar"] * {{
-        color: {GWbuff} !important;
-        font-family: 'AvenirCustom', sans-serif !important;
+        color: {GWblue} !important;
+        font-family: {font_family_css} !important;
     }}
 
     .stApp * {{
         color: {GWbuff};
-        font-family: 'AvenirCustom', sans-serif !important;
+        font-family: {font_family_css} !important;
     }}
 
     h1, h2, h3, h4, h5, h6 {{
         color: {GWbuff} !important;
-        font-family: 'AvenirCustom', sans-serif !important;
+        font-family: {font_family_css} !important;
     }}
 
     p, div, span, label {{
-        font-family: 'AvenirCustom', sans-serif !important;
+        font-family: {font_family_css} !important;
     }}
 
     .stButton > button,
@@ -177,7 +191,7 @@ st.markdown(
         background-color: {GWblue} !important;
         color: {GWbuff} !important;
         border: 1px solid {GWbuff} !important;
-        font-family: 'AvenirCustom', sans-serif !important;
+        font-family: {font_family_css} !important;
     }}
 
     .stMultiSelect div[data-baseweb="select"] > div {{
@@ -320,7 +334,7 @@ def make_plot(data_dl: pd.DataFrame, selected_presidents_dl, show_12_months_dl: 
         "Cumulative Economically Significant Final Rules Published by Administration",
         fontsize=16 if for_download else 18,
         pad=16,
-        color=axis_text,
+        color=GWblue,
         fontproperties=FONT_PROP
     )
     ax.set_xlabel(
@@ -655,6 +669,7 @@ def make_plot(data_dl: pd.DataFrame, selected_presidents_dl, show_12_months_dl: 
         "Cumulative Economically Significant Final Rules Published by Administration",
         fontsize=16 if for_download else 18,
         pad=18,
+        color = GWblue,
         weight="normal"
     )
     ax.set_xlabel("Months In Office", fontsize=12 if for_download else 13)
@@ -946,7 +961,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
     # --- layout ---
     fig.update_layout(
         plot_bgcolor="#ffffff",
-        paper_bgcolor=GWblue,
+        paper_bgcolor='#E8DDC6',
         title=dict(text=""),
         xaxis=dict(
             title=dict(text="Months In Office", font=dict(size=13, color=axis_text)),
@@ -965,7 +980,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
             tickvals=y_ticks,
             gridcolor=grid_color, showgrid=True,
             zeroline=False, showline=False,
-            domain=[0.32, 0.88]
+            domain=[0.30, 0.88]
         ),
         showlegend=False,
         hovermode="closest",
