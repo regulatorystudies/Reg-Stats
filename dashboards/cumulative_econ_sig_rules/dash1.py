@@ -14,12 +14,21 @@ from PIL import Image
 import plotly.graph_objects as go
 
 
-# Repo root: dashboards/cumulative_econ_sig_rules/dash1.py -> parents[2] (same pattern as monthly_sig_rules/files/app.py, one fewer parent)
+# Repo root: dashboards/cumulative_econ_sig_rules/dash1.py -> parents[2]
 DATA_ROOT = Path(__file__).resolve().parents[2]
-DATA_PATH = DATA_ROOT / "charts" / "data" / "cumulative_es_rules" /"cumulative_econ_significant_rules_by_presidential_month.csv"
+_CSV_NAME = "cumulative_econ_significant_rules_by_presidential_month.csv"
+# Source data lives under repo `data/` (R pipeline) and/or `charts/data/` (chart outputs); not under charts/data/cumulative_es_rules/.
+_DATA_PATH_CANDIDATES = (
+    DATA_ROOT / "data" / "cumulative_es_rules" / _CSV_NAME,
+    DATA_ROOT / "charts" / "data" / _CSV_NAME,
+)
+_env_csv = os.environ.get("CUMULATIVE_ES_RULES_CSV", "").strip()
+if _env_csv:
+    _DATA_PATH_CANDIDATES = (Path(_env_csv),) + _DATA_PATH_CANDIDATES
+DATA_PATH = next((p for p in _DATA_PATH_CANDIDATES if p.is_file()), None)
 LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 
-# Colors from style.R placeholders — replace with exact values
+
 red = "#b22222"
 darkgreen = "#006400"
 GWblue = "#033C5A"
@@ -72,17 +81,17 @@ def alpha_hex(hex_color: str, alpha: float):
     return (r, g, b, alpha)
 
 
-# -----------------------------------------------------------------------------
-# Data loading
-# -----------------------------------------------------------------------------
 
-data_path = DATA_PATH
-if not data_path.exists():
-    st.error(f"Data file not found: {data_path}")
+
+if DATA_PATH is None:
+    st.error(
+        "Data file not found. Tried:\n"
+        + "\n".join(str(p) for p in _DATA_PATH_CANDIDATES)
+    )
     st.stop()
-cum_sig = pd.read_csv(data_path)
+cum_sig = pd.read_csv(DATA_PATH)
 
-data_updated_date = pd.to_datetime(os.path.getmtime(data_path), unit="s").strftime("%B %d, %Y")
+data_updated_date = pd.to_datetime(os.path.getmtime(DATA_PATH), unit="s").strftime("%B %d, %Y")
 
 # Rename columns
 cum_sig.columns = ["month", "months_in_office"] + admins
