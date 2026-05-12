@@ -14,21 +14,10 @@ from PIL import Image
 import plotly.graph_objects as go
 
 
-BASE_DIR = Path(__file__).resolve().parent
-
-
-def _find_repo_root(start: Path) -> Path:
-    """Find repo root by looking for expected top-level folders."""
-    for candidate in [start, *start.parents]:
-        if (candidate / "data").exists() and (candidate / "charts").exists():
-            return candidate
-    return start
-
-
-REPO_ROOT = _find_repo_root(BASE_DIR)
-DATA_DIR = REPO_ROOT / "data" / "cumulative_es_rules"
-DATA_FILE = "cumulative_econ_significant_rules_by_presidential_month.csv"
-LOGO_PATH = REPO_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
+# Repo root: dashboards/cumulative_econ_sig_rules/dash1.py -> parents[2] (same pattern as monthly_sig_rules/files/app.py, one fewer parent)
+DATA_ROOT = Path(__file__).resolve().parents[2]
+DATA_PATH = DATA_ROOT / "charts" / "data" / "cumulative_es_rules" /"cumulative_econ_significant_rules_by_presidential_month.csv"
+LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 
 # Colors from style.R placeholders — replace with exact values
 red = "#b22222"
@@ -46,7 +35,7 @@ admin_labels = ["Reagan", "Bush 41", "Clinton", "Bush 43", "Obama", "Trump 45", 
 admin_colors = [red, darkgreen, GWblue, GWbuff, lightblue, darkyellow, lightgreen, brown]
 admin_color_map = dict(zip(admin_labels, admin_colors))
 
-FONT_PATH = REPO_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
+FONT_PATH = DATA_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
 # Register custom font only if available in deployment environment
 if FONT_PATH.exists():
     fm.fontManager.addfont(str(FONT_PATH))
@@ -87,7 +76,7 @@ def alpha_hex(hex_color: str, alpha: float):
 # Data loading
 # -----------------------------------------------------------------------------
 
-data_path = DATA_DIR / DATA_FILE
+data_path = DATA_PATH
 if not data_path.exists():
     st.error(f"Data file not found: {data_path}")
     st.stop()
