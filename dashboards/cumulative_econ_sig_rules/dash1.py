@@ -14,23 +14,21 @@ from PIL import Image
 import plotly.graph_objects as go
 
 
-BASE_DIR = Path(__file__).resolve().parent
+# Repo root: dashboards/cumulative_econ_sig_rules/dash1.py -> parents[2]
+DATA_ROOT = Path(__file__).resolve().parents[2]
+_CSV_NAME = "cumulative_econ_significant_rules_by_presidential_month.csv"
+# Source data lives under repo `data/` (R pipeline) and/or `charts/data/` (chart outputs); not under charts/data/cumulative_es_rules/.
+_DATA_PATH_CANDIDATES = (
+    DATA_ROOT / "data" / "cumulative_es_rules" / _CSV_NAME,
+    DATA_ROOT / "charts" / "data" / _CSV_NAME,
+)
+_env_csv = os.environ.get("CUMULATIVE_ES_RULES_CSV", "").strip()
+if _env_csv:
+    _DATA_PATH_CANDIDATES = (Path(_env_csv),) + _DATA_PATH_CANDIDATES
+DATA_PATH = next((p for p in _DATA_PATH_CANDIDATES if p.is_file()), None)
+LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 
 
-def _find_repo_root(start: Path) -> Path:
-    """Find repo root by looking for expected top-level folders."""
-    for candidate in [start, *start.parents]:
-        if (candidate / "data").exists() and (candidate / "charts").exists():
-            return candidate
-    return start
-
-
-REPO_ROOT = _find_repo_root(BASE_DIR)
-DATA_DIR = REPO_ROOT / "data" / "cumulative_es_rules"
-DATA_FILE = "cumulative_econ_significant_rules_by_presidential_month.csv"
-LOGO_PATH = REPO_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
-
-# Colors from style.R placeholders — replace with exact values
 red = "#b22222"
 darkgreen = "#006400"
 GWblue = "#033C5A"
@@ -46,7 +44,7 @@ admin_labels = ["Reagan", "Bush 41", "Clinton", "Bush 43", "Obama", "Trump 45", 
 admin_colors = [red, darkgreen, GWblue, GWbuff, lightblue, darkyellow, lightgreen, brown]
 admin_color_map = dict(zip(admin_labels, admin_colors))
 
-FONT_PATH = REPO_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
+FONT_PATH = DATA_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
 # Register custom font only if available in deployment environment
 if FONT_PATH.exists():
     fm.fontManager.addfont(str(FONT_PATH))
@@ -83,17 +81,17 @@ def alpha_hex(hex_color: str, alpha: float):
     return (r, g, b, alpha)
 
 
-# -----------------------------------------------------------------------------
-# Data loading
-# -----------------------------------------------------------------------------
 
-data_path = DATA_DIR / DATA_FILE
-if not data_path.exists():
-    st.error(f"Data file not found: {data_path}")
+
+if DATA_PATH is None:
+    st.error(
+        "Data file not found. Tried:\n"
+        + "\n".join(str(p) for p in _DATA_PATH_CANDIDATES)
+    )
     st.stop()
-cum_sig = pd.read_csv(data_path)
+cum_sig = pd.read_csv(DATA_PATH)
 
-data_updated_date = pd.to_datetime(os.path.getmtime(data_path), unit="s").strftime("%B %d, %Y")
+data_updated_date = pd.to_datetime(os.path.getmtime(DATA_PATH), unit="s").strftime("%B %d, %Y")
 
 # Rename columns
 cum_sig.columns = ["month", "months_in_office"] + admins
