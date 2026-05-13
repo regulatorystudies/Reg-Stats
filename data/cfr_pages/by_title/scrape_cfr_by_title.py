@@ -54,9 +54,10 @@ MAX_RETRIES = 3
 TIMEOUT = 90
 
 DISAGG_FIELDS = ["year", "title", "vol", "pages", "words", "word_source",
-                 "pdf_present", "xml_present"]
+                 "pdf_present", "xml_present", "scraped_at"]
 AGG_FIELDS = ["year", "title", "pages", "words", "n_volumes",
-              "xml_volumes", "pdf_volumes", "has_pdf_gaps", "has_xml_gaps"]
+              "xml_volumes", "pdf_volumes", "has_pdf_gaps", "has_xml_gaps",
+              "year_complete", "last_scraped_at"]
 
 # Elements that indicate the XML contains regulatory body content. Index-only
 # XMLs (observed for ~40 volumes in 1997) lack these entirely. Some sparser
@@ -65,6 +66,12 @@ AGG_FIELDS = ["year", "title", "pages", "words", "n_volumes",
 # anything below MIN_XML_PDF_RATIO triggers the PDF fallback.
 BODY_ELEMENT_TAGS = {"SECTION", "SECTNO", "PART", "DIV5", "DIV6", "DIV8"}
 MIN_XML_PDF_RATIO = 0.5
+
+# A CFR year Y is rolling-published across Y and Y+1 (and sometimes spilling
+# into Y+2 for the Oct-1 revision titles). We treat a year as "complete" iff
+# the latest scrape touching it happened in calendar year Y + COMPLETE_LAG or
+# later. Tune up if you observe titles still landing past the threshold.
+COMPLETE_LAG = 2
 
 
 def parse_years(specs: list[str]) -> list[int]:
@@ -136,9 +143,14 @@ def load_cache() -> dict[tuple[int, int, int], dict]:
     if not DISAGG_CSV.exists():
         return {}
     out: dict[tuple[int, int, int], dict] = {}
+    today = datetime.today().date().isoformat()
     with DISAGG_CSV.open(newline="") as f:
         for row in csv.DictReader(f):
             key = (int(row["year"]), int(row["title"]), int(row["vol"]))
+            # Backfill scraped_at for rows from older-schema caches.
+            row.setdefault("scraped_at", today)
+            if not row.get("scraped_at"):
+                row["scraped_at"] = today
             out[key] = row
     return out
 
@@ -164,6 +176,7 @@ def write_aggregated(rows: list[dict]) -> None:
             "pages": 0, "words": 0, "n_volumes": 0,
             "xml_volumes": 0, "pdf_volumes": 0,
             "pdf_missing": 0, "xml_missing": 0,
+            "last_scraped_at": "",
         })
         pdf_ok = r["pdf_present"] == "True"
         xml_ok = r["xml_present"] == "True"
@@ -181,6 +194,26 @@ def write_aggregated(rows: list[dict]) -> None:
         if not xml_ok:
             slot["xml_missing"] += 1
         slot["n_volumes"] += 1
+        ts = r.get("scraped_at", "")
+        if ts > slot["last_scraped_at"]:
+            slot["last_scraped_at"] = ts
+
+    # year_complete: True iff the latest scrape touching year Y happened in
+    # calendar year Y+COMPLETE_LAG or later. Captures rolling publication
+    # without misflagging years that legitimately have fewer titles due to
+    # historic title reservations (e.g., Title 2 before 2005).
+    year_max_scraped: dict[int, str] = {}
+    for (year, _title), v in agg.items():
+        ts = v["last_scraped_at"]
+        if ts > year_max_scraped.get(year, ""):
+            year_max_scraped[year] = ts
+    year_complete: dict[int, bool] = {}
+    for y, ts in year_max_scraped.items():
+        try:
+            scrape_year = int(ts[:4])
+            year_complete[y] = scrape_year >= y + COMPLETE_LAG
+        except (ValueError, IndexError):
+            year_complete[y] = False
 
     tmp = AGG_CSV.with_suffix(".csv.tmp")
     with tmp.open("w", newline="") as f:
@@ -197,6 +230,8 @@ def write_aggregated(rows: list[dict]) -> None:
                 "pdf_volumes": v["pdf_volumes"],
                 "has_pdf_gaps": v["pdf_missing"] > 0,
                 "has_xml_gaps": v["xml_missing"] > 0,
+                "year_complete": year_complete[year],
+                "last_scraped_at": v["last_scraped_at"],
             })
     tmp.replace(AGG_CSV)
 
@@ -261,6 +296,7 @@ def scrape_title(session, year, title, cache, tmpdir, all_rows, seen):
             "year": year, "title": title, "vol": vol,
             "pages": pages, "words": words, "word_source": word_source,
             "pdf_present": str(pdf_ok), "xml_present": str(xml_ok),
+            "scraped_at": datetime.today().date().isoformat(),
         }
         all_rows.append(row)
         seen.add(key)
