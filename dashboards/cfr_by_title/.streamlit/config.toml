@@ -1,0 +1,5 @@
+[theme]
+# Match the down/red line color in app.py (charts/code/style.R `red`).
+# This colors interactive elements: slider track + thumb, radio selection,
+# toggle, links, focus rings.
+primaryColor = "#C9102F"

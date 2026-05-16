@@ -53,25 +53,99 @@ REQUEST_DELAY = 0.4
 MAX_RETRIES = 3
 TIMEOUT = 90
 
-DISAGG_FIELDS = ["year", "title", "vol", "pages", "words", "word_source",
-                 "pdf_present", "xml_present", "scraped_at"]
-AGG_FIELDS = ["year", "title", "pages", "words", "n_volumes",
-              "xml_volumes", "pdf_volumes", "has_pdf_gaps", "has_xml_gaps",
+DISAGG_FIELDS = ["year", "title", "vol", "pages", "words", "words_body",
+                 "word_source", "pdf_present", "xml_present", "scraped_at"]
+# In disaggregated rows:
+#   `words`      = the chosen primary count. For XML-sourced rows this is the
+#                  full all-content itertext count of the XML. For PDF-sourced
+#                  rows this is the full PDF text word count.
+#   `words_body` = body-only count. For XML rows: the word count restricted to
+#                  the <TITLE> subtree (i.e., the regulatory hierarchy
+#                  TITLE > CHAPTER > SUBCHAP > PART > SUBPART > SECTION),
+#                  excluding <FMTR> (table of contents, "Cite this Code",
+#                  Explanation) and <BMTR> (Finding Aids, Alphabetical List of
+#                  Agencies, List of CFR Sections Affected). Per the GPO CFR
+#                  XML User Guide, those user-aid sections are NOT part of the
+#                  legal text of the CFR. For PDF-sourced rows, words_body
+#                  equals words because PDF text extraction can't cleanly
+#                  separate body from finding-aid material.
+AGG_FIELDS = ["year", "title", "title_name", "pages", "words", "words_all",
+              "n_volumes", "xml_volumes", "pdf_volumes",
+              "has_pdf_gaps", "has_xml_gaps",
               "year_complete", "last_scraped_at"]
+# In aggregated rows:
+#   `words`     = sum of per-volume words_body (the headline body-only count).
+#   `words_all` = sum of per-volume words (the full all-content count, kept
+#                 alongside for reference / backward compatibility).
 
-# Elements that indicate the XML contains regulatory body content. Index-only
-# XMLs (observed for ~40 volumes in 1997) lack these entirely. Some sparser
-# cases have a few stub entries but no real body, so we additionally compare
-# xml_words against pdf_words: healthy XMLs run 0.90-0.95 of the PDF count, and
-# anything below MIN_XML_PDF_RATIO triggers the PDF fallback.
-BODY_ELEMENT_TAGS = {"SECTION", "SECTNO", "PART", "DIV5", "DIV6", "DIV8"}
+# CFR title names per https://www.ecfr.gov/titles. Title 35 was eliminated
+# after the 2000 edition; its name is preserved here so historical rows still
+# get a label.
+CFR_TITLES: dict[int, str] = {
+    1: "General Provisions", 2: "Grants and Agreements", 3: "The President",
+    4: "Accounts", 5: "Administrative Personnel", 6: "Domestic Security",
+    7: "Agriculture", 8: "Aliens and Nationality",
+    9: "Animals and Animal Products", 10: "Energy", 11: "Federal Elections",
+    12: "Banks and Banking", 13: "Business Credit and Assistance",
+    14: "Aeronautics and Space", 15: "Commerce and Foreign Trade",
+    16: "Commercial Practices", 17: "Commodity and Securities Exchanges",
+    18: "Conservation of Power and Water Resources", 19: "Customs Duties",
+    20: "Employees' Benefits", 21: "Food and Drugs", 22: "Foreign Relations",
+    23: "Highways", 24: "Housing and Urban Development", 25: "Indians",
+    26: "Internal Revenue", 27: "Alcohol, Tobacco Products and Firearms",
+    28: "Judicial Administration", 29: "Labor", 30: "Mineral Resources",
+    31: "Money and Finance: Treasury", 32: "National Defense",
+    33: "Navigation and Navigable Waters", 34: "Education",
+    35: "Reserved (formerly Panama Canal)",
+    36: "Parks, Forests, and Public Property",
+    37: "Patents, Trademarks, and Copyrights",
+    38: "Pensions, Bonuses, and Veterans' Relief", 39: "Postal Service",
+    40: "Protection of Environment",
+    41: "Public Contracts and Property Management", 42: "Public Health",
+    43: "Public Lands: Interior",
+    44: "Emergency Management and Assistance", 45: "Public Welfare",
+    46: "Shipping", 47: "Telecommunication",
+    48: "Federal Acquisition Regulations System", 49: "Transportation",
+    50: "Wildlife and Fisheries",
+}
+
+# The body of a CFR volume's XML lives under the top-level <TITLE> element
+# (the regulatory hierarchy TITLE > CHAPTER > SUBCHAP > PART > SUBPART >
+# SECTION). The PDF fallback fires when either the <TITLE> subtree is missing
+# / contains fewer than MIN_BODY_WORDS, or the body word count is below
+# MIN_XML_PDF_RATIO of the PDF text word count (catches sparse XMLs that have
+# a TITLE element but no real content). The threshold guards against the
+# 1998 Title 1 vol 1 class of bug where the previous heuristic (presence of
+# any <SECTION>/<PART> tag) was fooled by such tags appearing in the
+# alphabetical agency index inside <BMTR>.
+MIN_BODY_WORDS = 1000
 MIN_XML_PDF_RATIO = 0.5
+# Upper bound on body / pdf. The duplication signature is ~2.0x (every
+# <SECTNO>/<P>/<E> tag occurring twice while <PRTPAGE> markers stay stable);
+# confirmed on 10 cached volumes (9 in 2009, 1 in 2006). Healthy volumes
+# normally run 0.85-0.95, but legitimately dense ones can reach 1.72 (e.g.
+# 2006 Title 48 vol 4 -- Federal Acquisition Regulations, dense with
+# cross-referenced clauses XML captures and PDF renders sparsely). 1.85
+# gives ~6 points of cushion below the duplication signature, ~13 points
+# of cushion above the highest-density legitimate volume we've observed.
+# Any future volume that legitimately exceeds 1.85 will get demoted to PDF
+# fallback; the WARN print in scrape_title makes such cases reviewable.
+MAX_XML_PDF_RATIO = 1.85
 
-# A CFR year Y is rolling-published across Y and Y+1 (and sometimes spilling
-# into Y+2 for the Oct-1 revision titles). We treat a year as "complete" iff
-# the latest scrape touching it happened in calendar year Y + COMPLETE_LAG or
-# later. Tune up if you observe titles still landing past the threshold.
-COMPLETE_LAG = 2
+# A CFR year Y is rolling-published across Y and Y+1 (sometimes spilling into
+# Y+2 for Oct-1 revision titles). Marking a year "complete" combines two checks:
+#   1. Calendar lag: the latest scrape touching Y was in Y+COMPLETE_LAG or later.
+#   2. Per-title volume sanity: relative to the most recent prior complete year,
+#      no title's n_volumes has dropped below MIN_VOLUMES_RATIO of its prior
+#      count, and no previously-present title is missing entirely. This catches
+#      partial-publication years even after the calendar lag passes (e.g., the
+#      1999 Title 26 dip and 2007 Title 14 dip, which look like GovInfo
+#      publication artifacts in years the bare calendar rule would mark
+#      complete). ELIMINATED_TITLES carves out the one title we know is
+#      permanently gone (Title 35, eliminated after the 2000 edition).
+COMPLETE_LAG = 1
+MIN_VOLUMES_RATIO = 0.7
+ELIMINATED_TITLES: dict[int, int] = {35: 2000}  # title -> last year it existed
 
 
 def parse_years(specs: list[str]) -> list[int]:
@@ -127,16 +201,37 @@ def pdf_pages_and_words(path: Path) -> tuple[int, int]:
     return n_pages, n_words
 
 
-def xml_word_count(path: Path) -> tuple[int, bool]:
-    """Returns (word_count, has_body_content). When has_body_content is False,
-    the XML is index-only (TOC + front/back matter) and word_count reflects
-    just that boilerplate -- caller should fall back to PDF extraction."""
+def xml_word_counts(path: Path) -> tuple[int, int, bool]:
+    """Returns (body_words, all_words, has_body).
+
+    body_words = all words minus the words inside <FMTR> (front matter) and
+    <BMTR> (back matter). Per GPO's CFR XML User Guide, those wrappers hold
+    user aids — table of contents, "Cite this Code", Explanation, Finding
+    Aids, Alphabetical List of Agencies, List of CFR Sections Affected —
+    which are NOT part of the legal text of the CFR.
+
+    We deliberately compute body via subtraction rather than "everything
+    inside <TITLE>" because the XML schema flattened over time: pre-~2008
+    volumes have body elements (<SECTION>, <PART>, <SUBPART>) as direct
+    siblings of <TITLE>, not children of it. Subtracting FMTR/BMTR is
+    schema-invariant and gives consistent body counts across all years.
+
+    all_words counts every text node in the document — the "what's in the
+    file" measure, kept for reference and backward compatibility.
+
+    has_body is True iff body_words >= MIN_BODY_WORDS. The caller uses this
+    plus the XML/PDF ratio check to decide whether to trust XML or fall
+    back to PDF text extraction."""
     tree = ET.parse(str(path))
     root = tree.getroot()
-    has_body = any(e.tag in BODY_ELEMENT_TAGS for e in root.iter())
-    text = " ".join(root.itertext())
-    n_words = len(re.findall(r"\S+", text))
-    return n_words, has_body
+    all_text = " ".join(root.itertext())
+    all_words = len(re.findall(r"\S+", all_text))
+    wrapper_words = 0
+    for wrapper_tag in ("FMTR", "BMTR"):
+        for el in root.findall(wrapper_tag):
+            wrapper_words += len(re.findall(r"\S+", " ".join(el.itertext())))
+    body_words = all_words - wrapper_words
+    return body_words, all_words, body_words >= MIN_BODY_WORDS
 
 
 def load_cache() -> dict[tuple[int, int, int], dict]:
@@ -151,6 +246,15 @@ def load_cache() -> dict[tuple[int, int, int], dict]:
             row.setdefault("scraped_at", today)
             if not row.get("scraped_at"):
                 row["scraped_at"] = today
+            # words_body was added when the methodology switched to body-only.
+            # Pre-existing PDF-fallback rows: copy words. Pre-existing XML rows:
+            # leave blank (signals "needs backfill"; backfill_body_words refills
+            # by re-fetching the XML).
+            if "words_body" not in row or row.get("words_body") in ("", None):
+                if row.get("word_source") == "pdf":
+                    row["words_body"] = row.get("words", "0")
+                else:
+                    row["words_body"] = ""
             out[key] = row
     return out
 
@@ -173,7 +277,7 @@ def write_aggregated(rows: list[dict]) -> None:
     for r in rows:
         key = (int(r["year"]), int(r["title"]))
         slot = agg.setdefault(key, {
-            "pages": 0, "words": 0, "n_volumes": 0,
+            "pages": 0, "words_body": 0, "words_all": 0, "n_volumes": 0,
             "xml_volumes": 0, "pdf_volumes": 0,
             "pdf_missing": 0, "xml_missing": 0,
             "last_scraped_at": "",
@@ -186,7 +290,11 @@ def write_aggregated(rows: list[dict]) -> None:
         else:
             slot["pdf_missing"] += 1
         if src in ("xml", "pdf"):
-            slot["words"] += int(r["words"])
+            slot["words_all"] += int(r["words"])
+            # words_body may be blank for legacy rows pending backfill; treat
+            # as 0 so partial-coverage years are visibly low rather than wrong.
+            body = r.get("words_body", "")
+            slot["words_body"] += int(body) if body not in ("", None) else 0
         if src == "xml":
             slot["xml_volumes"] += 1
         elif src == "pdf":
@@ -198,33 +306,69 @@ def write_aggregated(rows: list[dict]) -> None:
         if ts > slot["last_scraped_at"]:
             slot["last_scraped_at"] = ts
 
-    # year_complete: True iff the latest scrape touching year Y happened in
-    # calendar year Y+COMPLETE_LAG or later. Captures rolling publication
-    # without misflagging years that legitimately have fewer titles due to
-    # historic title reservations (e.g., Title 2 before 2005).
+    # year_complete: see comment at MIN_VOLUMES_RATIO above. Walk years
+    # ascending so each year can compare against the most recent *prior*
+    # complete year (otherwise an incomplete prior would set a misleadingly low
+    # baseline).
     year_max_scraped: dict[int, str] = {}
-    for (year, _title), v in agg.items():
+    vols_by_year: dict[int, dict[int, int]] = {}
+    for (year, title), v in agg.items():
         ts = v["last_scraped_at"]
         if ts > year_max_scraped.get(year, ""):
             year_max_scraped[year] = ts
+        vols_by_year.setdefault(year, {})[title] = v["n_volumes"]
     year_complete: dict[int, bool] = {}
-    for y, ts in year_max_scraped.items():
+    last_complete_year: int | None = None
+    for y in sorted(year_max_scraped):
         try:
-            scrape_year = int(ts[:4])
-            year_complete[y] = scrape_year >= y + COMPLETE_LAG
+            scrape_year = int(year_max_scraped[y][:4])
         except (ValueError, IndexError):
             year_complete[y] = False
+            continue
+        if scrape_year < y + COMPLETE_LAG:
+            year_complete[y] = False
+            continue
+        threshold_ok = True
+        if last_complete_year is not None:
+            prior = vols_by_year[last_complete_year]
+            current = vols_by_year.get(y, {})
+            for title, prior_vols in prior.items():
+                last_valid = ELIMINATED_TITLES.get(title)
+                if last_valid is not None and y > last_valid:
+                    continue
+                cur_vols = current.get(title, 0)
+                if cur_vols < MIN_VOLUMES_RATIO * prior_vols:
+                    threshold_ok = False
+                    break
+        year_complete[y] = threshold_ok
+        if threshold_ok:
+            last_complete_year = y
+
+    # Determine the cutoff year. The aggregated CSV excludes years AFTER the
+    # most recent complete year, because those are still rolling-published on
+    # GovInfo (data would change between scrapes). Historical incomplete years
+    # (e.g., 1999 and 2007, both flagged by the volume-sanity check) ARE
+    # preserved so downstream consumers can decide whether to filter them via
+    # the year_complete column. The disaggregated cache always retains
+    # everything, so a future re-scrape will re-emit the dropped years once
+    # they settle.
+    complete_years_only = [y for y, ok in year_complete.items() if ok]
+    cutoff_year = max(complete_years_only) if complete_years_only else max(year_complete)
 
     tmp = AGG_CSV.with_suffix(".csv.tmp")
     with tmp.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=AGG_FIELDS)
         w.writeheader()
         for (year, title), v in sorted(agg.items()):
+            if year > cutoff_year:
+                continue
             w.writerow({
                 "year": year,
                 "title": title,
+                "title_name": CFR_TITLES.get(title, ""),
                 "pages": v["pages"],
-                "words": v["words"],
+                "words": v["words_body"],
+                "words_all": v["words_all"],
                 "n_volumes": v["n_volumes"],
                 "xml_volumes": v["xml_volumes"],
                 "pdf_volumes": v["pdf_volumes"],
@@ -267,39 +411,101 @@ def scrape_title(session, year, title, cache, tmpdir, all_rows, seen):
                 print(f"  WARN: pypdf failed on {year} t{title} v{vol}: {e}", file=sys.stderr)
             pdf_dest.unlink(missing_ok=True)
 
-        xml_words: int | None = None
+        xml_body_words: int | None = None
+        xml_all_words: int | None = None
         xml_has_body = False
         if xml_ok:
             try:
-                xml_words, xml_has_body = xml_word_count(xml_dest)
+                xml_body_words, xml_all_words, xml_has_body = xml_word_counts(xml_dest)
             except Exception as e:
                 print(f"  WARN: XML parse failed on {year} t{title} v{vol}: {e}", file=sys.stderr)
             xml_dest.unlink(missing_ok=True)
 
-        # Trust XML iff it has body elements AND -- when both signals are
-        # available -- its word count is at least MIN_XML_PDF_RATIO of the
-        # PDF's. Otherwise prefer PDF text (~6% inflated from print boilerplate,
-        # flagged via word_source).
+        # Trust XML iff its body has >= MIN_BODY_WORDS AND -- when both signals
+        # are available -- the body word count sits inside
+        # [MIN_XML_PDF_RATIO, MAX_XML_PDF_RATIO] of the PDF's. The lower bound
+        # catches sparse XMLs; the upper bound catches GovInfo's content-
+        # duplication bug. Otherwise fall back to PDF text (~6% inflated from
+        # print boilerplate, flagged via word_source).
         xml_trusted = (
-            xml_words is not None
+            xml_body_words is not None
             and xml_has_body
-            and (pdf_words is None or xml_words >= MIN_XML_PDF_RATIO * pdf_words)
+            and (pdf_words is None
+                 or (MIN_XML_PDF_RATIO * pdf_words <= xml_body_words
+                     <= MAX_XML_PDF_RATIO * pdf_words))
         )
+        if (xml_body_words is not None and pdf_words is not None
+                and xml_body_words > MAX_XML_PDF_RATIO * pdf_words):
+            print(f"  WARN: {year} t{title} v{vol} XML body "
+                  f"{xml_body_words:,} > {MAX_XML_PDF_RATIO} x PDF "
+                  f"{pdf_words:,} -- demoted to PDF fallback. Review "
+                  f"manually: likely GovInfo XML content duplication, but "
+                  f"could be a legitimately dense volume.", file=sys.stderr)
         if xml_trusted:
-            words, word_source = xml_words, "xml"
+            words = xml_all_words
+            words_body = xml_body_words
+            word_source = "xml"
         elif pdf_words is not None:
-            words, word_source = pdf_words, "pdf"
+            # PDF text can't be cleanly decomposed into body vs. user-aids,
+            # so words_body falls back to the full count for these (~0.3% of
+            # volumes historically). Documented in the README.
+            words = pdf_words
+            words_body = pdf_words
+            word_source = "pdf"
         else:
-            words, word_source = 0, "none"
+            words = 0
+            words_body = 0
+            word_source = "none"
 
         row = {
             "year": year, "title": title, "vol": vol,
-            "pages": pages, "words": words, "word_source": word_source,
+            "pages": pages, "words": words, "words_body": words_body,
+            "word_source": word_source,
             "pdf_present": str(pdf_ok), "xml_present": str(xml_ok),
             "scraped_at": datetime.today().date().isoformat(),
         }
         all_rows.append(row)
         seen.add(key)
+
+
+def backfill_body_words(session: requests.Session, cache: dict,
+                        tmpdir: Path, all_rows: list[dict]) -> None:
+    """Re-fetch XML for cached rows that lack a `words_body` value (pre-existing
+    rows from before the body-only methodology was introduced). Updates the
+    cache row in place; the new value is also reflected in all_rows because
+    those entries share the same dict objects."""
+    needs = [k for k, r in cache.items()
+             if r.get("word_source") == "xml"
+             and r.get("words_body") in ("", None)]
+    if not needs:
+        return
+    print(f"\nBackfilling words_body for {len(needs):,} cached XML rows "
+          f"(re-fetching XMLs only, no PDFs)...", file=sys.stderr)
+    for i, key in enumerate(tqdm(needs, desc="backfill", unit="vol")):
+        year, title, vol = key
+        xml_dest = tmpdir / f"backfill_{year}_{title}_{vol}.xml"
+        time.sleep(REQUEST_DELAY)
+        ok = download(session, XML_URL.format(year=year, title=title, vol=vol), xml_dest)
+        if not ok:
+            # The cache says XML was present at original scrape, but it's
+            # gone now (rare; GovInfo occasionally re-renders or moves files).
+            # Mark with words_body = 0 to avoid blocking aggregation forever.
+            cache[key]["words_body"] = "0"
+            continue
+        try:
+            body_words, all_words, _ = xml_word_counts(xml_dest)
+        except Exception as e:
+            print(f"  WARN: parse failed on {year} t{title} v{vol}: {e}",
+                  file=sys.stderr)
+            xml_dest.unlink(missing_ok=True)
+            continue
+        xml_dest.unlink(missing_ok=True)
+        cache[key]["words_body"] = str(body_words)
+        # Save incrementally so an interrupted backfill is recoverable.
+        if (i + 1) % 100 == 0:
+            save_disagg(all_rows)
+    save_disagg(all_rows)
+    print("Backfill complete.", file=sys.stderr)
 
 
 def main() -> None:
@@ -308,20 +514,30 @@ def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
-        "--years", nargs="+", required=True,
+        "--years", nargs="+",
         help='Years to scrape: individual ("1997"), closed range ("1997-2010"), '
-             'or open-ended range ("1997-"). Can mix multiple.',
+             'or open-ended range ("1997-"). Can mix multiple. Omit with '
+             '--backfill-only to re-aggregate from cache without scraping.',
     )
     parser.add_argument(
         "--titles", nargs="+", type=int, default=list(range(1, N_TITLES + 1)),
         help="Title numbers to scrape (default: 1-50).",
     )
+    parser.add_argument(
+        "--backfill-only", action="store_true",
+        help="Only run the words_body backfill on cached rows (re-fetches "
+             "XMLs to populate body-only word counts for pre-existing rows) "
+             "and re-aggregate. Does not scrape any new (year, title, vol).",
+    )
     args = parser.parse_args()
+    if not args.years and not args.backfill_only:
+        parser.error("--years is required unless --backfill-only is set")
 
-    years = parse_years(args.years)
+    years = parse_years(args.years) if args.years else []
     titles = sorted(args.titles)
-    print(f"Years:  {years}", file=sys.stderr)
-    print(f"Titles: {titles}", file=sys.stderr)
+    if years:
+        print(f"Years:  {years}", file=sys.stderr)
+        print(f"Titles: {titles}", file=sys.stderr)
 
     cache = load_cache()
     if cache:
@@ -335,11 +551,17 @@ def main() -> None:
 
     with TemporaryDirectory() as tdir:
         tmpdir = Path(tdir)
+        # Backfill first: populate words_body on pre-existing cached XML rows
+        # so the aggregated CSV's body-only metric is complete. No-op if all
+        # rows already have words_body.
+        backfill_body_words(session, cache, tmpdir, all_rows)
         for year in years:
             print(f"\n=== {year} ===", file=sys.stderr)
             for title in tqdm(titles, desc=str(year), unit="title"):
                 scrape_title(session, year, title, cache, tmpdir, all_rows, seen)
                 save_disagg(all_rows)
+            write_aggregated(all_rows)
+        if args.backfill_only:
             write_aggregated(all_rows)
 
     print(f"\nWrote {DISAGG_CSV.name} ({len(all_rows):,} rows) and {AGG_CSV.name}.",
