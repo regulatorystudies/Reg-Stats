@@ -14,19 +14,63 @@ from PIL import Image
 import plotly.graph_objects as go
 
 
-# Repo root: dashboards/cumulative_econ_sig_rules/dash1.py -> parents[2]
-DATA_ROOT = Path(__file__).resolve().parents[2]
+_APP_DIR = Path(__file__).resolve().parent
 _CSV_NAME = "cumulative_econ_significant_rules_by_presidential_month.csv"
-# Source data lives under repo `data/` (R pipeline) and/or `charts/data/` (chart outputs); not under charts/data/cumulative_es_rules/.
-_DATA_PATH_CANDIDATES = (
-    DATA_ROOT / "data" / "cumulative_es_rules" / _CSV_NAME,
-    DATA_ROOT / "charts" / "data" / _CSV_NAME,
-)
-_env_csv = os.environ.get("CUMULATIVE_ES_RULES_CSV", "").strip()
-if _env_csv:
-    _DATA_PATH_CANDIDATES = (Path(_env_csv),) + _DATA_PATH_CANDIDATES
+_REL_DATA_CSV = Path("data") / "cumulative_es_rules" / _CSV_NAME
+_REL_CHARTS_CSV = Path("charts") / "data" / _CSV_NAME
+_STYLE_DIR = Path("charts") / "style"
+
+
+def _resolve_data_root() -> Path:
+    """Find repo/app root locally or on Railway (flat /app/dash1.py layout)."""
+    env_root = os.environ.get("DATA_ROOT", "").strip()
+    if env_root:
+        return Path(env_root).expanduser().resolve()
+
+    for base in (_APP_DIR, *_APP_DIR.parents):
+        if (base / _REL_DATA_CSV).is_file() or (base / _REL_CHARTS_CSV).is_file():
+            return base
+
+    # Local dev: dashboards/cumulative_econ_sig_rules/dash1.py -> repo root
+    if len(_APP_DIR.parents) > 2:
+        return _APP_DIR.parents[2]
+    return _APP_DIR
+
+
+DATA_ROOT = _resolve_data_root()
+
+
+def _data_path_candidates() -> tuple[Path, ...]:
+    candidates = (
+        _APP_DIR / "data" / "cumulative_es_rules" / _CSV_NAME,
+        _APP_DIR / _CSV_NAME,
+        DATA_ROOT / "data" / "cumulative_es_rules" / _CSV_NAME,
+        DATA_ROOT / "charts" / "data" / _CSV_NAME,
+    )
+    env_csv = os.environ.get("CUMULATIVE_ES_RULES_CSV", "").strip()
+    if env_csv:
+        return (Path(env_csv).expanduser(),) + candidates
+    return candidates
+
+
+_DATA_PATH_CANDIDATES = _data_path_candidates()
 DATA_PATH = next((p for p in _DATA_PATH_CANDIDATES if p.is_file()), None)
-LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
+
+
+def _resolve_style_asset(filename: str) -> Path:
+    style_dir = os.environ.get("STYLE_DIR", "").strip()
+    candidates = (
+        [Path(style_dir) / filename] if style_dir else []
+        + [
+            DATA_ROOT / _STYLE_DIR / filename,
+            _APP_DIR / "style" / filename,
+            _APP_DIR / filename,
+        ]
+    )
+    return next((p for p in candidates if p.is_file()), candidates[-1])
+
+
+LOGO_PATH = _resolve_style_asset("gw_ci_rsc_2cs_pos.png")
 
 
 red = "#b22222"
@@ -44,7 +88,7 @@ admin_labels = ["Reagan", "Bush 41", "Clinton", "Bush 43", "Obama", "Trump 45", 
 admin_colors = [red, darkgreen, GWblue, GWbuff, lightblue, darkyellow, lightgreen, brown]
 admin_color_map = dict(zip(admin_labels, admin_colors))
 
-FONT_PATH = DATA_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
+FONT_PATH = _resolve_style_asset("a-avenir-next-lt-pro.otf")
 # Register custom font only if available in deployment environment
 if FONT_PATH.exists():
     fm.fontManager.addfont(str(FONT_PATH))
@@ -87,6 +131,8 @@ if DATA_PATH is None:
     st.error(
         "Data file not found. Tried:\n"
         + "\n".join(str(p) for p in _DATA_PATH_CANDIDATES)
+        + "\n\nFor Railway: set service Root Directory to the repo root, or set "
+        "CUMULATIVE_ES_RULES_CSV to the CSV path and include the file in the deploy."
     )
     st.stop()
 cum_sig = pd.read_csv(DATA_PATH)
