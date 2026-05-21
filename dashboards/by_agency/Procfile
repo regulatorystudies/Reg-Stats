@@ -1,1 +1,1 @@
-web: streamlit run app1.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true
+web: streamlit run dashboards/by_agency/app1.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true
