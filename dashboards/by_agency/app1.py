@@ -420,7 +420,12 @@ def fig_to_png_bytes(df_agency: pd.DataFrame, agency_acronym: str, agency_name: 
     interval = _get_interval(rules) if len(rules) > 0 else 1
     upper = _ydynam(df, interval, padding=5)
 
-    fig, ax = plt.subplots(figsize=(12, 9))
+    if FONT_PATH.exists():
+        from matplotlib import font_manager
+        font_manager.fontManager.addfont(str(FONT_PATH))
+        plt.rcParams["font.family"] = "Avenir Next LT Pro"
+
+    fig, ax = plt.subplots(figsize=(14, 7.5))
     fig.patch.set_facecolor("white")
     ax.set_facecolor("white")
 
@@ -428,27 +433,24 @@ def fig_to_png_bytes(df_agency: pd.DataFrame, agency_acronym: str, agency_name: 
 
     for i, (yr, r, p) in enumerate(zip(years, rules, parties)):
         color = PARTY_COLORS.get(p, "#003366")
-        hatch = "////" if p == "Democratic" else ""
-        edge = LIGHTBLUE if hatch else color
-
-        ax.bar(i, r, width=bar_width, color=color, hatch=hatch, edgecolor=edge, linewidth=0)
-        # Overlay hatch in lightblue on top of the navy fill
-        if hatch:
-            ax.bar(i, r, width=bar_width, color="none", hatch=hatch, edgecolor=LIGHTBLUE, linewidth=0)
+        ax.bar(i, r, width=bar_width, color=color, edgecolor=color, linewidth=0)
 
     ax.set_ylim(0, upper)
     ax.yaxis.set_major_locator(ticker.MultipleLocator(interval))
     ax.set_xticks(list(range(len(years))))
-    ax.set_xticklabels(years, rotation=65, ha="right", va="top", fontsize=9, color="#333333")
+    ax.set_xticklabels(years, rotation=45, ha="right", fontsize=9, color="#333333")
     ax.tick_params(axis="x", length=0)
-    ax.spines["bottom"].set_linewidth(1)
-    ax.spines["bottom"].set_color(RSC_GRAY)
 
     ax.set_ylabel("Number of Rules", color="#333333", fontsize=11)
     ax.tick_params(axis="y", colors="#333333", labelsize=9, length=0)
     ax.set_title(
-        f"{agency_acronym.upper()} Economically Significant Final Rules\nPublished by Presidential Year",
-        fontsize=14, color="#033C5A", pad=16,
+        (
+            f"{agency_acronym.upper()} Economically Significant Final Rules "
+            "Published by Presidential Year"
+        ),
+        fontsize=17,
+        color="#033C5A",
+        pad=20,
     )
 
     ax.yaxis.grid(True, color=RSC_GRAY, linestyle="-", linewidth=0.8)
@@ -457,17 +459,15 @@ def fig_to_png_bytes(df_agency: pd.DataFrame, agency_acronym: str, agency_name: 
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.spines["left"].set_visible(False)
-    ax.spines["bottom"].set_color(RSC_GRAY)
-    ax.axhline(0, color=RSC_GRAY, linewidth=1.0)
+    ax.spines["bottom"].set_visible(False)
+    ax.axhline(0, color=RSC_GRAY, linewidth=1.5)
 
-    dem_patch = mpatches.Patch(
-        facecolor="#003366", hatch="////", edgecolor=LIGHTBLUE, label="Democratic"
-    )
+    dem_patch = mpatches.Patch(facecolor="#003366", label="Democratic")
     rep_patch = mpatches.Patch(facecolor="#CC0000", label="Republican")
     ax.legend(
         handles=[dem_patch, rep_patch],
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.18),
+        bbox_to_anchor=(0.5, -0.22),
         ncol=2,
         frameon=False,
         fontsize=10,
@@ -476,25 +476,29 @@ def fig_to_png_bytes(df_agency: pd.DataFrame, agency_acronym: str, agency_name: 
 
     current_date = date.today().strftime("%B %d, %Y")
     fig.text(
-        0.98, 0.01,
+        0.99,
+        0.04,
         (
-            "Sources: Office of the Federal Register (federalregister.gov)\n"
-            f"for years 2021+; OIRA (reginfo.gov) for prior years.\n"
-            f"<br>Updated: {current_date}"
+            "Sources: Office of the Federal Register (federalregister.gov) for the years 2021 and onwards; "
+            "Office of Information and Regulatory Affairs (reginfo.gov) for all prior years.\n"
+            f"Updated: {current_date}"
         ),
-        ha="right", va="bottom", fontsize=8, color="#333333",
+        ha="right",
+        va="bottom",
+        fontsize=11,
+        color="#333333",
     )
 
     if LOGO_PATH.exists():
         from matplotlib.image import imread as mpimg_read
         logo_img = mpimg_read(str(LOGO_PATH))
-        logo_ax = fig.add_axes([0.01, 0.01, 0.18, 0.10])
-        logo_ax.imshow(logo_img)
+        logo_ax = fig.add_axes([0.02, 0.03, 0.28, 0.14])
+        logo_ax.imshow(logo_img, aspect="auto")
         logo_ax.axis("off")
 
-    plt.tight_layout(rect=[0, 0.12, 1, 1])
+    fig.subplots_adjust(left=0.07, right=0.99, top=0.88, bottom=0.32)
     buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=150, bbox_inches="tight", facecolor="white")
+    fig.savefig(buf, format="png", dpi=150, facecolor="white")
     plt.close(fig)
     buf.seek(0)
     return buf.getvalue()
@@ -511,7 +515,12 @@ def combined_fig_to_png_bytes(df_combined: pd.DataFrame) -> bytes:
     interval = 25
     upper = _ydynam(df, interval, padding=3)
 
-    fig, ax = plt.subplots(figsize=(12, 9))
+    if FONT_PATH.exists():
+        from matplotlib import font_manager
+        font_manager.fontManager.addfont(str(FONT_PATH))
+        plt.rcParams["font.family"] = "Avenir Next LT Pro"
+
+    fig, ax = plt.subplots(figsize=(14, 7.5))
     fig.patch.set_facecolor("white")
     ax.set_facecolor("white")
 
@@ -524,16 +533,16 @@ def combined_fig_to_png_bytes(df_combined: pd.DataFrame) -> bytes:
     ax.set_ylim(0, upper)
     ax.yaxis.set_major_locator(ticker.MultipleLocator(interval))
     ax.set_xticks(list(range(len(years))))
-    ax.set_xticklabels(years, rotation=65, ha="right", va="top", fontsize=9, color="#333333")
+    ax.set_xticklabels(years, rotation=45, ha="right", fontsize=9, color="#333333")
     ax.tick_params(axis="x", length=0)
-    ax.spines["bottom"].set_linewidth(1)
-    ax.spines["bottom"].set_color(RSC_GRAY)
 
     ax.set_ylabel("Number of Rules", color="#333333", fontsize=11)
     ax.tick_params(axis="y", colors="#333333", labelsize=9, length=0)
     ax.set_title(
-        "Economically Significant Final Rules\nPublished by Presidential Year",
-        fontsize=14, color="#033C5A", pad=16,
+        "Economically Significant Final Rules Published by Presidential Year",
+        fontsize=17,
+        color="#033C5A",
+        pad=20,
     )
 
     ax.yaxis.grid(True, color=RSC_GRAY, linestyle="-", linewidth=0.8)
@@ -542,15 +551,15 @@ def combined_fig_to_png_bytes(df_combined: pd.DataFrame) -> bytes:
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.spines["left"].set_visible(False)
-    ax.spines["bottom"].set_color(RSC_GRAY)
-    ax.axhline(0, color=RSC_GRAY, linewidth=1.0)
+    ax.spines["bottom"].set_visible(False)
+    ax.axhline(0, color=RSC_GRAY, linewidth=1.5)
 
     dem_patch = mpatches.Patch(facecolor="#003366", label="Democratic")
     rep_patch = mpatches.Patch(facecolor="#CC0000", label="Republican")
     ax.legend(
         handles=[dem_patch, rep_patch],
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.18),
+        bbox_to_anchor=(0.5, -0.22),
         ncol=2,
         frameon=False,
         fontsize=10,
@@ -559,25 +568,29 @@ def combined_fig_to_png_bytes(df_combined: pd.DataFrame) -> bytes:
 
     current_date = date.today().strftime("%B %d, %Y")
     fig.text(
-        0.98, 0.01,
+        0.99,
+        0.04,
         (
-            "Sources: Office of the Federal Register (federalregister.gov)\n"
-            f"for years 2021+; OIRA (reginfo.gov) for prior years.\n"
+            "Sources: Office of the Federal Register (federalregister.gov) for the years 2021 and onwards; "
+            "Office of Information and Regulatory Affairs (reginfo.gov) for all prior years.\n"
             f"Updated: {current_date}"
         ),
-        ha="right", va="bottom", fontsize=8, color="#333333",
+        ha="right",
+        va="bottom",
+        fontsize=11,
+        color="#333333",
     )
 
     if LOGO_PATH.exists():
         from matplotlib.image import imread as mpimg_read
         logo_img = mpimg_read(str(LOGO_PATH))
-        logo_ax = fig.add_axes([0.01, 0.01, 0.18, 0.10])
-        logo_ax.imshow(logo_img)
+        logo_ax = fig.add_axes([0.02, 0.03, 0.28, 0.14])
+        logo_ax.imshow(logo_img, aspect="auto")
         logo_ax.axis("off")
 
-    plt.tight_layout(rect=[0, 0.12, 1, 1])
+    fig.subplots_adjust(left=0.07, right=0.99, top=0.88, bottom=0.32)
     buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=150, bbox_inches="tight", facecolor="white")
+    fig.savefig(buf, format="png", dpi=150, facecolor="white")
     plt.close(fig)
     buf.seek(0)
     return buf.getvalue()
