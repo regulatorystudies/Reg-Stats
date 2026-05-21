@@ -1,0 +1,14 @@
+# Agency Federal Register rules dashboard (Streamlit).
+# Railway service Root Directory must be the repository root (not this folder),
+# so by_agency_rules.py can resolve charts/data and charts/style via parents[2].
+# In Railway: Settings → set "Config file path" to dashboards/by_agency_rules/railway.toml
+# if the service does not pick this file up automatically.
+
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r dashboards/by_agency_rules/requirements.txt"
+
+[deploy]
+startCommand = "streamlit run dashboards/by_agency_rules/by_agency_rules.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true"
+healthcheckPath = "/_stcore/health"
+restartPolicyType = "on_failure"
