@@ -10,7 +10,10 @@ Then aggregate to (year, title). Writes two CSVs:
 
 Re-runs only fetch (year, title, vol) combinations that aren't already cached
 in the disaggregated CSV. Progress is saved incrementally after each title, so
-an interrupted run can be resumed by re-invoking with the same arguments.
+an interrupted run can be resumed by re-invoking with the same arguments. To
+force a fresh re-scrape of cached rows (e.g., after manual CSV edits or to
+re-validate years that were rolling-published at original scrape time), pass
+--refresh. The previous disaggregated CSV is backed up to ".csv.bak" first.
 
 Coverage caveats:
   - GovInfo CFR coverage starts in 1997. 1996 is partial (most titles absent)
@@ -21,6 +24,8 @@ Usage:
   python scrape_cfr_by_title.py --years 1997 2024          # two specific years
   python scrape_cfr_by_title.py --years 1997-2010          # closed range
   python scrape_cfr_by_title.py --years 1997-              # to current year
+  python scrape_cfr_by_title.py --years 2024 --refresh     # re-scrape 2024 from
+                                                           #   scratch (prompts y/N)
 """
 from __future__ import annotations
 
@@ -529,19 +534,142 @@ def main() -> None:
              "XMLs to populate body-only word counts for pre-existing rows) "
              "and re-aggregate. Does not scrape any new (year, title, vol).",
     )
+    parser.add_argument(
+        "--refresh", action="store_true",
+        help="Drop cached (year, title, vol) rows that fall inside the "
+             "--years range before scraping, forcing a fresh re-download "
+             "from GovInfo. Useful after manual CSV edits or to re-validate "
+             "years that were rolling-published at original scrape time. "
+             "Requires --years. The previous disaggregated CSV is backed up "
+             "to '.csv.bak'. Prompts for confirmation unless --yes is set.",
+    )
+    parser.add_argument(
+        "-y", "--yes", action="store_true",
+        help="Skip the confirmation prompt that --refresh triggers.",
+    )
     args = parser.parse_args()
+    if args.refresh and not args.years:
+        parser.error("--refresh requires --years")
     if not args.years and not args.backfill_only:
         parser.error("--years is required unless --backfill-only is set")
 
+    print("CFR by-title scraper", file=sys.stderr)
+    print("--------------------", file=sys.stderr)
+    print("Downloads CFR PDFs (page counts) and bulk XML (word counts) from",
+          file=sys.stderr)
+    print("GovInfo, then aggregates per (year, title). See README.md for full",
+          file=sys.stderr)
+    print("methodology, update cadence, and coverage caveats.", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Outputs (overwritten in place):", file=sys.stderr)
+    print(f"  {DISAGG_CSV.name}  per (year, title, vol); also the cache",
+          file=sys.stderr)
+    print(f"  {AGG_CSV.name}       per (year, title), aggregated",
+          file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Re-runs reuse cached (year, title, vol) rows from the disaggregated",
+          file=sys.stderr)
+    print("CSV; only missing combinations are fetched. A full 1998-present",
+          file=sys.stderr)
+    print("scrape downloads thousands of files and takes several hours.",
+          file=sys.stderr)
+    print("", file=sys.stderr)
+
     years = parse_years(args.years) if args.years else []
     titles = sorted(args.titles)
-    if years:
-        print(f"Years:  {years}", file=sys.stderr)
-        print(f"Titles: {titles}", file=sys.stderr)
-
     cache = load_cache()
-    if cache:
-        print(f"Loaded {len(cache):,} cached rows from {DISAGG_CSV.name}", file=sys.stderr)
+
+    if args.backfill_only:
+        print("Mode: --backfill-only is set. Will re-fetch XMLs for cached",
+              file=sys.stderr)
+        print("      rows lacking words_body, then re-aggregate.",
+              file=sys.stderr)
+        if years:
+            print("      --years also given, so new (year, title, vol)",
+                  file=sys.stderr)
+            print("      combinations will be scraped after the backfill.",
+                  file=sys.stderr)
+
+    scope_keys: set[tuple[int, int]] = set()
+    in_scope = 0
+    years_label = ""
+    if years:
+        years_label = (f"{years[0]}-{years[-1]} ({len(years)} years)"
+                       if len(years) > 1 else str(years[0]))
+        all_titles = list(range(1, N_TITLES + 1))
+        titles_label = (f"1-{N_TITLES} (all)" if titles == all_titles
+                        else str(titles))
+        scope_keys = {(y, t) for y in years for t in titles}
+        in_scope = sum(1 for (y, t, _v) in cache if (y, t) in scope_keys)
+        cache_action = "REFRESHED" if args.refresh else "reused"
+        print(f"Years to scrape : {years_label}", file=sys.stderr)
+        print(f"Titles to scrape: {titles_label}", file=sys.stderr)
+        print(f"Cache           : {len(cache):,} rows total, "
+              f"{in_scope:,} in requested scope (will be {cache_action})",
+              file=sys.stderr)
+
+        current_year = datetime.today().year
+        rolling = [y for y in years if y >= current_year - COMPLETE_LAG]
+        if rolling:
+            print("", file=sys.stderr)
+            print(f"NOTE: year(s) {rolling} may still be rolling-published on "
+                  f"GovInfo.", file=sys.stderr)
+            print("      Volumes not yet posted will be re-probed on the next "
+                  "run.", file=sys.stderr)
+            print("      Filter on year_complete == True for time-series "
+                  "analyses to", file=sys.stderr)
+            print("      avoid mixing rolling years with finalized ones.",
+                  file=sys.stderr)
+    else:
+        print(f"Cache: {len(cache):,} rows total in {DISAGG_CSV.name}",
+              file=sys.stderr)
+    print("", file=sys.stderr)
+
+    if args.refresh:
+        # Estimate based on REQUEST_DELAY=0.4s x 2 requests/volume + HTTP +
+        # parse overhead. ~1.5s/volume matches the README's "few hours" for a
+        # full 1998-present scrape of ~6500 volumes.
+        estimated_seconds = in_scope * 1.5
+        if estimated_seconds < 3600:
+            estimate_str = f"~{max(estimated_seconds / 60, 1):.0f} minutes"
+        else:
+            estimate_str = f"~{estimated_seconds / 3600:.1f} hours"
+        print(f"REFRESH: will invalidate {in_scope:,} cached rows in "
+              f"{years_label}", file=sys.stderr)
+        print("         and re-download every volume from GovInfo.",
+              file=sys.stderr)
+        print(f"         Estimated time: {estimate_str}.", file=sys.stderr)
+        if estimated_seconds >= 3600:
+            print("         Consider running overnight or at the start of "
+                  "your", file=sys.stderr)
+            print("         workday.", file=sys.stderr)
+        print(f"         The current {DISAGG_CSV.name} will be backed up to",
+              file=sys.stderr)
+        print(f"         {DISAGG_CSV.with_suffix('.csv.bak').name} before "
+              "rows are dropped.", file=sys.stderr)
+        print("", file=sys.stderr)
+        if not args.yes:
+            try:
+                resp = input("Proceed? [y/N]: ")
+            except EOFError:
+                print("No TTY available; re-run with --yes to skip the "
+                      "prompt.", file=sys.stderr)
+                sys.exit(1)
+            if resp.strip().lower() not in ("y", "yes"):
+                print("Aborted.", file=sys.stderr)
+                sys.exit(0)
+        if DISAGG_CSV.exists():
+            backup_path = DISAGG_CSV.with_suffix(".csv.bak")
+            backup_path.write_bytes(DISAGG_CSV.read_bytes())
+            print(f"Backed up {DISAGG_CSV.name} to {backup_path.name}.",
+                  file=sys.stderr)
+        to_drop = [k for k in cache if (k[0], k[1]) in scope_keys]
+        for k in to_drop:
+            del cache[k]
+        save_disagg(list(cache.values()))
+        print(f"Dropped {len(to_drop):,} cached rows. Starting scrape...",
+              file=sys.stderr)
+        print("", file=sys.stderr)
 
     session = requests.Session()
     session.headers["User-Agent"] = "Reg-Stats by-title CFR scraper"

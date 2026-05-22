@@ -115,10 +115,10 @@ def _inject_css() -> None:
             font-family: 'Avenir Next LT Pro', 'Avenir Next', Avenir, 'Helvetica Neue', Arial, sans-serif;
         }}
         .stApp {{ background-color: {GW_BUFF_20}; }}
-        .tile-title {{ font-size: 0.78rem; font-weight: 600; color: {GW_BLUE};
+        .tile-title {{ font-size: 0.95rem; font-weight: 600; color: {GW_BLUE};
                        line-height: 1.15; margin-bottom: 0; white-space: nowrap;
                        overflow: hidden; text-overflow: ellipsis; }}
-        .tile-name  {{ font-size: 0.72rem; color: #555; line-height: 1.15;
+        .tile-name  {{ font-size: 0.85rem; color: #555; line-height: 1.15;
                        margin-bottom: 4px; white-space: nowrap;
                        overflow: hidden; text-overflow: ellipsis; }}
         .tile-pct   {{ font-size: 1.05rem; font-weight: 700; line-height: 1.1; }}
