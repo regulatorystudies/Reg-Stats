@@ -1,10 +1,4 @@
-"""CFR Page and Word Counts by Title dashboard.
 
-A 5x10 grid of sparkline tiles, one per CFR title. User picks a year range
-and a metric (pages or words); each tile shows the year-by-year trajectory
-in that range, color-coded by net % change (green up, red down, gray if
-within +-NEUTRAL_THRESHOLD).
-"""
 from __future__ import annotations
 
 import base64
@@ -19,16 +13,16 @@ REPO_ROOT = BASE.parent.parent
 DATA_PATH = REPO_ROOT / "data" / "cfr_pages" / "by_title" / "cfr_pages_words_by_title.csv"
 FONT_PATH = REPO_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
 
-# GWU brand palette (https://communications.gwu.edu/brand-guidelines/color-palette)
+# GWU brand palette
 GW_BLUE = "#033C5A"
 NAVY_YARD = "#00223E"
 GW_BUFF_20 = "#F6F1E8"
 GW_BUFF_50 = "#E8DDC6"
 POTOMAC = "#0075C8"
 # Up/down/neutral colors from charts/code/style.R (Reg-Stats chart palette).
-UP_LINE = "#008364"        # darkgreen
-DOWN_LINE = "#C9102F"      # red
-NEUTRAL_LINE = "#bdbdbd"   # RSCdarkgray
+UP_LINE = "#008364"
+DOWN_LINE = "#C9102F"
+NEUTRAL_LINE = "#bdbdbd"
 NEUTRAL_TEXT = "#7A7A7A"
 UP_FILL = "rgba(0,131,100,0.18)"
 DOWN_FILL = "rgba(201,16,47,0.18)"
@@ -263,14 +257,7 @@ def main() -> None:
             value=(years[0], years[-1]),
             step=1,
             help=("Limited to CFR years through the most recent complete "
-                  "edition. A year is treated as complete only once at least "
-                  "one calendar year has passed AND every title's volume "
-                  "count is within 30% of its previous-complete-year count. "
-                  "Historical years that fail the volume check (currently "
-                  "1999 and 2007, both GovInfo publication artifacts on "
-                  "Titles 26 and 14 respectively) appear as gaps in the "
-                  "sparklines so publication-lag drops aren't read as real "
-                  "declines."),
+                  "edition."),
         )
     with ctrl_mid:
         metric = st.radio(
@@ -299,15 +286,6 @@ def main() -> None:
             data=load_export_bytes(),
             file_name="cfr_pages_words_by_title.csv",
             mime="text/csv",
-            help=(
-                "Aggregated CFR page and word counts by (year, title), as "
-                "written by the scraper. Spans every settled year through the "
-                "most recent complete one; rolling-publication years are "
-                "excluded because their data still changes between scrapes. "
-                "Includes a year_complete column; historical years flagged "
-                f"False ({incomplete_str}) appear to be GovInfo publication "
-                "artifacts and you can filter them out in your analysis."
-            ),
             use_container_width=True,
         )
 
@@ -345,7 +323,7 @@ def main() -> None:
         f"published titles don't appear as spurious drops. As of the last scrape "
         f"({last_scrape}) the most recent complete year is {last_complete}; "
         f"{next_year} data will appear here once GovInfo finishes publishing its "
-        f"remaining Oct-1 revision volumes."
+        f"remaining revision volumes."
     )
 
 
