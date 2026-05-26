@@ -2,21 +2,21 @@
 
 ## Update Instructions
 
-The data should be updated **once a year**, ideally in Q4 of year N or Q1 of year N+1 (at that point most of year N−1's CFR volumes are fully published on GovInfo and will be picked up by the scraper). See *Update cadence* below for details on GovInfo's staggered publication schedule and the `year_complete` flag.
+The data should be updated **once a year**, ideally in Q4 of year N or Q1 of year N+1 (at that point most of year N−1's CFR volumes are fully published on GovInfo and will be picked up by the scraper). See *Update cadence* below for details on GovInfo's staggered CFR publication schedule and the `year_complete` flag.
 
 Follow these steps:
 
 1. Set up the conda environment. This is a one-time step — see *Environment Set Up* below.
-1. Activate the environment and navigate to this directory in your terminal:
+1. Navigate to this directory and activate the environment in your terminal:
    ```bash
-   conda activate regstats_cfr_by_title
    cd "NAVIGATE TO THIS DIRECTORY"
+   conda activate regstats_cfr_by_title
    ```
 1. Run the scraper. The standard annual command picks up everything new since the last run:
    ```bash
    python scrape_cfr_by_title.py --years 1998-
    ```
-   The cache means already-scraped (year, title, vol) combinations are skipped, so a typical annual re-run takes minutes (a from-scratch scrape of 1998–present takes a few hours, so run at the beginning of a work day). Progress is saved to disk after each title — if interrupted, just re-invoke the same command to resume.
+   The cache means already-scraped (year, title, vol) combinations are skipped, so a typical annual re-run takes minutes (a from-scratch scrape of 1998–present takes a few hours, so run at the beginning of a work day). Progress is saved to disk after each title. If interrupted, just re-invoke the same command to resume.
 1. When the script finishes, you'll see a `Done.` summary in the terminal showing how many new volumes (if any) were added. The two output CSVs in this directory are updated in place:
    - `cfr_pages_words_disaggregated.csv` — per (year, title, vol); also the script's cache
    - `cfr_pages_words_by_title.csv` — per (year, title), aggregated
@@ -54,9 +54,9 @@ python scrape_cfr_by_title.py --years 2024 --refresh
 
 ## Outputs
 
-- **`cfr_pages_words_by_title.csv`** — aggregated to (year, title); the file most downstream analyses should use. Columns:
+- **`cfr_pages_words_by_title.csv`** — aggregated to (year, title); the file used by the dashboard. Columns:
   - `year`, `title`, `title_name`, `pages`, `n_volumes`
-  - `words` — body-only word count, the headline regulation-volume metric. Excludes front/back matter user aids (table of contents, finding aids, agency index), which per [GPO's CFR XML User Guide](https://www.govinfo.gov/bulkdata/CFR/resources/) are not part of the legal text of the CFR.
+  - `words` — body-only word count, the headline regulation-volume metric. Excludes front/back matter user aids (table of contents, finding aids, agency index), which are not part of the legal text of the CFR. See [GPO's CFR XML User Guide](https://www.govinfo.gov/bulkdata/CFR/resources/CFR-XML_User-Guide_v1.pdf) for more information.
   - `words_all` — full all-content word count, kept for reference; ~13% higher than `words` on average.
   - `year_complete` — boolean. **Filter to `year_complete == True` for time-series analyses** unless you specifically want partial years.
   - Provenance: `xml_volumes`, `pdf_volumes`, `has_pdf_gaps`, `has_xml_gaps`, `last_scraped_at`
@@ -82,4 +82,4 @@ GovInfo publishes CFR titles on a staggered annual schedule that doesn't finish 
 | Jul 1 | 28–41 | Q3–Q4 of revision year |
 | Oct 1 | 42–50 | Q4 of revision year through Q1–Q2 of year after |
 
-Because the Oct 1 titles can take 18–24 months to fully surface, year Y typically flips to `year_complete = True` in late Y+1 or early Y+2. Re-running the scraper is cheap and idempotent, so running once a year in Q4 or Q1 is the recommended cadence. Mid-year runs are also fine — just filter to `year_complete == True` in any time-series analysis.
+Because the Oct 1 titles can take 18–24 months to fully surface, year Y typically flips to `year_complete = True` in late Y+1 or early Y+2. Re-running the scraper is idempotent, so running once a year in Q4 or Q1 is the recommended cadence. Mid-year runs are also fine — just filter to `year_complete == True` in the dataset before any time-series analysis.
