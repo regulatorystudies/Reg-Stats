@@ -1,6 +1,6 @@
 # CFR Page and Word Counts by Title
 
-Title-level **page counts** and **word counts** for the 50 thematic titles of the Code of Federal Regulations, from 1998 to the most recent year published on GovInfo.
+Title-level **page counts** and **word counts** for the 50 thematic titles of the Code of Federal Regulations, from 1998 to the most recent fully-published year on GovInfo.
 
 ## Update Instructions
 
@@ -19,7 +19,7 @@ Follow these steps:
    python scrape_cfr_by_title.py --years 1998-
    ```
    The cache means already-scraped (year, title, vol) combinations are skipped, so a typical annual re-run takes minutes (a from-scratch scrape of 1998–present takes a few hours). Progress is saved to disk after each title — if interrupted, just re-invoke the same command to resume.
-1. When the script finishes, you'll see a `Done.` summary in the terminal showing how many new volumes were added. The two output CSVs in this directory are updated in place:
+1. When the script finishes, you'll see a `Done.` summary in the terminal showing how many new volumes (if any) were added. The two output CSVs in this directory are updated in place:
    - `cfr_pages_words_disaggregated.csv` — per (year, title, vol); also the script's cache
    - `cfr_pages_words_by_title.csv` — per (year, title), aggregated
 
