@@ -1,6 +1,5 @@
 # CFR Page and Word Counts by Title
 
-Title-level **page counts** and **word counts** for the 50 thematic titles of the Code of Federal Regulations, from 1998 to the most recent fully-published year on GovInfo.
 
 ## Update Instructions
 
@@ -28,7 +27,7 @@ Follow these steps:
 Using [Anaconda](https://www.anaconda.com/products/distribution), the environment can be created and activated using the environment.yml file with the following commands in the terminal:
 
 ```bash
-cd path/to/Reg-Stats/data/cfr_pages/by_title
+cd "NAVIGATE TO DIRECTORY WHERE YML IS STORED"
 
 conda env create -f environment.yml
 
