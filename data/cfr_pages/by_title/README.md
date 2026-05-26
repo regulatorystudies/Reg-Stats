@@ -10,6 +10,7 @@ Follow these steps:
 1. Navigate to this directory and activate the environment in your terminal:
    ```bash
    cd "NAVIGATE TO THIS DIRECTORY"
+   
    conda activate regstats_cfr_by_title
    ```
 1. Run the scraper. The standard annual command picks up everything new since the last run:
