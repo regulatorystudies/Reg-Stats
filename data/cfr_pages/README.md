@@ -12,7 +12,7 @@ Follow these steps to update the dataset:
 1. Run the Python script `update_cfr_pages.py` in your preferred IDE to update the dataset.
 1. Update the caption_text in the corresponding cfr_pages.Rmd file to reflect the last year of data in the CFR Vols tab of the latest aggregated_charts_frstats.xlsx file. E.g. if the last year of data is 2023, then the caption_text should read "Sources: GovInfo.gov for the years 2024 and onwards; Federal Register Statistics for all the prior years."
 
-#### Environment Set Up
+## Environment Set Up
 
 Using [Anaconda](https://www.anaconda.com/products/distribution), the environment can be created and activated using the environment.yml file with the following commands in the terminal:
 
