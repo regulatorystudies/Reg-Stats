@@ -56,11 +56,15 @@ python scrape_cfr_by_title.py --years 2024 --refresh
 ## Outputs
 
 - **`cfr_pages_words_by_title.csv`** — aggregated to (year, title); the file used by the dashboard. Columns:
-  - `year`, `title`, `title_name`, `pages`, `n_volumes`
+  - `year`, `title`, `title_name`
+  - `pages` — page count, sourced from CFR PDFs.
   - `words` — body-only word count, the headline regulation-volume metric. Excludes front/back matter user aids (table of contents, finding aids, agency index), which are not part of the legal text of the CFR. See [GPO's CFR XML User Guide](https://www.govinfo.gov/bulkdata/CFR/resources/CFR-XML_User-Guide_v1.pdf) for more information.
   - `words_all` — full all-content word count, kept for reference; ~13% higher than `words` on average.
-  - `year_complete` — boolean. **Filter to `year_complete == True` for time-series analyses** unless you specifically want partial years.
-  - Provenance: `xml_volumes`, `pdf_volumes`, `has_pdf_gaps`, `has_xml_gaps`, `last_scraped_at`
+  - `n_volumes` — number of volumes listed on GovInfo for this (year, title).
+  - `xml_volumes`, `pdf_volumes` — how many of those volumes have XML / PDF files available.
+  - `has_pdf_gaps`, `has_xml_gaps` — whether any *listed* volumes are missing a PDF or XML file. Note: these flags only check volumes that GovInfo lists; they do not detect volumes that are absent from GovInfo entirely (see `year_complete`).
+  - `year_complete` — boolean, set at the year level (all titles in a year share the same value). **Filter to `year_complete == True` for time-series analyses** unless you specifically want partial years. A year is marked complete when it passes two checks: (1) a calendar-lag check requiring the data to have been scraped in year Y+1 or later, and (2) a volume-sanity check requiring that no title's volume count dropped below 70% of its count in the most recent prior complete year. The sanity check catches years where GovInfo is permanently missing volumes (e.g., 1999 and 2007) — both gap flags can be `False` while `year_complete` is `False` because the gaps are in volumes that GovInfo never listed, not in files missing from listed volumes.
+  - `last_scraped_at` — timestamp of the most recent scrape that touched this (year, title).
 - **`cfr_pages_words_disaggregated.csv`** — per (year, title, vol); also the scraper's cache. Re-runs skip already-cached combinations.
 
 Page counts come from CFR PDFs; word counts come from CFR bulk XML. Both are GovInfo publications of the same annual CFR snapshot. See the comments in `scrape_cfr_by_title.py` for the full methodology (body-only computation, PDF fallback heuristics, `year_complete` rules).
@@ -71,6 +75,7 @@ Page counts come from CFR PDFs; word counts come from CFR bulk XML. Both are Gov
 - **The CFR Index is not included** — it's an annual standalone document, not part of any numbered title. Annual page totals here are therefore ~1,300 pages lower than the parent directory's `cfr_pages_by_calendar_year.csv`, which includes the Index. (Otherwise the two reconcile to within ~2 pages out of ~189K for the 2021–2024 years where the parent has per-title data.)
 - **Reserved/retired titles.** Title 2 (Grants and Agreements) starts in 2005; Title 6 (Domestic Security) starts in 2004; Title 35 (Panama Canal) was eliminated after 2000. Early years will be missing these rows accordingly.
 - **Rolling-year incompleteness.** CFR titles are published on a staggered schedule (see below); the most recent year may have fewer than 49 titles and is flagged `year_complete = False`.
+- **Historical incomplete years.** Some older years (1999, 2007) are permanently flagged `year_complete = False` because GovInfo is missing entire volumes for certain titles (e.g., Title 26 drops from 19 volumes in 1998 to 6 in 1999). The data for the volumes that *are* present is accurate — the counts are simply incomplete.
 
 ## Update Cadence
 
