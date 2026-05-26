@@ -35,7 +35,7 @@ conda activate regstats_cfr_by_title
 
 See the [Anaconda documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) for more details.
 
-#### Other scraper options
+#### Other Scraper Run Options
 
 ```bash
 # scrape a single year
@@ -64,14 +64,14 @@ python scrape_cfr_by_title.py --years 2024 --refresh
 
 Page counts come from CFR PDFs; word counts come from CFR bulk XML. Both are GovInfo publications of the same annual CFR snapshot. See the comments in `scrape_cfr_by_title.py` for the full methodology (body-only computation, PDF fallback heuristics, `year_complete` rules).
 
-## Coverage notes
+## Coverage Notes
 
 - **Starts in 1998.** 1996 is mostly absent from GovInfo; 1997 is scrapable but ~27% of its volumes need PDF fallback due to incomplete XML conversion. To re-add 1997 anyway: `python scrape_cfr_by_title.py --years 1997`.
 - **The CFR Index is not included** — it's an annual standalone document, not part of any numbered title. Annual page totals here are therefore ~1,300 pages lower than the parent directory's `cfr_pages_by_calendar_year.csv`, which includes the Index. (Otherwise the two reconcile to within ~2 pages out of ~189K for the 2021–2024 years where the parent has per-title data.)
 - **Reserved/retired titles.** Title 2 (Grants and Agreements) starts in 2005; Title 6 (Domestic Security) starts in 2004; Title 35 (Panama Canal) was eliminated after 2000. Early years will be missing these rows accordingly.
 - **Rolling-year incompleteness.** CFR titles are published on a staggered schedule (see below); the most recent year may have fewer than 49 titles and is flagged `year_complete = False`.
 
-## Update cadence
+## Update Cadence
 
 GovInfo publishes CFR titles on a staggered annual schedule that doesn't finish until well into the *following* calendar year:
 
