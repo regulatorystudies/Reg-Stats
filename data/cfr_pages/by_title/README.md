@@ -22,7 +22,7 @@ Follow these steps:
    - `cfr_pages_words_disaggregated.csv` — per (year, title, vol); also the script's cache
    - `cfr_pages_words_by_title.csv` — per (year, title), aggregated; used by the dashboard
 
-#### Environment Set Up
+## Environment Set Up
 
 Using [Anaconda](https://www.anaconda.com/products/distribution), the environment can be created and activated using the environment.yml file with the following commands in the terminal:
 
@@ -36,7 +36,7 @@ conda activate regstats_cfr_by_title
 
 See the [Anaconda documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) for more details.
 
-#### Other Scraper Run Options
+## Other Scraper Run Options
 
 ```bash
 # scrape a single year
