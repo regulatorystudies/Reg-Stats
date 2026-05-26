@@ -1,9 +1,8 @@
 # CFR Page and Word Counts by Title
 
-
 ## Update Instructions
 
-The data should be updated **once a year**, ideally in Q4 of year N or Q1 of year N+1 — at that point most of year N−1's CFR volumes are fully published on GovInfo and will be picked up by the scraper. (See *Update cadence* below for GovInfo's staggered publication schedule and `year_complete` flag.)
+The data should be updated **once a year**, ideally in Q4 of year N or Q1 of year N+1 (at that point most of year N−1's CFR volumes are fully published on GovInfo and will be picked up by the scraper). See *Update cadence* below for details on GovInfo's staggered publication schedule and the `year_complete` flag.
 
 Follow these steps:
 
@@ -11,13 +10,13 @@ Follow these steps:
 1. Activate the environment and navigate to this directory in your terminal:
    ```bash
    conda activate regstats_cfr_by_title
-   cd path/to/Reg-Stats/data/cfr_pages/by_title
+   cd "NAVIGATE TO THIS DIRECTORY"
    ```
 1. Run the scraper. The standard annual command picks up everything new since the last run:
    ```bash
    python scrape_cfr_by_title.py --years 1998-
    ```
-   The cache means already-scraped (year, title, vol) combinations are skipped, so a typical annual re-run takes minutes (a from-scratch scrape of 1998–present takes a few hours). Progress is saved to disk after each title — if interrupted, just re-invoke the same command to resume.
+   The cache means already-scraped (year, title, vol) combinations are skipped, so a typical annual re-run takes minutes (a from-scratch scrape of 1998–present takes a few hours, so run at the beginning of a work day). Progress is saved to disk after each title — if interrupted, just re-invoke the same command to resume.
 1. When the script finishes, you'll see a `Done.` summary in the terminal showing how many new volumes (if any) were added. The two output CSVs in this directory are updated in place:
    - `cfr_pages_words_disaggregated.csv` — per (year, title, vol); also the script's cache
    - `cfr_pages_words_by_title.csv` — per (year, title), aggregated
