@@ -248,7 +248,7 @@ def main() -> None:
     st.caption(
         "Net change in pages or words for each of the 50 CFR titles over a "
         "selected year range. Green = up, red = down, gray = within "
-        f"±{NEUTRAL_THRESHOLD_PCT:g}%. Data: GovInfo PDFs (pages) and bulk XML (words)."
+        f"±{NEUTRAL_THRESHOLD_PCT:g}%."
     )
 
     usable_df = df[df["year_complete"]]
@@ -257,7 +257,7 @@ def main() -> None:
     ctrl_left, ctrl_mid, ctrl_right = st.columns([5, 2, 2])
     with ctrl_left:
         year_range = st.slider(
-            "Year range",
+            "Year Range",
             min_value=years[0],
             max_value=years[-1],
             value=(years[0], years[-1]),
@@ -327,7 +327,7 @@ def main() -> None:
     last_complete = years[-1]
     next_year = last_complete + 1
     st.caption(
-        "Source: GovInfo (govinfo.gov). Pages counted from CFR PDF volumes. "
+        "Source: Government Publishing Office (GovInfo.gov). Pages counted from CFR PDF volumes. "
         "Words counted from the regulatory body of CFR bulk XML, excluding "
         "front-matter (`<FMTR>`: TOC, Cite-this-Code, Explanation) and "
         "back-matter (`<BMTR>`: Finding Aids, Alphabetical List of Agencies, "
@@ -339,12 +339,12 @@ def main() -> None:
         "**A note on the year range:** CFR titles are published by GovInfo on a "
         "staggered annual schedule that can stretch 18–24 months past the "
         "revision date. A year is treated as complete only when (a) the scrape "
-        "happened at least one year after the revision and (b) every title's "
+        "happened at least one year after the previous revision and (b) every title's "
         "volume count is within 30% of its previous-complete-year count. Years "
         f"that fail either check are excluded from the slider so partially-"
         f"published titles don't appear as spurious drops. As of the last scrape "
         f"({last_scrape}) the most recent complete year is {last_complete}; "
-        f"{next_year} will appear here once GovInfo finishes publishing its "
+        f"{next_year} data will appear here once GovInfo finishes publishing its "
         f"remaining Oct-1 revision volumes."
     )
 
