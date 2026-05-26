@@ -14,23 +14,65 @@ from PIL import Image
 import plotly.graph_objects as go
 
 
-BASE_DIR = Path(__file__).resolve().parent
+_APP_DIR = Path(__file__).resolve().parent
+_CSV_NAME = "cumulative_econ_significant_rules_by_presidential_month.csv"
+_REL_DATA_CSV = Path("data") / "cumulative_es_rules" / _CSV_NAME
+_REL_CHARTS_CSV = Path("charts") / "data" / _CSV_NAME
+_STYLE_DIR = Path("charts") / "style"
 
 
-def _find_repo_root(start: Path) -> Path:
-    """Find repo root by looking for expected top-level folders."""
-    for candidate in [start, *start.parents]:
-        if (candidate / "data").exists() and (candidate / "charts").exists():
-            return candidate
-    return start
+def _resolve_data_root() -> Path:
+    """Find repo/app root locally or on Railway (flat /app/dash1.py layout)."""
+    env_root = os.environ.get("DATA_ROOT", "").strip()
+    if env_root:
+        return Path(env_root).expanduser().resolve()
+
+    for base in (_APP_DIR, *_APP_DIR.parents):
+        if (base / _REL_DATA_CSV).is_file() or (base / _REL_CHARTS_CSV).is_file():
+            return base
+
+    # Local dev: dashboards/cumulative_econ_sig_rules/dash1.py -> repo root
+    if len(_APP_DIR.parents) > 2:
+        return _APP_DIR.parents[2]
+    return _APP_DIR
 
 
-REPO_ROOT = _find_repo_root(BASE_DIR)
-DATA_DIR = REPO_ROOT / "data" / "cumulative_es_rules"
-DATA_FILE = "cumulative_econ_significant_rules_by_presidential_month.csv"
-LOGO_PATH = REPO_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
+DATA_ROOT = _resolve_data_root()
 
-# Colors from style.R placeholders — replace with exact values
+
+def _data_path_candidates() -> tuple[Path, ...]:
+    candidates = (
+        _APP_DIR / "data" / "cumulative_es_rules" / _CSV_NAME,
+        _APP_DIR / _CSV_NAME,
+        DATA_ROOT / "data" / "cumulative_es_rules" / _CSV_NAME,
+        DATA_ROOT / "charts" / "data" / _CSV_NAME,
+    )
+    env_csv = os.environ.get("CUMULATIVE_ES_RULES_CSV", "").strip()
+    if env_csv:
+        return (Path(env_csv).expanduser(),) + candidates
+    return candidates
+
+
+_DATA_PATH_CANDIDATES = _data_path_candidates()
+DATA_PATH = next((p for p in _DATA_PATH_CANDIDATES if p.is_file()), None)
+
+
+def _resolve_style_asset(filename: str) -> Path:
+    style_dir = os.environ.get("STYLE_DIR", "").strip()
+    candidates = (
+        [Path(style_dir) / filename] if style_dir else []
+        + [
+            DATA_ROOT / _STYLE_DIR / filename,
+            _APP_DIR / "style" / filename,
+            _APP_DIR / filename,
+        ]
+    )
+    return next((p for p in candidates if p.is_file()), candidates[-1])
+
+
+LOGO_PATH = _resolve_style_asset("gw_ci_rsc_2cs_pos.png")
+
+
 red = "#b22222"
 darkgreen = "#006400"
 GWblue = "#033C5A"
@@ -46,7 +88,7 @@ admin_labels = ["Reagan", "Bush 41", "Clinton", "Bush 43", "Obama", "Trump 45", 
 admin_colors = [red, darkgreen, GWblue, GWbuff, lightblue, darkyellow, lightgreen, brown]
 admin_color_map = dict(zip(admin_labels, admin_colors))
 
-FONT_PATH = REPO_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
+FONT_PATH = _resolve_style_asset("a-avenir-next-lt-pro.otf")
 # Register custom font only if available in deployment environment
 if FONT_PATH.exists():
     fm.fontManager.addfont(str(FONT_PATH))
@@ -83,17 +125,19 @@ def alpha_hex(hex_color: str, alpha: float):
     return (r, g, b, alpha)
 
 
-# -----------------------------------------------------------------------------
-# Data loading
-# -----------------------------------------------------------------------------
 
-data_path = DATA_DIR / DATA_FILE
-if not data_path.exists():
-    st.error(f"Data file not found: {data_path}")
+
+if DATA_PATH is None:
+    st.error(
+        "Data file not found. Tried:\n"
+        + "\n".join(str(p) for p in _DATA_PATH_CANDIDATES)
+        + "\n\nFor Railway: set service Root Directory to the repo root, or set "
+        "CUMULATIVE_ES_RULES_CSV to the CSV path and include the file in the deploy."
+    )
     st.stop()
-cum_sig = pd.read_csv(data_path)
+cum_sig = pd.read_csv(DATA_PATH)
 
-data_updated_date = pd.to_datetime(os.path.getmtime(data_path), unit="s").strftime("%B %d, %Y")
+data_updated_date = pd.to_datetime(os.path.getmtime(DATA_PATH), unit="s").strftime("%B %d, %Y")
 
 # Rename columns
 cum_sig.columns = ["month", "months_in_office"] + admins
