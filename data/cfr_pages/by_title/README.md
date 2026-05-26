@@ -9,7 +9,7 @@ Follow these steps:
 1. Set up the conda environment. This is a one-time step — see *Environment Set Up* below.
 1. Navigate to this directory and activate the environment in your terminal:
    ```bash
-   cd "NAVIGATE TO THIS DIRECTORY"
+   cd "PATH TO THIS DIRECTORY"
    
    conda activate regstats_cfr_by_title
    ```
@@ -27,7 +27,7 @@ Follow these steps:
 Using [Anaconda](https://www.anaconda.com/products/distribution), the environment can be created and activated using the environment.yml file with the following commands in the terminal:
 
 ```bash
-cd "NAVIGATE TO DIRECTORY WHERE YML IS STORED"
+cd "PATH TO THIS DIRECTORY"
 
 conda env create -f environment.yml
 
