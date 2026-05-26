@@ -120,7 +120,7 @@ CFR_TITLES: dict[int, str] = {
 # / contains fewer than MIN_BODY_WORDS, or the body word count is below
 # MIN_XML_PDF_RATIO of the PDF text word count (catches sparse XMLs that have
 # a TITLE element but no real content). The threshold guards against the
-# 1998 Title 1 vol 1 class of bug where the previous heuristic (presence of
+# 1998 Title 1 vol 1 class of bug where a previous heuristic (presence of
 # any <SECTION>/<PART> tag) was fooled by such tags appearing in the
 # alphabetical agency index inside <BMTR>.
 MIN_BODY_WORDS = 1000
@@ -132,7 +132,7 @@ MIN_XML_PDF_RATIO = 0.5
 # 2006 Title 48 vol 4 -- Federal Acquisition Regulations, dense with
 # cross-referenced clauses XML captures and PDF renders sparsely). 1.85
 # gives ~6 points of cushion below the duplication signature, ~13 points
-# of cushion above the highest-density legitimate volume we've observed.
+# of cushion above the highest-density legitimate volume observed.
 # Any future volume that legitimately exceeds 1.85 will get demoted to PDF
 # fallback; the WARN print in scrape_title makes such cases reviewable.
 MAX_XML_PDF_RATIO = 1.85
@@ -216,7 +216,7 @@ def xml_word_counts(path: Path) -> tuple[int, int, bool]:
     which are NOT part of the legal text of the CFR.
 
     We deliberately compute body via subtraction rather than "everything
-    inside <TITLE>" because the XML schema flattened over time: pre-~2008
+    inside <TITLE>" because the XML schema was flattened in the past: pre-~2008
     volumes have body elements (<SECTION>, <PART>, <SUBPART>) as direct
     siblings of <TITLE>, not children of it. Subtracting FMTR/BMTR is
     schema-invariant and gives consistent body counts across all years.
@@ -426,7 +426,7 @@ def scrape_title(session, year, title, cache, tmpdir, all_rows, seen):
                 print(f"  WARN: XML parse failed on {year} t{title} v{vol}: {e}", file=sys.stderr)
             xml_dest.unlink(missing_ok=True)
 
-        # Trust XML iff its body has >= MIN_BODY_WORDS AND -- when both signals
+        # Trust XML if its body has >= MIN_BODY_WORDS AND -- when both signals
         # are available -- the body word count sits inside
         # [MIN_XML_PDF_RATIO, MAX_XML_PDF_RATIO] of the PDF's. The lower bound
         # catches sparse XMLs; the upper bound catches GovInfo's content-
@@ -676,6 +676,7 @@ def main() -> None:
 
     all_rows: list[dict] = list(cache.values())
     seen = set(cache.keys())
+    initial_row_count = len(all_rows)
 
     with TemporaryDirectory() as tdir:
         tmpdir = Path(tdir)
@@ -683,17 +684,41 @@ def main() -> None:
         # so the aggregated CSV's body-only metric is complete. No-op if all
         # rows already have words_body.
         backfill_body_words(session, cache, tmpdir, all_rows)
+        if years:
+            print(f"\nBeginning scrape of {len(years)} year(s). New volumes "
+                  f"will be downloaded from GovInfo; cached rows will be "
+                  f"skipped.", file=sys.stderr)
         for year in years:
             print(f"\n=== {year} ===", file=sys.stderr)
+            year_start_count = len(all_rows)
             for title in tqdm(titles, desc=str(year), unit="title"):
                 scrape_title(session, year, title, cache, tmpdir, all_rows, seen)
                 save_disagg(all_rows)
             write_aggregated(all_rows)
+            year_new = len(all_rows) - year_start_count
+            if year_new > 0:
+                print(f"{year}: added {year_new:,} new volume(s) to cache.",
+                      file=sys.stderr)
+            else:
+                print(f"{year}: no new volumes (all volumes already cached).",
+                      file=sys.stderr)
         if args.backfill_only:
             write_aggregated(all_rows)
 
-    print(f"\nWrote {DISAGG_CSV.name} ({len(all_rows):,} rows) and {AGG_CSV.name}.",
-          file=sys.stderr)
+    new_rows = len(all_rows) - initial_row_count
+    print("", file=sys.stderr)
+    if years:
+        if new_rows > 0:
+            print(f"Done. Added {new_rows:,} new volume(s) across "
+                  f"{len(years)} year(s).", file=sys.stderr)
+        else:
+            print(f"Done. No new volumes to add -- {len(years)} year(s) "
+                  f"already fully cached.", file=sys.stderr)
+    else:
+        print("Done. Backfill and re-aggregation complete.", file=sys.stderr)
+    print(f"Updated {DISAGG_CSV.name} ({len(all_rows):,} rows total) and "
+          f"{AGG_CSV.name}.", file=sys.stderr)
+    print("END.", file=sys.stderr)
 
 
 if __name__ == "__main__":

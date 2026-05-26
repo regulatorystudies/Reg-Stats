@@ -295,7 +295,7 @@ def main() -> None:
         )
         st.markdown("<div style='height:1.7rem;'></div>", unsafe_allow_html=True)
         st.download_button(
-            label="⬇ Download CSV",
+            label="⬇ Download Data",
             data=load_export_bytes(),
             file_name="cfr_pages_words_by_title.csv",
             mime="text/csv",
