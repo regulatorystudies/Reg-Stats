@@ -91,6 +91,16 @@ st.set_page_config(
 )
 
 
+def _ensure_required_paths() -> None:
+    if not DATA_PATH.exists():
+        st.error(
+            "Data file not found. Expected CSV at "
+            f"`{DATA_PATH}`. Deploy this app from the repository root so "
+            "the `data/` folder is available."
+        )
+        st.stop()
+
+
 # Inject GW font (if asset exists) and a tighter card style.
 def _inject_css() -> None:
     font_face = ""
@@ -235,10 +245,20 @@ def render_panel(title_num: int, df_title: pd.DataFrame,
 
 
 def main() -> None:
+    _ensure_required_paths()
     _inject_css()
     df = load_data()
 
-    st.markdown("# CFR Page and Word Counts by Title")
+    st.markdown('<h1 style="color:#00223E;">CFR Page and Word Counts by Title</h1>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <style>
+    [data-testid="stCaptionContainer"] {
+        color: #00223E !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.caption(
         "Net change in pages or words for each of the 50 CFR titles over a "
         "selected year range. Green = up, red = down, gray = within "
@@ -251,6 +271,32 @@ def main() -> None:
 
     usable_df = df[df["year_complete"]]
     years = sorted(usable_df["year"].unique().tolist())
+
+    st.markdown(
+        """
+        <style>
+        /* Color the radio option labels blue */
+        div[data-testid="stRadio"] label p {
+            color: #00223E !important;
+        }
+        /* Color the slider's main label ("Year Range") */
+        div[data-testid="stSlider"] label p {
+            color: #00223E !important;
+        }
+
+        /* Color the slider's current value (the numbers above the handles) */
+        div[data-testid="stSlider"] [data-testid="stThumbValue"] {
+            color: #00223E !important;
+        }
+    
+        /* Color the slider's min/max labels at the ends of the track */
+        div[data-testid="stSlider"] [data-baseweb="slider"] > div:last-child {
+            color: #00223E !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
     ctrl_left, ctrl_mid, ctrl_right = st.columns([5, 2, 2])
     with ctrl_left:
