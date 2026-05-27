@@ -369,7 +369,7 @@ def main() -> None:
     last_complete = years[-1]
     next_year = last_complete + 1
     st.caption(
-        "Source: Government Publishing Office (GovInfo.gov). "
+        "Source: Government Publishing Office (GovInfo.gov) "
     )
 
 
