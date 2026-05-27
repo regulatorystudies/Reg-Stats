@@ -312,10 +312,16 @@ def main() -> None:
             max_value=years[-1],
             value=(years[0], years[-1]),
             step=1,
-            help=("Limited to CFR years through the most recent complete "
-                  "edition. The CFR is revised quarterly and an edition is "
-                  "typically considered complete after the fourth quarterly "
-                  "revision (on October 1st) for a given year. "),
+            help=("Limited to years through the most recent complete CFR edition. "
+                  "The CFR is revised annually on a rolling quarterly schedule, "
+                  "with different titles updated at different points in the year: "
+                  "Titles 1–16 as of January 1, Titles 17–27 as of April 1, Titles 28–41 "
+                  "as of July 1, and Titles 42–50 as of October 1. A given annual edition "
+                  "is complete once all four batches have been officially published and "
+                  "posted to GovInfo, which for the final batch (Titles 42–50) typically "
+                  "occurs sometime after October 1. Data for titles from a partially "
+                  "complete edition is excluded to ensure cross-title comparisons "
+                  "reflect a consistent revision year. "),
         )
     with ctrl_mid:
         metric = st.radio(
