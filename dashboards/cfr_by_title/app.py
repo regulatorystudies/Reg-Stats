@@ -242,7 +242,11 @@ def main() -> None:
     st.caption(
         "Net change in pages or words for each of the 50 CFR titles over a "
         "selected year range. Green = up, red = down, gray = within "
-        f"±{NEUTRAL_THRESHOLD_PCT:g}%."
+        f"±{NEUTRAL_THRESHOLD_PCT:g}%.  \n"
+        "Note: Page and word counts are not necessarily a measure of regulatory burden "
+        "(regulations have both costs and benefits). However, changes in "
+        "these metrics over time serve as a useful proxy for the volume of "
+        "regulatory activity."
     )
 
     usable_df = df[df["year_complete"]]
