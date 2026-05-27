@@ -1,0 +1,12 @@
+# CFR by Title dashboard (Streamlit).
+# Railway service Root Directory should be repository root so this app can
+# resolve shared assets under data/ and charts/.
+
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r dashboards/cfr_by_title/requirements.txt"
+
+[deploy]
+startCommand = "streamlit run dashboards/cfr_by_title/cfr_by_title.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true"
+healthcheckPath = "/_stcore/health"
+restartPolicyType = "on_failure"

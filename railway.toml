@@ -1,0 +1,11 @@
+# Railway deploy config for dashboards/by_agency/app1.py (Streamlit).
+# Deploy from the repository root so charts/data and charts/style are available.
+
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r dashboards/by_agency/requirements.txt"
+
+[deploy]
+startCommand = "streamlit run dashboards/by_agency/app1.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true"
+healthcheckPath = "/_stcore/health"
+restartPolicyType = "on_failure"

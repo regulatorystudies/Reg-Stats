@@ -1,0 +1,11 @@
+name: regstats_cfr_by_title
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.10
+  - requests>=2.30
+  - tqdm>=4.65
+  - pip
+  - pip:
+      - pypdf>=3
