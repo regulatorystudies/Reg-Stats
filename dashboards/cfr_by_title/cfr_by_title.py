@@ -119,6 +119,7 @@ def _inject_css() -> None:
             font-family: 'Avenir Next LT Pro', 'Avenir Next', Avenir, 'Helvetica Neue', Arial, sans-serif;
         }}
         .stApp {{ background-color: {GW_BUFF_20}; }}
+        .stMainBlockContainer {{ padding-top: 1rem; }}
         .tile-title {{ font-size: 0.95rem; font-weight: 600; color: {GW_BLUE};
                        line-height: 1.15; margin-bottom: 0; white-space: nowrap;
                        overflow: hidden; text-overflow: ellipsis; }}
@@ -249,7 +250,7 @@ def main() -> None:
     _inject_css()
     df = load_data()
 
-    st.markdown('<h1 style="color:#00223E;">CFR Page and Word Counts by Title</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 style="color:#00223E;">Code of Federal Regulations: Page and Word Counts by Title</h1>', unsafe_allow_html=True)
 
     st.markdown("""
     <style>
@@ -275,23 +276,28 @@ def main() -> None:
     st.markdown(
         """
         <style>
-        /* Color the radio option labels blue */
         div[data-testid="stRadio"] label p {
             color: #00223E !important;
         }
-        /* Color the slider's main label ("Year Range") */
         div[data-testid="stSlider"] label p {
             color: #00223E !important;
         }
-
-        /* Color the slider's current value (the numbers above the handles) */
         div[data-testid="stSlider"] [data-testid="stThumbValue"] {
             color: #00223E !important;
         }
-    
-        /* Color the slider's min/max labels at the ends of the track */
         div[data-testid="stSlider"] [data-baseweb="slider"] > div:last-child {
             color: #00223E !important;
+        }
+        /* Help tooltip popover */
+        div[data-baseweb="tooltip"] [data-testid="stMarkdownContainer"],
+        div[data-baseweb="tooltip"] > div {
+            background-color: white !important;
+        }
+        div[data-baseweb="popover"] > div {
+            background-color: white !important;
+        }
+        div[data-baseweb="popover"] [data-testid="stTooltipContent"] {
+            background-color: white !important;
         }
         </style>
         """,
@@ -307,7 +313,9 @@ def main() -> None:
             value=(years[0], years[-1]),
             step=1,
             help=("Limited to CFR years through the most recent complete "
-                  "edition."),
+                  "edition. The CFR is revised quarterly and an edition is "
+                  "typically considered complete after the fourth quarterly "
+                  "revision (on October 1st) for a given year. "),
         )
     with ctrl_mid:
         metric = st.radio(
@@ -355,25 +363,7 @@ def main() -> None:
     last_complete = years[-1]
     next_year = last_complete + 1
     st.caption(
-        "Source: Government Publishing Office (GovInfo.gov). Pages counted from CFR PDF volumes. "
-        "Words counted from the regulatory body of CFR bulk XML, excluding "
-        "front-matter (`<FMTR>`: TOC, Cite-this-Code, Explanation) and "
-        "back-matter (`<BMTR>`: Finding Aids, Alphabetical List of Agencies, "
-        "List of CFR Sections Affected) per GPO's CFR XML User Guide, which "
-        "states user aids are not part of the legal text of the CFR. The "
-        "all-content count is preserved in the CSV's `words_all` column. "
-        "Title 35 was eliminated after the 2000 edition; Titles 2 and 6 first "
-        "appear in 2005 and 2004 respectively. "
-        "**A note on the year range:** CFR titles are published by GovInfo on a "
-        "staggered annual schedule that can stretch 18–24 months past the "
-        "revision date. A year is treated as complete only when (a) the scrape "
-        "happened at least one year after the previous revision and (b) every title's "
-        "volume count is within 30% of its previous-complete-year count. Years "
-        f"that fail either check are excluded from the slider so partially-"
-        f"published titles don't appear as spurious drops. As of the last scrape "
-        f"({last_scrape}) the most recent complete year is {last_complete}; "
-        f"{next_year} data will appear here once GovInfo finishes publishing its "
-        f"remaining revision volumes."
+        "Source: Government Publishing Office (GovInfo.gov). "
     )
 
 
