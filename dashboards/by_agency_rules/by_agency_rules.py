@@ -324,7 +324,7 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
             ),
         ))
 
-    year_min = int(df_long["year"].min())
+    year_min = int(df_long[df_long["rule_num"] > 0]["year"].min())
     year_max = int(df_long["year"].max())
 
     fig.update_layout(
@@ -349,9 +349,9 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
             zerolinewidth=1,
         ),
         xaxis=dict(
-            tickangle=65,
+            tickangle=-55,
             showgrid=False,
-            showline=True,
+            showline=False,
             linecolor=RSC_GRAY,
             linewidth=1,
             tickfont=dict(color="#333333", family=FONT_FAMILY),
@@ -446,7 +446,7 @@ def fig_to_png_bytes(df_long: pd.DataFrame, agency_acronym: str, agency_name: st
             label=rule_type,
         )
 
-    year_min = int(df_long["year"].min())
+    year_min = int(df_long[df_long["rule_num"] > 0]["year"].min())
     year_max = int(df_long["year"].max())
 
     ax.set_ylim(0, upper)
@@ -535,7 +535,7 @@ def main():
             '<div role="region" aria-label="Chart controls">',
             unsafe_allow_html=True,
         )
-        st.markdown("### Select chart")
+        st.markdown("### Select Chart")
 
         selected_display = st.selectbox(
             "Chart selection",
@@ -594,7 +594,7 @@ def main():
         st.markdown("### Download Plot")
 
         st.download_button(
-            label="Download PNG",
+            label="Download Static Image (PNG)",
             data=png_bytes,
             file_name=f"{download_slug}_federal_register_rules_by_presidential_year.png",
             mime="image/png",
