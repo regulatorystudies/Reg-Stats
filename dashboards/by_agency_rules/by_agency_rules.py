@@ -331,7 +331,7 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
         height=575,
         font=dict(family=FONT_FAMILY),
         title=dict(
-            text=f"{agency_acronym.upper()} Rules Published by Presidential Year",
+            text=f"{agency_acronym.upper() if agency_acronym!= 'total' else 'Total'} Rules Published by Presidential Year",
             font=dict(size=17, color="#033C5A", family=FONT_FAMILY),
             x=0.5,
             xanchor="center",
