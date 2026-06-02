@@ -333,9 +333,9 @@ in the "File" column, and an output dataset or chart in the "Output" column will
         </tr>
         <tr>
           <td>Chart</td>
-          <td><code>NA</code></td>
-          <td><code>NA</code></td>
-          <td><code>NA</code></td>
+          <td>NA</td>
+          <td>NA</td>
+          <td>NA</td>
         </tr>
       </table>
 </details>
