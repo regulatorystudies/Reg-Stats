@@ -832,7 +832,7 @@ def main():
         st.markdown("### Download Plot")
 
         st.download_button(
-            label="Download PNG",
+            label="Download Static (PNG)",
             data=png_bytes,
             file_name=f"{download_slug}_econ_significant_rules_by_presidential_year.png",
             mime="image/png",

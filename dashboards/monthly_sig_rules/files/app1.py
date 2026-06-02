@@ -380,47 +380,59 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
 
 def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
     """Render the chart server-side with matplotlib and return PNG bytes."""
+    import matplotlib.dates as mdates
+
     df = _prep_plot_df(df_filtered)
     has_other_sig = df[OTHER_COL].sum() > 0
 
     econ_vals = df[ECON_COL].values
     other_vals = df[OTHER_COL].values
-    dates = df["Date"].dt.strftime("%b '%y").values
-    x = np.arange(len(dates))
-    bar_width = 0.7
+    x = mdates.date2num(df["Date"])
+    bar_width = 20
 
-    fig, ax = plt.subplots(figsize=(14, 7))
+    if FONT_PATH.exists():
+        from matplotlib import font_manager
+        font_manager.fontManager.addfont(str(FONT_PATH))
+        plt.rcParams["font.family"] = "Avenir Next LT Pro"
+
+    fig, ax = plt.subplots(figsize=(12, 5.75))
     fig.patch.set_facecolor("white")
     ax.set_facecolor("white")
 
-    ax.bar(x, econ_vals, width=bar_width, color=GW_COLORS["GWblue"], label="Economically Significant")
+    ax.bar(
+        x, econ_vals, width=bar_width, align="center",
+        color=GW_COLORS["GWblue"], label="Economically Significant", linewidth=0,
+    )
     if has_other_sig:
-        ax.bar(x, other_vals, width=bar_width, bottom=econ_vals, color=GW_COLORS["GWbuff"],
-               label="Other Significant", linewidth=0)
+        ax.bar(
+            x, other_vals, width=bar_width, align="center", bottom=econ_vals,
+            color=GW_COLORS["GWbuff"], label="Other Significant", linewidth=0,
+        )
 
     y_max = (econ_vals + other_vals).max()
     y_top = int(np.ceil(y_max / 5) * 5) if y_max > 0 else 10
     ax.set_ylim(0, y_top)
+    if y_top >= 10:
+        ax.yaxis.set_major_locator(ticker.MultipleLocator(10))
 
-    step = 3
-    shown = list(range(0, len(dates), step))
-    ax.set_xticks(shown)
-    ax.set_xticklabels([dates[i] for i in shown], rotation=-45, ha="left", fontsize=9, color="#333333")
+    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%y %b"))
+    plt.setp(ax.get_xticklabels(), rotation=-45, ha="right", fontsize=9, color="#333333")
 
     ax.set_ylabel("Number of Rules", color="#333333", fontsize=11)
     ax.tick_params(axis="y", colors="#333333", labelsize=9)
     ax.set_title(
         f"Significant Final Rules Published Each Month\nunder the {admin_name} Administration",
-        fontsize=14, color="#033C5A", pad=16
+        fontsize=17, color="#033C5A", pad=20,
     )
 
-    ax.yaxis.grid(True, color="#CCCCCC", linewidth=0.8, alpha=0.6)
+    ax.yaxis.grid(True, color="#CCCCCC", linewidth=1, alpha=0.4)
     ax.set_axisbelow(True)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.spines["left"].set_visible(False)
-    ax.spines["bottom"].set_color("#CCCCCC")
-    ax.axhline(0, color="#CCCCCC", linewidth=1.5)
+    ax.spines["bottom"].set_visible(False)
+    ax.axhline(0, color="#CCCCCC", linewidth=2, zorder=0)
 
     ax.legend(
         loc="upper center",
@@ -432,21 +444,23 @@ def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
     )
 
     fig.text(
-        0.98, 0.01,
-        "Sources: Office of the Federal Register (federalregister.gov) for Biden administration and all subsequent administrations; Office of Information and Regulatory Affairs (reginfo.gov) for all prior administrations.\n\nUpdated: April 22, 2026",
-        ha="right", va="bottom", fontsize=8, color="#333333"
+        0.98, 0.02,
+        "Sources: Office of the Federal Register (federalregister.gov) for Biden administration and\n"
+        "all subsequent administrations Office of Information and Regulatory Affairs (reginfo.gov)\n"
+        "for all prior administrations. Updated: April 22, 2026",
+        ha="right", va="bottom", fontsize=11, color="#333333",
     )
 
     if LOGO_PATH.exists():
         from matplotlib.image import imread
         logo_img = imread(str(LOGO_PATH))
-        logo_ax = fig.add_axes([0.01, 0.01, 0.18, 0.1])
+        logo_ax = fig.add_axes([0.0, 0.02, 0.35, 0.12])
         logo_ax.imshow(logo_img)
         logo_ax.axis("off")
 
-    plt.tight_layout(rect=[0, 0.08, 1, 1])
+    fig.subplots_adjust(left=0.07, right=0.97, top=0.88, bottom=0.38)
     buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=150, bbox_inches="tight", facecolor="white")
+    fig.savefig(buf, format="png", dpi=150, facecolor="white")
     plt.close(fig)
     buf.seek(0)
     return buf.getvalue()
@@ -501,9 +515,9 @@ def main():
 
     with col_controls:
         st.markdown("---")
-        st.markdown("### Number of Months to display")
+        st.markdown("### Number of Months to Display")
         num_months = st.slider(
-            "Number of Months to display",
+            "Number of Months to Display",
             min_value=6,
             max_value=total_months,
             value=total_months - 1,
@@ -527,7 +541,7 @@ def main():
 
         png_bytes = fig_to_png_bytes(df_admin_filtered, admin)
         st.download_button(
-            label="Download PNG",
+            label="Download Static Image (PNG)",
             data=png_bytes,
             file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.png",
             mime="image/png",
@@ -567,7 +581,7 @@ def main():
                 <div id="chart-region"
                      role="region"
                      aria-label="Bar chart: significant final rules by month, {admin} Administration"
-                     style="border: 3px solid #033C5A; border-radius: 6px; padding: 10px; background-color: white;">
+                     style="border-radius: 6px; padding: 10px; background-color: white;">
                 """,
                 unsafe_allow_html=True,
             )
