@@ -314,6 +314,34 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
+  <summary><strong>Code of Federal Regulations: Page and Word Counts by Title</strong></summary>
+  <br/>
+  <table>
+    <tr>
+      <th>Update</th>
+      <th>Task</th>
+      <th>Location</th>
+      <th>File</th>
+      <th>Output</th>
+    </tr>
+        <tr>
+      	  <td rowspan="2">Annually:<br/>during first months of calendar year</td>
+          <td>Data</td>
+          <td><code>data/cfr_pages/by_title/</code></td>
+          <td><code>scrape_cfr_by_title.py</code></td>
+          <td><code>cfr_pages_words_by_title.csv</code></td>
+        </tr>
+        <tr>
+          <td>Chart</td>
+          <td><code>NA</code></td>
+          <td><code>NA</code></td>
+          <td><code>NA</code></td>
+        </tr>
+      </table>
+</details>
+
+
+<details>
   <summary><strong>Total Pages Published in the Federal Register</strong></summary>
   <br/>
   <table>
