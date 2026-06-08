@@ -10,3 +10,4 @@ adjustText
 
 altair<5
 matplotlib
+kaleido==0.2.1

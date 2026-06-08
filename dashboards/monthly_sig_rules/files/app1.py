@@ -1,5 +1,4 @@
 import base64
-import io
 import sys
 from pathlib import Path
 
@@ -10,10 +9,6 @@ sys.path.insert(0, str(DASHBOARD_ROOT))
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import streamlit as st
 
 try:
@@ -47,8 +42,8 @@ st.set_page_config(
     page_title="Monthly Significant Rules by Administration",
     layout="wide",
 )
-BG_COLOR = "#E8DDC6" #GW_COLORS["GWblue"]
-TEXT_COLOR =GW_COLORS["GWblue"]
+BG_COLOR = "#E8DDC6"
+TEXT_COLOR = GW_COLORS["GWblue"]
 
 font_base64 = ""
 if FONT_PATH.exists():
@@ -59,25 +54,24 @@ st.markdown(
     f"""
     <style>
     /* Dropdown option list background */
-    /* Dropdown option list background */
     [data-baseweb="popover"] [data-baseweb="menu"],
     [data-baseweb="popover"] ul {{
         background-color: #E8DDC6 !important;
     }}
-    
+
     /* Individual option text */
     [data-baseweb="popover"] [data-baseweb="menu"] li,
     [data-baseweb="popover"] ul li {{
         background-color: #E8DDC6 !important;
         color: #033C5A !important;
     }}
-    
+
     /* Hovered option */
     [data-baseweb="popover"] ul li:hover {{
         background-color: #A69362 !important;
         color: #ffffff !important;
     }}
-    
+
     /* Currently selected option */
     [data-baseweb="popover"] ul li[aria-selected="true"] {{
         background-color: #033C5A !important;
@@ -105,7 +99,7 @@ st.markdown(
     .js-plotly-plot .plotly .annotation-text {{
         font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif !important;
     }}
-    
+
     /* ── WCAG 2.1 AA: Keyboard focus ring ── */
     /* Streamlit removes outlines by default which fails WCAG 2.4.7.  */
     /* This restores a visible focus indicator on all interactive elements. */
@@ -115,8 +109,8 @@ st.markdown(
     [data-testid="stSelectbox"] div[data-baseweb="select"] span,
     [data-testid="stSelectbox"] div[data-baseweb="select"] div {{
         color: #E8DDC6 !important;
-        background-color: #033C5A !important;  /* ADD THIS */
-        border-color: #033C5A !important;      /* ADD THIS */
+        background-color: #033C5A !important;
+        border-color: #033C5A !important;
     }}
     a:focus,
     button:focus,
@@ -148,20 +142,12 @@ st.markdown(
         text-decoration: none;
     }}
     [data-testid="stTooltipContent"] {{
-    background-color: #E8DDC6 !important;
-    color: #E8DDC6 !important;
+        background-color: #E8DDC6 !important;
+        color: #E8DDC6 !important;
     }}
     .skip-link:focus {{
         top: 0;
         outline: 3px solid #033C5A !important;
-    }}
-    /* Focused/active option highlight */
-    [data-baseweb="popover"] ul li:focus,
-    [data-baseweb="popover"] ul li[data-highlighted="true"],
-    [data-baseweb="menu"] [role="option"]:focus,
-    [data-baseweb="menu"] [role="option"][aria-activedescendant] {{
-        background-color: #E8DDC6 !important;
-        color: #E8DDC6 !important;
     }}
     /* Highlighted row when navigating */
     [data-baseweb="menu"] ul li:hover,
@@ -173,7 +159,7 @@ st.markdown(
         background-color: #DAC8A3 !important;
         color: #ffffff !important;
     }}
-    
+
     /* BaseWeb internal highlight override */
     [data-baseweb="menu"] [role="option"]:hover,
     [data-baseweb="menu"] [role="option"].highlighted,
@@ -182,7 +168,7 @@ st.markdown(
         background-color: #DAC8A3 !important;
         color: #ffffff !important;
     }}
-    
+
     </style>
 
     <!-- Skip navigation link (WCAG 2.4.1) -->
@@ -219,16 +205,16 @@ def build_aria_summary(df_filtered: pd.DataFrame, admin_name: str) -> str:
     changes the administration or the month slider.
     """
     df = _prep_plot_df(df_filtered)
-    total_econ  = int(df[ECON_COL].sum())
+    total_econ = int(df[ECON_COL].sum())
     total_other = int(df[OTHER_COL].sum())
-    total_all   = total_econ + total_other
-    n_months    = len(df)
-    start       = df["Date"].min().strftime("%B %Y")
-    end         = df["Date"].max().strftime("%B %Y")
+    total_all = total_econ + total_other
+    n_months = len(df)
+    start = df["Date"].min().strftime("%B %Y")
+    end = df["Date"].max().strftime("%B %Y")
 
-    peak_row  = df.loc[(df[ECON_COL] + df[OTHER_COL]).idxmax()]
+    peak_row = df.loc[(df[ECON_COL] + df[OTHER_COL]).idxmax()]
     peak_date = peak_row["Date"].strftime("%B %Y")
-    peak_val  = int(peak_row[ECON_COL] + peak_row[OTHER_COL])
+    peak_val = int(peak_row[ECON_COL] + peak_row[OTHER_COL])
 
     lines = [
         f"Chart summary for the {admin_name} Administration.",
@@ -282,7 +268,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         ))
 
     y_max = (df[ECON_COL] + df[OTHER_COL]).max()
-    y_top = int(np.ceil(y_max / 5)*5) if y_max > 0 else 10
+    y_top = int(np.ceil(y_max / 5) * 5) if y_max > 0 else 10
 
     fig.update_layout(
         barmode="stack",
@@ -346,8 +332,8 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     )
 
     fig.add_annotation(
-        text="Sources: Office of the Federal Register (federalregister.gov) for Biden administration and <br>" 
-             "all subsequent administrations Office of Information and Regulatory Affairs (reginfo.gov)<br> for all prior administrations. Updated: April 22, 2026",
+        text="Sources: Office of the Federal Register (federalregister.gov) for Biden administration and<br> "
+             "all subsequent administrations Office of Information and Regulatory Affairs (reginfo.gov)<br> for all prior administrations. <br>Updated: April 22, 2026",
         xref="paper",
         yref="paper",
         x=1.0,
@@ -378,92 +364,16 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     return fig
 
 
-def fig_to_png_bytes(df_filtered: pd.DataFrame, admin_name: str) -> bytes:
-    """Render the chart server-side with matplotlib and return PNG bytes."""
-    import matplotlib.dates as mdates
+def fig_to_png_bytes(fig: go.Figure, width: int = 1200, scale: int = 2) -> bytes:
+    """
+    Render the exact Plotly figure shown on screen to PNG bytes.
 
-    df = _prep_plot_df(df_filtered)
-    has_other_sig = df[OTHER_COL].sum() > 0
-
-    econ_vals = df[ECON_COL].values
-    other_vals = df[OTHER_COL].values
-    x = mdates.date2num(df["Date"])
-    bar_width = 20
-
-    if FONT_PATH.exists():
-        from matplotlib import font_manager
-        font_manager.fontManager.addfont(str(FONT_PATH))
-        plt.rcParams["font.family"] = "Avenir Next LT Pro"
-
-    fig, ax = plt.subplots(figsize=(12, 5.75))
-    fig.patch.set_facecolor("white")
-    ax.set_facecolor("white")
-
-    ax.bar(
-        x, econ_vals, width=bar_width, align="center",
-        color=GW_COLORS["GWblue"], label="Economically Significant", linewidth=0,
-    )
-    if has_other_sig:
-        ax.bar(
-            x, other_vals, width=bar_width, align="center", bottom=econ_vals,
-            color=GW_COLORS["GWbuff"], label="Other Significant", linewidth=0,
-        )
-
-    y_max = (econ_vals + other_vals).max()
-    y_top = int(np.ceil(y_max / 5) * 5) if y_max > 0 else 10
-    ax.set_ylim(0, y_top)
-    if y_top >= 10:
-        ax.yaxis.set_major_locator(ticker.MultipleLocator(10))
-
-    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%y %b"))
-    plt.setp(ax.get_xticklabels(), rotation=-45, ha="right", fontsize=9, color="#333333")
-
-    ax.set_ylabel("Number of Rules", color="#333333", fontsize=11)
-    ax.tick_params(axis="y", colors="#333333", labelsize=9)
-    ax.set_title(
-        f"Significant Final Rules Published Each Month\nunder the {admin_name} Administration",
-        fontsize=17, color="#033C5A", pad=20,
-    )
-
-    ax.yaxis.grid(True, color="#CCCCCC", linewidth=1, alpha=0.4)
-    ax.set_axisbelow(True)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_visible(False)
-    ax.spines["bottom"].set_visible(False)
-    ax.axhline(0, color="#CCCCCC", linewidth=2, zorder=0)
-
-    ax.legend(
-        loc="upper center",
-        bbox_to_anchor=(0.43, -0.18),
-        ncol=2,
-        frameon=False,
-        fontsize=10,
-        labelcolor="#333333",
-    )
-
-    fig.text(
-        0.98, 0.02,
-        "Sources: Office of the Federal Register (federalregister.gov) for Biden administration and\n"
-        "all subsequent administrations Office of Information and Regulatory Affairs (reginfo.gov)\n"
-        "for all prior administrations. Updated: April 22, 2026",
-        ha="right", va="bottom", fontsize=11, color="#333333",
-    )
-
-    if LOGO_PATH.exists():
-        from matplotlib.image import imread
-        logo_img = imread(str(LOGO_PATH))
-        logo_ax = fig.add_axes([0.0, 0.02, 0.35, 0.12])
-        logo_ax.imshow(logo_img)
-        logo_ax.axis("off")
-
-    fig.subplots_adjust(left=0.07, right=0.97, top=0.88, bottom=0.38)
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=150, facecolor="white")
-    plt.close(fig)
-    buf.seek(0)
-    return buf.getvalue()
+    Uses the figure's own layout height and a fixed export width so the
+    download mirrors the on-screen chart. `scale` multiplies the resolution
+    (scale=2 ≈ 2x for crisp output). Requires the `kaleido` package.
+    """
+    height = fig.layout.height or 600
+    return fig.to_image(format="png", width=width, height=height, scale=scale)
 
 
 def main():
@@ -491,10 +401,9 @@ def main():
         )
         st.markdown("### Select Administration")
         admin = st.selectbox(
-            "Selected Adminstration",
+            "Selected Administration",
             admins,
             index=admins.index("Trump 47") if "Trump 47" in admins else 0,
-            # label_visibility="visible" so the label is read by screen readers
             label_visibility="hidden",
             help="Choose the presidential administration to view monthly significant final rules.",
         )
@@ -522,7 +431,6 @@ def main():
             max_value=total_months,
             value=total_months - 1,
             step=1,
-            # label_visibility="visible" ensures the slider label is announced
             label_visibility="collapsed",
             help="Show the first N months of data from the start of the administration. Drag to adjust.",
         )
@@ -537,9 +445,9 @@ def main():
 
     with col_controls:
         st.markdown("---")
-        st.markdown("### Download Plot")
+        st.markdown("### Download")
 
-        png_bytes = fig_to_png_bytes(df_admin_filtered, admin)
+        png_bytes = fig_to_png_bytes(fig_plotly)
         st.download_button(
             label="Download Static Image (PNG)",
             data=png_bytes,
@@ -574,17 +482,15 @@ def main():
 
     with col_plot:
         # ── Chart landmark with aria-label and skip-link target (WCAG 2.4.1) ─
-        with col_plot:
-            # ── Chart landmark with aria-label and skip-link target (WCAG 2.4.1) ─
-            st.markdown(
-                f"""
-                <div id="chart-region"
-                     role="region"
-                     aria-label="Bar chart: significant final rules by month, {admin} Administration"
-                     style="border-radius: 6px; padding: 10px; background-color: white;">
-                """,
-                unsafe_allow_html=True,
-            )
+        st.markdown(
+            f"""
+            <div id="chart-region"
+                 role="region"
+                 aria-label="Bar chart: significant final rules by month, {admin} Administration"
+                 style="border-radius: 6px; padding: 10px; background-color: white;">
+            """,
+            unsafe_allow_html=True,
+        )
 
         st.plotly_chart(fig_plotly, use_container_width=True, config={"displayModeBar": False})
 
