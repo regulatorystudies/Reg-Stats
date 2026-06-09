@@ -1,3 +1,8 @@
+"""
+title: Monthly Significant Final Rules by Administration
+author: Sayam Palrecha
+Date: June 4, 2026
+"""
 import base64
 import sys
 from pathlib import Path
@@ -5,7 +10,6 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent
 DASHBOARD_ROOT = BASE.parent
 sys.path.insert(0, str(DASHBOARD_ROOT))
-
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
@@ -197,13 +201,8 @@ def _prep_plot_df(df_admin: pd.DataFrame):
     df[OTHER_COL] = pd.to_numeric(df[OTHER_COL], errors="coerce").fillna(0)
     return df
 
-
 def build_aria_summary(df_filtered: pd.DataFrame, admin_name: str) -> str:
-    """
-    Build a plain-text data summary for screen readers.
-    Injected as an aria-live region so it updates when the user
-    changes the administration or the month slider.
-    """
+
     df = _prep_plot_df(df_filtered)
     total_econ = int(df[ECON_COL].sum())
     total_other = int(df[OTHER_COL].sum())
@@ -226,7 +225,6 @@ def build_aria_summary(df_filtered: pd.DataFrame, admin_name: str) -> str:
         lines.append(f"  Other Significant: {total_other}.")
     lines.append(f"Peak month: {peak_date} with {peak_val} rules.")
     return " ".join(lines)
-
 
 def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     df = _prep_plot_df(df_admin)
@@ -365,16 +363,8 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
 
 
 def fig_to_png_bytes(fig: go.Figure, width: int = 1200, scale: int = 2) -> bytes:
-    """
-    Render the exact Plotly figure shown on screen to PNG bytes.
-
-    Uses the figure's own layout height and a fixed export width so the
-    download mirrors the on-screen chart. `scale` multiplies the resolution
-    (scale=2 ≈ 2x for crisp output). Requires the `kaleido` package.
-    """
     height = fig.layout.height or 600
     return fig.to_image(format="png", width=width, height=height, scale=scale)
-
 
 def main():
     df = load_data()
@@ -382,7 +372,6 @@ def main():
     if not admins:
         st.warning("No administrations found in the data.")
         return
-
     # ── Page landmark: main heading ──────────────────────────────────────────
     # role="main" gives screen readers a named landmark to jump to (WCAG 1.3.1)
     st.markdown(
