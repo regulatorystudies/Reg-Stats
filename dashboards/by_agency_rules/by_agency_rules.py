@@ -1,14 +1,9 @@
 import base64
-import io
 import math
 import sys
 from pathlib import Path
 from datetime import date
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
@@ -320,7 +315,7 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
             line=dict(color=style["color"], width=2, dash=style["dash"]),
             hovertemplate=(
                 f"<b>{rule_type}</b><br>"
-                "Year %{x}<br>Rules: %{y}<extra></extra>"
+                "Rules: <b>%{y}</b><extra></extra>"
             ),
         ))
 
@@ -346,18 +341,18 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
             dtick=interval,
             zeroline=True,
             zerolinecolor=RSC_GRAY,
-            zerolinewidth=1,
+            zerolinewidth=2.5,
         ),
         xaxis=dict(
             tickangle=-55,
             showgrid=False,
             showline=False,
             linecolor=RSC_GRAY,
-            linewidth=1,
+            linewidth=2,
             tickfont=dict(color="#333333", family=FONT_FAMILY),
             tickmode="linear",
             dtick=1,
-            range=[year_min - 1, year_max + 1],
+            range=[year_min, year_max + 0.5],
         ),
         legend=dict(
             orientation="h",
@@ -417,98 +412,25 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
     return fig
 
 
-def fig_to_png_bytes(df_long: pd.DataFrame, agency_acronym: str, agency_name: str) -> bytes:
-    interval = _get_interval(df_long["rule_num"].tolist())
-    upper = _ydynam(df_long["rule_num"].tolist(), interval)
+import copy
+import plotly.io as pio
 
-    if FONT_PATH.exists():
-        from matplotlib import font_manager
-        font_manager.fontManager.addfont(str(FONT_PATH))
-        plt.rcParams["font.family"] = "Avenir Next LT Pro"
 
-    fig, ax = plt.subplots(figsize=(14, 7.5))
-    fig.patch.set_facecolor("white")
-    ax.set_facecolor("white")
+def fig_to_png_bytes(fig: go.Figure, scale: float = 2.0) -> bytes:
+    export_fig = copy.deepcopy(fig)
 
-    rule_styles = {
-        "Final Rules": {"color": GW_COLORS["GWblue"], "linestyle": "-"},
-        "Proposed Rules": {"color": GW_COLORS["lightblue"], "linestyle": "--"},
-    }
+    height = (fig.layout.height or 500)+200   # add room for logo + source note
+    width = int(height * 2)                     # wide aspect ratio matching the UI
 
-    for rule_type, style in rule_styles.items():
-        subset = df_long[df_long["rule_type"] == rule_type].sort_values("year")
-        ax.plot(
-            subset["year"],
-            subset["rule_num"],
-            color=style["color"],
-            linestyle=style["linestyle"],
-            linewidth=2,
-            label=rule_type,
-        )
+    export_fig.update_layout(height=height, width=width, margin=dict(b=300))
 
-    year_min = int(df_long[df_long["rule_num"] > 0]["year"].min())
-    year_max = int(df_long["year"].max())
-
-    ax.set_ylim(0, upper)
-    ax.yaxis.set_major_locator(ticker.MultipleLocator(interval))
-    ax.set_xlim(year_min - 1, year_max + 1)
-    ax.set_xticks(range(year_min, year_max + 1))
-    ax.tick_params(axis="x", rotation=65, labelsize=9, colors="#333333", length=0)
-    ax.tick_params(axis="y", colors="#333333", labelsize=9, length=0)
-
-    ax.set_ylabel("Number of Rules", color="#333333", fontsize=11)
-    ax.set_title(
-        f"{agency_acronym.upper()} Rules Published by Presidential Year",
-        fontsize=17,
-        color="#033C5A",
-        pad=20,
-    )
-
-    ax.yaxis.grid(True, color=RSC_GRAY, linestyle="-", linewidth=0.8)
-    ax.xaxis.grid(False)
-    ax.set_axisbelow(True)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_visible(False)
-    ax.spines["bottom"].set_color(RSC_GRAY)
-    ax.spines["bottom"].set_linewidth(1)
-
-    ax.legend(
-        loc="upper center",
-        bbox_to_anchor=(0.5, 1.08),
-        ncol=2,
-        frameon=False,
-        fontsize=12,
-        labelcolor="#333333",
-    )
-
-    current_date = date.today().strftime("%B %d, %Y")
-    fig.text(
-        0.99,
-        0.04,
-        (
-            "Source: Federal Register API; excludes corrections to rules.\n"
-            f"Updated: {current_date}"
-        ),
-        ha="right",
-        va="bottom",
-        fontsize=11,
-        color="#333333",
-    )
-
-    if LOGO_PATH.exists():
-        from matplotlib.image import imread as mpimg_read
-        logo_img = mpimg_read(str(LOGO_PATH))
-        logo_ax = fig.add_axes([0.02, 0.03, 0.28, 0.14])
-        logo_ax.imshow(logo_img, aspect="auto")
-        logo_ax.axis("off")
-
-    fig.subplots_adjust(left=0.07, right=0.99, top=0.82, bottom=0.32)
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=150, facecolor="white")
-    plt.close(fig)
-    buf.seek(0)
-    return buf.getvalue()
+    try:
+        return pio.to_image(export_fig, format="png", width=width, height=height, scale=scale)
+    except Exception as exc:  # pragma: no cover - surfaced in UI instead
+        raise RuntimeError(
+            "PNG export requires the 'kaleido' package. Install it with "
+            "`pip install -U kaleido`."
+        ) from exc
 
 
 def main():
@@ -556,7 +478,7 @@ def main():
         agency_name = "Total Rules"
         fig_plotly = plot_agency_plotly(df_plot, agency_acronym, agency_name)
         aria_summary = build_aria_summary(df_plot, agency_acronym, agency_name)
-        png_bytes = fig_to_png_bytes(df_plot, agency_acronym, agency_name)
+        png_bytes = fig_to_png_bytes(fig_plotly)
         download_slug = "total"
         chart_region_aria = (
             "Line chart: total final and proposed Federal Register rules by presidential year"
@@ -578,7 +500,7 @@ def main():
 
         fig_plotly = plot_agency_plotly(df_plot, selected_acronym, selected_name)
         aria_summary = build_aria_summary(df_plot, selected_acronym, selected_name)
-        png_bytes = fig_to_png_bytes(df_plot, selected_acronym, selected_name)
+        png_bytes = fig_to_png_bytes(fig_plotly)
         download_slug = selected_acronym.lower()
         chart_region_aria = (
             f"Line chart: Federal Register rules by presidential year, {selected_acronym}"
