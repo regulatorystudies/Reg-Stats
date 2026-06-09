@@ -4,14 +4,10 @@ import sys
 from pathlib import Path
 from datetime import date
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.io as pio
 import streamlit as st
 
 BASE = Path(__file__).resolve().parent
@@ -142,6 +138,18 @@ st.markdown(
         top: 0;
         outline: 3px solid #033C5A !important;
     }}
+    /* Visually-hidden utility class for screen-reader-only content (WCAG 1.1.1) */
+    .visually-hidden {{
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+    }}
     [data-baseweb="popover"] ul li:focus,
     [data-baseweb="popover"] ul li[data-highlighted="true"],
     [data-baseweb="menu"] [role="option"]:focus,
@@ -207,6 +215,15 @@ def _ydynam(df: pd.DataFrame, interval: int, padding: int = 5) -> int:
     """Compute upper y-axis limit, mirroring R's ydynam()."""
     max_val = int(df["rules"].max()) if len(df) > 0 else 1
     return (int(max_val / interval) + 1) * interval + padding
+
+
+def build_data_table(df: pd.DataFrame) -> pd.DataFrame:
+    """Return a clean, sorted year/party/rules table for accessible display."""
+    out = df.sort_values("year")[["year", "party", "rules"]].copy()
+    out["year"] = out["year"].astype(int)
+    out["rules"] = out["rules"].astype(int)
+    out.columns = ["Presidential Year", "Presidential Party", "Number of Rules"]
+    return out.reset_index(drop=True)
 
 
 def build_aria_summary(df_agency: pd.DataFrame, agency_acronym: str, agency_name: str) -> str:
@@ -409,191 +426,16 @@ def plot_agency_plotly(df_agency: pd.DataFrame, agency_acronym: str, agency_name
     return fig
 
 
-def fig_to_png_bytes(df_agency: pd.DataFrame, agency_acronym: str, agency_name: str) -> bytes:
-    """Render the chart server-side with matplotlib and return PNG bytes."""
-    df = df_agency.sort_values("year").copy()
-
-    years = df["year"].tolist()
-    rules = df["rules"].values
-    parties = df["party"].tolist()
-
-    interval = _get_interval(rules) if len(rules) > 0 else 1
-    upper = _ydynam(df, interval, padding=5)
-
-    if FONT_PATH.exists():
-        from matplotlib import font_manager
-        font_manager.fontManager.addfont(str(FONT_PATH))
-        plt.rcParams["font.family"] = "Avenir Next LT Pro"
-
-    fig, ax = plt.subplots(figsize=(14, 7.5))
-    fig.patch.set_facecolor("white")
-    ax.set_facecolor("white")
-
-    bar_width = 0.5
-
-    for i, (yr, r, p) in enumerate(zip(years, rules, parties)):
-        color = PARTY_COLORS.get(p, "#003366")
-        ax.bar(i, r, width=bar_width, color=color, edgecolor=color, linewidth=0)
-
-    ax.set_ylim(0, upper)
-    ax.yaxis.set_major_locator(ticker.MultipleLocator(interval))
-    ax.set_xticks(list(range(len(years))))
-    ax.set_xticklabels(years, rotation=45, ha="right", fontsize=9, color="#333333")
-    ax.tick_params(axis="x", length=0)
-
-    ax.set_ylabel("Number of Rules", color="#333333", fontsize=11)
-    ax.tick_params(axis="y", colors="#333333", labelsize=9, length=0)
-    ax.set_title(
-        (
-            f"{agency_acronym.upper()} Economically Significant Final Rules "
-            "Published by Presidential Year"
-        ),
-        fontsize=17,
-        color="#033C5A",
-        pad=20,
-    )
-
-    ax.yaxis.grid(True, color=RSC_GRAY, linestyle="-", linewidth=0.8)
-    ax.xaxis.grid(False)
-    ax.set_axisbelow(True)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_visible(False)
-    ax.spines["bottom"].set_visible(False)
-    ax.axhline(0, color=RSC_GRAY, linewidth=1.5)
-
-    dem_patch = mpatches.Patch(facecolor="#003366", label="Democratic")
-    rep_patch = mpatches.Patch(facecolor="#CC0000", label="Republican")
-    ax.legend(
-        handles=[dem_patch, rep_patch],
-        loc="upper center",
-        bbox_to_anchor=(0.5, -0.22),
-        ncol=2,
-        frameon=False,
-        fontsize=10,
-        labelcolor="#333333",
-    )
-
-    current_date = date.today().strftime("%B %d, %Y")
-    fig.text(
-        0.99,
-        0.04,
-        (
-            "Sources: Office of the Federal Register (federalregister.gov) for the years 2021 and onwards; "
-            "Office of Information and Regulatory Affairs (reginfo.gov) for all prior years.\n"
-            f"Updated: {current_date}"
-        ),
-        ha="right",
-        va="bottom",
-        fontsize=11,
-        color="#333333",
-    )
-
-    if LOGO_PATH.exists():
-        from matplotlib.image import imread as mpimg_read
-        logo_img = mpimg_read(str(LOGO_PATH))
-        logo_ax = fig.add_axes([0.02, 0.03, 0.28, 0.14])
-        logo_ax.imshow(logo_img, aspect="auto")
-        logo_ax.axis("off")
-
-    fig.subplots_adjust(left=0.07, right=0.99, top=0.88, bottom=0.32)
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=150, facecolor="white")
-    plt.close(fig)
-    buf.seek(0)
-    return buf.getvalue()
-
-
-def combined_fig_to_png_bytes(df_combined: pd.DataFrame) -> bytes:
-    """Matplotlib PNG for the all-agency combined chart (matches plot_combined_plotly styling)."""
-    df = df_combined.sort_values("year").copy()
-
-    years = df["year"].tolist()
-    rules = df["rules"].values
-    parties = df["party"].tolist()
-
-    interval = 25
-    upper = _ydynam(df, interval, padding=3)
-
-    if FONT_PATH.exists():
-        from matplotlib import font_manager
-        font_manager.fontManager.addfont(str(FONT_PATH))
-        plt.rcParams["font.family"] = "Avenir Next LT Pro"
-
-    fig, ax = plt.subplots(figsize=(14, 7.5))
-    fig.patch.set_facecolor("white")
-    ax.set_facecolor("white")
-
-    bar_width = 0.5
-
-    for i, (yr, r, p) in enumerate(zip(years, rules, parties)):
-        color = PARTY_COLORS.get(p, "#003366")
-        ax.bar(i, r, width=bar_width, color=color, edgecolor=color, linewidth=0)
-
-    ax.set_ylim(0, upper)
-    ax.yaxis.set_major_locator(ticker.MultipleLocator(interval))
-    ax.set_xticks(list(range(len(years))))
-    ax.set_xticklabels(years, rotation=45, ha="right", fontsize=9, color="#333333")
-    ax.tick_params(axis="x", length=0)
-
-    ax.set_ylabel("Number of Rules", color="#333333", fontsize=11)
-    ax.tick_params(axis="y", colors="#333333", labelsize=9, length=0)
-    ax.set_title(
-        "Economically Significant Final Rules Published by Presidential Year",
-        fontsize=17,
-        color="#033C5A",
-        pad=20,
-    )
-
-    ax.yaxis.grid(True, color=RSC_GRAY, linestyle="-", linewidth=0.8)
-    ax.xaxis.grid(False)
-    ax.set_axisbelow(True)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_visible(False)
-    ax.spines["bottom"].set_visible(False)
-    ax.axhline(0, color=RSC_GRAY, linewidth=1.5)
-
-    dem_patch = mpatches.Patch(facecolor="#003366", label="Democratic")
-    rep_patch = mpatches.Patch(facecolor="#CC0000", label="Republican")
-    ax.legend(
-        handles=[dem_patch, rep_patch],
-        loc="upper center",
-        bbox_to_anchor=(0.5, -0.22),
-        ncol=2,
-        frameon=False,
-        fontsize=10,
-        labelcolor="#333333",
-    )
-
-    current_date = date.today().strftime("%B %d, %Y")
-    fig.text(
-        0.99,
-        0.04,
-        (
-            "Sources: Office of the Federal Register (federalregister.gov) for the years 2021 and onwards; "
-            "Office of Information and Regulatory Affairs (reginfo.gov) for all prior years.\n"
-            f"Updated: {current_date}"
-        ),
-        ha="right",
-        va="bottom",
-        fontsize=11,
-        color="#333333",
-    )
-
-    if LOGO_PATH.exists():
-        from matplotlib.image import imread as mpimg_read
-        logo_img = mpimg_read(str(LOGO_PATH))
-        logo_ax = fig.add_axes([0.02, 0.03, 0.28, 0.14])
-        logo_ax.imshow(logo_img, aspect="auto")
-        logo_ax.axis("off")
-
-    fig.subplots_adjust(left=0.07, right=0.99, top=0.88, bottom=0.32)
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=150, facecolor="white")
-    plt.close(fig)
-    buf.seek(0)
-    return buf.getvalue()
+def fig_to_png_bytes(fig: go.Figure, scale: float = 2.0) -> bytes:
+    height = fig.layout.height or 600
+    width = int(height * 2)  # wide aspect ratio matching the responsive UI
+    try:
+        return pio.to_image(fig, format="png", width=width, height=height, scale=scale)
+    except Exception as exc:  # pragma: no cover - surfaced in UI instead
+        raise RuntimeError(
+            "PNG export requires the 'kaleido' package. Install it with "
+            "`pip install -U kaleido`."
+        ) from exc
 
 
 def plot_combined_plotly(df_combined: pd.DataFrame):
@@ -753,7 +595,7 @@ def main():
     df_combined = load_combined_data()
     chart_options = [TOTAL_CHART_LABEL] + agency_display_options
 
-    st.markdown('<div role="main" id="main-content">', unsafe_allow_html=True)
+    st.markdown('<main role="main" id="main-content">', unsafe_allow_html=True)
     st.title("Agency Economically Significant Final Rules by Presidential Year")
 
     col_controls, col_plot = st.columns([1.25, 3.25], gap="large")
@@ -781,10 +623,14 @@ def main():
     if is_total:
         fig_plotly = plot_combined_plotly(df_combined)
         aria_summary = build_combined_aria_summary(df_combined)
-        png_bytes = combined_fig_to_png_bytes(df_combined)
+        data_table = build_data_table(df_combined)
+        png_bytes = fig_to_png_bytes(fig_plotly)
         download_slug = "total"
         chart_region_aria = (
             "Bar chart: total economically significant final rules across all agencies by presidential year"
+        )
+        table_caption = (
+            "Data table: total economically significant final rules across all agencies, by presidential year"
         )
         footnote = (
             "This chart shows the total number of [economically significant]"
@@ -809,10 +655,15 @@ def main():
 
         fig_plotly = plot_agency_plotly(df_agency, selected_acronym, selected_name)
         aria_summary = build_aria_summary(df_agency, selected_acronym, selected_name)
-        png_bytes = fig_to_png_bytes(df_agency, selected_acronym, selected_name)
+        data_table = build_data_table(df_agency)
+        png_bytes = fig_to_png_bytes(fig_plotly)
         download_slug = selected_acronym.lower()
         chart_region_aria = (
             f"Bar chart: economically significant final rules by presidential year, {selected_acronym}"
+        )
+        table_caption = (
+            f"Data table: economically significant final rules by presidential year for {selected_name} "
+            f"({selected_acronym})"
         )
         footnote = (
             "This graph tracks the number of [economically significant]"
@@ -829,10 +680,10 @@ def main():
 
     with col_controls:
         st.markdown("---")
-        st.markdown("### Download Plot")
+        st.markdown("### Download")
 
         st.download_button(
-            label="Download Static (PNG)",
+            label="Download Static Image (PNG)",
             data=png_bytes,
             file_name=f"{download_slug}_econ_significant_rules_by_presidential_year.png",
             mime="image/png",
@@ -866,8 +717,8 @@ def main():
         st.markdown(
             f"""
             <div id="chart-region"
-                 role="region"
-                 aria-label="{chart_region_aria}"
+                 role="img"
+                 aria-label="{chart_region_aria}. {aria_summary}"
                  style="border-radius: 6px; padding: 10px; background-color: white;">
             """,
             unsafe_allow_html=True,
@@ -875,19 +726,12 @@ def main():
 
         st.plotly_chart(fig_plotly, use_container_width=True, config={"displayModeBar": False})
 
-        # Visually hidden aria-live region for screen readers (WCAG 1.1.1)
+        # Visually hidden aria-live region for screen readers (WCAG 1.1.1, 4.1.3)
         st.markdown(
             f"""
             <div aria-live="polite"
                  aria-atomic="true"
-                 style="
-                     position: absolute;
-                     width: 1px; height: 1px;
-                     padding: 0; margin: -1px;
-                     overflow: hidden;
-                     clip: rect(0,0,0,0);
-                     white-space: nowrap;
-                     border: 0;">
+                 class="visually-hidden">
                 {aria_summary}
             </div>
             """,
@@ -909,7 +753,9 @@ def main():
 
         st.markdown(footnote)
 
-        st.markdown("</div></div>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("</main>", unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
