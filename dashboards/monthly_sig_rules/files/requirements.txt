@@ -1,6 +1,6 @@
 pandas
 numpy
-plotly
+
 streamlit>=1.30
 matplotlib
 plotnine
@@ -10,3 +10,5 @@ adjustText
 
 altair<5
 matplotlib
+plotly<6.1
+kaleido==0.2.1
