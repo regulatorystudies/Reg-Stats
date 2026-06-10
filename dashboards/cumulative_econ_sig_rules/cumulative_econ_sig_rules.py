@@ -70,6 +70,7 @@ def _resolve_style_asset(filename: str) -> Path:
 LOGO_PATH = _resolve_style_asset("gw_ci_rsc_2cs_pos.png")
 
 red = "#b22222"
+buff20 = "#E8DDC6"
 darkgreen = "#006400"
 GWblue = "#033C5A"
 GWbuff = "#A69362"
@@ -190,14 +191,14 @@ st.markdown(
     .stDownloadButton > button,
     .stLinkButton a {{
         background-color: {GWblue} !important;
-        color: {GWbuff} !important;
-        border: 1px solid {GWbuff} !important;
+        color: {buff20} !important;
+        border: 1px solid {buff20} !important;
         font-family: {font_family_css} !important;
     }}
     .stButton > button *,
     .stDownloadButton > button *,
     .stLinkButton a * {{
-        color: {GWbuff} !important;
+        color: {buff20} !important;
     }}
     .stMultiSelect div[data-baseweb="select"] > div {{
         background-color: white !important;
@@ -215,7 +216,7 @@ st.markdown(
     [data-baseweb="tag"] > div {{
         background-color: {GWblue} !important;
         background: {GWblue} !important;
-        color: {GWbuff} !important;
+        color: {buff20} !important;
         fill: {GWbuff} !important;
     }}
     header[data-testid="stHeader"] {{
@@ -292,7 +293,8 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
     y_max = float(data_dl["econ_rules"].max())
     x_ticks = list(np.arange(0, max_months + 1, 4)) if max_months >= 4 else list(np.arange(0, max_months + 1, 1))
     y_top = int(ydynam(data_dl, 50, 0))
-    y_ticks = list(np.arange(0, y_top + 1, 50))
+    y_step = 25 if show_12_months_dl else 50
+    y_ticks = list(np.arange(0, y_top + 1, y_step))
 
     fig = go.Figure()
     _add_card(fig)
@@ -348,7 +350,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
     )
     # Sort endpoints by y so we can space out labels that are too close
     line_ends_sorted = line_ends_dl.sort_values("econ_rules_end").reset_index(drop=True)
-    min_gap = y_max * 0.035  # minimum vertical spacing between labels (in data units)
+    min_gap = (y_max) * 0.035  # minimum vertical spacing between labels (in data units)  # minimum vertical spacing between labels (in data units)
     last_y = None
     for _, row in line_ends_sorted.iterrows():
         label_y = row["econ_rules_end"] + 2
@@ -360,7 +362,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
             x=row["months_in_office_end"] - 0.4 if at_right_edge else row["months_in_office_end"] + 0.4,
             y=label_y,
             xref="x", yref="y",
-            text=str(row["president"]),
+            text=f"<b>{row['president']}</b>",
             showarrow=False,
             xanchor="right" if at_right_edge else "left",
             yanchor="bottom",
@@ -501,7 +503,7 @@ with left:
     st.subheader("Download")
 
     st.download_button(
-        label="Download Static Image (PNG)",
+        label="Static Image (PNG)",
         data=buf,
         file_name=f"cumulative_econ_significant_rules_{date.today().isoformat()}.png",
         mime="image/png",
@@ -509,7 +511,7 @@ with left:
         key="download_png"
     )
     st.download_button(
-        label="Download Interactive Plot (HTML)",
+        label="Interactive Plot (HTML)",
         data=html_bytes,
         file_name=f"cumulative_econ_significant_rules_{date.today().isoformat()}.html",
         mime="text/html",
@@ -518,7 +520,7 @@ with left:
     )
     with open(DATA_PATH, "rb") as _data_file:
         st.download_button(
-            label="Download Data (CSV)",
+            label="Data (CSV)",
             data=_data_file.read(),
             file_name=_CSV_NAME,
             mime="text/csv",
@@ -533,11 +535,12 @@ with right:
     _about_left_spacer, about_col = st.columns([1, 49], gap="small")
     with about_col:
         st.write(
-            "This dashboard tracks the cumulative number of economically significant final rules published by executive branch agencies under different administrations."
+            "This dashboard tracks the cumulative number of economically significant final rules published by executive branch agencies under different administrations. "
             "Economically significant rules are regulations that have an estimated "
-            "annual economic effect of $100 million or more, as "
-            "[defined](https://regulatorystudies.columbian.gwu.edu/terminology) "
-            "in section 3(f)(1) of Executive Order (EO) 12866."
+            "annual economic effect of \$100 million or more, as "
+            "[defined](https://regulatorystudies.columbian.gwu.edu/terminology)"
+            " in section 3(f)(1) of Executive Order 12866. "
+            "However, rules published between April 6, 2023, and January 20, 2025, are defined as economically significant if they meet a higher threshold of \$200 million, in accordance with Executive Order 14094 (which was rescinded on January 20, 2025). "
         )
         st.write(
             "[More information on how we collect data]"
