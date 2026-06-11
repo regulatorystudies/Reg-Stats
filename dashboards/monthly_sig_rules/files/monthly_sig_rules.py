@@ -38,7 +38,7 @@ DATA_ROOT = Path(__file__).resolve().parents[3]
 FONT_PATH = DATA_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
 FONT_FAMILY = "Avenir Next LT Pro, Avenir, Helvetica Neue, Arial, sans-serif"
 
-DATA_PATH = DATA_ROOT / "charts" / "data" / "monthly_significant_rules_by_admin.csv"
+DATA_PATH = DATA_ROOT / "data" / "monthly_es_rules" / "monthly_significant_rules_by_admin.csv"
 LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 ECON_COL = "Economically Significant"
 OTHER_COL = "Other Significant"
@@ -184,7 +184,7 @@ st.markdown(
 
 
 @st.cache_data
-def load_data():
+def load_data(file_mtime):
     df = pd.read_csv(DATA_PATH)
     df.columns = df.columns.str.replace(".", " ", regex=False)
     return df
@@ -374,7 +374,7 @@ def fig_to_png_bytes(fig: go.Figure, width: int = 1200, scale: int = 2) -> bytes
     return fig.to_image(format="png", width=width, height=height, scale=scale)
 
 def main():
-    df = load_data()
+    df = load_data(DATA_PATH.stat().st_mtime)
     admins = ["Trump 47", "Biden", "Trump 45", "Obama", "Bush 43", "Clinton", "Bush 41", "Reagan"]
     if not admins:
         st.warning("No administrations found in the data.")
