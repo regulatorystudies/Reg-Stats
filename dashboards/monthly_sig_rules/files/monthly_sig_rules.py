@@ -3,6 +3,7 @@ title: Monthly Significant Final Rules by Administration
 author: Sayam Palrecha
 Date: June 4, 2026
 """
+from datetime import date
 import base64
 import sys
 from pathlib import Path
@@ -32,7 +33,7 @@ except (FileNotFoundError, OSError):
         "RSCdarkgray": "#bdbdbd",
         "fill": "#B2DDF4"
     }
-
+axis_text = "#222222"
 DATA_ROOT = Path(__file__).resolve().parents[3]
 FONT_PATH = DATA_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
 FONT_FAMILY = "Avenir Next LT Pro, Avenir, Helvetica Neue, Arial, sans-serif"
@@ -274,7 +275,7 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         font=dict(family=FONT_FAMILY),
         title=dict(
             text=f"Significant Final Rules Published Each Month<br>under the {admin_name} Administration",
-            font=dict(size=17, color='#033C5A', family=FONT_FAMILY),
+            font=dict(size=17, color='black', family=FONT_FAMILY),
             x=0.5,
             xanchor="center",
         ),
@@ -330,8 +331,12 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
     )
 
     fig.add_annotation(
-        text="Sources: Office of the Federal Register (federalregister.gov) for Biden administration and<br> "
-             "all subsequent administrations Office of Information and Regulatory Affairs (reginfo.gov)<br> for all prior administrations. <br>Updated: April 22, 2026",
+        text=(
+            "Sources: Office of the Federal Register (federalregister.gov) for Biden<br>"
+            "administration and all subsequent administrations; Office of Information<br>"
+            "and Regulatory Affairs (reginfo.gov) for all prior administrations.<br>"
+            f"Accessed: {date.today().strftime('%B %d, %Y')}"
+        ),
         xref="paper",
         yref="paper",
         x=1.0,
@@ -342,6 +347,8 @@ def plot_admin_plotly(df_admin: pd.DataFrame, admin_name: str):
         xanchor="right",
         yanchor="top",
     )
+
+
 
     if LOGO_PATH.exists():
         with open(LOGO_PATH, "rb") as f:
@@ -438,7 +445,7 @@ def main():
 
         png_bytes = fig_to_png_bytes(fig_plotly)
         st.download_button(
-            label="Download Static Image (PNG)",
+            label="Static Image (PNG)",
             data=png_bytes,
             file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.png",
             mime="image/png",
@@ -448,7 +455,7 @@ def main():
 
         html_data = fig_plotly.to_html(full_html=True, include_plotlyjs="cdn")
         st.download_button(
-            label="Download Interactive Plot (HTML)",
+            label="Interactive Plot (HTML)",
             data=html_data,
             file_name=f"monthly_sig_rules_{admin.replace(' ', '_')}.html",
             mime="text/html",
@@ -458,7 +465,7 @@ def main():
 
         csv_data = df.to_csv(index=False)
         st.download_button(
-            label="Download Data (CSV)",
+            label="Data (CSV)",
             data=csv_data,
             file_name="monthly_significant_rules_by_admin.csv",
             mime="text/csv",
@@ -532,6 +539,10 @@ def main():
             "April 6, 2023, and January 20, 2025, are defined as economically significant "
             "if they meet a higher threshold of \\$200 million, in accordance with Executive "
             "Order 14094 (which was rescinded on January 20, 2025)."
+        )
+        st.write(
+            "[More information on how we collect data]"
+            "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
         )
 
         # Close chart region and main divs
