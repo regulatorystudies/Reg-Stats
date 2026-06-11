@@ -325,7 +325,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
         x=0.51, y=0.955,
         text="Cumulative Economically Significant Final Rules Published by Administration",
         showarrow=False, xanchor="center", yanchor="top",
-        font=dict(size=19.5, color=axis_text)
+        font=dict(size=19.5, color='black')
     )
 
     # --- first-term dashed line + label ---
