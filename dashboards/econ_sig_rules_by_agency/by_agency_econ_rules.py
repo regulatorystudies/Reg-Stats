@@ -32,11 +32,11 @@ GW_COLORS = {
 DATA_ROOT = Path(__file__).resolve().parents[2]
 FONT_PATH = DATA_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
 FONT_FAMILY = "Avenir Next LT Pro, Avenir, Helvetica Neue, Arial, sans-serif"
-DATA_PATH = DATA_ROOT / "charts" / "data" / "agency_econ_significant_rules_by_presidential_year.csv"
-COMBINED_DATA_PATH = DATA_ROOT / "charts" / "data" / "econ_significant_rules_by_presidential_year.csv"
+DATA_PATH = DATA_ROOT / "data" / "es_rules" / "agency_econ_significant_rules_by_presidential_year.csv"
+COMBINED_DATA_PATH =DATA_ROOT / "data" / "es_rules" / "econ_significant_rules_by_presidential_year.csv"
 LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 
-TOTAL_CHART_LABEL = "Total Economically Significant"
+TOTAL_CHART_LABEL = "All Agencies (Total)"
 
 # Party colors matching the notebook style
 PARTY_COLORS = {"Democratic": "#003366", "Republican": "#CC0000"}
@@ -44,7 +44,7 @@ LIGHTBLUE = "#6699CC"   # diagonal-stripe color for Democratic bars
 RSC_GRAY = "#AAAAAA"    # grid lines & axis lines
 
 st.set_page_config(
-    page_title="Agency Economically Significant Rules by Presidential Year",
+    page_title="Economically Significant Final Rules Published Agency",
     layout="wide",
 )
 BG_COLOR = "#E8DDC6"
@@ -334,7 +334,7 @@ def plot_agency_plotly(df_agency: pd.DataFrame, agency_acronym: str, agency_name
                 f"{agency_acronym.upper()} Economically Significant Final Rules"
                 f"<br>Published by Presidential Year"
             ),
-            font=dict(size=17, color="#033C5A", family=FONT_FAMILY),
+            font=dict(size=17, color="black", family=FONT_FAMILY),
             x=0.5,
             xanchor="center",
         ),
@@ -395,7 +395,7 @@ def plot_agency_plotly(df_agency: pd.DataFrame, agency_acronym: str, agency_name
         text=(
             "Sources: Office of the Federal Register (federalregister.gov) for the years 2021 and onwards; "
             "<br>Office of Information and Regulatory Affairs (reginfo.gov) for all prior years. "
-            f"Updated: {current_date}"
+            f"Accessed: {current_date}"
         ),
         xref="paper",
         yref="paper",
@@ -488,7 +488,7 @@ def plot_combined_plotly(df_combined: pd.DataFrame):
         font=dict(family=FONT_FAMILY),
         title=dict(
             text="Economically Significant Final Rules Published by Presidential Year",
-            font=dict(size=17, color="#033C5A", family=FONT_FAMILY),
+            font=dict(size=17, color="black", family=FONT_FAMILY),
             x=0.5,
             xanchor="center",
         ),
@@ -605,7 +605,7 @@ def main():
             '<div role="region" aria-label="Chart controls">',
             unsafe_allow_html=True,
         )
-        st.markdown("### Select chart")
+        st.markdown("### Select Agency")
 
         selected_display = st.selectbox(
             "Chart selection",
@@ -613,7 +613,7 @@ def main():
             index=0,
             label_visibility="hidden",
             help=(
-                "Choose Total Economically Significant for government-wide totals by presidential year, "
+                "Choose Total Economically Significant for selected federal agencies totals by presidential year, "
                 "or choose an agency."
             ),
         )
@@ -633,16 +633,19 @@ def main():
             "Data table: total economically significant final rules across all agencies, by presidential year"
         )
         footnote = (
-            "This chart shows the total number of [economically significant]"
-            "(https://regulatorystudies.columbian.gwu.edu/terminology) final rules published government-wide "
+            "This dashboard shows the total number of [economically significant]"
+            "(https://regulatorystudies.columbian.gwu.edu/terminology) final rules published by selected federal agencies "
             "per presidential year (February\u00a01\u2013January\u00a031). "
             "Economically significant rules are regulations with an estimated annual economic "
             "effect of \\$100\u00a0million or more, as defined in section\u00a03(f)(1) of "
             "Executive Order\u00a012866. Rules published between April\u00a06,\u00a02023, and "
             "January\u00a020,\u00a02025, are defined as economically significant if they meet "
             "a higher threshold of \\$200\u00a0million, per Executive Order\u00a014094 (rescinded "
-            "January\u00a020,\u00a02025). Democratic years appear in navy; Republican years in red."
+            "January\u00a020,\u00a02025).  \n\n"
+            "[More information on how we collect data]"
+            "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
         )
+
     else:
         selected_acronym = selected_display.split(" \u2014 ")[0]
         selected_name = agency_names.get(selected_acronym, selected_acronym)
@@ -666,7 +669,7 @@ def main():
             f"({selected_acronym})"
         )
         footnote = (
-            "This graph tracks the number of [economically significant]"
+            "This dashboard tracks the number of [economically significant]"
             "(https://regulatorystudies.columbian.gwu.edu/terminology) final rules "
             "published by each agency per presidential year (February\u00a01\u2013January\u00a031). "
             "Economically significant rules are regulations with an estimated annual economic "
@@ -674,16 +677,18 @@ def main():
             "Executive Order\u00a012866. Rules published between April\u00a06,\u00a02023, and "
             "January\u00a020,\u00a02025, are defined as economically significant if they meet "
             "a higher threshold of \\$200\u00a0million, per Executive Order\u00a014094 (rescinded "
-            "January\u00a020,\u00a02025). Democratic administrations appear in navy with diagonal "
-            "stripes; Republican administrations appear in red."
-        )
+            "January\u00a020,\u00a02025).  \n\n"
+            "[More information on how we collect data]"
+            "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
 
+
+        )
     with col_controls:
         st.markdown("---")
         st.markdown("### Download")
 
         st.download_button(
-            label="Download Static Image (PNG)",
+            label="Static Image (PNG)",
             data=png_bytes,
             file_name=f"{download_slug}_econ_significant_rules_by_presidential_year.png",
             mime="image/png",
@@ -693,7 +698,7 @@ def main():
 
         html_data = fig_plotly.to_html(full_html=True, include_plotlyjs="cdn")
         st.download_button(
-            label="Download Interactive Plot (HTML)",
+            label="Interactive Plot (HTML)",
             data=html_data,
             file_name=f"{download_slug}_econ_significant_rules_by_presidential_year.html",
             mime="text/html",
@@ -701,9 +706,19 @@ def main():
             use_container_width=True,
         )
 
+        combined_csv_data = COMBINED_DATA_PATH.read_bytes()
+        st.download_button(
+            label="Data - Cumulative Total (CSV)",
+            data=combined_csv_data,
+            file_name="econ_significant_rules_by_presidential_year.csv",
+            mime="text/csv",
+            help="Download the full dataset as a CSV file.",
+            use_container_width=True,
+        )
+
         csv_data = df.to_csv(index=False)
         st.download_button(
-            label="Download Data (CSV)",
+            label="Data – By Agency (CSV)",
             data=csv_data,
             file_name="agency_econ_significant_rules_by_presidential_year.csv",
             mime="text/csv",
@@ -723,7 +738,6 @@ def main():
             """,
             unsafe_allow_html=True,
         )
-
         st.plotly_chart(fig_plotly, use_container_width=True, config={"displayModeBar": False})
 
         # Visually hidden aria-live region for screen readers (WCAG 1.1.1, 4.1.3)
@@ -750,13 +764,11 @@ def main():
                 """,
                 unsafe_allow_html=True,
             )
-
         st.markdown(footnote)
 
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("</main>", unsafe_allow_html=True)
-
 
 if __name__ == "__main__":
     main()

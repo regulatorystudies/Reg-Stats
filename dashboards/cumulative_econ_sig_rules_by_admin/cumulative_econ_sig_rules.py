@@ -427,7 +427,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
         paper_bgcolor='white',
         title=dict(text=""),
         xaxis=dict(
-            title=dict(text="Months In Office", font=dict(size=13, color=axis_text)),
+            title=dict(text="Months in Office", font=dict(size=13, color=axis_text)),
             tickfont=dict(size=11, color="#555555"),
             range=[0, max_months],
             tickvals=x_ticks,

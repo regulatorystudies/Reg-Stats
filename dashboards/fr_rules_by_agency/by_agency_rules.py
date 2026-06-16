@@ -30,10 +30,11 @@ GW_COLORS = {
 DATA_ROOT = Path(__file__).resolve().parents[2]
 FONT_PATH = DATA_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf"
 FONT_FAMILY = "Avenir Next LT Pro, Avenir, Helvetica Neue, Arial, sans-serif"
-DATA_PATH = DATA_ROOT / "charts" / "data" / "agency_federal_register_rules_by_presidential_year.csv"
+DATA_PATH = DATA_ROOT / "data" / "fr_rules" / "agency_federal_register_rules_by_presidential_year.csv"
+TOTAL_DATA = DATA_ROOT / "data" / "fr_rules" / "federal_register_rules_by_presidential_year.csv"
 LOGO_PATH = DATA_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png"
 
-TOTAL_CHART_LABEL = "Total Rules"
+TOTAL_CHART_LABEL = "All Agencies (Total)"
 
 RSC_GRAY = "#E0E0E0"
 
@@ -207,7 +208,6 @@ def _to_long(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def _filter_leading_zeros(df_long: pd.DataFrame) -> pd.DataFrame:
-    """Drop leading years with zero rules before the first non-zero count."""
     found_non_zero = False
     keep = []
     for rule_num in df_long["rule_num"]:
@@ -218,7 +218,6 @@ def _filter_leading_zeros(df_long: pd.DataFrame) -> pd.DataFrame:
 
 
 def _get_interval(values) -> int:
-    """Mirror R get_interval() from agency_federal_register_rules.Rmd."""
     if len(values) == 0:
         return 1
     max_value = max(values) / 5
@@ -230,7 +229,6 @@ def _get_interval(values) -> int:
 
 
 def _ydynam(values, interval: int) -> int:
-    """Mirror R ydynam() from local_utils.R."""
     if len(values) == 0:
         return 10
     max_val = max(values)
@@ -315,7 +313,6 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
             line=dict(color=style["color"], width=2, dash=style["dash"]),
             hovertemplate=(
                 f"<b>{rule_type}</b><br>"
-                "Rules: <b>%{y}</b><extra></extra>"
             ),
         ))
 
@@ -326,8 +323,8 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
         height=575,
         font=dict(family=FONT_FAMILY),
         title=dict(
-            text=f"{agency_acronym.upper() if agency_acronym!= 'total' else 'Total'} Rules Published by Presidential Year",
-            font=dict(size=17, color="#033C5A", family=FONT_FAMILY),
+            text=f"{agency_acronym.upper() if agency_acronym != 'total' else 'Total'} Rules Published by Presidential Year",
+            font=dict(size=17, color="black", family=FONT_FAMILY),
             x=0.5,
             xanchor="center",
         ),
@@ -352,7 +349,7 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
             tickfont=dict(color="#333333", family=FONT_FAMILY),
             tickmode="linear",
             dtick=1,
-            range=[year_min, year_max + 0.5],
+            range=[year_min-0.18, year_max + 0.5],
         ),
         legend=dict(
             orientation="h",
@@ -381,7 +378,7 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
         text=(
             "Source: Federal Register API;<br>"
             "excludes corrections to rules.<br><br>"
-            f"Updated: {current_date}"
+            f"Accessed: {current_date}"
         ),
         xref="paper",
         yref="paper",
@@ -416,13 +413,13 @@ import copy
 import plotly.io as pio
 
 
-def fig_to_png_bytes(fig: go.Figure, scale: float = 2.0) -> bytes:
+def fig_to_png_bytes(fig, scale= 1.5):
     export_fig = copy.deepcopy(fig)
 
-    height = (fig.layout.height or 500)+200   # add room for logo + source note
-    width = int(height * 2)                     # wide aspect ratio matching the UI
+    height = 1200  # add room for logo + source note
+    width = int(height) - 300  # wide aspect ratio matching the UI
 
-    export_fig.update_layout(height=height, width=width, margin=dict(b=300))
+    export_fig.update_layout(height=height, width=width, margin=dict(b=200))
 
     try:
         return pio.to_image(export_fig, format="png", width=width, height=height, scale=scale)
@@ -448,7 +445,7 @@ def main():
     chart_options = [TOTAL_CHART_LABEL] + agency_display_options
 
     st.markdown('<div role="main" id="main-content">', unsafe_allow_html=True)
-    st.title("Agency Rules Published in the Federal Register by Presidential Year")
+    st.title("Rules Published in the Federal Register by Agency")
 
     col_controls, col_plot = st.columns([1.25, 3.25], gap="large")
 
@@ -457,7 +454,7 @@ def main():
             '<div role="region" aria-label="Chart controls">',
             unsafe_allow_html=True,
         )
-        st.markdown("### Select Chart")
+        st.markdown("### Select Agency")
 
         selected_display = st.selectbox(
             "Chart selection",
@@ -484,9 +481,11 @@ def main():
             "Line chart: total final and proposed Federal Register rules by presidential year"
         )
         footnote = (
-            "This chart shows the total number of final and proposed rules published in the "
+            "This dashboard shows the total number of final and proposed rules published in the "
             "Federal Register government-wide per presidential year. Final rules appear as a "
-            "solid navy line; proposed rules appear as a dashed light-blue line."
+            "solid navy line; proposed rules appear as a dashed light-blue line.  \n\n"
+            "[More information on how we collect data]"
+            "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
         )
     else:
         selected_acronym = selected_display.split(" \u2014 ")[0]
@@ -506,9 +505,11 @@ def main():
             f"Line chart: Federal Register rules by presidential year, {selected_acronym}"
         )
         footnote = (
-            "This graph tracks the number of final and proposed rules published in the "
+            "This dashboard tracks the number of final and proposed rules published in the "
             "Federal Register by each agency per presidential year. Final rules appear as a "
-            "solid navy line; proposed rules appear as a dashed light-blue line."
+            "solid navy line; proposed rules appear as a dashed light-blue line.  \n\n"
+            "[More information on how we collect data]"
+            "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
         )
 
     with col_controls:
@@ -516,7 +517,7 @@ def main():
         st.markdown("### Download Plot")
 
         st.download_button(
-            label="Download Static Image (PNG)",
+            label="Static Image (PNG)",
             data=png_bytes,
             file_name=f"{download_slug}_federal_register_rules_by_presidential_year.png",
             mime="image/png",
@@ -526,17 +527,26 @@ def main():
 
         html_data = fig_plotly.to_html(full_html=True, include_plotlyjs="cdn")
         st.download_button(
-            label="Download Interactive Plot (HTML)",
+            label="Interactive Plot (HTML)",
             data=html_data,
             file_name=f"{download_slug}_federal_register_rules_by_presidential_year.html",
             mime="text/html",
             help="Download an interactive version of the plot.",
             use_container_width=True,
         )
+        combined_csv_data = TOTAL_DATA.read_bytes()
+        st.download_button(
+            label="Data - Cumulative Total (CSV)",
+            data=combined_csv_data,
+            file_name="federal_register_rules_by_presidential_year.csv",
+            mime="text/csv",
+            help="Download the full dataset as a CSV file.",
+            use_container_width=True,
+        )
 
         csv_data = df.to_csv(index=False)
         st.download_button(
-            label="Download Data (CSV)",
+            label="Data – By Agency (CSV)",
             data=csv_data,
             file_name="agency_federal_register_rules_by_presidential_year.csv",
             mime="text/csv",

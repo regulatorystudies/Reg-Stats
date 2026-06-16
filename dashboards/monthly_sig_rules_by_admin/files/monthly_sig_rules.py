@@ -420,12 +420,12 @@ def main():
 
     with col_controls:
         st.markdown("---")
-        st.markdown("### Number of Months to Display")
+        st.markdown("### Select Number of Months to Display")
         num_months = st.slider(
             "Number of Months to Display",
             min_value=6,
             max_value=total_months,
-            value=total_months - 1,
+            value=total_months,
             step=1,
             label_visibility="collapsed",
             help="Show the first N months of data from the start of the administration. Drag to adjust.",
@@ -530,7 +530,7 @@ def main():
             )
 
         st.markdown(
-            "This graph tracks the number of [economically significant]"
+            "This dashboard tracks the number of [economically significant]"
             "(https://regulatorystudies.columbian.gwu.edu/terminology) final rules "
             "and other significant final rules published each month during the selected "
             "administration. Economically significant rules are regulations that have an "
