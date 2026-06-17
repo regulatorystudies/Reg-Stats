@@ -395,7 +395,7 @@ def plot_agency_plotly(df_agency: pd.DataFrame, agency_acronym: str, agency_name
         text=(
             "Sources: Office of the Federal Register (federalregister.gov) for the years 2021 and onwards; "
             "<br>Office of Information and Regulatory Affairs (reginfo.gov) for all prior years. "
-            f"Accessed: {current_date}"
+            f"<br>Accessed: {current_date}"
         ),
         xref="paper",
         yref="paper",
@@ -549,7 +549,7 @@ def plot_combined_plotly(df_combined: pd.DataFrame):
         text=(
             "Sources: Office of the Federal Register (federalregister.gov) for the years 2021 and onwards; "
             "<br>Office of Information and Regulatory Affairs (reginfo.gov) for all prior years. "
-            f"<br>Updated: {current_date}"
+            f"<br>Accessed: {current_date}"
         ),
         xref="paper",
         yref="paper",
@@ -708,11 +708,11 @@ def main():
 
         combined_csv_data = COMBINED_DATA_PATH.read_bytes()
         st.download_button(
-            label="Data - Cumulative Total (CSV)",
+            label="Data - Total (CSV)",
             data=combined_csv_data,
             file_name="econ_significant_rules_by_presidential_year.csv",
             mime="text/csv",
-            help="Download the full dataset as a CSV file.",
+            help="Download the total dataset as a CSV file.",
             use_container_width=True,
         )
 
@@ -722,7 +722,7 @@ def main():
             data=csv_data,
             file_name="agency_econ_significant_rules_by_presidential_year.csv",
             mime="text/csv",
-            help="Download the full dataset as a CSV file.",
+            help="Download the by-agency dataset as a CSV file.",
             use_container_width=True,
         )
 

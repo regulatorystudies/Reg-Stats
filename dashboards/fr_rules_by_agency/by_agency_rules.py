@@ -312,7 +312,7 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
             name=rule_type,
             line=dict(color=style["color"], width=2, dash=style["dash"]),
             hovertemplate=(
-                f"<b>{rule_type}</b><br>"
+                f"{rule_type}: %{{y}}<extra></extra>"
             ),
         ))
 
@@ -323,7 +323,7 @@ def plot_agency_plotly(df_long: pd.DataFrame, agency_acronym: str, agency_name: 
         height=575,
         font=dict(family=FONT_FAMILY),
         title=dict(
-            text=f"{agency_acronym.upper() if agency_acronym != 'total' else 'Total'} Rules Published by Presidential Year",
+            text=f"{agency_acronym.upper() if agency_acronym != 'total' else 'Total'} Rules Published in the Federal Register by Presidential Year",
             font=dict(size=17, color="black", family=FONT_FAMILY),
             x=0.5,
             xanchor="center",
@@ -481,8 +481,8 @@ def main():
             "Line chart: total final and proposed Federal Register rules by presidential year"
         )
         footnote = (
-            "This dashboard shows the total number of final and proposed rules published in the "
-            "Federal Register government-wide per presidential year. Final rules appear as a "
+            "This dashboard tracks the number of final and proposed rules published in the "
+            "Federal Register by each agency per presidential year. Final rules appear as a "
             "solid navy line; proposed rules appear as a dashed light-blue line.  \n\n"
             "[More information on how we collect data]"
             "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
@@ -514,7 +514,7 @@ def main():
 
     with col_controls:
         st.markdown("---")
-        st.markdown("### Download Plot")
+        st.markdown("### Download")
 
         st.download_button(
             label="Static Image (PNG)",
@@ -536,11 +536,11 @@ def main():
         )
         combined_csv_data = TOTAL_DATA.read_bytes()
         st.download_button(
-            label="Data - Cumulative Total (CSV)",
+            label="Data - Total (CSV)",
             data=combined_csv_data,
             file_name="federal_register_rules_by_presidential_year.csv",
             mime="text/csv",
-            help="Download the full dataset as a CSV file.",
+            help="Download the total dataset as a CSV file.",
             use_container_width=True,
         )
 
@@ -550,7 +550,7 @@ def main():
             data=csv_data,
             file_name="agency_federal_register_rules_by_presidential_year.csv",
             mime="text/csv",
-            help="Download the full dataset as a CSV file.",
+            help="Download the by-agency dataset as a CSV file.",
             use_container_width=True,
         )
 
