@@ -413,13 +413,14 @@ import copy
 import plotly.io as pio
 
 
-def fig_to_png_bytes(fig, scale= 1.5):
+def fig_to_png_bytes(fig, scale=3):
     export_fig = copy.deepcopy(fig)
 
-    height = 1200  # add room for logo + source note
-    width = int(height) - 300  # wide aspect ratio matching the UI
+    # Match the on-screen shape: height stays 575, pick a wide width.
+    height = 575
+    width = 1100  # wide, like the column it renders in
 
-    export_fig.update_layout(height=height, width=width, margin=dict(b=200))
+    export_fig.update_layout(height=height, width=width)
 
     try:
         return pio.to_image(export_fig, format="png", width=width, height=height, scale=scale)
