@@ -596,7 +596,7 @@ def main():
     chart_options = [TOTAL_CHART_LABEL] + agency_display_options
 
     st.markdown('<main role="main" id="main-content">', unsafe_allow_html=True)
-    st.title("Agency Economically Significant Final Rules by Presidential Year")
+    st.title("Economically Significant Final Rules Published by Agency")
 
     col_controls, col_plot = st.columns([1.25, 3.25], gap="large")
 

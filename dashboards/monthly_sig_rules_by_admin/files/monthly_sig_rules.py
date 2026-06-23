@@ -529,17 +529,8 @@ def main():
                 unsafe_allow_html=True,
             )
 
-        st.markdown(
-            "This dashboard tracks the number of [economically significant]"
-            "(https://regulatorystudies.columbian.gwu.edu/terminology) final rules "
-            "and other significant final rules published each month during the selected "
-            "administration. Economically significant rules are regulations that have an "
-            "estimated annual economic effect of \\$100 million or more, as defined in "
-            "section 3(f)(1) of Executive Order 12866. However, rules published between "
-            "April 6, 2023, and January 20, 2025, are defined as economically significant "
-            "if they meet a higher threshold of \\$200 million, in accordance with Executive "
-            "Order 14094 (which was rescinded on January 20, 2025)."
-        )
+        st.markdown("This dashboard tracks the monthly number of “significant” final rules, as [defined]" 
+        "(https://regulatorystudies.columbian.gwu.edu/terminology) by E.O. 12866 section 3(f), published by the selected administration. “Economically significant” rules are those defined by section 3(f)(1) and “other significant” rules are those defined in section 3(f)(2-4). Note that from April 6, 2023 to January 20, 2025, these definitions changed such that the economically significant (section 3(f)(1)) required a higher impact threshold (\\$200 million vs. $100 million).")
         st.write(
             "[More information on how we collect data]"
             "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"

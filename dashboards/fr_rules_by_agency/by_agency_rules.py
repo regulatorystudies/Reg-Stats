@@ -482,8 +482,8 @@ def main():
             "Line chart: total final and proposed Federal Register rules by presidential year"
         )
         footnote = (
-            "This dashboard tracks the number of final and proposed rules published in the "
-            "Federal Register by each agency per presidential year. Final rules appear as a "
+            "This dashboard tracks the number of final and proposed rules published in the [Federal Register]" 
+            "(https://www.federalregister.gov/) by agency per presidential year. Final rules appear as a "
             "solid navy line; proposed rules appear as a dashed light-blue line.  \n\n"
             "[More information on how we collect data]"
             "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
