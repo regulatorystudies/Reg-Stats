@@ -2,8 +2,6 @@
 
 This folder contains the **interactive dashboards** published on the [Regulatory Studies Center website](https://regulatorystudies.columbian.gwu.edu/interactive-dashboards-1). Each dashboard is a small web app that lets visitors explore RegStats data—filter by administration, agency, or time period, and download charts or data.
 
-If you are taking over this work, start here. This guide explains how the dashboards fit into the wider repository, what each folder does, and how to keep the live dashboards up to date—whether or not you write code.
-
 ---
 
 ## How dashboards relate to the rest of RegStats
