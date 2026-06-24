@@ -23,7 +23,7 @@ The root [README](../README.md) has a full list of every RegStats dataset, its u
 
 ---
 
-## Repository layout (this folder)
+## Repository layout
 
 ```
 dashboards/
