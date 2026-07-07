@@ -36,7 +36,6 @@ def _resolve_data_root() -> Path:
 
 DATA_ROOT = _resolve_data_root()
 
-
 def _data_path_candidates() -> tuple[Path, ...]:
     candidates = (
         _APP_DIR / "data" / "cumulative_es_rules" / _CSV_NAME,
@@ -49,10 +48,8 @@ def _data_path_candidates() -> tuple[Path, ...]:
         return (Path(env_csv).expanduser(),) + candidates
     return candidates
 
-
 _DATA_PATH_CANDIDATES = _data_path_candidates()
 DATA_PATH = next((p for p in _DATA_PATH_CANDIDATES if p.is_file()), None)
-
 
 def _resolve_style_asset(filename: str) -> Path:
     style_dir = os.environ.get("STYLE_DIR", "").strip()
@@ -69,6 +66,7 @@ def _resolve_style_asset(filename: str) -> Path:
 
 LOGO_PATH = _resolve_style_asset("gw_ci_rsc_2cs_pos.png")
 
+# To change the color accent here put the new hex codes here
 red = "#b22222"
 buff20 = "#E8DDC6"
 darkgreen = "#006400"
@@ -96,13 +94,12 @@ def load_font_base64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-
+# ydynam function used in our R scripts if you chang the step here
 def ydynam(df: pd.DataFrame, step: int = 50, pad_steps: int = 3) -> int:
     if df.empty:
         return step * pad_steps
     y_max = df["econ_rules"].max()
     return int(np.ceil((y_max + step * pad_steps) / step) * step)
-
 
 if DATA_PATH is None:
     st.error(
@@ -153,6 +150,8 @@ if "show_12_months" not in st.session_state:
 
 st.title("Cumulative Economically Significant Final Rules Published by Administration")
 
+
+# CSS for the colors and buttons and functions in the plot and other things
 left, right = st.columns([3, 9], gap="large")
 font_base64 = load_font_base64(FONT_PATH)
 font_family_css = "'AvenirCustom', sans-serif" if font_base64 else "sans-serif"
@@ -253,17 +252,10 @@ else:
 
 
 def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_months_dl: bool):
-    """
-    Interactive Plotly chart:
-      - GWbuff outer background, white card
-      - Title, footer note, sources, logo, endpoint labels, first-term line
-    This same figure is used for the on-screen view, the HTML download, and the
-    static PNG download (via Kaleido), so all three match exactly.
-    """
     axis_text = "#222222"
     grid_color = "#d9d9d9"
 
-    # --- shared card shape helper ---
+    # shared card shape helper
     def _add_card(f):
         f.add_shape(
             type="rect", xref="paper", yref="paper",
@@ -271,7 +263,6 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
             fillcolor="#ffffff", line=dict(width=0), layer="below"
         )
 
-    # --- empty-state ---
     if data_dl.empty:
         fig = go.Figure()
         _add_card(fig)
@@ -299,7 +290,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
     fig = go.Figure()
     _add_card(fig)
 
-    # --- data lines with hover ---
+    # data lines with hover
     for president in selected_presidents_dl:
         pres_data = data_dl[data_dl["president"] == president].sort_values("months_in_office")
         if pres_data.empty:
@@ -319,7 +310,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
             )
         ))
 
-    # --- chart title ---
+    # chart title
     fig.add_annotation(
         xref="paper", yref="paper",
         x=0.51, y=0.955,
@@ -328,7 +319,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
         font=dict(size=19.5, color='black')
     )
 
-    # --- first-term dashed line + label ---
+    # first-term dashed line + label
     if show_first_term_line:
         fig.add_vline(x=48, line_dash="dash", line_color="#9c9c9c", line_width=0.8)
         fig.add_annotation(
@@ -339,7 +330,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
             font=dict(size=10.5, color="#666666")
         )
 
-    # --- endpoint labels ---
+    # endpoint labels
     line_ends_dl = (
         data_dl.groupby("president", observed=True)
         .agg(
@@ -369,7 +360,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
             font=dict(size=11, color=admin_color_map.get(str(row["president"]), "#333333"))
         )
 
-    # --- footer note ---
+    # footer note
     fig.add_annotation(
         xref="paper", yref="paper",
         x=0.075, y=0.175,
@@ -381,7 +372,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
         font=dict(size=8.5, color=axis_text), align="left"
     )
 
-    # --- footer sources (3 lines, no date) ---
+    # footer sources (3 lines, no date)
     fig.add_annotation(
         xref="paper", yref="paper",
         x=0.94, y=0.175,
@@ -394,7 +385,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
         font=dict(size=8.5, color=axis_text), align="right"
     )
 
-    # --- date line (separate, below sources) ---
+    # date line (separate, below sources)
     fig.add_annotation(
         xref="paper", yref="paper",
         x=0.94, y=0.08,
@@ -403,7 +394,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
         font=dict(size=8.5, color=axis_text), align="right"
     )
 
-    # --- logo ---
+    # logo
     _logo_path = Path(LOGO_PATH)
     if _logo_path.exists():
         try:
@@ -421,7 +412,7 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
         except Exception:
             pass
 
-    # --- layout ---
+    # layout
     fig.update_layout(
         plot_bgcolor="#ffffff",
         paper_bgcolor='white',
@@ -459,24 +450,25 @@ def make_plotly_chart(data_dl: pd.DataFrame, selected_presidents_dl, show_12_mon
     return fig
 
 
-# --- Build the figure once; reuse for screen, HTML, and PNG so all three match ---
+# Build the figure once; reusing it for all the three seprate buttons here
 chart_fig = make_plotly_chart(
     data_dl=filtered_data,
     selected_presidents_dl=selected_presidents,
     show_12_months_dl=st.session_state.show_12_months
 )
 
-# --- Static PNG download buffer (rendered from the same Plotly figure via Kaleido) ---
+# Static PNG download buffer
 png_bytes = chart_fig.to_image(format="png", width=1200, height=660, scale=3)
 buf = io.BytesIO(png_bytes)
 buf.seek(0)
 
-# --- Interactive HTML download buffer ---
+# Interactive HTML download buffer
 html_buf = io.StringIO()
 chart_fig.write_html(html_buf, include_plotlyjs="cdn", full_html=True)
 html_bytes = html_buf.getvalue().encode("utf-8")
 
-# --- Left column ---
+# This is the section that would let the user download the files and select the admins
+
 with left:
     st.subheader("Select Administration to Display")
 
@@ -499,7 +491,7 @@ with left:
             st.session_state.show_12_months = not st.session_state.show_12_months
             st.rerun()
 
-    st.markdown("---")
+    st.markdown()
     st.subheader("Download")
 
     st.download_button(
@@ -529,7 +521,8 @@ with left:
         )
 
 
-# --- Right column ---
+# this section adds the note under the plot and the link to pyfuncs
+# incase of changes to the note make the changes in latex/ markdown text formatting
 with right:
     st.plotly_chart(chart_fig, use_container_width=True)
     _about_left_spacer, about_col = st.columns([1, 49], gap="small")
