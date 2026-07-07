@@ -1,0 +1,1 @@
+web: streamlit run dashboards/monthly_sig_rules/files/monthly_sig_rules.py --server.port $PORT --server.address 0.0.0.0

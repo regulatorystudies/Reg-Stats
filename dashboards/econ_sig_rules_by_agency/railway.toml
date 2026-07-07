@@ -1,0 +1,14 @@
+# Agency economically significant rules dashboard (Streamlit).
+# Railway service Root Directory must be the repository root (not this folder),
+# so app1.py can resolve charts/data and charts/style via parents[2].
+# In Railway: Settings → set "Config file path" to dashboards/by_agency/railway.toml
+# if the service does not pick this file up automatically.
+
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r dashboards/econ_sig_rules_by_agency/requirements.txt"
+
+[deploy]
+startCommand = "streamlit run dashboards/econ_sig_rules_by_agency/by_agency_econ_rules.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true"
+healthcheckPath = "/_stcore/health"
+restartPolicyType = "on_failure"

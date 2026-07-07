@@ -61,6 +61,12 @@ df1_1a <- df1_1 %>%
           Prerules = 0,
           Total = 0,
           .before = 35) %>%
+  add_row(yearseason = "2025 Fall",
+          FinalRules = 0,
+          ProposedRules = 0,
+          Prerules = 0,
+          Total = 0,
+          .before = 62) %>%
   mutate(year = as.numeric(substr(yearseason, 1, 4))) %>%
   mutate(season = str_trim(factor(substr(yearseason, 6, 12)))) %>%
   mutate(season2 = case_when(season == "" ~ "Fall", TRUE ~ season)) %>%
@@ -96,7 +102,7 @@ bar2 <- ggplot(df1_1a_complete,
   scale_x_discrete(labels = df1_1a$year, breaks = df1_1a$year) +
   ggtitle("Active Actions in the Unified Agenda") +
   ylab("Number of Actions \n") +
-  xlab("\nNote: Only the Fall Agenda is available for 1995, and only one Agenda was published in 2012. Active actions refer to rulemakings \nin a pre-rule, proposed rule or final rule stage as indicated by the Unified Agenda.") +
+  xlab("\nNote: Only the Fall Agenda is available for 1995, and only one Agenda was published in 2012 and 2025. Active actions refer to \nrulemakings in a pre-rule, proposed rule or final rule stage as indicated by the Unified Agenda.") +
   scale_y_continuous(breaks = seq(0, max(df1_1a$Total)+500, by = 500), expand = c(0, 0),
                      limits = c(-2, max(df1_1a$Total)+500)) +
   coord_cartesian(clip = "off") +
