@@ -6,9 +6,9 @@
 
 [build]
 builder = "nixpacks"
-buildCommand = "pip install -r dashboards/by_agency/requirements.txt"
+buildCommand = "pip install -r dashboards/econ_sig_rules_by_agency/requirements.txt"
 
 [deploy]
-startCommand = "streamlit run dashboards/by_agency/app1.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true"
+startCommand = "streamlit run dashboards/econ_sig_rules_by_agency/by_agency_econ_rules.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true"
 healthcheckPath = "/_stcore/health"
 restartPolicyType = "on_failure"

@@ -314,7 +314,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
 
 
 <details>
-  <summary><strong>Code of Federal Regulations: Page and Word Counts by Title</strong></summary>
+  <summary><strong>Code of Federal Regulations: Word and Page Counts by Title</strong></summary>
   <br/>
   <table>
     <tr>
@@ -329,7 +329,7 @@ in the "File" column, and an output dataset or chart in the "Output" column will
           <td>Data</td>
           <td><code>data/cfr_pages/by_title/</code></td>
           <td><code>scrape_cfr_by_title.py</code></td>
-          <td><code>cfr_pages_words_by_title.csv</code></td>
+          <td><code>cfr_words_pages_by_title.csv</code></td>
         </tr>
         <tr>
           <td>Chart</td>
