@@ -16,8 +16,12 @@ newest_file_info = soup.select('li')[0].text[1:-6]
 
 # Fetch the newest year and season
 current_year_season = re.split("\s", newest_file_info, 1) #list
-current_year = int(current_year_season[1]) # int
-current_season = current_year_season[0].lower() # str
+if len(current_year_season) > 1:
+    current_year = int(current_year_season[1]) # int
+    current_season = current_year_season[0].lower() # str
+else:   # season-less entry (e.g. only a year is listed)
+    current_year = int(current_year_season[0]) # int
+    current_season = None
 
 #%% Function to convert season str to int
 def season_transform(season: str, schema = {"spring": "04", "fall": "10"}) -> str:
@@ -126,8 +130,10 @@ if os.path.exists(file_path):
     print(df_updated.info())
 
     ua_updated=df_updated['Unified Agenda'].iloc[-1]
-    updated_year = int(ua_updated.split(' ')[0])
-    updated_season=ua_updated.split(' ')[1].lower()
+    ua_updated_parts=ua_updated.split(' ')
+    updated_year = int(ua_updated_parts[0])
+    # a season-less last row (e.g. only a year) has no season component
+    updated_season=ua_updated_parts[1].lower() if len(ua_updated_parts) > 1 else None
 
 else:   # set before the first available Unified Agenda
     updated_year = 1995
