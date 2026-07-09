@@ -89,6 +89,7 @@ st.markdown(
         font-style: normal;
     }}
     .stApp, [data-testid="stAppViewContainer"] {{ background-color: {BG_COLOR}; }}
+    [data-testid="stHeader"] {{ background-color: {BG_COLOR} !important; }}
     html, body, [class*="css"] {{
         color: {TEXT_COLOR};
         font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif;
