@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "streamlit-new-1591",
+      "runtimeExecutable": "/private/tmp/claude-501/-Users-sayam-palrecha-Desktop-RSC-Git/e934646b-4ec4-4fe4-b422-8e669de57433/scratchpad/st_new_venv/bin/streamlit",
+      "runtimeArgs": ["run", "/private/tmp/claude-501/-Users-sayam-palrecha-Desktop-RSC-Git/e934646b-4ec4-4fe4-b422-8e669de57433/scratchpad/repro_select.py", "--server.port", "8601", "--server.headless=true"],
+      "port": 8601
+    },
+    {
+      "name": "streamlit-old-1540",
+      "runtimeExecutable": "/private/tmp/claude-501/-Users-sayam-palrecha-Desktop-RSC-Git/e934646b-4ec4-4fe4-b422-8e669de57433/scratchpad/st_old_venv/bin/streamlit",
+      "runtimeArgs": ["run", "/private/tmp/claude-501/-Users-sayam-palrecha-Desktop-RSC-Git/e934646b-4ec4-4fe4-b422-8e669de57433/scratchpad/repro_select.py", "--server.port", "8602", "--server.headless=true"],
+      "port": 8602
+    }
+  ]
+}
