@@ -1,4 +1,4 @@
-# CFR Page and Word Counts by Title
+# CFR Word and Page Counts by Title
 
 ## Update Instructions
 
