@@ -265,14 +265,19 @@ def _inject_css() -> None:
         .notes-section {{ margin-top: 20px; padding-top: 10px;
                           margin-bottom: 1rem;
                           border-top: 1px solid {GW_BUFF_50}; }}
-        .notes-line {{ font-size: 0.72rem; color: #6B6B6B;
+        /* font-weight: 700 alone is invisible here: only the OTF's Regular
+           weight is embedded, so 700 relies on the browser's synthetic bold,
+           which is too subtle to read at this font-size. text-stroke forces
+           a visible weight increase independent of font synthesis. */
+        .notes-line {{ font-size: 0.72rem; color: #6B6B6B; font-weight: 700;
+                       -webkit-text-stroke: 0.45px currentColor;
                        line-height: 1.45; margin-top: 8px; }}
         .notes-label {{ font-weight: 700; }}  /* inherits the grey body colour */
         .notes-link {{ color: {POTOMAC} !important; text-decoration: underline; }}
         .notes-footer {{ display: flex; align-items: flex-end;
                          justify-content: space-between; gap: 16px; }}
         .notes-logo {{ flex-shrink: 0; }}
-        .notes-logo img {{ height: 42px; width: auto; display: block; }}
+        .notes-logo img {{ height: 125px; width: auto; display: block; }}
         /* "Sort by" selectbox: subtle cream control (border matches the tiles),
            with a Potomac outline on hover. */
         div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
@@ -690,7 +695,6 @@ def main() -> None:
         f"</div></div>",
         unsafe_allow_html=True,
     )
-
 
 if __name__ == "__main__":
     main()
