@@ -41,6 +41,14 @@ FONT_PATH = _first_existing(
     ],
     REPO_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf",
 )
+# Optional GW/RSC logo for the footer; if absent the footer just omits it.
+LOGO_PATH = _first_existing(
+    [
+        BASE / "gw_ci_rsc_2cs_pos.png",
+        REPO_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png",
+    ],
+    REPO_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png",
+)
 
 # Brand font stack, reused by both the injected CSS and the Plotly sparklines
 # (Plotly renders its own text -- e.g. hover tooltips -- outside the page CSS).
@@ -126,6 +134,7 @@ NOTE = ("Word and page counts are not necessarily measures of regulatory "
         "impact. However, changes in these metrics over time offer one proxy "
         "for the volume of regulatory activity.")
 SOURCES = "QuantGov.org (1970–1999) and GovInfo.gov (2000–present)"
+INFO_URL = "https://github.com/regulatorystudies/Reg-Stats/tree/main/data/cfr_pages/by_title"
 
 # Notes surfaced in the UI: a small marker on the affected tile (hover for the
 # reason) and a list at the bottom of the page. Each entry is (anchor_year,
@@ -207,20 +216,23 @@ def _inject_css() -> None:
         /* Hide Streamlit's top header/toolbar bar (Deploy button + ☰ menu). */
         [data-testid="stHeader"] {{ display: none; }}
         .stMainBlockContainer {{ padding-top: 1rem; }}
-        .tile-title {{ font-size: 0.95rem; font-weight: 600; color: {NAVY_YARD};
+        .tile-title {{ font-size: 0.95rem; font-weight: 700; color: {NAVY_YARD};
                        line-height: 1.15; margin-bottom: 0; white-space: nowrap; }}
         /* Discontinuity marker + CSS tooltip (Streamlit strips the native
            `title` attribute, so we render our own hover popover). */
         .tile-note-wrap {{ position: relative; display: inline-block; }}
         /* Outlined "i" badge in the title-heading blue: a drawn circle + i, so
            its stroke weight matches Streamlit's "?" help icon (the bare U+24D8
-           character renders too thin; a solid disc reads too heavy). */
+           character renders too thin; a solid disc reads too heavy). Border and
+           text use the same full-opacity rgb(49,51,63) as the "?" icon's SVG
+           stroke -- the icon has no alpha, so matching it means dropping the
+           alpha here too, not just widening the stroke. */
         .tile-note-flag {{ display: inline-flex; align-items: center;
                            justify-content: center; width: 15px; height: 15px;
                            border-radius: 50%;
-                           border: 1.75px solid rgba(49, 51, 63, 0.6);
-                           background: transparent; color: rgba(49, 51, 63, 0.6);
-                           font-size: 0.64rem; font-weight: 700;
+                           border: 2px solid rgb(49, 51, 63);
+                           background: transparent; color: rgb(49, 51, 63);
+                           font-size: 0.64rem; font-weight: 800;
                            font-style: normal; line-height: 1; cursor: help;
                            margin-left: 4px; vertical-align: middle;
                            position: relative; top: -2px;
@@ -253,12 +265,23 @@ def _inject_css() -> None:
         .notes-section {{ margin-top: 20px; padding-top: 10px;
                           margin-bottom: 1rem;
                           border-top: 1px solid {GW_BUFF_50}; }}
-        .notes-line {{ font-size: 0.72rem; color: #6B6B6B;
+        /* font-weight: 700 alone is invisible here: only the OTF's Regular
+           weight is embedded, so 700 relies on the browser's synthetic bold,
+           which is too subtle to read at this font-size. text-stroke forces
+           a visible weight increase independent of font synthesis. */
+        .notes-line {{ font-size: 0.72rem; color: #6B6B6B; font-weight: 700;
+                       -webkit-text-stroke: 0.45px currentColor;
                        line-height: 1.45; margin-top: 8px; }}
-        .notes-label {{ font-weight: 600; }}  /* inherits the grey body colour */
+        .notes-label {{ font-weight: 700; }}  /* inherits the grey body colour */
+        .notes-link {{ color: {POTOMAC} !important; text-decoration: underline; }}
+        .notes-footer {{ display: flex; align-items: flex-end;
+                         justify-content: space-between; gap: 16px; }}
+        .notes-logo {{ flex-shrink: 0; }}
+        .notes-logo img {{ height: 125px; width: auto; display: block; }}
         /* "Sort by" selectbox: subtle cream control (border matches the tiles),
            with a Potomac outline on hover. */
         div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
+            background-color: {GW_BUFF_20} !important;  /* match Download Data button */
             border: 1px solid #D8D2C4 !important;  /* match theme.borderColor (tiles) */
             color: {NAVY_YARD} !important;  /* selected value text, e.g. "Title Number" */
             font-family: {FONT_FAMILY} !important;
@@ -352,6 +375,15 @@ def load_export_bytes() -> bytes:
     (title_name column included, rolling-publication years already dropped).
     Serve the file bytes verbatim."""
     return DATA_PATH.read_bytes()
+
+
+@st.cache_data
+def load_logo_b64() -> str | None:
+    """Base64 of the GW/RSC logo PNG, for inline embedding in footer HTML;
+    None if the asset isn't present (e.g. running standalone)."""
+    if not LOGO_PATH.exists():
+        return None
+    return base64.b64encode(LOGO_PATH.read_bytes()).decode("utf-8")
 
 
 def fmt_count(n: float) -> str:
@@ -635,23 +667,34 @@ def main() -> None:
                 with st.container(border=True):
                     render_panel(title_num, df_t, start_year, end_year, metric)
 
-    # Footer: inline labelled lines (Note, Sources, Updated), held to a readable
-    # width. Per-title caveats live on their own tiles (hover ⓘ).
+    # Footer: inline labelled lines (Note, Sources, Updated, more-info link) on
+    # the left, GW/RSC logo aligned bottom-right. Per-title caveats live on
+    # their own tiles (hover ⓘ).
     updated = format_updated(df)
     updated_line = (
         f"<div class='notes-line'><span class='notes-label'>Updated:</span> "
         f"{updated}</div>" if updated else "")
+    logo_b64 = load_logo_b64()
+    logo_html = (
+        f"<div class='notes-logo'><img "
+        f"src='data:image/png;base64,{logo_b64}' "
+        f"alt='GW Regulatory Studies Center'></div>" if logo_b64 else "")
     st.markdown(
-        f"<div class='notes-section'><div class='notes-inner'>"
+        f"<div class='notes-section'><div class='notes-footer'>"
+        f"<div class='notes-inner'>"
         f"<div class='notes-line'><span class='notes-label'>Note:</span> "
         f"{NOTE}</div>"
         f"<div class='notes-line'><span class='notes-label'>Sources:</span> "
         f"{SOURCES}</div>"
         f"{updated_line}"
+        f"<div class='notes-line'><a class='notes-link' href='{INFO_URL}' "
+        f"target='_blank' rel='noopener noreferrer'>More information on how "
+        f"we collect data</a></div>"
+        f"</div>"
+        f"{logo_html}"
         f"</div></div>",
         unsafe_allow_html=True,
     )
-
 
 if __name__ == "__main__":
     main()
