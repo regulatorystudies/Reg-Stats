@@ -89,7 +89,17 @@ st.markdown(
         font-style: normal;
     }}
     .stApp, [data-testid="stAppViewContainer"] {{ background-color: {BG_COLOR}; }}
-    [data-testid="stHeader"] {{ background-color: {BG_COLOR} !important; }}
+    [data-testid="stHeader"] {{ background-color: {BG_COLOR} !important; height: 0 !important; min-height: 0 !important; }}
+    [data-testid="stToolbar"] {{ display: none !important; }}
+    [data-testid="stDecoration"] {{ display: none !important; }}
+    [data-testid="stMainBlockContainer"],
+    [data-testid="stAppViewBlockContainer"],
+    [data-testid="stVerticalBlock"],
+    [data-testid="stHorizontalBlock"],
+    section.main, .main .block-container {{
+        padding-top: 1rem !important;
+        background-color: {BG_COLOR} !important;
+    }}
     html, body, [class*="css"] {{
         color: {TEXT_COLOR};
         font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif;
@@ -386,7 +396,7 @@ def main():
         '<div role="main" id="main-content">',
         unsafe_allow_html=True,
     )
-    st.title("Monthly Significant Final Rules by Administration")
+    st.markdown("# **Monthly Significant Final Rules Published by Administration**")
 
     col_controls, col_plot = st.columns([1.25, 3.25], gap="large")
 
@@ -484,7 +494,7 @@ def main():
             <div id="chart-region"
                  role="region"
                  aria-label="Bar chart: significant final rules by month, {admin} Administration"
-                 style="border-radius: 6px; padding: 10px; background-color: white;">
+                 style="border-radius: 6px; padding: 10px; background-color: #E8DDC6;">
             """,
             unsafe_allow_html=True,
         )
