@@ -89,6 +89,7 @@ st.markdown(
         font-style: normal;
     }}
     .stApp, [data-testid="stAppViewContainer"] {{ background-color: {BG_COLOR}; }}
+    [data-testid="stHeader"] {{ background-color: {BG_COLOR} !important; }}
     html, body, [class*="css"] {{
         color: {TEXT_COLOR};
         font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif;
@@ -490,8 +491,6 @@ def main():
 
         st.plotly_chart(fig_plotly, use_container_width=True, config={"displayModeBar": False})
 
-        # ── aria-live text summary for screen readers (WCAG 1.1.1) ───────────
-        # Visually hidden but fully readable by assistive technology.
         st.markdown(
             f"""
             <div aria-live="polite"
@@ -513,9 +512,6 @@ def main():
             unsafe_allow_html=True,
         )
 
-        # ── Logo alt text (WCAG 1.1.1) ────────────────────────────────────────
-        # The Plotly layout_image has no alt attribute. We inject a labelled
-        # version below the chart so screen readers get the logo description.
         if LOGO_PATH.exists():
             with open(LOGO_PATH, "rb") as f:
                 logo_b64 = base64.b64encode(f.read()).decode("utf-8")
@@ -536,9 +532,7 @@ def main():
             "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
         )
 
-        # Close chart region and main divs
         st.markdown("</div></div>", unsafe_allow_html=True)
-
 
 if __name__ == "__main__":
     main()
