@@ -222,20 +222,23 @@ def _inject_css() -> None:
            `title` attribute, so we render our own hover popover). */
         .tile-note-wrap {{ position: relative; display: inline-block; }}
         /* Outlined "i" badge in the title-heading blue: a drawn circle + i, so
-           its stroke weight matches Streamlit's "?" help icon. The "?" is an
-           SVG (viewBox 0 0 24, stroke-width 2) rendered at 16px, so its ring
-           is ~1.33px of solid rgb(49,51,63) -- that's the target to hit, not
-           to exceed. The "i" glyph gets a light text-stroke only because at
-           this font-size font-weight alone (relying on synthetic bold, since
-           only the Regular OTF weight is embedded) is invisible; the stroke
-           is kept subtle so the letter reads like the "?" rather than bolder. */
+           its stroke weight matches Streamlit's "?" help icon. The "?" icon's
+           SVG stroke itself is fully opaque, but it reads as a soft grey
+           on-screen (sub-pixel anti-aliasing on a thin vector stroke shows
+           less ink per pixel than a CSS border of the same width does) --
+           matching that look means dimming our border/text with alpha, not
+           just matching the raw color value. The "i" glyph gets a light
+           text-stroke only because at this font-size font-weight alone
+           (relying on synthetic bold, since only the Regular OTF weight is
+           embedded) is invisible; the stroke is kept subtle so the letter
+           reads like the "?" rather than bolder. */
         .tile-note-flag {{ display: inline-flex; align-items: center;
                            justify-content: center; width: 15px; height: 15px;
                            border-radius: 50%;
-                           border: 1.3px solid rgb(49, 51, 63);
-                           background: transparent; color: rgb(49, 51, 63);
-                           font-size: 0.64rem; font-weight: 400;
-                           -webkit-text-stroke: 0.3px currentColor;
+                           border: 2.0px solid rgba(49, 51, 63, 0.55);
+                           background: transparent; color: rgba(49, 51, 63, 0.55);
+                           font-size: 0.64rem; font-weight: 700;
+                           -webkit-text-stroke: 0.5px currentColor;
                            font-style: normal; line-height: 1; cursor: help;
                            margin-left: 4px; vertical-align: middle;
                            position: relative; top: -2px;
@@ -294,6 +297,7 @@ def _inject_css() -> None:
         }}
         div[data-testid="stSelectbox"] div[data-baseweb="select"] {{
             border: 1px solid #D8D2C4 !important;  /* match theme.borderColor (tiles) */
+            border-radius: 8px !important;  /* match Download Data button's corner radius */
             color: {NAVY_YARD} !important;  /* selected value text, e.g. "Title Number" */
             font-family: {FONT_FAMILY} !important;
             font-weight: 400 !important;
