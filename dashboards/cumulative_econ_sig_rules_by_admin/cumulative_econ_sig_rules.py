@@ -224,8 +224,11 @@ st.markdown(
     [data-testid="stToolbar"] {{
         display: none !important;
     }}
-    .block-container {{
-        padding-top: {GWblue} !important;
+    [data-testid="stDecoration"] {{
+        display: none !important;
+    }}
+    [data-testid="stMainBlockContainer"] {{
+        padding-top: 1rem !important;
     }}
     </style>
     """,

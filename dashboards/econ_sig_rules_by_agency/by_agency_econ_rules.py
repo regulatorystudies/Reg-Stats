@@ -82,6 +82,10 @@ st.markdown(
         font-style: normal;
     }}
     .stApp, [data-testid="stAppViewContainer"] {{ background-color: {BG_COLOR}; }}
+    [data-testid="stHeader"] {{ background-color: {BG_COLOR} !important; height: 0 !important; min-height: 0 !important; }}
+    [data-testid="stToolbar"] {{ display: none !important; }}
+    [data-testid="stDecoration"] {{ display: none !important; }}
+    [data-testid="stMainBlockContainer"] {{ padding-top: 1rem !important; background-color: {BG_COLOR} !important; }}
     html, body, [class*="css"] {{
         color: {TEXT_COLOR};
         font-family: 'Avenir Next LT Pro', Avenir, 'Helvetica Neue', Arial, sans-serif;
@@ -734,7 +738,7 @@ def main():
             <div id="chart-region"
                  role="img"
                  aria-label="{chart_region_aria}. {aria_summary}"
-                 style="border-radius: 6px; padding: 10px; background-color: white;">
+                 style="border-radius: 6px; padding: 10px; background-color: #E8DDC6;">
             """,
             unsafe_allow_html=True,
         )
