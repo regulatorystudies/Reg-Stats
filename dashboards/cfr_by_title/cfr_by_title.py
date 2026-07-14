@@ -222,17 +222,20 @@ def _inject_css() -> None:
            `title` attribute, so we render our own hover popover). */
         .tile-note-wrap {{ position: relative; display: inline-block; }}
         /* Outlined "i" badge in the title-heading blue: a drawn circle + i, so
-           its stroke weight matches Streamlit's "?" help icon (the bare U+24D8
-           character renders too thin; a solid disc reads too heavy). Border and
-           text use the same full-opacity rgb(49,51,63) as the "?" icon's SVG
-           stroke -- the icon has no alpha, so matching it means dropping the
-           alpha here too, not just widening the stroke. */
+           its stroke weight matches Streamlit's "?" help icon. The "?" is an
+           SVG (viewBox 0 0 24, stroke-width 2) rendered at 16px, so its ring
+           is ~1.33px of solid rgb(49,51,63) -- that's the target to hit, not
+           to exceed. The "i" glyph gets a light text-stroke only because at
+           this font-size font-weight alone (relying on synthetic bold, since
+           only the Regular OTF weight is embedded) is invisible; the stroke
+           is kept subtle so the letter reads like the "?" rather than bolder. */
         .tile-note-flag {{ display: inline-flex; align-items: center;
                            justify-content: center; width: 15px; height: 15px;
                            border-radius: 50%;
-                           border: 2px solid rgb(49, 51, 63);
+                           border: 1.3px solid rgb(49, 51, 63);
                            background: transparent; color: rgb(49, 51, 63);
-                           font-size: 0.64rem; font-weight: 800;
+                           font-size: 0.64rem; font-weight: 400;
+                           -webkit-text-stroke: 0.3px currentColor;
                            font-style: normal; line-height: 1; cursor: help;
                            margin-left: 4px; vertical-align: middle;
                            position: relative; top: -2px;
@@ -265,29 +268,37 @@ def _inject_css() -> None:
         .notes-section {{ margin-top: 20px; padding-top: 10px;
                           margin-bottom: 1rem;
                           border-top: 1px solid {GW_BUFF_50}; }}
+        .notes-line {{ font-size: 0.72rem; color: #6B6B6B; font-weight: 400;
+                       line-height: 1.45; margin-top: 8px; }}
         /* font-weight: 700 alone is invisible here: only the OTF's Regular
            weight is embedded, so 700 relies on the browser's synthetic bold,
            which is too subtle to read at this font-size. text-stroke forces
-           a visible weight increase independent of font synthesis. */
-        .notes-line {{ font-size: 0.72rem; color: #6B6B6B; font-weight: 700;
-                       -webkit-text-stroke: 0.45px currentColor;
-                       line-height: 1.45; margin-top: 8px; }}
-        .notes-label {{ font-weight: 700; }}  /* inherits the grey body colour */
+           a visible weight increase independent of font synthesis. Scoped to
+           just the label -- the "Note:"/"Sources:"/"Updated:" prefix -- not
+           the sentence that follows it. */
+        .notes-label {{ font-weight: 700; -webkit-text-stroke: 0.45px currentColor; }}
         .notes-link {{ color: {POTOMAC} !important; text-decoration: underline; }}
         .notes-footer {{ display: flex; align-items: flex-end;
                          justify-content: space-between; gap: 16px; }}
         .notes-logo {{ flex-shrink: 0; }}
         .notes-logo img {{ height: 125px; width: auto; display: block; }}
         /* "Sort by" selectbox: subtle cream control (border matches the tiles),
-           with a Potomac outline on hover. */
-        div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
+           with a Potomac outline on hover. The background is applied to every
+           nested div (not just the direct child) because the baseweb Select's
+           wrapper depth has shifted across Streamlit versions -- a `> div`
+           child selector that hits the right element on one version can miss
+           it on another, silently leaving the default grey showing through. */
+        div[data-testid="stSelectbox"] div[data-baseweb="select"],
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] div {{
             background-color: {GW_BUFF_20} !important;  /* match Download Data button */
+        }}
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] {{
             border: 1px solid #D8D2C4 !important;  /* match theme.borderColor (tiles) */
             color: {NAVY_YARD} !important;  /* selected value text, e.g. "Title Number" */
             font-family: {FONT_FAMILY} !important;
             font-weight: 400 !important;
         }}
-        div[data-testid="stSelectbox"] div[data-baseweb="select"] > div:hover {{
+        div[data-testid="stSelectbox"] div[data-baseweb="select"]:hover {{
             border-color: {POTOMAC} !important;
         }}
         /* Make the selectbox behave like a plain click-to-open dropdown rather
