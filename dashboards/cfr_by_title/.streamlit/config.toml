@@ -1,2 +1,8 @@
 [theme]
 primaryColor = "#0075C8"
+# Warm hairline for the tile cards (st.container(border=True)), matching the
+# buff palette; Streamlit's default here is a cool grey that reads off against
+# the cream page. Mirrors BORDER in cfr_by_title.py, which styles the select,
+# the Download button, and the tile tooltips. Streamlit reads this file before
+# that module runs, so the value can't be shared -- change both together.
+borderColor = "#D8D2C4"
