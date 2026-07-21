@@ -1,85 +1,189 @@
-# CFR Word and Page Counts by Title
+# CFR Page and Word Counts by Title
 
 ## Update Instructions
 
-The data should be updated **once a year**, ideally in Q4 of year N or Q1 of year N+1 (at that point most of year N−1's CFR volumes are fully published on GovInfo and will be picked up by the scraper). See *Update Cadence* below for details on GovInfo's staggered CFR publication schedule and the `year_complete` flag.
+Update **once a year**, ideally in Q4 of year N or Q1 of year N+1 (see *Update
+Cadence*).
 
-Follow these steps:
-
-1. Set up the conda environment. This is a one-time step — see *Environment Set Up* below.
-1. Navigate to this directory and activate the environment in your terminal:
+1. Set up the conda environment (one-time — see *Environment Set Up*).
+2. Navigate to this directory and activate it:
    ```bash
    cd "PATH TO THIS DIRECTORY"
-   
    conda activate regstats_cfr_by_title
    ```
-1. Run the scraper. The standard annual command picks up everything new since the last run:
+3. Make sure `usregdata6.csv` is in this directory (see *Getting the RegData
+   Source File*).
+4. Run the scraper:
    ```bash
-   python scrape_cfr_by_title.py --years 1998-
+   python scrape_cfr_by_title.py --years 2000- --regdata-csv usregdata6.csv
    ```
-   The cache means already-scraped (year, title, vol) combinations are skipped, so a typical annual re-run takes minutes (a from-scratch scrape of 1998–present takes a few hours, so run at the beginning of a work day). Progress is saved to disk after each title. If interrupted, just re-invoke the same command to resume.
-1. When the script finishes, you'll see a `Done.` summary in the terminal showing how many new volumes (if any) were added. The two output CSVs in this directory are updated in place:
-   - `cfr_pages_words_disaggregated.csv` — per (year, title, vol); also the script's cache
-   - `cfr_pages_words_by_title.csv` — per (year, title), aggregated; used by the dashboard
+   This picks up all new GovInfo volumes since the last run and re-probes the
+   most recent editions for late-posted volumes (see *Keeping the Data Fresh*).
+   Progress is saved after each title; re-invoke the same command to resume an
+   interrupted run.
+5. Two output CSVs are updated in place:
+   - `cfr_words_pages_by_title.csv` — per (year, title), 1970–present (the final
+     aggregated output)
+   - `cfr_words_pages_disaggregated.csv` — per (year, title, vol), GovInfo
+     volumes only; also the scraper's cache
+
+**About `--regdata-csv`.** It is strictly required only for a pre-2000 range
+(see *First-Time / Historical Backfill*), because the 1970–1999 rows are
+otherwise carried forward from the existing CSV automatically. It is still
+**recommended on every run**: it enables the RegData word-count fallback, which substitutes RegData's clean body-only count for the ~6%-inflated PDF-text count
+on the rare post-2000 (year, title) where *every* volume's XML failed the
+quality checks (such rows are labeled `"...(XML fallback)"`).
+
+## Getting the RegData Source File
+
+Word counts for 1970–1999, and the fallback described above, come from
+`usregdata6.csv` — RegData United States 6.0 (1970–2025, CC BY 4.0). At ~98 MB it is **not
+stored in the repo**; it's covered by `.gitignore`, so it can sit in this
+directory run after run with no risk of being committed. Download it once:
+
+- **QuantGov:** the [CSV download page](https://www.quantgov.org/csv-download)
+  (select RegData United States 6.0).
+- **GWU Box backup:** [RSC copy](https://gwu.box.com/s/3y1enchxc1h3d504pv8ozhkbtd9iqpf7)
+
+## First-Time / Historical Backfill
+
+To build the full dataset from scratch, including the pre-2000 word counts:
+
+```bash
+python scrape_cfr_by_title.py --years 1970- --regdata-csv usregdata6.csv
+```
+
+`--regdata-csv` is **required** here: a pre-2000 range has no existing aggregate
+to carry the 1970–1999 rows forward from.
 
 ## Environment Set Up
 
-Using [Anaconda](https://www.anaconda.com/products/distribution), the environment can be created and activated using the environment.yml file with the following commands in the terminal:
+Using [Anaconda](https://www.anaconda.com/products/distribution):
 
 ```bash
 cd "PATH TO THIS DIRECTORY"
-
 conda env create -f environment.yml
-
 conda activate regstats_cfr_by_title
 ```
 
-See the [Anaconda documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) for more details.
-
 ## Other Scraper Run Options
 
+Add `--regdata-csv usregdata6.csv` to any of these; it's omitted below only for
+brevity.
+
 ```bash
-# scrape a single year
+# Scrape a single GovInfo year
 python scrape_cfr_by_title.py --years 2024
 
-# scrape a closed range
-python scrape_cfr_by_title.py --years 1998-2010
+# Scrape a closed GovInfo range
+python scrape_cfr_by_title.py --years 2000-2010
 
-# scrape only specific titles within a year
+# Scrape specific titles only
 python scrape_cfr_by_title.py --years 2024 --titles 1 5 40
 
-# force re-download of cached rows in the range (prompts for confirmation;
-# backs up cfr_pages_words_disaggregated.csv to .csv.bak first)
+# Force re-download of cached rows (backs up the cache to .csv.bak first;
+# prompts for confirmation unless you add -y/--yes)
 python scrape_cfr_by_title.py --years 2024 --refresh
+
+# Re-verify a range against the cache (see Keeping the Data Fresh)
+python scrape_cfr_by_title.py --years 2020-2024 --verify
+
+# Skip the automatic recent-editions freshness check (on by default)
+python scrape_cfr_by_title.py --years 2000- --no-recent-check
+
+# Backfill words_body on old cached rows (re-aggregate only)
+python scrape_cfr_by_title.py --backfill-only
 ```
+
+## Keeping the Data Fresh
+
+GovInfo posts an edition's volumes gradually; the Oct-1 batch (Titles 42–50) can
+trickle in for over a year (see *Update Cadence*). Two mechanisms keep the
+dataset current:
+
+- **Automatic recent-editions check (default).** Every normal scrape re-probes
+  the 3 most recent cached editions for newly posted volumes. It's cheap, since
+  cached volumes are skipped, so a routine annual run keeps still-rolling years
+  current on its own; a year flips to `year_complete = True` once all its
+  volumes are in. Disable with `--no-recent-check`.
+- **Full re-verification (`--verify`, on demand).** Re-downloads *every* volume
+  in the `--years` range and reports what changed versus the cache (volumes
+  added, removed, or recounted), including corrections to older volumes the
+  cheap check won't catch. It's slow — roughly 2.5 hours for the whole history,
+  ~6 minutes for a single year — so scope it with `--years`. The scraper prints
+  an estimate before starting.
 
 ## Outputs
 
-- **`cfr_pages_words_by_title.csv`** — aggregated to (year, title); the file used by the dashboard. Columns:
-  - `year`, `title`, `title_name`
-  - `pages` — page count, sourced from CFR PDFs.
-  - `words` — body-only word count, the headline regulation-volume metric. Excludes front/back matter user aids (table of contents, finding aids, agency index), which are not part of the legal text of the CFR. See [GPO's CFR XML User Guide](https://www.govinfo.gov/bulkdata/CFR/resources/CFR-XML_User-Guide_v1.pdf) for more information.
-  - `words_all` — full all-content word count, kept for reference; ~13% higher than `words` on average.
-  - `n_volumes` — number of volumes listed on GovInfo for this (year, title).
-  - `xml_volumes`, `pdf_volumes` — how many of those volumes have XML / PDF files available.
-  - `has_pdf_gaps`, `has_xml_gaps` — whether any *listed* volumes are missing a PDF or XML file. Note: these flags only check volumes that GovInfo lists; they do not detect volumes that are absent from GovInfo entirely (see `year_complete`).
-  - `year_complete` — boolean, set at the year level (all titles in a year share the same value). **Filter to `year_complete == True` for time-series analyses** unless you specifically want partial years. A year is marked complete when it passes two checks: (1) a calendar-lag check requiring the data to have been scraped in year Y+1 or later, and (2) a volume-sanity check requiring that no title's volume count dropped below 70% of its count in the most recent prior complete year. The sanity check catches years where GovInfo is permanently missing volumes (e.g., 1999 and 2007) — both gap flags can be `False` while `year_complete` is `False` because the gaps are in volumes that GovInfo never listed, not in files missing from listed volumes.
-  - `last_scraped_at` — timestamp of the most recent scrape that touched this (year, title).
-- **`cfr_pages_words_disaggregated.csv`** — per (year, title, vol); also the scraper's cache. Re-runs skip already-cached combinations.
+**`cfr_words_pages_by_title.csv`** — the published dataset; one row per
+(year, title), 1970–present. Most columns are self-describing (`year`, `title`,
+`title_name`, `pages`, `n_volumes`, `last_scraped_at`), plus per-source
+diagnostics (`xml_volumes`, `pdf_volumes`, `has_pdf_gaps`, `has_xml_gaps`) and
+`word_source`, which records where each row's word count came from. Two columns
+need care:
 
-Page counts come from CFR PDFs; word counts come from CFR bulk XML. Both are GovInfo publications of the same annual CFR snapshot. See the comments in `scrape_cfr_by_title.py` for the full methodology (body-only computation, PDF fallback heuristics, `year_complete` rules).
+- **`words`** is the headline body-only metric — use this one. `words_all` adds
+  front and back matter, runs ~3% higher, and breaks the 2000 join; it is
+  retained only for backward compatibility.
+- **`year_complete`** — filter to `True` for any time-series analysis.
+  Incomplete years undercount badly (see *Keeping the Data Fresh*).
+
+**`cfr_words_pages_disaggregated.csv`** — per (year, title, vol), GovInfo years
+only; also the scraper's cache.
 
 ## Coverage Notes
 
-- **Starts in 1998.** 1996 is mostly absent from GovInfo; 1997 is scrapable but ~27% of its volumes need PDF fallback due to incomplete XML conversion. To re-add 1997 anyway: `python scrape_cfr_by_title.py --years 1997`.
-- **The CFR Index is not included** — it's an annual standalone document, not part of any numbered title. Annual page totals here are therefore ~1,300 pages lower than the parent directory's `cfr_pages_by_calendar_year.csv`, which includes the Index. (Otherwise the two reconcile to within ~2 pages out of ~189K for the 2021–2024 years where the parent has per-title data.)
-- **Reserved/retired titles.** Title 2 (Grants and Agreements) starts in 2005; Title 6 (Domestic Security) starts in 2004; Title 35 (Panama Canal) was eliminated after 2000. Early years will be missing these rows accordingly.
-- **Rolling-year incompleteness.** CFR titles are published on a staggered schedule (see below); the most recent year may have fewer than 49 titles and is flagged `year_complete = False`.
-- **Historical incomplete years.** Some older years (1999, 2007) are permanently flagged `year_complete = False` because GovInfo is missing entire volumes for certain titles (e.g., Title 26 drops from 19 volumes in 1998 to 6 in 1999). The data for the volumes that *are* present is accurate — the counts are simply incomplete.
+- **Coverage span.** Words run 1970–present (RegData before 2000, GovInfo
+  after); pages are GovInfo-only, so they start at 2000. 1996 GovInfo data is
+  largely absent and 1997–1999 XML has data-quality issues, which is why the
+  cutover sits at 2000. Those years can still be scraped for words with
+  `--regdata-csv`, e.g. `--years 1997-1999`.
+- **Source transition at 2000.** Part-level validation shows a smooth join:
+  median ±1.1% jump across all 50 titles, 45/50 within ±10%. Full detail is in
+  the Methodology & Validation appendix in `scrape_cfr_by_title.py`.
+- **Title 3 (The President) words start 2000.** RegData cannot reliably count
+  its presidential-document compilation, which isn't part-structured, so
+  pre-2000 values are omitted. Title 3 counts reflect annual presidential
+  output rather than regulatory stock, so they aren't comparable across titles.
+- **The CFR Index is excluded** — it's an annual standalone document, not part
+  of any numbered title. Annual totals here run ~1,300 pages below sources that
+  include it.
+- **Reserved/retired titles.** Title 2 starts in 2005, Title 6 in 2004; Title 35
+  was eliminated after 2000. Early years will be missing these rows.
+- **Structural breaks.** Several titles have content discontinuities:
+  cross-title migrations (Titles 34/45, 41/48, 4/31), content-regime shifts
+  (Title 6), agency reorganizations, and OCR-era caveats (Titles 1, 4). The
+  dashboard surfaces these through per-title hover notes.
+- **2006 & 2009 XML duplication (corrected).** A handful of volumes in those
+  editions ship the entire body twice. `xml_word_counts` detects this
+  structurally and divides back to one clean copy, so the output is already
+  corrected.
+- **Incomplete years.** The most recent year may have fewer than 50 titles and
+  is flagged `year_complete = False`. 1999 and 2007 are permanently flagged
+  `False` because GovInfo is missing volumes for certain titles.
+
+## Word Count Methodology
+
+Word counts exclude CFR front and back matter — table of contents, agency index,
+finding aids, and "List of CFR Sections Affected" — which are user aids, not
+legal text. They **include** part/title appendices (all regulatory body text
+under `<TITLE>`), which differs slightly from RegData, whose part-level counts
+appear to exclude them.
+
+Page counts come from CFR PDFs; word counts come from CFR bulk XML, with PDF
+text extraction as a fallback for ~0.3% of volumes where XML is absent or fails
+quality checks. The GovInfo annual-edition XML is the right source for word
+*volume* even though the RegData User Guide avoids GPO XML: that caveat concerns
+RegData's part-level structural parsing, not aggregate word counts, which
+validate within ~2.5% of RegData.
+
+Full rationale and validation numbers are in the Methodology & Validation
+appendix in `scrape_cfr_by_title.py`. See also
+[GPO's CFR XML User Guide](https://www.govinfo.gov/bulkdata/CFR/resources/CFR-XML_User-Guide_v1.pdf).
 
 ## Update Cadence
 
-GovInfo publishes CFR titles on a staggered annual schedule that doesn't finish until well into the *following* calendar year:
+GovInfo publishes CFR titles on a staggered annual schedule:
 
 | Revision date | Titles | Typically appears on GovInfo |
 |---|---|---|
@@ -88,4 +192,5 @@ GovInfo publishes CFR titles on a staggered annual schedule that doesn't finish 
 | Jul 1 | 28–41 | Q3–Q4 of revision year |
 | Oct 1 | 42–50 | Q4 of revision year through Q1–Q2 of year after |
 
-Because the Oct 1 titles can take 18–24 months to fully surface, year Y typically flips to `year_complete = True` in late Y+1 or early Y+2. Re-running the scraper is idempotent, so running once a year in Q4 or Q1 is the recommended cadence. Mid-year runs are also fine — just filter to `year_complete == True` in the dataset before any time-series analysis.
+Year Y typically flips to `year_complete = True` in late Y+1 or early Y+2, so
+running the scraper once a year in Q4 or Q1 is the recommended cadence.
