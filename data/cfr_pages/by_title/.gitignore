@@ -1,0 +1,17 @@
+# RegData source files — large (~98 MB), not versioned in the repo.
+# Download from https://www.quantgov.org/csv-download (or the GWU Box mirror)
+# and keep locally; see README "First-Time / Historical Backfill".
+usregdata*.csv
+
+# Scraper refresh backup (created by --refresh before overwriting the cache).
+*.csv.bak
+
+# Python bytecode cache.
+__pycache__/
+*.pyc
+
+# Claude Code local settings.
+.claude/
+
+# macOS Finder metadata.
+.DS_Store
