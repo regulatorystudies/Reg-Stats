@@ -41,6 +41,14 @@ FONT_PATH = _first_existing(
     ],
     REPO_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf",
 )
+# Optional GW/RSC logo for the footer; if absent the footer just omits it.
+LOGO_PATH = _first_existing(
+    [
+        BASE / "gw_ci_rsc_2cs_pos.png",
+        REPO_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png",
+    ],
+    REPO_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png",
+)
 
 # Brand font stack, reused by both the injected CSS and the Plotly sparklines
 # (Plotly renders its own text -- e.g. hover tooltips -- outside the page CSS).
@@ -53,6 +61,11 @@ NAVY_YARD = "#00223E"
 GW_BUFF_20 = "#F6F1E8"
 GW_BUFF_50 = "#E8DDC6"
 POTOMAC = "#0075C8"
+# Hairline around the tile cards and the two controls next to them. The cards
+# get it from theme.borderColor in .streamlit/config.toml -- a separate file
+# Streamlit reads before this module runs, so it can't share this constant.
+# Keep the two in sync.
+BORDER = "#D8D2C4"
 # Up/down/neutral colors from charts/code/style.R (Reg-Stats chart palette).
 UP_LINE = "#008364"
 DOWN_LINE = "#C9102F"
@@ -126,6 +139,7 @@ NOTE = ("Word and page counts are not necessarily measures of regulatory "
         "impact. However, changes in these metrics over time offer one proxy "
         "for the volume of regulatory activity.")
 SOURCES = "QuantGov.org (1970–1999) and GovInfo.gov (2000–present)"
+INFO_URL = "https://github.com/regulatorystudies/Reg-Stats/tree/main/data/cfr_pages/by_title"
 
 # Notes surfaced in the UI: a small marker on the affected tile (hover for the
 # reason) and a list at the bottom of the page. Each entry is (anchor_year,
@@ -207,30 +221,46 @@ def _inject_css() -> None:
         /* Hide Streamlit's top header/toolbar bar (Deploy button + ☰ menu). */
         [data-testid="stHeader"] {{ display: none; }}
         .stMainBlockContainer {{ padding-top: 1rem; }}
-        .tile-title {{ font-size: 0.95rem; font-weight: 600; color: {NAVY_YARD};
+        /* text-stroke, not font-weight alone: only the OTF's Regular weight is
+           embedded, so 700 falls back to synthetic bold and reads too light --
+           same reason .notes-label needs it (see below). */
+        .tile-title {{ font-size: 0.95rem; font-weight: 700; color: {NAVY_YARD};
+                       -webkit-text-stroke: 0.5px currentColor;
                        line-height: 1.15; margin-bottom: 0; white-space: nowrap; }}
         /* Discontinuity marker + CSS tooltip (Streamlit strips the native
            `title` attribute, so we render our own hover popover). */
         .tile-note-wrap {{ position: relative; display: inline-block; }}
         /* Outlined "i" badge in the title-heading blue: a drawn circle + i, so
-           its stroke weight matches Streamlit's "?" help icon (the bare U+24D8
-           character renders too thin; a solid disc reads too heavy). */
+           its stroke weight matches Streamlit's "?" help icon. The "?" icon's
+           SVG stroke itself is fully opaque, but it reads as a soft grey
+           on-screen (sub-pixel anti-aliasing on a thin vector stroke shows
+           less ink per pixel than a CSS border of the same width does) --
+           matching that look means dimming our border/text with alpha, not
+           just matching the raw color value. The "i" glyph gets a light
+           text-stroke only because at this font-size font-weight alone
+           (relying on synthetic bold, since only the Regular OTF weight is
+           embedded) is invisible; the stroke is kept subtle so the letter
+           reads like the "?" rather than bolder. */
         .tile-note-flag {{ display: inline-flex; align-items: center;
                            justify-content: center; width: 15px; height: 15px;
                            border-radius: 50%;
-                           border: 1.75px solid rgba(49, 51, 63, 0.6);
-                           background: transparent; color: rgba(49, 51, 63, 0.6);
+                           border: 2.0px solid rgba(49, 51, 63, 0.55);
+                           background: transparent; color: rgba(49, 51, 63, 0.55);
                            font-size: 0.64rem; font-weight: 700;
+                           -webkit-text-stroke: 0.5px currentColor;
                            font-style: normal; line-height: 1; cursor: help;
                            margin-left: 4px; vertical-align: middle;
                            position: relative; top: -2px;
                            font-family: inherit; }}
         /* Nudge the "i" glyph down a touch so it sits centered in the ring. */
         .tile-note-i {{ position: relative; top: 1px; left: 0.25px; }}
+        /* Nested inside .tile-title, and -webkit-text-stroke inherits -- so the
+           title's stroke would bolden this body text unless reset to 0. */
         .tile-note-tip {{ visibility: hidden; opacity: 0; position: absolute;
                           left: 0; top: 1.5em; z-index: 1000; width: 200px;
+                          -webkit-text-stroke: 0;
                           background: #fff; color: #333;
-                          border: 1px solid #D8D2C4; border-radius: 6px;
+                          border: 1px solid {BORDER}; border-radius: 6px;
                           padding: 7px 9px; font-size: 0.72rem; font-weight: 400;
                           line-height: 1.4; white-space: normal;
                           box-shadow: 0 2px 10px rgba(0,0,0,0.14);
@@ -243,7 +273,9 @@ def _inject_css() -> None:
         .tile-name  {{ font-size: 0.85rem; color: #555; line-height: 1.15;
                        margin-bottom: 4px; white-space: nowrap;
                        overflow: hidden; text-overflow: ellipsis; }}
-        .tile-pct   {{ font-size: 1.05rem; font-weight: 700; line-height: 1.1; }}
+        /* currentColor so the stroke follows the inline green/red/grey. */
+        .tile-pct   {{ font-size: 1.05rem; font-weight: 700; line-height: 1.1;
+                       -webkit-text-stroke: 0.55px currentColor; }}
         .tile-vals  {{ font-size: 0.72rem; color: #555; line-height: 1.2; }}
         .tile-years {{ font-size: 0.68rem; color: #888; line-height: 1.2; }}
         .tile-empty {{ font-size: 0.78rem; color: #999; font-style: italic;
@@ -253,18 +285,60 @@ def _inject_css() -> None:
         .notes-section {{ margin-top: 20px; padding-top: 10px;
                           margin-bottom: 1rem;
                           border-top: 1px solid {GW_BUFF_50}; }}
-        .notes-line {{ font-size: 0.72rem; color: #6B6B6B;
+        .notes-line {{ font-size: 0.72rem; color: #6B6B6B; font-weight: 400;
                        line-height: 1.45; margin-top: 8px; }}
-        .notes-label {{ font-weight: 600; }}  /* inherits the grey body colour */
+        /* font-weight: 700 alone is invisible here: only the OTF's Regular
+           weight is embedded, so 700 relies on the browser's synthetic bold,
+           which is too subtle to read at this font-size. text-stroke forces
+           a visible weight increase independent of font synthesis. Scoped to
+           just the label -- the "Note:"/"Sources:"/"Updated:" prefix -- not
+           the sentence that follows it. */
+        .notes-label {{ font-weight: 700; -webkit-text-stroke: 0.45px currentColor; }}
+        .notes-link {{ color: {POTOMAC} !important; text-decoration: underline; }}
+        .notes-footer {{ display: flex; align-items: flex-end;
+                         justify-content: space-between; gap: 16px; }}
+        .notes-logo {{ flex-shrink: 0; }}
+        .notes-logo img {{ height: 90px; width: auto; display: block; }}
         /* "Sort by" selectbox: subtle cream control (border matches the tiles),
-           with a Potomac outline on hover. */
-        div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
-            border: 1px solid #D8D2C4 !important;  /* match theme.borderColor (tiles) */
+           with a Potomac outline on hover. The background is applied to every
+           nested div (not just the direct child) because the baseweb Select's
+           wrapper depth has shifted across Streamlit versions -- a `> div`
+           child selector that hits the right element on one version can miss
+           it on another, silently leaving the default grey showing through. */
+        div[data-testid="stSelectbox"] div[data-baseweb="select"],
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] div {{
+            background-color: {GW_BUFF_20} !important;  /* match Download Data button */
+        }}
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] {{
+            border: 1px solid {BORDER} !important;  /* match theme.borderColor (tiles) */
+            border-radius: 8px !important;  /* match Download Data button's corner radius */
             color: {NAVY_YARD} !important;  /* selected value text, e.g. "Title Number" */
             font-family: {FONT_FAMILY} !important;
             font-weight: 400 !important;
         }}
-        div[data-testid="stSelectbox"] div[data-baseweb="select"] > div:hover {{
+        /* The `color` on the wrapper above never reaches the value text:
+           BaseWeb sets an explicit color on the inner element, and inheritance
+           always loses to an explicit rule. Measured: without this the value
+           renders rgb(49,51,63) (Streamlit's default #31333F) rather than navy,
+           so it quietly mismatched the Download button's label. !important
+           beats BaseWeb's class-level rule regardless of specificity. */
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] div,
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] input {{
+            color: {NAVY_YARD} !important;
+        }}
+        /* BaseWeb draws its own hairline on the inner control, stacking a second
+           1.11px line (measured: rgb(240,242,246)) just inside ours -- together
+           they read as a thicker, cooler edge than the Download button's single
+           border. Hide it so only the outer border shows. `transparent` rather
+           than `none` keeps the box model -- and so the 42px height -- exactly
+           as-is; the inner div's buff background shows through instead. Applied
+           to every nested div rather than `> div` for the same reason as the
+           background rule above: the wrapper depth shifts between versions. */
+        div[data-testid="stSelectbox"] div[data-baseweb="select"] div {{
+            border-color: transparent !important;
+        }}
+        div[data-testid="stSelectbox"] div[data-baseweb="select"]:hover {{
             border-color: {POTOMAC} !important;
         }}
         /* Make the selectbox behave like a plain click-to-open dropdown rather
@@ -278,7 +352,7 @@ def _inject_css() -> None:
         /* Download button: subtle, with a Potomac outline on hover. */
         div[data-testid="stDownloadButton"] button {{
             background-color: {GW_BUFF_20} !important;
-            border-color: #D8D2C4 !important;  /* match theme.borderColor (tiles) */
+            border-color: {BORDER} !important;  /* match theme.borderColor (tiles) */
             color: {NAVY_YARD} !important;
             font-family: {FONT_FAMILY} !important;
             font-weight: 400 !important;
@@ -292,6 +366,15 @@ def _inject_css() -> None:
             background-color: {GW_BUFF_20} !important;
             border-color: {POTOMAC} !important;
             color: {NAVY_YARD} !important;
+        }}
+        /* Match the Download button's height to the "Sort by" select. They
+           already share a width (equal columns + use_container_width). The
+           select's inner control is Streamlit's 40px minElementHeight with its
+           1px borders outside that box, so the control reads ~42px; the button
+           is 40px border-box. Size only the button -- constraining the select
+           itself squeezes its 40px child and clips the bottom border. */
+        div[data-testid="stDownloadButton"] button {{
+            height: 42px !important;
         }}
         /* Tighten the header stack. Streamlit gives h1 a large built-in
            top/bottom padding and puts a ~1rem flex gap between stacked blocks;
@@ -352,6 +435,15 @@ def load_export_bytes() -> bytes:
     (title_name column included, rolling-publication years already dropped).
     Serve the file bytes verbatim."""
     return DATA_PATH.read_bytes()
+
+
+@st.cache_data
+def load_logo_b64() -> str | None:
+    """Base64 of the GW/RSC logo PNG, for inline embedding in footer HTML;
+    None if the asset isn't present (e.g. running standalone)."""
+    if not LOGO_PATH.exists():
+        return None
+    return base64.b64encode(LOGO_PATH.read_bytes()).decode("utf-8")
 
 
 def fmt_count(n: float) -> str:
@@ -550,7 +642,7 @@ def main() -> None:
             horizontal=True,
             format_func=str.capitalize,
             help=("Pages come from the typeset PDFs and are the steadier metric; "
-                  "words come from the XML body text, which is more granular but "
+                  "words come from the XML body text and are more granular but "
                   "a bit noisier year to year."),
         )
 
@@ -582,8 +674,8 @@ def main() -> None:
             key="year_range",
             help=("Sets the time span shown. Words go back to 1970, pages to "
                   "2000. The most recent year is excluded until it's complete: "
-                  "the CFR's 50 titles are published gradually, so the newest "
-                  "year is usually still missing some titles well into the "
+                  "the CFR's 50 titles are published gradually, so the most recent "
+                  "full year is usually still missing some titles well into the "
                   "following year."),
         )
     with ctrl_sort:
@@ -596,7 +688,10 @@ def main() -> None:
                   "years."),
         )
     with ctrl_dl:
-        st.markdown("<div style='height:1.7rem;'></div>", unsafe_allow_html=True)
+        # Pushes the button down past the selectbox's "Sort by" label so the two
+        # controls' tops line up. 28px is measured, not guessed: at 1.7rem the
+        # button sat 0.8px high.
+        st.markdown("<div style='height:1.75rem;'></div>", unsafe_allow_html=True)
         st.download_button(
             label="Download Data (CSV)",
             data=load_export_bytes(),
@@ -635,23 +730,34 @@ def main() -> None:
                 with st.container(border=True):
                     render_panel(title_num, df_t, start_year, end_year, metric)
 
-    # Footer: inline labelled lines (Note, Sources, Updated), held to a readable
-    # width. Per-title caveats live on their own tiles (hover ⓘ).
+    # Footer: inline labelled lines (Note, Sources, Updated, more-info link) on
+    # the left, GW/RSC logo aligned bottom-right. Per-title caveats live on
+    # their own tiles (hover ⓘ).
     updated = format_updated(df)
     updated_line = (
         f"<div class='notes-line'><span class='notes-label'>Updated:</span> "
         f"{updated}</div>" if updated else "")
+    logo_b64 = load_logo_b64()
+    logo_html = (
+        f"<div class='notes-logo'><img "
+        f"src='data:image/png;base64,{logo_b64}' "
+        f"alt='GW Regulatory Studies Center'></div>" if logo_b64 else "")
     st.markdown(
-        f"<div class='notes-section'><div class='notes-inner'>"
+        f"<div class='notes-section'><div class='notes-footer'>"
+        f"<div class='notes-inner'>"
         f"<div class='notes-line'><span class='notes-label'>Note:</span> "
         f"{NOTE}</div>"
         f"<div class='notes-line'><span class='notes-label'>Sources:</span> "
         f"{SOURCES}</div>"
         f"{updated_line}"
+        f"<div class='notes-line'><a class='notes-link' href='{INFO_URL}' "
+        f"target='_blank' rel='noopener noreferrer'>More information on how "
+        f"we collect data</a></div>"
+        f"</div>"
+        f"{logo_html}"
         f"</div></div>",
         unsafe_allow_html=True,
     )
-
 
 if __name__ == "__main__":
     main()

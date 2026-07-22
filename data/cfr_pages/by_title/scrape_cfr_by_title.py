@@ -1,36 +1,141 @@
-"""Scrape CFR page counts (from PDFs) and word counts (from bulk XML) per title.
+"""Scrape CFR page counts (from PDFs) and word counts (from bulk XML or RegData).
 
-For each (year, title, volume) in scope:
-  - GET the PDF and count pages with pypdf.
-  - GET the bulk XML and count whitespace-delimited tokens from all text nodes.
+Word count strategy (two sources, joined at REGDATA_CUTOVER = 2000):
+  - Years 1970–1999: word counts come from RegData U.S. (Mercatus Center /
+    QuantGov; 6.0 by default, 5.0 also works — identical for these years).
+    Supply the path to usregdata6.csv via --regdata-csv. The script sums the
+    part-level `wordcount` column across all parts for each (year, title). No
+    page counts are available for these years. See the METHODOLOGY & VALIDATION
+    appendix at the end of this docstring for the 2000-cutover rationale and the
+    full validation notes.
+  - Years 2000–present: for each (year, title, volume), GETs the PDF (page
+    count) and bulk XML (body word count, excluding <FMTR>/<BMTR> user aids)
+    from GovInfo. When a volume's XML is absent or fails quality checks it
+    falls back to PDF text extraction for that volume. Additionally, at the
+    title level, if NO volume of a (year, title) yields trusted XML and the
+    RegData CSV is supplied, the whole title's word count falls back to
+    RegData's body-only count (better aligned than inflated PDF text) for any
+    year RegData covers; page counts still come from the PDF.
 
-Then aggregate to (year, title). Writes two CSVs:
-  cfr_pages_words_disaggregated.csv  -- per (year, title, vol); also a cache
-  cfr_pages_words_by_title.csv       -- per (year, title), aggregated
+Output CSVs:
+  cfr_words_pages_disaggregated.csv  -- per (year, title, vol); GovInfo cache only
+  cfr_words_pages_by_title.csv       -- per (year, title), all years aggregated
 
-Re-runs only fetch (year, title, vol) combinations that aren't already cached
-in the disaggregated CSV. Progress is saved incrementally after each title, so
-an interrupted run can be resumed by re-invoking with the same arguments. To
-force a fresh re-scrape of cached rows (e.g., after manual CSV edits or to
-re-validate years that were rolling-published at original scrape time), pass
---refresh. The previous disaggregated CSV is backed up to ".csv.bak" first.
+Re-runs only fetch (year, title, vol) combinations not already cached in the
+disaggregated CSV. Progress is saved incrementally after each title. An
+interrupted run can be resumed by re-invoking with the same arguments.
 
 Coverage caveats:
   - GovInfo CFR coverage starts in 1997. 1996 is partial (most titles absent)
     and not supported.
+  - RegData covers 1970 onward (6.0: through 2025; 5.0: through 2022). Only
+    1970–1999 are used as the primary word-count source; 2000+ RegData is used
+    only as a fallback where GovInfo XML is unusable.
   - The CFR Index (annual document, not per-title) is not included.
+  - See the STRUCTURAL BREAKS list in the appendix below for titles with content
+    discontinuities (T2, T3, T6, T34, T35, T48).
 
 Usage:
-  python scrape_cfr_by_title.py --years 1997 2024          # two specific years
-  python scrape_cfr_by_title.py --years 1997-2010          # closed range
-  python scrape_cfr_by_title.py --years 1997-              # to current year
-  python scrape_cfr_by_title.py --years 2024 --refresh     # re-scrape 2024 from
-                                                           #   scratch (prompts y/N)
+  # GovInfo years only (2000+):
+  python scrape_cfr_by_title.py --years 2000-
+  python scrape_cfr_by_title.py --years 2000-2010
+  python scrape_cfr_by_title.py --years 2024 --refresh
+
+  # Re-verify already-scraped years (re-download + report what changed):
+  python scrape_cfr_by_title.py --years 2020-2024 --verify
+
+  # First-time backfill / include pre-2000 RegData years (needs --regdata-csv):
+  python scrape_cfr_by_title.py --years 1970- --regdata-csv usregdata6.csv
+  python scrape_cfr_by_title.py --years 1970-1999 --regdata-csv usregdata6.csv
+
+Note: the aggregate is regenerated every run; its pre-2000 rows come from
+RegData when --regdata-csv is supplied, otherwise they are preserved from the
+existing aggregate CSV (so routine GovInfo updates don't need --regdata-csv).
+
+==============================================================================
+METHODOLOGY & VALIDATION APPENDIX
+==============================================================================
+Consolidated here so this script documents its own decisions even when the
+standalone project docs aren't distributed alongside it.
+
+DATA SOURCES (joined at year 2000).
+    1970–1999: RegData U.S. word counts, no page counts.
+    2000–present: GovInfo annual-edition bulk XML (body words) + PDFs (pages).
+
+WHY REGDATA BEFORE 2000. GovInfo XML for 1997–1999 is sparse and inconsistent:
+    1997 ~27% of volumes need PDF fallback; 1999 Title 26 drops 19→6 volumes
+    (a spurious ~10% aggregate dip); 1998 is usable but runs ~4% below RegData.
+    RegData gives clean, validated counts for all 50 titles back to 1970.
+
+WHY 2000 AS THE CUTOVER (not 1998/1996). Part-level comparison of RegData vs
+    GovInfo body-only words at the boundary: median jump +1.1% (essentially
+    invisible), 45/50 titles within ±10%. Cutting over at 2000 also cleanly
+    excludes the 1999 Title 26 anomaly instead of having to special-case it.
+
+WHY BODY-ONLY `words` (not `words_all`). `words_all` includes <FMTR> (table of
+    contents, "Cite this Code") and <BMTR> (Finding Aids, List of CFR Sections
+    Affected) — user aids, not the legal text of the CFR (per GPO's CFR XML User
+    Guide). Body-only lands +1.1% above RegData at the 2000 join (smooth);
+    words_all lands +5.8% (a visible step discontinuity). `words_all` is kept in
+    the output CSV for reference/backward-compatibility only — do not use it in
+    trend analysis.
+
+VALIDATION (1998–2022 overlap, 1,215 year×title cells; RegData 5.0 and 6.0 are
+    identical here). RegData vs body-only `words`: +2.5% overall (RegData
+    higher); 88% of cells within ±5%, 96.5% within ±10%. RegData vs `words_all`:
+    −0.7%. The +2.5% gap is not a flaw in either source — RegData uses GPO
+    HTML/eCFR, GovInfo uses the typeset annual-edition XML; two legitimate
+    snapshots of the same corpus, consistent across years and titles, too small
+    to create visible discontinuities. Part-level cross-check (Title 40, 2022,
+    37 volumes, 15.7M words): the body-only count matches the raw <TITLE>-subtree
+    count to within 111 words (~0.001%), confirming the scraper's arithmetic.
+
+WHY GOVINFO TYPESET XML DESPITE THE REGDATA USER GUIDE CAVEAT. The RegData User
+    Guide avoids GPO typeset XML because it is unreliable for their *structural*
+    parsing (part/section delineation, restriction counting, NAICS/agency
+    metadata) — NOT a claim that the word totals are wrong. This pipeline only
+    needs aggregate body-only word *volume*, for which the typeset XML validates
+    within the numbers above. Scraping GPO HTML instead would lose the clean
+    <FMTR>/<BMTR> subtraction (HTML has no comparable structural markers),
+    introduce a 2016→2017 HTML-to-XML source break (HTML exists only 1996–2016),
+    and add brittle tag-stripping for no measurable accuracy gain.
+
+APPENDIX SCOPE DIFFERENCE. This body-only count includes part/title appendices;
+    RegData's part-level count appears to exclude them. It's a real definitional
+    difference at the join, but small — RegData still runs ~2.5% higher overall,
+    so appendix text is not a large share and produces no visible discontinuity.
+
+REGDATA SOURCE. RegData U.S. 6.0 (Mercatus Center / QuantGov), licensed
+    CC BY 4.0 — CITE RegData when using these word counts in research. Coverage
+    1970–2025, part level, word-count column `wordcount`. Text by era (per the
+    User Guide): 1970–1995 Tesseract OCR of scanned pages; 1996–2016 GPO HTML;
+    2017+ annualized eCFR XML. RegData 5.0 (1970–2022) and 6.0 give identical
+    title-level counts for every overlapping cell; 6.0 just adds 2023–2025. The
+    scraper infers the version label ("RegData 6.0" / "RegData 5.0") from the
+    supplied filename.
+
+STRUCTURAL BREAKS (content discontinuities unrelated to the 2000 source change,
+    emitted as-is; the dashboard surfaces these to users through per-title hover
+    notes):
+
+    T2  Empty before 2005, when OMB circulars were codified there.
+    T3  Presidential output, not regulatory stock. RegData is unusable (it breaks
+        at both source transitions); GovInfo XML is reliable, so T3 words begin
+        in 2000 and pre-2000 T3 word values are not emitted.
+    T6  Three eras with no continuity: wage/price-control bodies (1972–1981),
+        reserved/empty (1982–2003), Homeland Security (2004–present).
+    T34 Educational content migrated in from Title 45 in 1981, following the
+        creation of the Department of Education.
+    T35 ~40% content drop at 1979 (Panama Canal Treaties); vestigial after 2000
+        and eliminated after the 2000 edition.
+    T48 Begins 1984; procurement regulations (the FAR) migrated in from Title 41.
+==============================================================================
 """
 from __future__ import annotations
 
 import argparse
 import csv
+import logging
 import re
 import sys
 import time
@@ -43,9 +148,16 @@ import requests
 from pypdf import PdfReader
 from tqdm import tqdm
 
+# Silence pypdf's WARNING chatter on non-compliant PDFs ("parsing for Object
+# Streams", zlib decompress errors). The scraper already handles those cases
+# (per-page try/except; page counts come from the page tree, not text
+# extraction). They route through child loggers under "pypdf", so raising the
+# parent to ERROR suppresses them without touching the scraper's own output.
+logging.getLogger("pypdf").setLevel(logging.ERROR)
+
 ROOT = Path(__file__).parent
-DISAGG_CSV = ROOT / "cfr_pages_words_disaggregated.csv"
-AGG_CSV = ROOT / "cfr_pages_words_by_title.csv"
+DISAGG_CSV = ROOT / "cfr_words_pages_disaggregated.csv"
+AGG_CSV = ROOT / "cfr_words_pages_by_title.csv"
 
 PDF_URL = ("https://www.govinfo.gov/content/pkg/"
            "CFR-{year}-title{title}-vol{vol}/pdf/CFR-{year}-title{title}-vol{vol}.pdf")
@@ -55,29 +167,41 @@ XML_URL = ("https://www.govinfo.gov/bulkdata/CFR/"
 N_TITLES = 50
 MAX_VOL = 99
 REQUEST_DELAY = 0.4
-MAX_RETRIES = 3
+# Retry budget for transient failures. 6 attempts with exponential backoff
+# (1+2+4+8+16s, capped at BACKOFF_CAP) gives ~31s of patience per URL: enough to
+# ride out GovInfo's brief 502/503 hiccups, without hanging if it's truly down.
+# On exhaustion request_with_retries raises and the run stops cleanly; re-run the
+# same command to resume.
+MAX_RETRIES = 6
+BACKOFF_CAP = 30
 TIMEOUT = 90
+# Retried, then raised if they persist. Distinct from 302/404, which mean the
+# file is genuinely absent (the "no more volumes" signal) -- this keeps a brief
+# 5xx from being read as "absent" and silently truncating a title's volume scan.
+TRANSIENT_STATUS = frozenset({429, 500, 502, 503, 504})
+# CFR volumes are numbered contiguously, so two consecutive absences (302/404)
+# marks the end of a title. Requiring two rather than one means a single
+# transient absent-looking response can't end a scan early and undercount it.
+CONSECUTIVE_ABSENT_TO_STOP = 2
 
 DISAGG_FIELDS = ["year", "title", "vol", "pages", "words", "words_body",
                  "word_source", "pdf_present", "xml_present", "scraped_at"]
 # In disaggregated rows:
-#   `words`      = the chosen primary count. For XML-sourced rows this is the
-#                  full all-content itertext count of the XML. For PDF-sourced
-#                  rows this is the full PDF text word count.
-#   `words_body` = body-only count. For XML rows: the word count restricted to
-#                  the <TITLE> subtree (i.e., the regulatory hierarchy
-#                  TITLE > CHAPTER > SUBCHAP > PART > SUBPART > SECTION),
-#                  excluding <FMTR> (table of contents, "Cite this Code",
-#                  Explanation) and <BMTR> (Finding Aids, Alphabetical List of
-#                  Agencies, List of CFR Sections Affected). Per the GPO CFR
-#                  XML User Guide, those user-aid sections are NOT part of the
-#                  legal text of the CFR. For PDF-sourced rows, words_body
-#                  equals words because PDF text extraction can't cleanly
-#                  separate body from finding-aid material.
+#   `words`      = primary count: full XML itertext, or full PDF text for PDF rows.
+#   `words_body` = body-only: full itertext MINUS <FMTR> (TOC, "Cite this Code")
+#                  and <BMTR> (Finding Aids, List of CFR Sections Affected), which
+#                  the GPO CFR XML User Guide excludes from the CFR's legal text.
+#                  Computed by SUBTRACTION, not by reading the <TITLE> subtree:
+#                  the schema isn't reliably hierarchical (pre-~2008 volumes put
+#                  body elements as siblings of <TITLE>; Title 3's content sits in
+#                  sibling <PROC>/<EXECORDR>/<MEMO>, leaving its <TITLE> subtree
+#                  ~4 words), so a subtree method would wrongly demote Title 3 to
+#                  PDF fallback. See xml_word_counts(). For PDF rows, words_body
+#                  equals words.
 AGG_FIELDS = ["year", "title", "title_name", "pages", "words", "words_all",
               "n_volumes", "xml_volumes", "pdf_volumes",
               "has_pdf_gaps", "has_xml_gaps",
-              "year_complete", "last_scraped_at"]
+              "year_complete", "last_scraped_at", "word_source"]
 # In aggregated rows:
 #   `words`     = sum of per-volume words_body (the headline body-only count).
 #   `words_all` = sum of per-volume words (the full all-content count, kept
@@ -114,43 +238,120 @@ CFR_TITLES: dict[int, str] = {
     50: "Wildlife and Fisheries",
 }
 
-# The body of a CFR volume's XML lives under the top-level <TITLE> element
-# (the regulatory hierarchy TITLE > CHAPTER > SUBCHAP > PART > SUBPART >
-# SECTION). The PDF fallback fires when either the <TITLE> subtree is missing
-# / contains fewer than MIN_BODY_WORDS, or the body word count is below
-# MIN_XML_PDF_RATIO of the PDF text word count (catches sparse XMLs that have
-# a TITLE element but no real content). The threshold guards against the
-# 1998 Title 1 vol 1 class of bug where a previous heuristic (presence of
-# any <SECTION>/<PART> tag) was fooled by such tags appearing in the
-# alphabetical agency index inside <BMTR>.
+# PDF fallback fires when the <TITLE> subtree is missing or holds fewer than
+# MIN_BODY_WORDS, or the body count falls below MIN_XML_PDF_RATIO of the PDF text
+# count (catching sparse XMLs that have a TITLE element but no real content --
+# the 1998 Title 1 vol 1 class of bug, where an earlier "any <SECTION>/<PART>
+# tag" heuristic was fooled by such tags in the agency index inside <BMTR>).
 MIN_BODY_WORDS = 1000
 MIN_XML_PDF_RATIO = 0.5
-# Upper bound on body / pdf. The duplication signature is ~2.0x (every
-# <SECTNO>/<P>/<E> tag occurring twice while <PRTPAGE> markers stay stable);
-# confirmed on 10 cached volumes (9 in 2009, 1 in 2006). Healthy volumes
-# normally run 0.85-0.95, but legitimately dense ones can reach 1.72 (e.g.
-# 2006 Title 48 vol 4 -- Federal Acquisition Regulations, dense with
-# cross-referenced clauses XML captures and PDF renders sparsely). 1.85
-# gives ~6 points of cushion below the duplication signature, ~13 points
-# of cushion above the highest-density legitimate volume observed.
-# Any future volume that legitimately exceeds 1.85 will get demoted to PDF
-# fallback; the WARN print in scrape_title makes such cases reviewable.
+# Upper bound on body/pdf. The duplication signature is ~2.0x (body elements
+# twice over; in 2007 Title 3 vol 1, 252 <PROC> entries but 126 unique).
+# Confirmed on ~10 cached volumes (9 in 2009, 1 in 2006) plus 2007 t3 v1. Healthy
+# volumes run 0.85-0.95, but legitimately dense ones reach 1.72 (2006 Title 48
+# vol 4: FAR clauses that XML captures and the PDF renders sparsely). 1.85 sits
+# ~6 points below the duplication signature and ~13 above the densest legitimate
+# volume seen. Anything legitimately exceeding it is demoted to PDF fallback and
+# surfaced by the WARN print in scrape_title.
 MAX_XML_PDF_RATIO = 1.85
 
-# A CFR year Y is rolling-published across Y and Y+1 (sometimes spilling into
-# Y+2 for Oct-1 revision titles). Marking a year "complete" combines two checks:
+# Editions whose bulk XML has PERVASIVE whole-volume duplication: the entire
+# <CFRDOC> payload is emitted twice, so affected volumes carry two top-level
+# <TITLE> blocks and the body count doubles. The PDF is unaffected, so this slips
+# past MAX_XML_PDF_RATIO and surfaces as a words-per-page spike (+4% to +43% at
+# title level for ~14 titles in 2009, ~21 in 2006). xml_word_counts detects the
+# duplicated blocks structurally and divides back to one clean copy, so the fix
+# is automatic and year-agnostic; this set is documentation only, gating nothing.
+XML_DUPLICATION_YEARS: set[int] = {2006, 2009}
+
+# A CFR year Y is rolling-published across Y and Y+1 (sometimes into Y+2 for
+# Oct-1 titles). "Complete" combines two checks:
 #   1. Calendar lag: the latest scrape touching Y was in Y+COMPLETE_LAG or later.
-#   2. Per-title volume sanity: relative to the most recent prior complete year,
-#      no title's n_volumes has dropped below MIN_VOLUMES_RATIO of its prior
-#      count, and no previously-present title is missing entirely. This catches
-#      partial-publication years even after the calendar lag passes (e.g., the
-#      1999 Title 26 dip and 2007 Title 14 dip, which look like GovInfo
-#      publication artifacts in years the bare calendar rule would mark
-#      complete). ELIMINATED_TITLES carves out the one title we know is
-#      permanently gone (Title 35, eliminated after the 2000 edition).
+#   2. Volume sanity: versus the most recent prior complete year, no title's
+#      n_volumes fell below MIN_VOLUMES_RATIO of its prior count and no
+#      previously-present title vanished. This catches partial-publication years
+#      the calendar rule alone would pass (the 1999 Title 26 and 2007 Title 14
+#      dips). ELIMINATED_TITLES carves out Title 35, gone after the 2000 edition.
 COMPLETE_LAG = 1
 MIN_VOLUMES_RATIO = 0.7
 ELIMINATED_TITLES: dict[int, int] = {35: 2000}  # title -> last year it existed
+
+# Freshness net: a normal scrape also re-probes this many of the most recent
+# cached editions, since CFR editions keep receiving volumes for ~1-2 years after
+# their nominal date. Cheap -- scrape_title skips cached volumes and only probes
+# past each title's last. Full re-download-and-diff stays behind --verify.
+AUTO_VERIFY_RECENT = 3
+
+# Years before REGDATA_CUTOVER use RegData word counts instead of GovInfo XML
+# (no page counts for those years). 2000 is the cutover because (a) GovInfo XML
+# for 1998-1999 has data-quality issues (the 1999 Title 26 dip), and (b) RegData
+# total_words joins smoothly onto GovInfo body-only words there: median ±1.0-1.1%
+# across all 50 titles, 45/50 within ±10%, holding for RegData 5.0 and 6.0 alike.
+# See the validation appendix at the top of this file.
+REGDATA_CUTOVER = 2000
+
+# Earliest year of the historical record (RegData 6.0 begins 1970).
+# write_aggregated regenerates the ENTIRE aggregate each run and its pre-cutover
+# rows come only from RegData, so when a RegData CSV is supplied we load the full
+# pre-cutover span regardless of --years -- otherwise a partial run (say, one
+# recent GovInfo year) would silently drop 1970-1999 from the output.
+REGDATA_MIN_YEAR = 1970
+
+# RegData (Mercatus / QuantGov) is used two ways:
+#   (1) primary word counts for years < REGDATA_CUTOVER (no GovInfo XML), and
+#   (2) a body-only FALLBACK for GovInfo years when a title has no usable XML.
+#       RegData's part-level `wordcount` excludes front/back matter, so it aligns
+#       with the body-only XML measure (~2.5% gap) far better than PDF text
+#       (~6%+ inflated). It fires only when a (year, title) produced ZERO trusted
+#       XML volumes; partial failures keep their good XML volumes plus per-volume
+#       PDF fallback, which beats a title-wide RegData substitution.
+# Coverage isn't hardcoded: the fallback applies wherever the supplied CSV has a
+# value (5.0 covers 1970-2022, 6.0 covers 1970-2025).
+
+# Titles whose RegData word counts are known to be unreliable. Title 3 (The
+# President) is a compilation of presidential documents outside the normal part
+# structure: RegData's part-level parser captures only the small Chapter I shell,
+# and the series breaks hard at its source transitions (402,731 in 1995 ->
+# 17,905 in 1996). So for these titles, (1) pre-cutover RegData rows are NOT
+# emitted (the series simply starts at the GovInfo era) and (2) they're excluded
+# from the post-cutover fallback, where PDF text is the better option.
+REGDATA_UNRELIABLE_TITLES = {3}
+
+# Per-title coverage windows: (start_year, end_year), inclusive; None = open.
+# Rows outside a title's window are not emitted -- a mechanism for trimming a
+# title to a single content regime.
+# Every year is retained even across content-regime discontinuities (e.g. Title 6's wage/price -> reserved ->
+# DHS eras), which are annotated in the UI rather than trimmed out. So this map is
+# intentionally EMPTY; the mechanism remains in case a trim is ever re-approved.
+TITLE_COVERAGE: dict[int, tuple[int | None, int | None]] = {}
+
+
+def in_title_coverage(title: int, year: int) -> bool:
+    """True unless `title` has a coverage window that `year` falls outside of."""
+    span = TITLE_COVERAGE.get(title)
+    if span is None:
+        return True
+    start, end = span
+    if start is not None and year < start:
+        return False
+    if end is not None and year > end:
+        return False
+    return True
+
+# word_source label for RegData rows. Set from the --regdata-csv filename in
+# main() so provenance stays accurate across RegData versions.
+REGDATA_LABEL = "RegData"
+
+
+def regdata_label_from_path(path: Path) -> str:
+    """Infer a RegData version label from the CSV filename. Falls back to the
+    generic 'RegData' if the version can't be determined."""
+    name = path.name.lower()
+    if "regdata6" in name or "regdata-us_6" in name:
+        return "RegData 6.0"
+    if "regdata5" in name or "regdata-us_5" in name:
+        return "RegData 5.0"
+    return "RegData"
 
 
 def parse_years(specs: list[str]) -> list[int]:
@@ -169,21 +370,113 @@ def parse_years(specs: list[str]) -> list[int]:
     return sorted(out)
 
 
+def load_regdata(path: Path, years: list[int]) -> dict[tuple[int, int], int]:
+    """Load RegData U.S. 6.0 CSV and return {(year, title): total_words}.
+
+    Sums the part-level `wordcount` column across all parts for each
+    (year, title) combination in `years`. Only processes rows where year is
+    in the requested set for efficiency (the CSV is ~98 MB / 550k rows).
+
+    The RegData `wordcount` column corresponds to body-only word counts
+    (part-level text, excluding volume front/back matter). It aligns with the
+    GovInfo body-only `words` column at the 2000 cutover within ~2.5% on
+    average. See the validation appendix at the top of this file for full notes.
+    """
+    year_set = set(years)
+    totals: dict[tuple[int, int], int] = {}
+    n_rows = 0
+    print(f"\nLoading RegData from {path.name} for years "
+          f"{min(year_set)}-{max(year_set)}...", file=sys.stderr)
+    with path.open(newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            try:
+                year = int(row["year"])
+            except (ValueError, KeyError):
+                continue
+            if year not in year_set:
+                continue
+            try:
+                title = int(row["title"])
+                wc = int(float(row.get("wordcount") or 0))
+            except (ValueError, KeyError):
+                continue
+            totals[(year, title)] = totals.get((year, title), 0) + wc
+            n_rows += 1
+    print(f"  Loaded {n_rows:,} part rows → "
+          f"{len(totals):,} (year, title) combinations.", file=sys.stderr)
+    return totals
+
+
+def load_pre_cutover_from_aggregate(
+        path: Path) -> tuple[dict[tuple[int, int], int], str]:
+    """Read the pre-REGDATA_CUTOVER (year, title) -> words rows from an existing
+    aggregate CSV, plus the RegData source label they carry. Lets a run with no
+    --regdata-csv carry the historical record forward instead of dropping it: the
+    aggregate is fully regenerated each run and its 1970-1999 rows come only from
+    RegData, and those values are static (RegData doesn't revise them), so reading
+    them back is equivalent to re-deriving them."""
+    data: dict[tuple[int, int], int] = {}
+    label = REGDATA_LABEL
+    try:
+        with path.open(newline="") as f:
+            for r in csv.DictReader(f):
+                try:
+                    y, t = int(r["year"]), int(r["title"])
+                except (ValueError, KeyError, TypeError):
+                    continue
+                if y < REGDATA_CUTOVER:
+                    try:
+                        data[(y, t)] = int(float(r.get("words") or 0))
+                    except ValueError:
+                        continue
+                    if r.get("word_source"):
+                        label = r["word_source"]
+    except OSError:
+        pass
+    return data, label
+
+
 def request_with_retries(session: requests.Session, url: str) -> requests.Response:
+    """GET `url` with exponential backoff on transient failures.
+
+    Retries up to MAX_RETRIES times (sleeping 2**attempt seconds between tries)
+    on two kinds of transient failure:
+      - network-level errors (timeouts, dropped connections), and
+      - transient HTTP statuses (TRANSIENT_STATUS: 429 and 5xx), e.g. GovInfo
+        briefly overloaded.
+    If a transient failure persists past MAX_RETRIES, this RAISES rather than
+    returning, so the caller stops loudly (and the run can be resumed from the
+    cache) instead of mistaking a server hiccup for a missing file and silently
+    truncating a title's volume scan.
+
+    Non-transient responses (200, and the 302/404 that mean "file absent") are
+    returned as-is. Redirects are disabled so a real 200 (file present) is
+    distinguishable from a 302 to GovInfo's /error page (file absent)."""
     last_exc: Exception | None = None
     for attempt in range(MAX_RETRIES):
         try:
-            return session.get(url, timeout=TIMEOUT, allow_redirects=False)
+            r = session.get(url, timeout=TIMEOUT, allow_redirects=False)
+            if r.status_code not in TRANSIENT_STATUS:
+                return r
+            last_exc = requests.HTTPError(
+                f"transient HTTP {r.status_code} for {url}")
         except requests.RequestException as e:
             last_exc = e
-            time.sleep(2 ** attempt)
+        # Back off before the next try, but not after the final attempt
+        # (no point sleeping just to raise).
+        if attempt < MAX_RETRIES - 1:
+            time.sleep(min(2 ** attempt, BACKOFF_CAP))
     assert last_exc is not None
     raise last_exc
 
 
 def download(session: requests.Session, url: str, dest: Path) -> bool:
-    """200 with body -> writes file and returns True. 302 (redirect to /error)
-    or anything else -> returns False without writing."""
+    """200 with body -> writes file and returns True. A genuine "absent"
+    response (302 redirect to /error, or 404) -> returns False without writing.
+    Transient server errors (429/5xx) never reach here as False: they are
+    retried in request_with_retries and raised if they persist, so they can't
+    be misread as "absent"."""
     r = request_with_retries(session, url)
     if r.status_code == 200 and r.content:
         dest.write_bytes(r.content)
@@ -224,6 +517,17 @@ def xml_word_counts(path: Path) -> tuple[int, int, bool]:
     all_words counts every text node in the document — the "what's in the
     file" measure, kept for reference and backward compatibility.
 
+    De-duplication: some GovInfo volumes (pervasively 2006 and 2009) ship the
+    entire volume body TWICE — the whole <CFRDOC> payload is emitted N times,
+    so the file carries N copies of every top-level <TITLE> block (each paired
+    with its own <FMTR>/<BMTR>/<AMDDATE>). This doubles the word count while
+    leaving the PDF page count untouched, so it slips past the XML/PDF ratio
+    guard (the PDF is unaffected) and shows up as a words-per-page spike. We
+    detect it structurally — N = number of top-level <TITLE> blocks, confirmed
+    by an equal count of <FMTR> blocks — and divide the counts by N to recover
+    a single clean copy on the native GovInfo scale. N == 1 (the normal case)
+    is a no-op. See XML_DUPLICATION_YEARS.
+
     has_body is True iff body_words >= MIN_BODY_WORDS. The caller uses this
     plus the XML/PDF ratio check to decide whether to trust XML or fall
     back to PDF text extraction."""
@@ -236,6 +540,16 @@ def xml_word_counts(path: Path) -> tuple[int, int, bool]:
         for el in root.findall(wrapper_tag):
             wrapper_words += len(re.findall(r"\S+", " ".join(el.itertext())))
     body_words = all_words - wrapper_words
+
+    # Whole-document duplication: N identical top-level copies. Require the
+    # <TITLE> and <FMTR> counts to agree and be >= 2 before dividing, so a
+    # volume with a single (or unusual) structure is never altered.
+    n_title = len(root.findall("TITLE"))
+    n_fmtr = len(root.findall("FMTR"))
+    if n_title >= 2 and n_title == n_fmtr:
+        body_words //= n_title
+        all_words //= n_title
+
     return body_words, all_words, body_words >= MIN_BODY_WORDS
 
 
@@ -277,7 +591,9 @@ def save_disagg(rows: list[dict]) -> None:
     tmp.replace(DISAGG_CSV)
 
 
-def write_aggregated(rows: list[dict]) -> None:
+def write_aggregated(rows: list[dict],
+                     regdata_data: dict[tuple[int, int], int] | None = None,
+                     ) -> None:
     agg: dict[tuple[int, int], dict] = {}
     for r in rows:
         key = (int(r["year"]), int(r["title"]))
@@ -349,14 +665,11 @@ def write_aggregated(rows: list[dict]) -> None:
         if threshold_ok:
             last_complete_year = y
 
-    # Determine the cutoff year. The aggregated CSV excludes years AFTER the
-    # most recent complete year, because those are still rolling-published on
-    # GovInfo (data would change between scrapes). Historical incomplete years
-    # (e.g., 1999 and 2007, both flagged by the volume-sanity check) ARE
-    # preserved so downstream consumers can decide whether to filter them via
-    # the year_complete column. The disaggregated cache always retains
-    # everything, so a future re-scrape will re-emit the dropped years once
-    # they settle.
+    # The aggregate excludes years AFTER the most recent complete year, since
+    # those are still rolling-published and would change between scrapes.
+    # Historical incomplete years (1999, 2007) ARE kept so consumers can filter
+    # via year_complete. The disaggregated cache retains everything, so a later
+    # re-scrape re-emits the dropped years once they settle.
     complete_years_only = [y for y, ok in year_complete.items() if ok]
     cutoff_year = max(complete_years_only) if complete_years_only else max(year_complete)
 
@@ -364,16 +677,83 @@ def write_aggregated(rows: list[dict]) -> None:
     with tmp.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=AGG_FIELDS)
         w.writeheader()
+
+        # --- RegData rows (pre-REGDATA_CUTOVER) ----------------------------
+        # regdata_data may also contain cutover+ years (loaded for the XML
+        # fallback used in the GovInfo loop below); those are NOT emitted as
+        # standalone rows here -- only pre-cutover years become RegData rows.
+        if regdata_data:
+            # Group by year to compute year_complete (≥40 titles with data).
+            titles_by_year: dict[int, dict[int, int]] = {}
+            for (yr, tt), wds in regdata_data.items():
+                if yr >= REGDATA_CUTOVER:
+                    continue
+                titles_by_year.setdefault(yr, {})[tt] = wds
+            for yr in sorted(titles_by_year):
+                title_map = titles_by_year[yr]
+                yr_complete = len(title_map) >= 40
+                for title_num in sorted(CFR_TITLES):
+                    wds = title_map.get(title_num, 0)
+                    if wds == 0:
+                        continue
+                    # Omit RegData word counts known to be unreliable (Title 3):
+                    # do not publish the bad values. The title's word series
+                    # starts in the GovInfo era instead (see comment above).
+                    if title_num in REGDATA_UNRELIABLE_TITLES:
+                        continue
+                    # Trim titles to their current content regime (e.g. Title 6).
+                    if not in_title_coverage(title_num, yr):
+                        continue
+                    w.writerow({
+                        "year": yr,
+                        "title": title_num,
+                        "title_name": CFR_TITLES.get(title_num, ""),
+                        "pages": "",
+                        "words": wds,
+                        "words_all": wds,
+                        "n_volumes": "",
+                        "xml_volumes": 0,
+                        "pdf_volumes": 0,
+                        "has_pdf_gaps": False,
+                        "has_xml_gaps": False,
+                        "year_complete": yr_complete,
+                        "last_scraped_at": "",
+                        "word_source": REGDATA_LABEL,
+                    })
+
+        # --- GovInfo rows (REGDATA_CUTOVER onwards) -------------------------
         for (year, title), v in sorted(agg.items()):
             if year > cutoff_year:
                 continue
+            # Trim titles to their current content regime (e.g. Title 6 < 2004).
+            if not in_title_coverage(title, year):
+                continue
+            words_body = v["words_body"]
+            words_all = v["words_all"]
+            word_source = "GovInfo XML"
+            # RegData fallback (see the integration comment near REGDATA_CUTOVER).
+            # Fires only when NO volume of this (year, title) produced a trusted
+            # XML body count, so the words would otherwise be ~6%+ inflated PDF
+            # text. Page counts are untouched. Title 3 is excluded (RegData
+            # unreliable there), and it no-ops where RegData has no value.
+            if (v["xml_volumes"] == 0
+                    and title not in REGDATA_UNRELIABLE_TITLES
+                    and year >= REGDATA_CUTOVER):
+                rd = regdata_data.get((year, title)) if regdata_data else None
+                if rd:
+                    words_body = rd
+                    words_all = rd  # RegData has no all-content analogue
+                    word_source = f"{REGDATA_LABEL} (XML fallback)"
+            # The 2006/2009 whole-volume XML duplication is already corrected at
+            # source in xml_word_counts, so words_body here is de-duplicated on
+            # the native GovInfo scale; no year-gated substitution is needed.
             w.writerow({
                 "year": year,
                 "title": title,
                 "title_name": CFR_TITLES.get(title, ""),
                 "pages": v["pages"],
-                "words": v["words_body"],
-                "words_all": v["words_all"],
+                "words": words_body,
+                "words_all": words_all,
                 "n_volumes": v["n_volumes"],
                 "xml_volumes": v["xml_volumes"],
                 "pdf_volumes": v["pdf_volumes"],
@@ -381,18 +761,21 @@ def write_aggregated(rows: list[dict]) -> None:
                 "has_xml_gaps": v["xml_missing"] > 0,
                 "year_complete": year_complete[year],
                 "last_scraped_at": v["last_scraped_at"],
+                "word_source": word_source,
             })
     tmp.replace(AGG_CSV)
 
 
 def scrape_title(session, year, title, cache, tmpdir, all_rows, seen):
     """Append disagg rows for one (year, title) to all_rows/seen, in place."""
+    consecutive_absent = 0
     for vol in range(1, MAX_VOL + 1):
         key = (year, title, vol)
         if key in cache:
             if key not in seen:
                 all_rows.append(cache[key])
                 seen.add(key)
+            consecutive_absent = 0  # a cached volume is a present volume
             continue
 
         pdf_dest = tmpdir / f"pdf_{year}_{title}_{vol}.pdf"
@@ -404,8 +787,16 @@ def scrape_title(session, year, title, cache, tmpdir, all_rows, seen):
         xml_ok = download(session, XML_URL.format(year=year, title=title, vol=vol), xml_dest)
 
         if not pdf_ok and not xml_ok:
-            # No more volumes for this title.
-            break
+            # Volume absent (both PDF and XML returned 302/404). Don't stop on
+            # the first absence: require CONSECUTIVE_ABSENT_TO_STOP in a row so a
+            # single transient absent-looking response can't truncate the title.
+            # Transient 5xx never reach here (retried/raised in download); this
+            # guards the rarer one-off 404 on a volume that actually exists.
+            consecutive_absent += 1
+            if consecutive_absent >= CONSECUTIVE_ABSENT_TO_STOP:
+                break
+            continue
+        consecutive_absent = 0  # found a real volume; reset the run of absences
 
         pages = 0
         pdf_words: int | None = None
@@ -426,12 +817,11 @@ def scrape_title(session, year, title, cache, tmpdir, all_rows, seen):
                 print(f"  WARN: XML parse failed on {year} t{title} v{vol}: {e}", file=sys.stderr)
             xml_dest.unlink(missing_ok=True)
 
-        # Trust XML if its body has >= MIN_BODY_WORDS AND -- when both signals
-        # are available -- the body word count sits inside
-        # [MIN_XML_PDF_RATIO, MAX_XML_PDF_RATIO] of the PDF's. The lower bound
-        # catches sparse XMLs; the upper bound catches GovInfo's content-
-        # duplication bug. Otherwise fall back to PDF text (~6% inflated from
-        # print boilerplate, flagged via word_source).
+        # Trust XML if its body has >= MIN_BODY_WORDS and, when both signals are
+        # available, sits within [MIN_XML_PDF_RATIO, MAX_XML_PDF_RATIO] of the
+        # PDF's: the lower bound catches sparse XMLs, the upper the duplication
+        # bug. Otherwise fall back to PDF text (~6% inflated, flagged in
+        # word_source).
         xml_trusted = (
             xml_body_words is not None
             and xml_has_body
@@ -513,6 +903,42 @@ def backfill_body_words(session: requests.Session, cache: dict,
     print("Backfill complete.", file=sys.stderr)
 
 
+def report_verify(old: dict, all_rows: list[dict],
+                  scope_keys: set[tuple[int, int]]) -> None:
+    """Print a change report for a --verify run: compare the pre-verify cached
+    values (`old`, keyed by (year, title, vol)) against the freshly re-scraped
+    rows for the same scope. Reports volumes added (late-posted), removed (no
+    longer on GovInfo), or whose page/word counts changed."""
+    new = {(int(r["year"]), int(r["title"]), int(r["vol"])): r
+           for r in all_rows
+           if (int(r["year"]), int(r["title"])) in scope_keys}
+    added = sorted(k for k in new if k not in old)
+    removed = sorted(k for k in old if k not in new)
+    changed = []
+    for k in sorted(set(old) & set(new)):
+        o, n = old[k], new[k]
+        diffs = [f for f in ("pages", "words", "words_body")
+                 if str(o.get(f, "")) != str(n.get(f, ""))]
+        if diffs:
+            changed.append((k, o, n, diffs))
+    print("\n=== VERIFY report ===", file=sys.stderr)
+    print(f"  volumes re-checked : {len(new):,}", file=sys.stderr)
+    print(f"  added (late-posted): {len(added)}", file=sys.stderr)
+    print(f"  removed (gone)     : {len(removed)}", file=sys.stderr)
+    print(f"  changed values     : {len(changed)}", file=sys.stderr)
+    for k in added:
+        print(f"    + {k[0]} t{k[1]} v{k[2]}  (new volume)", file=sys.stderr)
+    for k in removed:
+        print(f"    - {k[0]} t{k[1]} v{k[2]}  (no longer on GovInfo)",
+              file=sys.stderr)
+    for k, o, n, diffs in changed:
+        deltas = "; ".join(f"{f}: {o.get(f)} -> {n.get(f)}" for f in diffs)
+        print(f"    ~ {k[0]} t{k[1]} v{k[2]}  ({deltas})", file=sys.stderr)
+    if not (added or removed or changed):
+        print("  No changes -- the cached values match GovInfo exactly.",
+              file=sys.stderr)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -536,12 +962,37 @@ def main() -> None:
     )
     parser.add_argument(
         "--refresh", action="store_true",
-        help="Drop cached (year, title, vol) rows that fall inside the "
-             "--years range before scraping, forcing a fresh re-download "
+        help="Drop cached rows inside the --years range and re-download them "
              "from GovInfo. Useful after manual CSV edits or to re-validate "
-             "years that were rolling-published at original scrape time. "
-             "Requires --years. The previous disaggregated CSV is backed up "
-             "to '.csv.bak'. Prompts for confirmation unless --yes is set.",
+             "years that were still rolling-published when first scraped. "
+             "Requires --years; backs the cache up to '.csv.bak'; prompts for "
+             "confirmation unless --yes is set.",
+    )
+    parser.add_argument(
+        "--verify", action="store_true",
+        help="Re-verification pass. Like --refresh, but also compares every "
+             "freshly-scraped value against the cache and prints a change report "
+             "(volumes added, removed, or whose page/word counts changed). Use to "
+             "confirm no values have drifted since the last run. Requires --years.",
+    )
+    parser.add_argument(
+        "--no-recent-check", action="store_true",
+        help=f"Disable the automatic freshness check. By default a normal scrape "
+             f"also re-probes the {AUTO_VERIFY_RECENT} most recent cached "
+             f"editions for late-posted volumes (cheap; skips cached volumes). "
+             f"No effect with --refresh/--verify.",
+    )
+    parser.add_argument(
+        "--regdata-csv", type=Path, default=None,
+        metavar="PATH",
+        help=f"Path to the RegData U.S. CSV, e.g. usregdata6.csv (6.0, 1970-2025) "
+             f"or usregdata5.csv (5.0, 1970-2022). Required when --years includes "
+             f"any year before {REGDATA_CUTOVER}: those rows are summed from the "
+             f"part-level wordcount column and labeled with a version inferred "
+             f"from the filename. Optional but recommended for GovInfo years too, "
+             f"where it lets a title with no usable XML fall back to its RegData "
+             f"count instead of inflated PDF text. Page counts always come from "
+             f"the PDF.",
     )
     parser.add_argument(
         "-y", "--yes", action="store_true",
@@ -550,8 +1001,54 @@ def main() -> None:
     args = parser.parse_args()
     if args.refresh and not args.years:
         parser.error("--refresh requires --years")
+    if args.verify and not args.years:
+        parser.error("--verify requires --years")
     if not args.years and not args.backfill_only:
         parser.error("--years is required unless --backfill-only is set")
+
+    # Split requested years into RegData (pre-cutover) and GovInfo (cutover+).
+    all_years = parse_years(args.years) if args.years else []
+    regdata_years = [y for y in all_years if y < REGDATA_CUTOVER]
+    govinfo_years  = [y for y in all_years if y >= REGDATA_CUTOVER]
+
+    if regdata_years and args.regdata_csv is None:
+        parser.error(
+            f"--regdata-csv is required when --years includes years before "
+            f"{REGDATA_CUTOVER} (requested: {min(regdata_years)}-"
+            f"{max(regdata_years)}). Download usregdata6.csv (RegData U.S. 6.0) "
+            f"from the QuantGov CSV download page: "
+            f"https://www.quantgov.org/csv-download"
+        )
+    if args.regdata_csv is not None and not args.regdata_csv.exists():
+        parser.error(f"--regdata-csv file not found: {args.regdata_csv}")
+
+    # RegData feeds the aggregate two ways: the pre-REGDATA_CUTOVER rows, and the
+    # fallback for GovInfo years with no usable XML. The aggregate is fully
+    # regenerated each run and its 1970-1999 rows come ONLY from RegData, so a run
+    # WITHOUT --regdata-csv carries those static rows forward from the existing
+    # aggregate rather than dropping them.
+    global REGDATA_LABEL
+    regdata_data: dict[tuple[int, int], int] = {}
+    if args.regdata_csv is not None:
+        REGDATA_LABEL = regdata_label_from_path(args.regdata_csv)
+        fallback_years = [y for y in govinfo_years if y >= REGDATA_CUTOVER]
+        # Always load the full pre-cutover span (not merely the pre-2000 years in
+        # --years) so the regenerated aggregate keeps every historical row even
+        # when this run only scraped a recent GovInfo year.
+        pre_cutover = range(REGDATA_MIN_YEAR, REGDATA_CUTOVER)
+        load_years = sorted(set(pre_cutover) | set(regdata_years)
+                            | set(fallback_years))
+        if load_years:
+            regdata_data = load_regdata(args.regdata_csv, load_years)
+    elif AGG_CSV.exists():
+        # No RegData CSV: preserve the existing aggregate's pre-cutover rows so
+        # regenerating never drops the historical record.
+        regdata_data, label = load_pre_cutover_from_aggregate(AGG_CSV)
+        if regdata_data:
+            REGDATA_LABEL = label
+            print(f"Preserving {len(regdata_data):,} pre-{REGDATA_CUTOVER} "
+                  f"(year, title) rows from {AGG_CSV.name} "
+                  f"(no --regdata-csv supplied).", file=sys.stderr)
 
     print("CFR by-title scraper", file=sys.stderr)
     print("--------------------", file=sys.stderr)
@@ -575,9 +1072,33 @@ def main() -> None:
           file=sys.stderr)
     print("", file=sys.stderr)
 
-    years = parse_years(args.years) if args.years else []
+    years = govinfo_years   # GovInfo scraping loop uses only cutover+ years
     titles = sorted(args.titles)
     cache = load_cache()
+
+    # Freshness net: re-probe the most recent cached editions so late-posted
+    # volumes are caught even when outside --years (see AUTO_VERIFY_RECENT). Off
+    # for --refresh/--verify, which carry explicit scope.
+    if years and not (args.refresh or args.verify) and not args.no_recent_check:
+        cached_gov_years = sorted({int(k[0]) for k in cache
+                                   if int(k[0]) >= REGDATA_CUTOVER})
+        recent = cached_gov_years[-AUTO_VERIFY_RECENT:]
+        extra = sorted(set(recent) - set(years))
+        if extra:
+            print(f"Freshness check: also re-probing recent edition(s) {extra} "
+                  f"for late-posted volumes (disable with --no-recent-check).",
+                  file=sys.stderr)
+            years = sorted(set(years) | set(extra))
+
+    if regdata_years:
+        print(f"RegData years   : {min(regdata_years)}-{max(regdata_years)} "
+              f"({len(regdata_years)} years, word counts only, no pages)",
+              file=sys.stderr)
+    if govinfo_years:
+        years_label = (f"{years[0]}-{years[-1]} ({len(years)} years)"
+                       if len(years) > 1 else str(years[0]))
+    else:
+        years_label = "(none)"
 
     if args.backfill_only:
         print("Mode: --backfill-only is set. Will re-fetch XMLs for cached",
@@ -592,17 +1113,15 @@ def main() -> None:
 
     scope_keys: set[tuple[int, int]] = set()
     in_scope = 0
-    years_label = ""
     if years:
-        years_label = (f"{years[0]}-{years[-1]} ({len(years)} years)"
-                       if len(years) > 1 else str(years[0]))
         all_titles = list(range(1, N_TITLES + 1))
         titles_label = (f"1-{N_TITLES} (all)" if titles == all_titles
                         else str(titles))
         scope_keys = {(y, t) for y in years for t in titles}
         in_scope = sum(1 for (y, t, _v) in cache if (y, t) in scope_keys)
-        cache_action = "REFRESHED" if args.refresh else "reused"
-        print(f"Years to scrape : {years_label}", file=sys.stderr)
+        cache_action = ("RE-VERIFIED" if args.verify
+                        else "REFRESHED" if args.refresh else "reused")
+        print(f"GovInfo years   : {years_label}", file=sys.stderr)
         print(f"Titles to scrape: {titles_label}", file=sys.stderr)
         print(f"Cache           : {len(cache):,} rows total, "
               f"{in_scope:,} in requested scope (will be {cache_action})",
@@ -625,7 +1144,11 @@ def main() -> None:
               file=sys.stderr)
     print("", file=sys.stderr)
 
-    if args.refresh:
+    # --verify shares --refresh's invalidate-and-re-download path, but first
+    # snapshots the current scope so it can report what changed afterward.
+    verify_old: dict = {}
+    if args.refresh or args.verify:
+        mode = "VERIFY" if args.verify else "REFRESH"
         # Estimate based on REQUEST_DELAY=0.4s x 2 requests/volume + HTTP +
         # parse overhead. ~1.5s/volume matches the README's "few hours" for a
         # full 1998-present scrape of ~6500 volumes.
@@ -634,15 +1157,24 @@ def main() -> None:
             estimate_str = f"~{max(estimated_seconds / 60, 1):.0f} minutes"
         else:
             estimate_str = f"~{estimated_seconds / 3600:.1f} hours"
-        print(f"REFRESH: will invalidate {in_scope:,} cached rows in "
-              f"{years_label}", file=sys.stderr)
-        print("         and re-download every volume from GovInfo.",
-              file=sys.stderr)
+        print(f"{mode}: will re-download every volume in scope "
+              f"({in_scope:,} cached rows in {years_label})", file=sys.stderr)
+        if args.verify:
+            print("         and report any values that changed vs the cache.",
+                  file=sys.stderr)
+            print("         WARNING: a full re-verification is SLOW -- it "
+                  "re-downloads every volume", file=sys.stderr)
+            print("         in scope (the whole history is a few hours). Narrow "
+                  "--years, or start a", file=sys.stderr)
+            print("         big run at the beginning of your workday. The "
+                  "routine freshness check", file=sys.stderr)
+            print("         already covers recent editions.", file=sys.stderr)
+        else:
+            print("         from GovInfo.", file=sys.stderr)
         print(f"         Estimated time: {estimate_str}.", file=sys.stderr)
         if estimated_seconds >= 3600:
-            print("         Consider running overnight or at the start of "
-                  "your", file=sys.stderr)
-            print("         workday.", file=sys.stderr)
+            print("         Consider starting it at the beginning of your "
+                  "workday.", file=sys.stderr)
         print(f"         The current {DISAGG_CSV.name} will be backed up to",
               file=sys.stderr)
         print(f"         {DISAGG_CSV.with_suffix('.csv.bak').name} before "
@@ -663,6 +1195,9 @@ def main() -> None:
             backup_path.write_bytes(DISAGG_CSV.read_bytes())
             print(f"Backed up {DISAGG_CSV.name} to {backup_path.name}.",
                   file=sys.stderr)
+        if args.verify:
+            verify_old = {k: dict(v) for k, v in cache.items()
+                          if (k[0], k[1]) in scope_keys}
         to_drop = [k for k in cache if (k[0], k[1]) in scope_keys]
         for k in to_drop:
             del cache[k]
@@ -692,9 +1227,23 @@ def main() -> None:
             print(f"\n=== {year} ===", file=sys.stderr)
             year_start_count = len(all_rows)
             for title in tqdm(titles, desc=str(year), unit="title"):
-                scrape_title(session, year, title, cache, tmpdir, all_rows, seen)
+                try:
+                    scrape_title(session, year, title, cache, tmpdir, all_rows, seen)
+                except requests.RequestException as e:
+                    # Transient failure survived all MAX_RETRIES (likely a
+                    # sustained GovInfo outage). Save and stop cleanly with a
+                    # resume hint rather than dumping a traceback.
+                    save_disagg(all_rows)
+                    print(f"\nStopped at {year} title {title}: persistent "
+                          f"network/server error after {MAX_RETRIES} retries "
+                          f"({e}).", file=sys.stderr)
+                    print("Progress is saved. Re-run the same command to resume "
+                          "from where it left off (GovInfo is likely briefly "
+                          "down; waiting a few minutes may help).",
+                          file=sys.stderr)
+                    sys.exit(1)
                 save_disagg(all_rows)
-            write_aggregated(all_rows)
+            write_aggregated(all_rows, regdata_data=regdata_data)
             year_new = len(all_rows) - year_start_count
             if year_new > 0:
                 print(f"{year}: added {year_new:,} new volume(s) to cache.",
@@ -702,19 +1251,29 @@ def main() -> None:
             else:
                 print(f"{year}: no new volumes (all volumes already cached).",
                       file=sys.stderr)
+        if args.verify:
+            report_verify(verify_old, all_rows, scope_keys)
         if args.backfill_only:
-            write_aggregated(all_rows)
+            write_aggregated(all_rows, regdata_data=regdata_data)
+
+    # If only RegData years were requested (no GovInfo scraping), still write.
+    if not years and regdata_data:
+        write_aggregated(all_rows, regdata_data=regdata_data)
 
     new_rows = len(all_rows) - initial_row_count
     print("", file=sys.stderr)
+    if regdata_years:
+        print(f"RegData: wrote {len(regdata_data):,} (year, title) rows "
+              f"for {len(regdata_years)} year(s) to {AGG_CSV.name}.",
+              file=sys.stderr)
     if years:
         if new_rows > 0:
-            print(f"Done. Added {new_rows:,} new volume(s) across "
+            print(f"GovInfo: added {new_rows:,} new volume(s) across "
                   f"{len(years)} year(s).", file=sys.stderr)
         else:
-            print(f"Done. No new volumes to add -- {len(years)} year(s) "
+            print(f"GovInfo: no new volumes -- {len(years)} year(s) "
                   f"already fully cached.", file=sys.stderr)
-    else:
+    if not years and not regdata_data:
         print("Done. Backfill and re-aggregation complete.", file=sys.stderr)
     print(f"Updated {DISAGG_CSV.name} ({len(all_rows):,} rows total) and "
           f"{AGG_CSV.name}.", file=sys.stderr)
