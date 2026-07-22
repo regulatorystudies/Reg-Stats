@@ -52,7 +52,7 @@ Word counts for 1970–1999, and the fallback described above, come from
 `usregdata6.csv` — RegData United States 6.0 (1970–2025, CC BY 4.0). At ~98 MB it
 is **not stored in the repo**; it's covered by `.gitignore`, so it can sit in
 this directory run after run with no risk of being committed — which is also
-where the scraper auto-detects it. Download it once to your local copy of this directory and leave it there:
+where the scraper auto-detects it. Download it once and leave it here:
 
 - **QuantGov:** the [CSV download page](https://www.quantgov.org/csv-download)
   (select RegData United States 6.0).
@@ -162,8 +162,8 @@ only; also the scraper's cache.
 - **Coverage span.** Words run 1970–present (RegData before 2000, GovInfo
   after); pages are GovInfo-only, so they start at 2000. 1996 GovInfo data is
   largely absent and 1997–1999 XML has data-quality issues, which is why the
-  cutover sits at 2000. Those years can still be scraped for words with
-  `--regdata-csv`, e.g. `--years 1997-1999`.
+  cutover sits at 2000. Those years can still be scraped for words (e.g.
+  `--years 1997-1999`), since RegData covers them.
 - **Source transition at 2000.** Part-level validation shows a smooth join:
   median ±1.1% jump across all 50 titles, 45/50 within ±10%. Full detail is in
   the Methodology & Validation appendix in `scrape_cfr_by_title.py`.
