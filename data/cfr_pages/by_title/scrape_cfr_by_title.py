@@ -44,13 +44,19 @@ Usage:
   # Re-verify already-scraped years (re-download + report what changed):
   python scrape_cfr_by_title.py --years 2020-2024 --verify
 
-  # First-time backfill / include pre-2000 RegData years (needs --regdata-csv):
-  python scrape_cfr_by_title.py --years 1970- --regdata-csv usregdata6.csv
-  python scrape_cfr_by_title.py --years 1970-1999 --regdata-csv usregdata6.csv
+  # First-time backfill / include pre-2000 RegData years:
+  python scrape_cfr_by_title.py --years 1970-
 
-Note: the aggregate is regenerated every run; its pre-2000 rows come from
-RegData when --regdata-csv is supplied, otherwise they are preserved from the
-existing aggregate CSV (so routine GovInfo updates don't need --regdata-csv).
+Note: no --regdata-csv flag is needed in normal use. The RegData CSV is
+auto-detected from this script's directory (any usregdata*.csv; highest version
+wins), so just keep usregdata6.csv here. Pass --regdata-csv only to point
+somewhere else or pin a specific version.
+
+Why that matters on EVERY run, not just pre-2000 ones: the aggregate is
+regenerated in FULL each time, so with no RegData available the post-cutover
+word-count fallback is disabled and every (year, title) lacking trusted XML gets
+rewritten with ~6%-inflated PDF text -- across the whole dataset, not just the
+years scraped. If no CSV is found the scraper warns and names the affected rows.
 
 ==============================================================================
 METHODOLOGY & VALIDATION APPENDIX
@@ -352,6 +358,32 @@ def regdata_label_from_path(path: Path) -> str:
     if "regdata5" in name or "regdata-us_5" in name:
         return "RegData 5.0"
     return "RegData"
+
+
+def default_regdata_path() -> Path | None:
+    """Auto-detect a RegData CSV sitting next to this script.
+
+    Makes correct behaviour the DEFAULT: the post-cutover RegData fallback only
+    fires when RegData is loaded, and because the aggregate is regenerated in
+    full every run, a single run without it used to silently rewrite every
+    (year, title) lacking trusted XML. The README and .gitignore both expect the
+    file to live in this directory, so look for it here rather than making the
+    user re-type --regdata-csv every time.
+
+    Prefers the highest version when several are present, so the pick is
+    deterministic. Returns None if nothing matches -- a fresh clone won't have
+    the file (it's gitignored), in which case main() falls back to preserving
+    the existing aggregate's pre-cutover rows and warns.
+    """
+    candidates = sorted(ROOT.glob("usregdata*.csv"))
+    if not candidates:
+        return None
+
+    def version_key(p: Path) -> tuple[int, str]:
+        m = re.search(r"usregdata[-_]?(\d+)", p.name.lower())
+        return (int(m.group(1)) if m else 0, p.name)
+
+    return max(candidates, key=version_key)
 
 
 def parse_years(specs: list[str]) -> list[int]:
@@ -985,14 +1017,14 @@ def main() -> None:
     parser.add_argument(
         "--regdata-csv", type=Path, default=None,
         metavar="PATH",
-        help=f"Path to the RegData U.S. CSV, e.g. usregdata6.csv (6.0, 1970-2025) "
-             f"or usregdata5.csv (5.0, 1970-2022). Required when --years includes "
-             f"any year before {REGDATA_CUTOVER}: those rows are summed from the "
-             f"part-level wordcount column and labeled with a version inferred "
-             f"from the filename. Optional but recommended for GovInfo years too, "
-             f"where it lets a title with no usable XML fall back to its RegData "
-             f"count instead of inflated PDF text. Page counts always come from "
-             f"the PDF.",
+        help=f"Override the RegData U.S. CSV path. Not normally needed: any "
+             f"usregdata*.csv in this script's directory is auto-detected "
+             f"(highest version wins), so this flag is only for pointing "
+             f"elsewhere or pinning a version. RegData supplies the pre-"
+             f"{REGDATA_CUTOVER} word counts and the post-cutover fallback for "
+             f"titles with no usable XML; with no CSV available the scraper warns "
+             f"and those rows revert to ~6%%-inflated PDF text. Page counts always "
+             f"come from the PDF.",
     )
     parser.add_argument(
         "-y", "--yes", action="store_true",
@@ -1011,35 +1043,44 @@ def main() -> None:
     regdata_years = [y for y in all_years if y < REGDATA_CUTOVER]
     govinfo_years  = [y for y in all_years if y >= REGDATA_CUTOVER]
 
-    if regdata_years and args.regdata_csv is None:
-        parser.error(
-            f"--regdata-csv is required when --years includes years before "
-            f"{REGDATA_CUTOVER} (requested: {min(regdata_years)}-"
-            f"{max(regdata_years)}). Download usregdata6.csv (RegData U.S. 6.0) "
-            f"from the QuantGov CSV download page: "
-            f"https://www.quantgov.org/csv-download"
-        )
     if args.regdata_csv is not None and not args.regdata_csv.exists():
         parser.error(f"--regdata-csv file not found: {args.regdata_csv}")
+    # An explicit --regdata-csv wins; otherwise auto-detect one sitting next to
+    # this script, so correct behaviour doesn't hinge on remembering a flag.
+    regdata_path = args.regdata_csv or default_regdata_path()
+
+    if regdata_years and regdata_path is None:
+        parser.error(
+            f"No RegData CSV found, but --years includes years before "
+            f"{REGDATA_CUTOVER} (requested: {min(regdata_years)}-"
+            f"{max(regdata_years)}). Put usregdata6.csv (RegData U.S. 6.0) in "
+            f"this directory, or pass --regdata-csv. Download it from the "
+            f"QuantGov CSV download page: https://www.quantgov.org/csv-download"
+        )
 
     # RegData feeds the aggregate two ways: the pre-REGDATA_CUTOVER rows, and the
     # fallback for GovInfo years with no usable XML. The aggregate is fully
-    # regenerated each run and its 1970-1999 rows come ONLY from RegData, so a run
-    # WITHOUT --regdata-csv carries those static rows forward from the existing
-    # aggregate rather than dropping them.
+    # regenerated each run and its 1970-1999 rows come ONLY from RegData, so when
+    # no RegData CSV is available at all we carry those static rows forward from
+    # the existing aggregate rather than dropping them.
     global REGDATA_LABEL
     regdata_data: dict[tuple[int, int], int] = {}
-    if args.regdata_csv is not None:
-        REGDATA_LABEL = regdata_label_from_path(args.regdata_csv)
-        fallback_years = [y for y in govinfo_years if y >= REGDATA_CUTOVER]
-        # Always load the full pre-cutover span (not merely the pre-2000 years in
-        # --years) so the regenerated aggregate keeps every historical row even
-        # when this run only scraped a recent GovInfo year.
-        pre_cutover = range(REGDATA_MIN_YEAR, REGDATA_CUTOVER)
-        load_years = sorted(set(pre_cutover) | set(regdata_years)
-                            | set(fallback_years))
-        if load_years:
-            regdata_data = load_regdata(args.regdata_csv, load_years)
+    if regdata_path is not None:
+        if args.regdata_csv is None:
+            print(f"Using RegData source: {regdata_path.name} (auto-detected "
+                  f"alongside this script; override with --regdata-csv).",
+                  file=sys.stderr)
+        REGDATA_LABEL = regdata_label_from_path(regdata_path)
+        # Load EVERY year RegData might be asked for -- NOT just those in --years.
+        # write_aggregated regenerates the whole aggregate on each run and
+        # consults regdata_data for (a) all pre-cutover rows and (b) the
+        # post-cutover fallback on ANY year. Scoping this load to --years meant a
+        # narrow run like `--years 2024` left out-of-scope fallback rows (2000
+        # t35, 2002 t11, 2002 t25, 2004 t25) with no RegData entry, silently
+        # reverting them to ~6%-inflated PDF text. Reading the CSV dominates the
+        # cost and year filtering is trivial, so just load the full span.
+        load_years = list(range(REGDATA_MIN_YEAR, datetime.today().year + 1))
+        regdata_data = load_regdata(regdata_path, load_years)
     elif AGG_CSV.exists():
         # No RegData CSV: preserve the existing aggregate's pre-cutover rows so
         # regenerating never drops the historical record.
@@ -1048,7 +1089,7 @@ def main() -> None:
             REGDATA_LABEL = label
             print(f"Preserving {len(regdata_data):,} pre-{REGDATA_CUTOVER} "
                   f"(year, title) rows from {AGG_CSV.name} "
-                  f"(no --regdata-csv supplied).", file=sys.stderr)
+                  f"(no RegData CSV found).", file=sys.stderr)
 
     print("CFR by-title scraper", file=sys.stderr)
     print("--------------------", file=sys.stderr)
@@ -1066,9 +1107,9 @@ def main() -> None:
     print("", file=sys.stderr)
     print("Re-runs reuse cached (year, title, vol) rows from the disaggregated",
           file=sys.stderr)
-    print("CSV; only missing combinations are fetched. A full 1998-present",
+    print("CSV; only missing combinations are fetched. A full from-scratch",
           file=sys.stderr)
-    print("scrape downloads thousands of files and takes several hours.",
+    print("scrape (empty cache) downloads thousands of files and takes several hours.",
           file=sys.stderr)
     print("", file=sys.stderr)
 
@@ -1089,6 +1130,57 @@ def main() -> None:
                   f"for late-posted volumes (disable with --no-recent-check).",
                   file=sys.stderr)
             years = sorted(set(years) | set(extra))
+
+    # Guard: name any (year, title) the post-cutover RegData fallback CANNOT
+    # cover, so it never degrades silently. Two causes, same symptom:
+    #   (a) no RegData CSV available at all, or
+    #   (b) the CSV's version predates the year (RegData 5.0 stops at 2022, 6.0
+    #       at 2025), so regdata_data has no entry for it.
+    # Either way the row keeps its ~6%-inflated PDF-text count instead of
+    # RegData's body-only one -- and because the aggregate is regenerated in FULL
+    # every run, that lands across the whole dataset, not just the years scraped.
+    # Only rows that would actually have used the fallback are reported, so this
+    # stays quiet unless it genuinely matters (a bare version-coverage check
+    # would fire on every run for the current year and become noise).
+    if any(y >= REGDATA_CUTOVER for y in years):
+        has_xml: dict[tuple[int, int], bool] = {}
+        for k, r in cache.items():
+            y, t = int(k[0]), int(k[1])
+            if y < REGDATA_CUTOVER or t in REGDATA_UNRELIABLE_TITLES:
+                continue
+            has_xml[(y, t)] = (has_xml.get((y, t), False)
+                               or r.get("word_source") == "xml")
+        uncovered = sorted(k for k, ok in has_xml.items()
+                           if not ok and k not in regdata_data)
+        if uncovered:
+            shown = ", ".join(f"{y} t{t}" for y, t in uncovered[:8])
+            if len(uncovered) > 8:
+                shown += f", ... (+{len(uncovered) - 8} more)"
+            if regdata_path is None:
+                cause = "no RegData CSV was found"
+                remedy = ("Put usregdata6.csv in this directory (or pass "
+                          "--regdata-csv)")
+            else:
+                # Report the file's actual coverage rather than naming a version
+                # to upgrade to -- the user may already be on the newest release
+                # (e.g. 6.0 stops at 2025, so a 2026 gap can't be fixed by
+                # upgrading yet).
+                covered = [y for y, _t in regdata_data]
+                end = max(covered) if covered else None
+                cause = (f"{regdata_path.name} has no data for them"
+                         + (f" (its coverage ends at {end})" if end else ""))
+                remedy = ("Use a RegData release that covers these years")
+            print("", file=sys.stderr)
+            print(f"WARNING: the RegData word-count fallback cannot cover "
+                  f"{len(uncovered)} (year, title) row(s):", file=sys.stderr)
+            print(f"         {cause}.", file=sys.stderr)
+            print("         They have no trusted XML, so they keep an inflated "
+                  "PDF-text count", file=sys.stderr)
+            print("         instead of RegData's body-only count:",
+                  file=sys.stderr)
+            print(f"           {shown}", file=sys.stderr)
+            print(f"         {remedy} and re-run to fix them.", file=sys.stderr)
+            print("", file=sys.stderr)
 
     if regdata_years:
         print(f"RegData years   : {min(regdata_years)}-{max(regdata_years)} "
@@ -1151,7 +1243,7 @@ def main() -> None:
         mode = "VERIFY" if args.verify else "REFRESH"
         # Estimate based on REQUEST_DELAY=0.4s x 2 requests/volume + HTTP +
         # parse overhead. ~1.5s/volume matches the README's "few hours" for a
-        # full 1998-present scrape of ~6500 volumes.
+        # full 2000-present scrape of ~6500 volumes.
         estimated_seconds = in_scope * 1.5
         if estimated_seconds < 3600:
             estimate_str = f"~{max(estimated_seconds / 60, 1):.0f} minutes"
