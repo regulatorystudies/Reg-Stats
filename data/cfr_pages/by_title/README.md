@@ -52,7 +52,7 @@ Word counts for 1970–1999, and the fallback described above, come from
 `usregdata6.csv` — RegData United States 6.0 (1970–2025, CC BY 4.0). At ~98 MB it
 is **not stored in the repo**; it's covered by `.gitignore`, so it can sit in
 this directory run after run with no risk of being committed — which is also
-where the scraper auto-detects it. Download it once and leave it here:
+where the scraper auto-detects it. Download it once to your local copy of this directory and leave it there:
 
 - **QuantGov:** the [CSV download page](https://www.quantgov.org/csv-download)
   (select RegData United States 6.0).
