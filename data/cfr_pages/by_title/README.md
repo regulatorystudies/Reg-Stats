@@ -11,7 +11,7 @@ Cadence*).
    cd "PATH TO THIS DIRECTORY"
    conda activate regstats_cfr_by_title
    ```
-3. Make sure `usregdata6.csv` is in this directory (see *Getting the RegData
+3. **Make sure `usregdata6.csv` is in this directory** (see *Getting the RegData
    Source File*).
 4. Run the scraper:
    ```bash
