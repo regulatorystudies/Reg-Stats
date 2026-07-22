@@ -1,6 +1,6 @@
 # RegData source files — large (~98 MB), not versioned in the repo.
 # Download from https://www.quantgov.org/csv-download (or the GWU Box mirror)
-# and keep locally; see README "First-Time / Historical Backfill".
+# and keep locally; see README "Getting the RegData Source File".
 usregdata*.csv
 
 # Scraper refresh backup (created by --refresh before overwriting the cache).

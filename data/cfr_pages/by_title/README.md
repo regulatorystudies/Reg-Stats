@@ -1,4 +1,4 @@
-# CFR Word and Page Counts by Title
+# CFR Page and Word Counts by Title
 
 ## Update Instructions
 
@@ -15,7 +15,7 @@ Cadence*).
    Source File*).
 4. Run the scraper:
    ```bash
-   python scrape_cfr_by_title.py --years 2000- --regdata-csv usregdata6.csv
+   python scrape_cfr_by_title.py --years 2000-
    ```
    This picks up all new GovInfo volumes since the last run and re-probes the
    most recent editions for late-posted volumes (see *Keeping the Data Fresh*).
@@ -27,19 +27,32 @@ Cadence*).
    - `cfr_words_pages_disaggregated.csv` — per (year, title, vol), GovInfo
      volumes only; also the scraper's cache
 
-**About `--regdata-csv`.** It is strictly required only for a pre-2000 range
-(see *First-Time / Historical Backfill*), because the 1970–1999 rows are
-otherwise carried forward from the existing CSV automatically. It is still
-**recommended on every run**: it enables the RegData word-count fallback, which substitutes RegData's clean body-only count for the ~6%-inflated PDF-text count
-on the rare post-2000 (year, title) where *every* volume's XML failed the
-quality checks (such rows are labeled `"...(XML fallback)"`).
+**About RegData.** No `--regdata-csv` flag is needed: the scraper auto-detects
+any `usregdata*.csv` in this directory (highest version wins) and prints which
+file it picked up. Just keep `usregdata6.csv` here. Pass `--regdata-csv` only to
+point somewhere else or pin a specific version.
+
+RegData matters on **every** run, not just pre-2000 ones. Besides supplying the
+1970–1999 word counts, it powers the post-2000 fallback that substitutes
+RegData's clean body-only count for the ~6%-inflated PDF-text count on the
+handful of (year, title) pairs with no usable XML (currently 2000 T35, 2002 T11,
+2002 T25, 2004 T25), labeled `"...(XML fallback)"`. Because the aggregate is
+regenerated in full on every run, a run with no RegData available reverts those
+rows to inflated PDF counts across the **entire** dataset — surfacing as a
+puzzling diff in years you never touched.
+
+The scraper warns and names the affected rows whenever the fallback can't cover
+them, for either reason: no CSV was found, or the version present is too old to
+include those years (5.0 stops at 2022; 6.0 covers through 2025). It stays quiet
+when every affected row is covered, so the warning only appears when it matters.
 
 ## Getting the RegData Source File
 
 Word counts for 1970–1999, and the fallback described above, come from
-`usregdata6.csv` — RegData United States 6.0 (1970–2025, CC BY 4.0). At ~98 MB it is **not
-stored in the repo**; it's covered by `.gitignore`, so it can sit in this
-directory run after run with no risk of being committed. Download it once:
+`usregdata6.csv` — RegData United States 6.0 (1970–2025, CC BY 4.0). At ~98 MB it
+is **not stored in the repo**; it's covered by `.gitignore`, so it can sit in
+this directory run after run with no risk of being committed — which is also
+where the scraper auto-detects it. Download it once and leave it here:
 
 - **QuantGov:** the [CSV download page](https://www.quantgov.org/csv-download)
   (select RegData United States 6.0).
@@ -50,11 +63,13 @@ directory run after run with no risk of being committed. Download it once:
 To build the full dataset from scratch, including the pre-2000 word counts:
 
 ```bash
-python scrape_cfr_by_title.py --years 1970- --regdata-csv usregdata6.csv
+python scrape_cfr_by_title.py --years 1970-
 ```
 
-`--regdata-csv` is **required** here: a pre-2000 range has no existing aggregate
-to carry the 1970–1999 rows forward from.
+`usregdata6.csv` **must** be present for this (auto-detected from this directory,
+or passed with `--regdata-csv`): a pre-2000 range has no existing aggregate to
+carry the 1970–1999 rows forward from, so the scraper will stop with an error if
+it can't find one.
 
 ## Environment Set Up
 
@@ -68,8 +83,8 @@ conda activate regstats_cfr_by_title
 
 ## Other Scraper Run Options
 
-Add `--regdata-csv usregdata6.csv` to any of these; it's omitted below only for
-brevity.
+All of these auto-detect `usregdata6.csv` from this directory, so they're safe to
+copy verbatim (see *About RegData* above).
 
 ```bash
 # Scrape a single GovInfo year
@@ -93,6 +108,9 @@ python scrape_cfr_by_title.py --years 2000- --no-recent-check
 
 # Backfill words_body on old cached rows (re-aggregate only)
 python scrape_cfr_by_title.py --backfill-only
+
+# Override the auto-detected RegData file (rarely needed)
+python scrape_cfr_by_title.py --years 2024 --regdata-csv /path/to/usregdata5.csv
 ```
 
 ## Keeping the Data Fresh
@@ -101,11 +119,15 @@ GovInfo posts an edition's volumes gradually; the Oct-1 batch (Titles 42–50) c
 trickle in for over a year (see *Update Cadence*). Two mechanisms keep the
 dataset current:
 
-- **Automatic recent-editions check (default).** Every normal scrape re-probes
-  the 3 most recent cached editions for newly posted volumes. It's cheap, since
-  cached volumes are skipped, so a routine annual run keeps still-rolling years
-  current on its own; a year flips to `year_complete = True` once all its
-  volumes are in. Disable with `--no-recent-check`.
+- **Automatic recent-editions check (default).** Every normal scrape also checks
+  the 3 most recent cached editions for newly posted volumes — **regardless of
+  the `--years` you pass**. So `--years 2024` will also touch 2023 and 2025; the
+  scraper prints a `Freshness check:` line naming the extra years it added. This
+  is a re-probe, not a re-scrape: cached volumes are skipped and only volumes
+  past each title's last are fetched, so it's cheap. It means a routine annual
+  run keeps still-rolling years current on its own, and a year flips to
+  `year_complete = True` once all its volumes are in. Disable with
+  `--no-recent-check` when you want strictly the years you asked for.
 - **Full re-verification (`--verify`, on demand).** Re-downloads *every* volume
   in the `--years` range and reports what changed versus the cache (volumes
   added, removed, or recounted), including corrections to older volumes the
