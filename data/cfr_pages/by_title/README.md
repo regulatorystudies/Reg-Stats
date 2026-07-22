@@ -141,7 +141,11 @@ dataset current:
 (year, title), 1970–present. Most columns are self-describing (`year`, `title`,
 `title_name`, `pages`, `n_volumes`, `last_scraped_at`), plus per-source
 diagnostics (`xml_volumes`, `pdf_volumes`, `has_pdf_gaps`, `has_xml_gaps`) and
-`word_source`, which records where each row's word count came from. Two columns
+`word_source`, which records where each row's word count actually came from:
+`RegData 6.0` (pre-2000), `GovInfo XML` (the normal post-2000 case),
+`RegData 6.0 (XML fallback)`, or `GovInfo PDF text` for the few title-years with
+no usable XML and no RegData substitute — those counts run ~6% high, so filter
+them out if that matters to your analysis. Two columns
 need care:
 
 - **`words`** is the headline body-only metric — use this one. `words_all` adds

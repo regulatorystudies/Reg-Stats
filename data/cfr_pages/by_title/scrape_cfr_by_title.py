@@ -762,7 +762,13 @@ def write_aggregated(rows: list[dict],
                 continue
             words_body = v["words_body"]
             words_all = v["words_all"]
-            word_source = "GovInfo XML"
+            # Label the row by what the words ACTUALLY came from. A (year, title)
+            # with zero trusted XML volumes is PDF-text sourced, so claiming
+            # "GovInfo XML" would misrepresent an inflated count as a clean one --
+            # anyone filtering on word_source == "GovInfo XML" would silently pick
+            # up PDF-derived rows. The RegData fallback below overrides this when
+            # it can; "GovInfo PDF text" is what remains when it can't.
+            word_source = "GovInfo XML" if v["xml_volumes"] else "GovInfo PDF text"
             # RegData fallback (see the integration comment near REGDATA_CUTOVER).
             # Fires only when NO volume of this (year, title) produced a trusted
             # XML body count, so the words would otherwise be ~6%+ inflated PDF

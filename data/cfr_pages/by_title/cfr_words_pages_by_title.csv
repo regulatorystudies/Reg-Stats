@@ -1380,7 +1380,7 @@ year,title,title_name,pages,words,words_all,n_volumes,xml_volumes,pdf_volumes,ha
 1999,49,Transportation,,2547969,2547969,,0,0,False,False,True,,RegData 6.0
 1999,50,Wildlife and Fisheries,,1159750,1159750,,0,0,False,False,True,,RegData 6.0
 2000,1,General Provisions,114,29262,41166,1,1,0,False,False,True,2026-06-23,GovInfo XML
-2000,3,The President,411,155577,155577,1,0,1,False,True,True,2026-06-23,GovInfo XML
+2000,3,The President,411,155577,155577,1,0,1,False,True,True,2026-06-23,GovInfo PDF text
 2000,4,Accounts,165,70937,80757,1,1,0,False,False,True,2026-06-23,GovInfo XML
 2000,5,Administrative Personnel,2335,1221788,1273690,3,3,0,False,False,True,2026-06-23,GovInfo XML
 2000,7,Agriculture,10312,5769987,6024381,15,15,0,False,False,True,2026-06-23,GovInfo XML
@@ -1618,7 +1618,7 @@ year,title,title_name,pages,words,words_all,n_volumes,xml_volumes,pdf_volumes,ha
 2004,50,Wildlife and Fisheries,5156,2103761,2182073,7,7,0,False,False,True,2026-06-23,GovInfo XML
 2005,1,General Provisions,106,29406,40313,1,1,0,False,False,True,2026-06-23,GovInfo XML
 2005,2,Grants and Agreements,79,18403,27945,1,1,0,False,False,True,2026-06-23,GovInfo XML
-2005,3,The President,401,148552,148552,1,0,1,False,True,True,2026-06-23,GovInfo XML
+2005,3,The President,401,148552,148552,1,0,1,False,True,True,2026-06-23,GovInfo PDF text
 2005,4,Accounts,124,47822,57380,1,1,0,False,False,True,2026-06-23,GovInfo XML
 2005,5,Administrative Personnel,2391,1296581,1328772,3,3,0,False,False,True,2026-06-23,GovInfo XML
 2005,6,Domestic Security,138,57767,67321,1,1,0,False,False,True,2026-06-23,GovInfo XML
@@ -1716,7 +1716,7 @@ year,title,title_name,pages,words,words_all,n_volumes,xml_volumes,pdf_volumes,ha
 2006,50,Wildlife and Fisheries,6252,2403874,2491821,9,9,0,False,False,True,2026-06-23,GovInfo XML
 2007,1,General Provisions,106,29406,40313,1,1,0,False,False,True,2026-06-23,GovInfo XML
 2007,2,Grants and Agreements,229,117071,126885,1,1,0,False,False,True,2026-06-23,GovInfo XML
-2007,3,The President,419,130230,130230,1,0,1,False,False,True,2026-06-23,GovInfo XML
+2007,3,The President,419,130230,130230,1,0,1,False,False,True,2026-06-23,GovInfo PDF text
 2007,4,Accounts,124,56538,57958,1,1,0,False,False,True,2026-06-23,GovInfo XML
 2007,5,Administrative Personnel,2586,1406304,1441475,3,3,0,False,False,True,2026-06-23,GovInfo XML
 2007,6,Domestic Security,168,76461,86160,1,1,0,False,False,True,2026-06-23,GovInfo XML
