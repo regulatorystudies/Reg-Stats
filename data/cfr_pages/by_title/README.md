@@ -218,5 +218,5 @@ GovInfo publishes CFR titles on a staggered annual schedule:
 | Jul 1 | 28–41 | Q3–Q4 of revision year |
 | Oct 1 | 42–50 | Q4 of revision year through Q1–Q2 of year after |
 
-Year Y typically flips to `year_complete = True` in late Y+1 or early Y+2, so
+Year Y typically flips to `year_complete = True` in late Y or early Y+1, so
 running the scraper once a year in Q4 or Q1 is the recommended cadence.
