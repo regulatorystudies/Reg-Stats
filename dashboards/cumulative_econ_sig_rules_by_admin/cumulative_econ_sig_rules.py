@@ -494,7 +494,7 @@ with left:
             st.session_state.show_12_months = not st.session_state.show_12_months
             st.rerun()
 
-    # st.markdown()
+    st.divider()
     st.subheader("Download")
 
     st.download_button(

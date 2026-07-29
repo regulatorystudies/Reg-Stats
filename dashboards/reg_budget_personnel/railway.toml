@@ -1,0 +1,11 @@
+# Regulatory agency personnel dashboard (Streamlit).
+# Railway service Root Directory must be the repository root (not this folder).
+
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r dashboards/reg_budget_personnel/requirements.txt"
+
+[deploy]
+startCommand = "streamlit run dashboards/reg_budget_personnel/reg_budget_personnel.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true"
+healthcheckPath = "/_stcore/health"
+restartPolicyType = "on_failure"
