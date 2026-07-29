@@ -1,6 +1,4 @@
-
 from __future__ import annotations
-
 import base64
 from datetime import datetime
 from pathlib import Path
@@ -22,9 +20,6 @@ def _first_existing(candidates: list[Path], default: Path) -> Path:
             return c
     return default
 
-
-# Data CSV: the repo location is authoritative; a copy alongside this script is
-# also honored for standalone / local use.
 DATA_PATH = _first_existing(
     [
         DATA_DIR / "cfr_words_pages_by_title.csv",
@@ -32,8 +27,7 @@ DATA_PATH = _first_existing(
     ],
     DATA_DIR / "cfr_words_pages_by_title.csv",
 )
-# Optional GW brand font; if absent (e.g. running standalone) the app falls
-# back to system fonts -- handled gracefully in _inject_css().
+
 FONT_PATH = _first_existing(
     [
         BASE / "a-avenir-next-lt-pro.otf",
@@ -41,7 +35,7 @@ FONT_PATH = _first_existing(
     ],
     REPO_ROOT / "charts" / "style" / "a-avenir-next-lt-pro.otf",
 )
-# Optional GW/RSC logo for the footer; if absent the footer just omits it.
+
 LOGO_PATH = _first_existing(
     [
         BASE / "gw_ci_rsc_2cs_pos.png",
@@ -49,22 +43,15 @@ LOGO_PATH = _first_existing(
     ],
     REPO_ROOT / "charts" / "style" / "gw_ci_rsc_2cs_pos.png",
 )
-
-# Brand font stack, reused by both the injected CSS and the Plotly sparklines
-# (Plotly renders its own text -- e.g. hover tooltips -- outside the page CSS).
 FONT_FAMILY = ("'Avenir Next LT Pro', 'Avenir Next', Avenir, "
                "'Helvetica Neue', Arial, sans-serif")
 
-# GWU brand palette
 GW_BLUE = "#033C5A"
 NAVY_YARD = "#00223E"
 GW_BUFF_20 = "#F6F1E8"
 GW_BUFF_50 = "#E8DDC6"
 POTOMAC = "#0075C8"
-# Hairline around the tile cards and the two controls next to them. The cards
-# get it from theme.borderColor in .streamlit/config.toml -- a separate file
-# Streamlit reads before this module runs, so it can't share this constant.
-# Keep the two in sync.
+
 BORDER = "#D8D2C4"
 # Up/down/neutral colors from charts/code/style.R (Reg-Stats chart palette).
 UP_LINE = "#008364"
@@ -567,8 +554,6 @@ def render_panel(title_num: int, df_title: pd.DataFrame,
         f"<div class='tile-years'>{first_year}–{last_year}</div>",
         unsafe_allow_html=True,
     )
-
-
 def main() -> None:
     _ensure_required_paths()
     _inject_css()
@@ -627,13 +612,6 @@ def main() -> None:
         unsafe_allow_html=True,
     )
 
-    # Layout (left -> right): year slider, metric toggle, sort selector, download.
-    # The metric is still *read* before the slider is built (below), because the
-    # slider's span depends on it (pages from 2000, words from 1970) -- a column's
-    # on-screen position is independent of widget creation order.
-    # Widths chosen so the sort + download columns are each 1/5 of the row --
-    # matching a tile card below (the grid is 5 equal columns) -- with the slider
-    # spanning two. gap="small" matches the grid's gap so the columns line up.
     ctrl_slider, ctrl_metric, ctrl_sort, ctrl_dl = st.columns([2, 1, 1, 1], gap="small")
     with ctrl_metric:
         metric = st.radio(
@@ -646,8 +624,6 @@ def main() -> None:
                   "a bit noisier year to year."),
         )
 
-    # Year bounds for the selected metric (years where that metric has data):
-    # words span 1970-present, pages 2000-present.
     metric_years = sorted(
         usable_df.loc[usable_df[metric].notna(), "year"].unique().tolist()
     )
@@ -688,9 +664,7 @@ def main() -> None:
                   "years."),
         )
     with ctrl_dl:
-        # Pushes the button down past the selectbox's "Sort by" label so the two
-        # controls' tops line up. 28px is measured, not guessed: at 1.7rem the
-        # button sat 0.8px high.
+
         st.markdown("<div style='height:1.75rem;'></div>", unsafe_allow_html=True)
         st.download_button(
             label="Download Data (CSV)",
@@ -702,9 +676,6 @@ def main() -> None:
 
     start_year, end_year = year_range
 
-    # Tile order. Default is numeric (Title 1-50); the other options rank by net
-    # change in the selected metric over the selected range, with no-data titles
-    # always last.
     all_titles = list(range(1, 51))
     if sort_by == "Title number":
         ordered_titles = all_titles
@@ -730,9 +701,6 @@ def main() -> None:
                 with st.container(border=True):
                     render_panel(title_num, df_t, start_year, end_year, metric)
 
-    # Footer: inline labelled lines (Note, Sources, Updated, more-info link) on
-    # the left, GW/RSC logo aligned bottom-right. Per-title caveats live on
-    # their own tiles (hover ⓘ).
     updated = format_updated(df)
     updated_line = (
         f"<div class='notes-line'><span class='notes-label'>Updated:</span> "
