@@ -189,6 +189,10 @@ TRANSIENT_STATUS = frozenset({429, 500, 502, 503, 504})
 # marks the end of a title. Requiring two rather than one means a single
 # transient absent-looking response can't end a scan early and undercount it.
 CONSECUTIVE_ABSENT_TO_STOP = 2
+# Headroom above a title's best-known volume count before the consecutive-absent
+# rule is allowed to end a scan (see scrape_title). 2 covers a title that grew by
+# a volume or two since its last edition without probing deep into empty space.
+VOL_SCAN_MARGIN = 2
 
 DISAGG_FIELDS = ["year", "title", "vol", "pages", "words", "words_body",
                  "word_source", "pdf_present", "xml_present", "scraped_at"]
@@ -876,8 +880,35 @@ def report_aggregate_scope(summary: dict | None) -> None:
           file=sys.stderr)
 
 
+def prior_year_max_vol(cache: dict, year: int, title: int) -> int:
+    """Highest volume number seen for `title` in the years before `year`.
+
+    Used as a floor on how far to probe. Looks back over ALL earlier cached
+    years, not just year-1, so a title whose immediately-prior year is itself
+    incomplete still gets a sane bound. Returns 0 when nothing is cached.
+    """
+    return max(
+        (v for (y, t, v) in cache if t == title and y < year),
+        default=0,
+    )
+
+
 def scrape_title(session, year, title, cache, tmpdir, all_rows, seen):
     """Append disagg rows for one (year, title) to all_rows/seen, in place."""
+    # CFR volumes are numbered contiguously in a FINALISED year, but a year
+    # under rolling publication fills in out of order: in Aug 2026 the 2025
+    # edition of title 50 had vols 1, 2, 9, 11, 12, 13 posted and 3-8 still
+    # pending. Stopping at the first CONSECUTIVE_ABSENT_TO_STOP run therefore
+    # quit at vol 4 and never saw the four published volumes above the gap.
+    # So probe at least as far as this title has ever reached before (plus a
+    # small margin for a title that grew), and only let the consecutive-absent
+    # rule end the scan beyond that floor. A title at its usual size costs
+    # NOTHING extra -- the old rule already probed max_vol+2 before stopping.
+    # Only a title that shrank or is mid-publication probes further, and only
+    # until it settles.
+    scan_floor = prior_year_max_vol(cache, year, title)
+    if scan_floor:
+        scan_floor += VOL_SCAN_MARGIN
     consecutive_absent = 0
     for vol in range(1, MAX_VOL + 1):
         key = (year, title, vol)
@@ -903,7 +934,7 @@ def scrape_title(session, year, title, cache, tmpdir, all_rows, seen):
             # Transient 5xx never reach here (retried/raised in download); this
             # guards the rarer one-off 404 on a volume that actually exists.
             consecutive_absent += 1
-            if consecutive_absent >= CONSECUTIVE_ABSENT_TO_STOP:
+            if consecutive_absent >= CONSECUTIVE_ABSENT_TO_STOP and vol >= scan_floor:
                 break
             continue
         consecutive_absent = 0  # found a real volume; reset the run of absences
