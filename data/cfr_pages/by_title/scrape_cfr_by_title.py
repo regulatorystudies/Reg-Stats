@@ -625,7 +625,14 @@ def save_disagg(rows: list[dict]) -> None:
 
 def write_aggregated(rows: list[dict],
                      regdata_data: dict[tuple[int, int], int] | None = None,
-                     ) -> None:
+                     ) -> dict:
+    """Write AGG_CSV and return a summary of what made it in.
+
+    The returned dict is purely for reporting (see report_aggregate_scope):
+      cutoff_year -- last year emitted from the GovInfo side
+      n_rows      -- rows written to AGG_CSV
+      excluded    -- {year: reason} for cached years held back as incomplete
+    """
     agg: dict[tuple[int, int], dict] = {}
     for r in rows:
         key = (int(r["year"]), int(r["title"]))
@@ -671,28 +678,48 @@ def write_aggregated(rows: list[dict],
             year_max_scraped[year] = ts
         vols_by_year.setdefault(year, {})[title] = v["n_volumes"]
     year_complete: dict[int, bool] = {}
+    # Why each incomplete year was held back, for the end-of-run report. Short
+    # sentences, not data: nothing downstream parses these.
+    incomplete_reason: dict[int, str] = {}
     last_complete_year: int | None = None
     for y in sorted(year_max_scraped):
         try:
             scrape_year = int(year_max_scraped[y][:4])
         except (ValueError, IndexError):
             year_complete[y] = False
+            incomplete_reason[y] = "no usable scrape timestamp"
             continue
         if scrape_year < y + COMPLETE_LAG:
             year_complete[y] = False
+            incomplete_reason[y] = (
+                f"last scraped {scrape_year}, needs {y + COMPLETE_LAG} or later"
+            )
             continue
         threshold_ok = True
         if last_complete_year is not None:
             prior = vols_by_year[last_complete_year]
             current = vols_by_year.get(y, {})
-            for title, prior_vols in prior.items():
+            # Collect ALL short titles rather than stopping at the first: the
+            # report names them, and one straggler reads very differently from
+            # a dozen.
+            short: list[str] = []
+            for title in sorted(prior):
+                prior_vols = prior[title]
                 last_valid = ELIMINATED_TITLES.get(title)
                 if last_valid is not None and y > last_valid:
                     continue
                 cur_vols = current.get(title, 0)
                 if cur_vols < MIN_VOLUMES_RATIO * prior_vols:
                     threshold_ok = False
-                    break
+                    short.append(f"title {title} {cur_vols}/{prior_vols}")
+            if short:
+                shown = ", ".join(short[:6])
+                if len(short) > 6:
+                    shown += f", +{len(short) - 6} more"
+                incomplete_reason[y] = (
+                    f"volumes below {MIN_VOLUMES_RATIO:.0%} of {last_complete_year} "
+                    f"({shown})"
+                )
         year_complete[y] = threshold_ok
         if threshold_ok:
             last_complete_year = y
@@ -703,8 +730,25 @@ def write_aggregated(rows: list[dict],
     # via year_complete. The disaggregated cache retains everything, so a later
     # re-scrape re-emits the dropped years once they settle.
     complete_years_only = [y for y, ok in year_complete.items() if ok]
-    cutoff_year = max(complete_years_only) if complete_years_only else max(year_complete)
+    if complete_years_only:
+        cutoff_year = max(complete_years_only)
+    elif year_complete:
+        cutoff_year = max(year_complete)
+    else:
+        # RegData-only run: no GovInfo rows to gate. Emit nothing from the
+        # GovInfo side rather than crashing on max(()).
+        cutoff_year = -1
 
+    # Years that are cached but did not make the aggregate. Only years past the
+    # cutoff are actually dropped; historical incomplete years (1999, 2007) are
+    # still emitted, flagged via year_complete, so they are not "excluded".
+    excluded = {
+        y: incomplete_reason.get(y, "after the last complete year")
+        for y in sorted(year_complete)
+        if y > cutoff_year
+    }
+
+    n_rows = 0
     tmp = AGG_CSV.with_suffix(".csv.tmp")
     with tmp.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=AGG_FIELDS)
@@ -752,6 +796,7 @@ def write_aggregated(rows: list[dict],
                         "last_scraped_at": "",
                         "word_source": REGDATA_LABEL,
                     })
+                    n_rows += 1
 
         # --- GovInfo rows (REGDATA_CUTOVER onwards) -------------------------
         for (year, title), v in sorted(agg.items()):
@@ -801,7 +846,34 @@ def write_aggregated(rows: list[dict],
                 "last_scraped_at": v["last_scraped_at"],
                 "word_source": word_source,
             })
+            n_rows += 1
     tmp.replace(AGG_CSV)
+    return {"cutoff_year": cutoff_year, "n_rows": n_rows, "excluded": excluded}
+
+
+def report_aggregate_scope(summary: dict | None) -> None:
+    """Print what AGG_CSV covers and which cached years it holds back.
+
+    Without this, a run that adds volumes to the disaggregated cache but leaves
+    the aggregate byte-identical looks like a silent failure -- the aggregate is
+    rewritten every run either way, so mtime tells the user nothing.
+    """
+    if not summary:
+        return
+    print(f"{AGG_CSV.name}: {summary['n_rows']:,} rows, through "
+          f"{summary['cutoff_year']}.", file=sys.stderr)
+    excluded = summary.get("excluded") or {}
+    if not excluded:
+        return
+    years_label = ", ".join(str(y) for y in sorted(excluded))
+    print(f"  Held back as incomplete (cached, not yet aggregated): "
+          f"{years_label}", file=sys.stderr)
+    for y in sorted(excluded):
+        print(f"    {y}: {excluded[y]}", file=sys.stderr)
+    print("  These re-enter the aggregate automatically once GovInfo finishes "
+          "publishing", file=sys.stderr)
+    print("  the missing volumes and a later run picks them up.",
+          file=sys.stderr)
 
 
 def scrape_title(session, year, title, cache, tmpdir, all_rows, seen):
@@ -1244,6 +1316,8 @@ def main() -> None:
 
     # --verify shares --refresh's invalidate-and-re-download path, but first
     # snapshots the current scope so it can report what changed afterward.
+    # Last write_aggregated() result, reported at the end of the run.
+    agg_summary: dict | None = None
     verify_old: dict = {}
     if args.refresh or args.verify:
         mode = "VERIFY" if args.verify else "REFRESH"
@@ -1341,7 +1415,7 @@ def main() -> None:
                           file=sys.stderr)
                     sys.exit(1)
                 save_disagg(all_rows)
-            write_aggregated(all_rows, regdata_data=regdata_data)
+            agg_summary = write_aggregated(all_rows, regdata_data=regdata_data)
             year_new = len(all_rows) - year_start_count
             if year_new > 0:
                 print(f"{year}: added {year_new:,} new volume(s) to cache.",
@@ -1352,11 +1426,11 @@ def main() -> None:
         if args.verify:
             report_verify(verify_old, all_rows, scope_keys)
         if args.backfill_only:
-            write_aggregated(all_rows, regdata_data=regdata_data)
+            agg_summary = write_aggregated(all_rows, regdata_data=regdata_data)
 
     # If only RegData years were requested (no GovInfo scraping), still write.
     if not years and regdata_data:
-        write_aggregated(all_rows, regdata_data=regdata_data)
+        agg_summary = write_aggregated(all_rows, regdata_data=regdata_data)
 
     new_rows = len(all_rows) - initial_row_count
     print("", file=sys.stderr)
@@ -1375,6 +1449,7 @@ def main() -> None:
         print("Done. Backfill and re-aggregation complete.", file=sys.stderr)
     print(f"Updated {DISAGG_CSV.name} ({len(all_rows):,} rows total) and "
           f"{AGG_CSV.name}.", file=sys.stderr)
+    report_aggregate_scope(agg_summary)
     print("END.", file=sys.stderr)
 
 
