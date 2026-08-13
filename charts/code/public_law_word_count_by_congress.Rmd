@@ -107,7 +107,7 @@ annotation_y_max <- upper + 0.5e6
 
 # generate bar 1
 bar1 <- ggplot(count_by_congress1, aes(x = congress, y = word_count)) +
-  geom_bar(stat = "identity", fill = GWblue) +
+  geom_bar(stat = "identity", fill = GWblue, width = 0.8) +
   ggtitle("Public Law Word Count by Congress") +
   ylab("Millions of Words") +
   xlab("Congress") +
