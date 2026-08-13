@@ -536,7 +536,7 @@ def main():
             )
 
         st.markdown("This dashboard tracks the monthly number of “significant” final rules, as [defined]" 
-        "(https://regulatorystudies.columbian.gwu.edu/terminology) by E.O. 12866 section 3(f), published by the selected administration. “Economically significant” rules are those defined by section 3(f)(1) and “other significant” rules are those defined in section 3(f)(2-4). Note that from April 6, 2023 to January 20, 2025, these definitions changed such that the economically significant (section 3(f)(1)) required a higher impact threshold (\\$200 million vs. $100 million).")
+        "(https://regulatorystudies.columbian.gwu.edu/terminology) by E.O. 12866 section 3(f), published by the selected administration. “Economically significant” rules are those defined by section 3(f)(1) and “other significant” rules are those defined in sections 3(f)(2-4). Note that from April 6, 2023 to January 20, 2025, these definitions changed such that economically significant (section 3(f)(1)) rules required a higher impact threshold (\\$200 million vs. $100 million).")
         st.write(
             "[More information on how we collect data]"
             "(https://github.com/regulatorystudies/Reg-Stats/tree/main/data/py_funcs)"
