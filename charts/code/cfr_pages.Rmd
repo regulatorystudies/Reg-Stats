@@ -71,7 +71,7 @@ breaks4 <- c(seq(min(df1$year), max(df1$year), 4))
 
 bar2 <-
   ggplot(data=df1, aes(x=year, y=total_pages)) +
-  geom_bar(stat="identity", fill="#033C5A")+
+  geom_bar(stat="identity", fill="#033C5A", width = 0.8)+
   #geom_text(aes(label=len), vjust=-0.3, size=3.5)+
 
   ggtitle("Total Pages Published in the Code of Federal Regulations") +
