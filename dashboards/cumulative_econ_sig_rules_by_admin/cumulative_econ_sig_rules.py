@@ -473,7 +473,7 @@ html_bytes = html_buf.getvalue().encode("utf-8")
 # This is the section that would let the user download the files and select the admins
 
 with left:
-    st.subheader("Select Administration to Display")
+    st.subheader("Select Administrations to Display")
 
     selected_presidents = st.multiselect(
         " ",
