@@ -99,7 +99,7 @@ wrapped_caption <- paste(strwrap(caption_text, width = 75), collapse = "\n")
 
 bar2 <- ggplot(df1_1a_complete,
         aes(y = Total, x = as.factor(year))) +
-  geom_bar(aes(fill = Season), stat = "identity", position = "dodge") +
+  geom_bar(aes(fill = Season), stat = "identity", position = "dodge", width = 0.8) +
   scale_fill_manual(values = c(GWbuff, GWblue)) +
   scale_x_discrete(labels = df1_1a$year, breaks = df1_1a$year) +
   ggtitle("Active Actions in the Unified Agenda") +
