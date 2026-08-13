@@ -66,7 +66,7 @@ tot_pages$year <- as.integer(tot_pages$year)
 # generate bar1
 upper <- ydynam(tot_pages, 10000, 2)
 bar1 <- ggplot(tot_pages, aes(x = year, y = total)) +
-  geom_bar(stat = "identity", fill = GWblue) +
+  geom_bar(stat = "identity", fill = GWblue, width = 0.8) +
   ggtitle("Total Pages Published in the Federal Register") +
   ylab("Thousands of Pages") +
   xlab(element_blank()) +
