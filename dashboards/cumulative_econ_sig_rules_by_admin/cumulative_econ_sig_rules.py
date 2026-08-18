@@ -478,7 +478,6 @@ with left:
     selected_presidents = st.multiselect(
         " ",
         options=admin_labels,
-        default=st.session_state.selected_presidents,
         key="selected_presidents"
     )
 
