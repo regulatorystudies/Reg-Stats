@@ -18,14 +18,21 @@ _APP_DIR = Path(__file__).resolve().parent
 _COMBINED_CSV = Path("data") / "reg_budget" / "regulatory_agency_personnel_by_fy.csv"
 _SUBCAT_CSV = (
     Path("data") / "reg_budget" / "by_regulatory_subcategory"
-    / "reg_subcategory_regulatory_agency_personnel_by_fy.csv"
+    / "reg_subcategory_regulatory_agency_personnel_by_fy (1).csv"
 )
 _STYLE_DIR = Path("charts") / "style"
 
+red, darkgreen, GWblue, GWbuff, lightblue, darkyellow, lightgreen, brown = (
+    "#b22222", "#006400", "#033C5A", "#A69362",
+    "#6baed6", "#b8860b", "#66a61e", "#8b4513",
+)
+buff20 = "#E8DDC6"
+GRID, AXIS = "#d9d9d9", "#222222"
+
 MAIN_SERIES = {
-    "economic_regulation": ("Economic", "#0d9bd8"),
-    "social_reg_adjusted": ("Social", "#0d4a6d"),
-    "tsa": ("TSA", "#497690"),
+    "economic_regulation": ("Economic", red),
+    "social_reg_adjusted": ("Social", darkgreen),
+    "tsa": ("TSA", GWblue),
 }
 MAIN_ORDER = list(MAIN_SERIES.keys())
 
@@ -35,8 +42,9 @@ ECONOMIC_SUBCATS = {
     "general_business",
 }
 SUBCAT_LABELS = {
-    "consumer_safety_and_health": "Consumer Safety and Health",
+    "consumer_safety_and_health": "Consumer Safety and Health\u00a0\u00a0\u00a0",
     "homeland_security": "Homeland Security",
+    "homeland_security_without_TSA": "Homeland Security without TSA\u00a0\u00a0\u00a0",
     "transportation": "Transportation",
     "workplace": "Workplace",
     "environment_and_energy": "Environment and Energy",
@@ -45,18 +53,16 @@ SUBCAT_LABELS = {
     "general_business": "General Business",
 }
 SUBCAT_COLORS = {
-    "consumer_safety_and_health": "#EF4343",
-    "homeland_security": "#D1A0B9",
-    "transportation": "#FFEFAE",
-    "workplace": "#ADCAB8",
-    "environment_and_energy": "#52C9E8",
-    "finance_and_banking": "#0075C8",
-    "industry_specific_regulation": "#CCE3F4",
-    "general_business": "#00223E",
+    "consumer_safety_and_health": red,
+    "homeland_security": darkgreen,
+    "homeland_security_without_TSA": '#ADCAB8',
+    "transportation": GWblue,
+    "workplace": GWbuff,
+    "environment_and_energy": lightblue,
+    "finance_and_banking": darkyellow,
+    "industry_specific_regulation": lightgreen,
+    "general_business": brown,
 }
-
-GWblue, GWbuff, buff20 = "#033C5A", "#A69362", "#E8DDC6"
-GRID, AXIS = "#d9d9d9", "#222222"
 
 
 def _repo_root() -> Path:
@@ -120,6 +126,28 @@ def _subcat_step(vmax: float) -> float:
     return 100.0
 
 
+def _endpoint_labels(fig: go.Figure, entries, x_last: float, y_max: float) -> None:
+    """entries: list of (label, color, value). Places one right-anchored label
+    per series at the shared final x, bumping any label within min_gap of the
+    previous (by value, ascending) to avoid overlap."""
+    entries = [e for e in entries if e[2] > 0]
+    entries.sort(key=lambda e: e[2])
+    min_gap = (30 / 388.8) * y_max if y_max > 0 else 0.0
+    last_y = None
+    for label, color, val in entries:
+        label_y = val
+        if last_y is not None and (label_y - last_y) < min_gap:
+            label_y = last_y + min_gap
+        last_y = label_y
+        fig.add_annotation(
+            x=x_last - 0.5, y=label_y,
+            xref="x", yref="y",
+            text=f"<b>{label}</b>", showarrow=False,
+            xanchor="right", yanchor="bottom",
+            font=dict(size=13, color=color),
+        )
+
+
 def _logo_image(fig: go.Figure) -> None:
     if not LOGO_PATH.is_file():
         return
@@ -165,6 +193,11 @@ def _base_layout(fig, title, ylab, note, caption, years, y_top, y_step):
         plot_bgcolor="#ffffff", paper_bgcolor="white",
         showlegend=False, hovermode="x unified", height=720,
         margin=dict(l=4, r=4, t=4, b=4),
+        legend=dict(
+            x=0.1, y=0.86, xanchor="left", yanchor="top",
+            bgcolor="rgba(255,255,255,0.85)", bordercolor="#cccccc", borderwidth=1,
+            font=dict(size=12, color=AXIS),
+        ),
         hoverlabel=dict(
             bgcolor="white", font_color=AXIS, bordercolor="#aaaaaa",
             font=dict(size=13),
@@ -204,36 +237,27 @@ def make_combined_chart(df: pd.DataFrame, selected: list[str], caption: str) -> 
         return fig
 
     cols = [c for c in MAIN_ORDER if c in selected]
-    stack = df[cols].sum(axis=1)
-    y_top = ydynam(stack.values, 50, 1)
+    y_top = ydynam(df[cols].values, 50, 1)
     years = df["year"]
 
     for col in cols:
         label, color = MAIN_SERIES[col]
         fig.add_trace(go.Scatter(
             x=years, y=df[col], name=label,
-            mode="lines", line=dict(width=0.5, color=color),
-            stackgroup="one", fillcolor=color,
+            mode="lines", line=dict(width=1.5, color=color),
             hovertemplate=f"{label}: %{{y:.1f}}k  <extra></extra>",
         ))
 
-    # end-of-series labels at midpoints of the stack
     last = df.iloc[-1]
-    cum = 0.0
-    for col in cols:
-        val = float(last[col])
-        mid = cum + val / 2
-        cum += val
-        label, _ = MAIN_SERIES[col]
-        if val > 0:
-            fig.add_annotation(
-                x=float(last["year"]) - 5, y=mid, text=label,
-                showarrow=False, font=dict(size=16, color="white"),
-            )
+    _endpoint_labels(
+        fig,
+        [(MAIN_SERIES[c][0], MAIN_SERIES[c][1], float(last[c])) for c in cols],
+        float(last["year"]), y_top,
+    )
 
     note = (
-        "Note: The Transportation Security Administration (TSA) is displayed separately "
-        "from Social Regulation as it has features that differ from other regulatory agencies."
+        "Note: TSA personnel are shown as a separate category from Social Regulation "
+        "because TSA has features that differ from other regulatory agencies."
     )
     _base_layout(
         fig, "Regulatory Agency Personnel by Fiscal Year",
@@ -260,8 +284,7 @@ def make_subcat_chart(df: pd.DataFrame, cols: list[str], caption: str) -> go.Fig
         return fig
 
     years = df["year"]
-    stack = df[cols].sum(axis=1)
-    vmax = float(stack.max())
+    vmax = float(df[cols].max().max())
     step = _subcat_step(vmax)
     y_top = float(np.ceil(vmax / step) * step) if vmax > 0 else step
 
@@ -270,10 +293,16 @@ def make_subcat_chart(df: pd.DataFrame, cols: list[str], caption: str) -> go.Fig
         color = SUBCAT_COLORS[col]
         fig.add_trace(go.Scatter(
             x=years, y=df[col], name=label,
-            mode="lines", line=dict(width=0.5, color=color),
-            stackgroup="one", fillcolor=color,
+            mode="lines", line=dict(width=1.5, color=color),
             hovertemplate=f"{label}: %{{y:.1f}}k  <extra></extra>",
         ))
+
+    last = df.iloc[-1]
+    _endpoint_labels(
+        fig,
+        [(SUBCAT_LABELS[c], SUBCAT_COLORS[c], float(last[c])) for c in cols],
+        float(last["year"]), y_top,
+    )
 
     if len(cols) == 1:
         col = cols[0]
@@ -292,7 +321,7 @@ def make_subcat_chart(df: pd.DataFrame, cols: list[str], caption: str) -> go.Fig
             note = f"Note: The {label} subcategory belongs to the {reg_type} category."
     else:
         title = "Regulatory Agency Personnel by Subcategory"
-        note = "Note: Selected regulatory subcategories are stacked."
+        note = "Note: Each selected subcategory is shown as an independent line."
 
     _base_layout(
         fig, title, "Thousands of Full-Time Equivalent Personnel",
@@ -394,8 +423,7 @@ with left:
         sub_labels,
         key="selected_cats",
         label_visibility="collapsed",
-        help="Leave empty for the combined Economic / Social / TSA chart. "
-             "Select one or more subcategories to study those series.",
+        help="Select one or more subcategories to display their personnel trends.",
     )
 
     def _deselect_all():
@@ -410,7 +438,7 @@ with left:
         slug = "subcategories" if len(cols) != 1 else cols[0]
         csv_path, csv_name = SUBCAT_PATH, SUBCAT_PATH.name
     else:
-        fig = make_combined_chart(combined, MAIN_ORDER, caption)
+        fig = make_combined_chart(combined, [], caption)
         slug = "combined"
         csv_path, csv_name = COMBINED_PATH, COMBINED_PATH.name
 
@@ -430,15 +458,11 @@ with left:
         mime="text/html", use_container_width=True,
     )
     st.download_button(
-        "Data- Total (CSV)", csv_path.read_bytes(),
-        file_name=csv_name, mime="text/csv", use_container_width=True,
-    )
-    st.download_button(
         "Data- By Sub Categories (CSV)", SUBCAT_PATH.read_bytes(),
         file_name=SUBCAT_PATH.name, mime="text/csv", use_container_width=True,
     )
 
 with right:
     st.plotly_chart(fig, use_container_width=True)
-    st.write("This dashboard displays regulatory agency personnel by fiscal year, from the latest Regulators' Budget report. The default view shows federal personnel within the Economic Regulation, Social Regulation, and TSA categories. Use the drop-down menu to select regulatory subcategories."
+    st.write("This dashboard displays regulatory agency personnel by fiscal year, from the latest Regulators' Budget report. Use the drop-down menu to select one or more regulatory subcategories to display."
     )
