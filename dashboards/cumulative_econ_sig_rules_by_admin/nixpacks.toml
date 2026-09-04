@@ -1,0 +1,16 @@
+# Kaleido >=1 needs Chrome/Chromium on the host (no longer bundled).
+[phases.setup]
+aptPkgs = [
+  "chromium",
+  "fonts-liberation",
+  "fonts-dejavu-core",
+  "libnss3",
+  "libatk-bridge2.0-0",
+  "libdrm2",
+  "libxkbcommon0",
+  "libgbm1",
+  "libasound2",
+]
+
+[variables]
+BROWSER_PATH = "/usr/bin/chromium"
