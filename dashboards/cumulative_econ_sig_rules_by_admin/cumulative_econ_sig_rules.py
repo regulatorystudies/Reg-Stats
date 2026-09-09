@@ -460,25 +460,10 @@ chart_fig = make_plotly_chart(
     show_12_months_dl=st.session_state.show_12_months
 )
 
-
-def _figure_to_png_bytes(fig) -> bytes | None:
-    """Export PNG via Kaleido. Kaleido >=1 needs Chrome/Chromium on the host."""
-    try:
-        return fig.to_image(format="png", width=1200, height=660, scale=3)
-    except Exception:
-        # One-shot Chrome install for local/dev or hosts without system Chromium.
-        try:
-            import plotly.io as pio
-
-            pio.get_chrome()
-            return fig.to_image(format="png", width=1200, height=660, scale=3)
-        except Exception:
-            return None
-
-
-# Static PNG download buffer (optional if Chrome is unavailable)
-png_bytes = _figure_to_png_bytes(chart_fig)
-buf = io.BytesIO(png_bytes) if png_bytes else None
+# Static PNG download buffer (Kaleido 0.2.1 bundles Chromium; no system Chrome needed)
+png_bytes = chart_fig.to_image(format="png", width=1200, height=660, scale=3)
+buf = io.BytesIO(png_bytes)
+buf.seek(0)
 
 # Interactive HTML download buffer
 html_buf = io.StringIO()
@@ -511,21 +496,14 @@ with left:
     st.divider()
     st.subheader("Download")
 
-    if buf is not None:
-        buf.seek(0)
-        st.download_button(
-            label="Static Image (PNG)",
-            data=buf,
-            file_name=f"cumulative_econ_significant_rules_{date.today().isoformat()}.png",
-            mime="image/png",
-            use_container_width=True,
-            key="download_png"
-        )
-    else:
-        st.caption(
-            "PNG export unavailable: install Chrome/Chromium "
-            '(or run `plotly_get_chrome`), then redeploy.'
-        )
+    st.download_button(
+        label="Static Image (PNG)",
+        data=buf,
+        file_name=f"cumulative_econ_significant_rules_{date.today().isoformat()}.png",
+        mime="image/png",
+        use_container_width=True,
+        key="download_png"
+    )
     st.download_button(
         label="Interactive Plot (HTML)",
         data=html_bytes,
