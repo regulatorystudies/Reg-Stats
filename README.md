@@ -1,6 +1,6 @@
 # RegStats
 
-This repository hosts the code to collect data and generate charts for [RegStats](https://regulatorystudies.columbian.gwu.edu/regstats).
+This repository hosts the code to collect data and generate [charts](https://regulatorystudies.columbian.gwu.edu/regstats) and [dashboards](https://regulatorystudies.columbian.gwu.edu/interactive-dashboards-1) for RegStats.
 
 ## Repository Structure
 

@@ -460,7 +460,7 @@ chart_fig = make_plotly_chart(
     show_12_months_dl=st.session_state.show_12_months
 )
 
-# Static PNG download buffer
+# Static PNG download buffer (Kaleido 0.2.1 bundles Chromium; no system Chrome needed)
 png_bytes = chart_fig.to_image(format="png", width=1200, height=660, scale=3)
 buf = io.BytesIO(png_bytes)
 buf.seek(0)
