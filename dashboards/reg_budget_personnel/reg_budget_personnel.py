@@ -42,9 +42,9 @@ ECONOMIC_SUBCATS = {
     "general_business",
 }
 SUBCAT_LABELS = {
-    "consumer_safety_and_health": "Consumer Safety and Health\u00a0\u00a0\u00a0",
+    "consumer_safety_and_health": "Consumer Safety and Health",
     "homeland_security": "Homeland Security",
-    "homeland_security_without_TSA": "Homeland Security without TSA\u00a0\u00a0\u00a0",
+    "homeland_security_without_TSA": "Homeland Security without TSA",
     "transportation": "Transportation",
     "workplace": "Workplace",
     "environment_and_energy": "Environment and Energy",
@@ -127,12 +127,11 @@ def _subcat_step(vmax: float) -> float:
 
 
 def _endpoint_labels(fig: go.Figure, entries, x_last: float, y_max: float) -> None:
-    """entries: list of (label, color, value). Places one right-anchored label
-    per series at the shared final x, bumping any label within min_gap of the
-    previous (by value, ascending) to avoid overlap."""
+    """entries: list of (label, color, value). Right-anchored at final x;
+    bump vertically when two labels would collide."""
     entries = [e for e in entries if e[2] > 0]
     entries.sort(key=lambda e: e[2])
-    min_gap = (30 / 388.8) * y_max if y_max > 0 else 0.0
+    min_gap = max(y_max * 0.04, 0.5) if y_max > 0 else 0.5
     last_y = None
     for label, color, val in entries:
         label_y = val
@@ -140,11 +139,12 @@ def _endpoint_labels(fig: go.Figure, entries, x_last: float, y_max: float) -> No
             label_y = last_y + min_gap
         last_y = label_y
         fig.add_annotation(
-            x=x_last - 0.5, y=label_y,
+            x=x_last, y=label_y,
             xref="x", yref="y",
             text=f"<b>{label}</b>", showarrow=False,
-            xanchor="right", yanchor="bottom",
-            font=dict(size=13, color=color),
+            xanchor="right", yanchor="middle",
+            font=dict(size=12, color=color),
+            bgcolor="rgba(255,255,255,0.65)",
         )
 
 
@@ -191,7 +191,7 @@ def _base_layout(fig, title, ylab, note, caption, years, y_top, y_step):
     _logo_image(fig)
     fig.update_layout(
         plot_bgcolor="#ffffff", paper_bgcolor="white",
-        showlegend=False, hovermode="x unified", height=720,
+        showlegend=True, hovermode="x unified", height=720,
         margin=dict(l=4, r=4, t=4, b=4),
         legend=dict(
             x=0.1, y=0.86, xanchor="left", yanchor="top",
