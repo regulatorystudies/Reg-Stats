@@ -1,6 +1,6 @@
 pandas
 numpy
-plotly
+plotly<6.1
 streamlit==1.54.0
 matplotlib
 plotnine
