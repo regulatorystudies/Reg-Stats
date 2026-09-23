@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements-mac.txt requirements.in
 #
-anyio==4.4.0
+anyio==4.14.2
     # via
     #   starlette
     #   watchfiles
@@ -83,12 +83,11 @@ shiny==1.0.0
     # via -r requirements.in
 six==1.16.0
     # via python-dateutil
-sniffio==1.3.1
-    # via anyio
 starlette==1.3.1
     # via shiny
 typing-extensions==4.12.2
     # via
+    #   anyio
     #   htmltools
     #   rsconnect-python
     #   shiny
