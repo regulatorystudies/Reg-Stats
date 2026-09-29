@@ -5,7 +5,6 @@ author: Sayam Palrecha
 import base64
 import io
 import os
-import textwrap
 from datetime import date
 from pathlib import Path
 
@@ -36,15 +35,10 @@ MAIN_SERIES = {
 }
 MAIN_ORDER = list(MAIN_SERIES.keys())
 
-ECONOMIC_SUBCATS = {
-    "finance_and_banking",
-    "industry_specific_regulation",
-    "general_business",
-}
 SUBCAT_LABELS = {
-    "consumer_safety_and_health": "Consumer Safety and Health",
+    "consumer_safety_and_health": "Consumer Safety & Health",
     "homeland_security": "Homeland Security",
-    "homeland_security_without_TSA": "Homeland Security without TSA",
+    "homeland_security_without_TSA": "Homeland Security w/o TSA",
     "transportation": "Transportation",
     "workplace": "Workplace",
     "environment_and_energy": "Environment and Energy",
@@ -161,7 +155,7 @@ def _logo_image(fig: go.Figure) -> None:
     )
 
 
-def _base_layout(fig, title, ylab, note, caption, years, y_top, y_step):
+def _base_layout(fig, title, ylab, caption, years, y_top, y_step):
     fig.add_shape(
         type="rect", xref="paper", yref="paper",
         x0=0.02, y0=0.03, x1=0.98, y1=0.97,
@@ -173,16 +167,6 @@ def _base_layout(fig, title, ylab, note, caption, years, y_top, y_step):
         x=0.5, y=0.93, showarrow=False,
         font=dict(size=22, color=AXIS), xanchor="center",
     )
-    # Note sits under the axis; logo + source sit on a lower row (no overlap).
-    # Hard-wrap manually (rather than relying on Plotly's pixel-based `width`
-    # wrapping) since the figure renders at a responsive width and a fixed
-    # pixel width can be wider than the actual plot, clipping the text.
-    wrapped_note = "<br>".join(textwrap.wrap(note, width=90))
-    fig.add_annotation(
-        text=wrapped_note, xref="paper", yref="paper",
-        x=0.08, y=0.22, showarrow=False, align="left",
-        font=dict(size=13, color=AXIS), xanchor="left", yanchor="top",
-    )
     fig.add_annotation(
         text=caption, xref="paper", yref="paper",
         x=0.94, y=0.03, showarrow=False, align="right",
@@ -191,12 +175,15 @@ def _base_layout(fig, title, ylab, note, caption, years, y_top, y_step):
     _logo_image(fig)
     fig.update_layout(
         plot_bgcolor="#ffffff", paper_bgcolor="white",
+        # Page CSS forces Avenir onto the chart text; Plotly must measure with the
+        # same font or it sizes the legend/hover boxes too narrow and clips labels.
+        font=dict(family="AvenirCustom, sans-serif"),
         showlegend=True, hovermode="x unified", height=720,
         margin=dict(l=4, r=4, t=4, b=4),
         legend=dict(
             x=0.1, y=0.86, xanchor="left", yanchor="top",
-            bgcolor="rgba(255,255,255,0.85)", bordercolor="#cccccc", borderwidth=1,
-            font=dict(size=12, color=AXIS),
+            bgcolor="#ffffff", bordercolor="#cccccc", borderwidth=1,
+            font=dict(size=13, color=AXIS),
         ),
         hoverlabel=dict(
             bgcolor="white", font_color=AXIS, bordercolor="#aaaaaa",
@@ -215,22 +202,24 @@ def _base_layout(fig, title, ylab, note, caption, years, y_top, y_step):
             gridcolor=GRID, showgrid=True, zeroline=True,
             zerolinecolor=GRID, zerolinewidth=1.5, showline=False,
             tickfont=dict(size=13, color="#555555"),
-            domain=[0.34, 0.88],
+            domain=[0.23, 0.88],
         ),
     )
 
 
-def make_combined_chart(df: pd.DataFrame, selected: list[str], caption: str) -> go.Figure:
+def make_combined_chart(
+    df: pd.DataFrame, selected: list[str], caption: str, labels: bool = False,
+) -> go.Figure:
     fig = go.Figure()
     if not selected:
         _base_layout(
             fig, "Regulatory Agency Personnel by Fiscal Year",
             "Thousands of Full-Time Equivalent Personnel",
-            "Please select at least one category.", caption,
+            caption,
             df["year"], 50, 50,
         )
         fig.add_annotation(
-            text="Please select at least one category to display.",
+            text="Please select at least one subcategory to display.",
             xref="paper", yref="paper", x=0.5, y=0.55,
             showarrow=False, font=dict(size=14, color=AXIS),
         )
@@ -248,32 +237,31 @@ def make_combined_chart(df: pd.DataFrame, selected: list[str], caption: str) -> 
             hovertemplate=f"{label}: %{{y:.1f}}k  <extra></extra>",
         ))
 
-    last = df.iloc[-1]
-    _endpoint_labels(
-        fig,
-        [(MAIN_SERIES[c][0], MAIN_SERIES[c][1], float(last[c])) for c in cols],
-        float(last["year"]), y_top,
-    )
+    if labels:
+        last = df.iloc[-1]
+        _endpoint_labels(
+            fig,
+            [(MAIN_SERIES[c][0], MAIN_SERIES[c][1], float(last[c])) for c in cols],
+            float(last["year"]), y_top,
+        )
 
-    note = (
-        "Note: TSA personnel are shown as a separate category from Social Regulation "
-        "because TSA has features that differ from other regulatory agencies."
-    )
     _base_layout(
         fig, "Regulatory Agency Personnel by Fiscal Year",
         "Thousands of Full-Time Equivalent Personnel",
-        note, caption, years, y_top, 50,
+        caption, years, y_top, 50,
     )
     return fig
 
 
-def make_subcat_chart(df: pd.DataFrame, cols: list[str], caption: str) -> go.Figure:
+def make_subcat_chart(
+    df: pd.DataFrame, cols: list[str], caption: str, labels: bool = False,
+) -> go.Figure:
     fig = go.Figure()
     if not cols:
         _base_layout(
             fig, "Regulatory Agency Personnel by Fiscal Year",
             "Thousands of Full-Time Equivalent Personnel",
-            "Please select at least one category.", caption,
+            caption,
             df["year"], 50, 50,
         )
         fig.add_annotation(
@@ -297,35 +285,22 @@ def make_subcat_chart(df: pd.DataFrame, cols: list[str], caption: str) -> go.Fig
             hovertemplate=f"{label}: %{{y:.1f}}k  <extra></extra>",
         ))
 
-    last = df.iloc[-1]
-    _endpoint_labels(
-        fig,
-        [(SUBCAT_LABELS[c], SUBCAT_COLORS[c], float(last[c])) for c in cols],
-        float(last["year"]), y_top,
-    )
+    if labels:
+        last = df.iloc[-1]
+        _endpoint_labels(
+            fig,
+            [(SUBCAT_LABELS[c], SUBCAT_COLORS[c], float(last[c])) for c in cols],
+            float(last["year"]), y_top,
+        )
 
     if len(cols) == 1:
-        col = cols[0]
-        label = SUBCAT_LABELS[col]
-        title = f"Regulatory Agency Personnel: {label}"
-        reg_type = (
-            "Economic Regulation" if col in ECONOMIC_SUBCATS else "Social Regulation"
-        )
-        if col == "homeland_security":
-            note = (
-                "Note: The Homeland Security subcategory belongs to the Social Regulation "
-                "category. TSA, which is displayed separately in the main personnel chart, "
-                "is included here."
-            )
-        else:
-            note = f"Note: The {label} subcategory belongs to the {reg_type} category."
+        title = f"Regulatory Agency Personnel: {SUBCAT_LABELS[cols[0]]}"
     else:
         title = "Regulatory Agency Personnel by Subcategory"
-        note = "Note: Each selected subcategory is shown as an independent line."
 
     _base_layout(
         fig, title, "Thousands of Full-Time Equivalent Personnel",
-        note, caption, years, y_top, step,
+        caption, years, y_top, step,
     )
     return fig
 
@@ -349,7 +324,7 @@ updated = pd.to_datetime(os.path.getmtime(COMBINED_PATH), unit="s").strftime("%B
 caption = f"Source: FY 2024 Regulators' Budget report<br>Updated: {updated}"
 
 if "selected_cats" not in st.session_state:
-    st.session_state.selected_cats = []  # empty → combined Economic / Social / TSA
+    st.session_state.selected_cats = sub_labels
 
 font_b64 = _font_b64(FONT_PATH)
 font_css = "'AvenirCustom', sans-serif" if font_b64 else "sans-serif"
@@ -407,6 +382,7 @@ st.markdown(
     header[data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"] {{
         display: none !important;
     }}
+    [data-testid="stCustomComponentV1"] {{ height: 0; min-height: 0; overflow: hidden; }}
     [data-testid="stMainBlockContainer"] {{ padding-top: 1rem !important; }}
     </style>
     """,
@@ -417,7 +393,7 @@ st.title("Regulatory Agency Personnel by Fiscal Year")
 left, right = st.columns([3, 9], gap="large")
 
 with left:
-    st.subheader("Select Sub-Categories")
+    st.subheader("Select Subcategories")
     selected_labels = st.multiselect(
         " ",
         sub_labels,
@@ -435,14 +411,15 @@ with left:
         cols = [label_to_col[lab] for lab in selected_labels if lab in label_to_col]
         cols = [c for c in sub_cols if c in cols]
         fig = make_subcat_chart(subcat, cols, caption)
+        png_fig = make_subcat_chart(subcat, cols, caption, labels=True)
         slug = "subcategories" if len(cols) != 1 else cols[0]
         csv_path, csv_name = SUBCAT_PATH, SUBCAT_PATH.name
     else:
-        fig = make_combined_chart(combined, [], caption)
+        fig = png_fig = make_combined_chart(combined, [], caption)
         slug = "combined"
         csv_path, csv_name = COMBINED_PATH, COMBINED_PATH.name
 
-    png = fig.to_image(format="png", width=1200, height=720, scale=2)
+    png = png_fig.to_image(format="png", width=1200, height=720, scale=2)
     html_buf = io.StringIO()
     fig.write_html(html_buf, include_plotlyjs="cdn", full_html=True)
 
@@ -458,11 +435,31 @@ with left:
         mime="text/html", use_container_width=True,
     )
     st.download_button(
-        "Data- By Sub Categories (CSV)", SUBCAT_PATH.read_bytes(),
+        "Data (CSV)", SUBCAT_PATH.read_bytes(),
         file_name=SUBCAT_PATH.name, mime="text/csv", use_container_width=True,
     )
 
 with right:
-    st.plotly_chart(fig, use_container_width=True)
+    # theme=None: Streamlit's theme swaps in its own font, so Plotly sizes the
+    # hover box for that font while the page CSS renders Avenir and clips it.
+    st.plotly_chart(fig, use_container_width=True, theme=None)
+    # Spike lives in the hover SVG, which paints above the legend. Move only the
+    # legend into that SVG so the line sits behind it and the tooltip stays above
+    # endpoint labels (those stay in the SVG underneath).
+    st.components.v1.html(
+        """
+        <script>
+        (function () {
+          var doc = window.parent.document;
+          if (doc.getElementById("legend-over-spike")) return;
+          var s = doc.createElement("script");
+          s.id = "legend-over-spike";
+          s.textContent = "(function(){function lift(){document.querySelectorAll('.js-plotly-plot').forEach(function(gd){var svgs=gd.querySelectorAll('.svg-container > svg.main-svg');if(svgs.length<3)return;var legend=svgs[1].querySelector('g.legend');if(!legend)return;svgs[2].querySelectorAll(':scope > g.legend').forEach(function(n){n.remove()});svgs[2].appendChild(legend);});}new MutationObserver(lift).observe(document.body,{childList:true,subtree:true});lift();})();";
+          doc.documentElement.appendChild(s);
+        })();
+        </script>
+        """,
+        height=0,
+    )
     st.write("This dashboard displays regulatory agency personnel by fiscal year, from the latest Regulators' Budget report. Use the drop-down menu to select one or more regulatory subcategories to display."
     )
