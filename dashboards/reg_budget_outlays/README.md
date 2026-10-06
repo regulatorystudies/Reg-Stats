@@ -6,7 +6,7 @@ Streamlit dashboard of regulatory agency budget outlays by fiscal year (billions
 - Main chart: `data/reg_budget/regulatory_agency_budget_outlays_by_fy.csv` (Economic, Social, TSA)
 - Subcategory chart: `data/reg_budget/by_regulatory_subcategory/reg_subcategory_regulatory_agency_budget_outlays_by_fy.csv`
 
-Source CSVs are in millions; the app divides by 1,000 to plot billions. TSA is included in Homeland Security in the subcategory data.
+Source CSVs are in millions; the app divides by 1,000 to plot billions. TSA is included in Homeland Security in the subcategory data; `homeland_security_without_TSA` is Homeland Security minus the main file's `tsa` column (same as the personnel data).
 
 ## Run locally
 From the repository root:

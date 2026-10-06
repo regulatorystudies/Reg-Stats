@@ -38,6 +38,7 @@ MAIN_ORDER = list(MAIN_SERIES.keys())
 SUBCAT_LABELS = {
     "consumer_safety_and_health": "Consumer Safety & Health",
     "homeland_security": "Homeland Security",
+    "homeland_security_without_TSA": "Homeland Security w/o TSA",
     "transportation": "Transportation",
     "workplace": "Workplace",
     "environment_and_energy": "Environment and Energy",
@@ -48,6 +49,7 @@ SUBCAT_LABELS = {
 SUBCAT_COLORS = {
     "consumer_safety_and_health": red,
     "homeland_security": darkgreen,
+    "homeland_security_without_TSA": '#ADCAB8',
     "transportation": GWblue,
     "workplace": GWbuff,
     "environment_and_energy": lightblue,

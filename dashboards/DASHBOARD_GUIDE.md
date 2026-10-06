@@ -405,9 +405,10 @@ Each entry covers: what the user sees, which files it reads, what happens to the
 - `data/reg_budget/by_regulatory_subcategory/reg_subcategory_regulatory_agency_budget_outlays_by_fy.csv`
 
 **Differences from personnel.**
-- No "Homeland Security w/o TSA" series: the outlays data doesn't have it, and TSA is included in Homeland Security.
 - Y-axis step of 10 (billions) instead of 50.
 - Hover shows `$61.3B` instead of `61.3k`.
+
+**Homeland Security w/o TSA** (both apps): the CSV column `homeland_security_without_TSA` = `homeland_security` − `tsa` from the main file (TSA is 0 before 2002). Recalculate it whenever either file is updated.
 
 **Quirks.** The same as personnel (§5.6). The two files are almost line-for-line identical. **A fix in one usually belongs in the other.** Run `diff dashboards/reg_budget_personnel/reg_budget_personnel.py dashboards/reg_budget_outlays/reg_budget_outlays.py` to see every difference.
 
