@@ -1,5 +1,5 @@
 """
-title: Regulatory Agency Personnel by Fiscal Year
+title: Regulatory Agency Personnel by Subcategory
 author: Sayam Palrecha
 """
 import base64
@@ -121,8 +121,7 @@ def _subcat_step(vmax: float) -> float:
 
 
 def _endpoint_labels(fig: go.Figure, entries, x_last: float, y_max: float) -> None:
-    """entries: list of (label, color, value). Right-anchored at final x;
-    bump vertically when two labels would collide."""
+
     entries = [e for e in entries if e[2] > 0]
     entries.sort(key=lambda e: e[2])
     min_gap = max(y_max * 0.04, 0.5) if y_max > 0 else 0.5
@@ -213,7 +212,7 @@ def make_combined_chart(
     fig = go.Figure()
     if not selected:
         _base_layout(
-            fig, "Regulatory Agency Personnel by Fiscal Year",
+            fig, "Regulatory Agency Personnel by Subcategory",
             "Thousands of Full-Time Equivalent Personnel",
             caption,
             df["year"], 50, 50,
@@ -246,7 +245,7 @@ def make_combined_chart(
         )
 
     _base_layout(
-        fig, "Regulatory Agency Personnel by Fiscal Year",
+        fig, "Regulatory Agency Personnel by Subcategory",
         "Thousands of Full-Time Equivalent Personnel",
         caption, years, y_top, 50,
     )
@@ -259,7 +258,7 @@ def make_subcat_chart(
     fig = go.Figure()
     if not cols:
         _base_layout(
-            fig, "Regulatory Agency Personnel by Fiscal Year",
+            fig, "Regulatory Agency Personnel by Subcategory",
             "Thousands of Full-Time Equivalent Personnel",
             caption,
             df["year"], 50, 50,
@@ -306,7 +305,7 @@ def make_subcat_chart(
 
 
 # --- UI ---
-st.set_page_config(page_title="Regulatory Agency Personnel by Fiscal Year", layout="wide")
+st.set_page_config(page_title="Regulatory Agency Personnel by Subcategory", layout="wide")
 
 if not COMBINED_PATH.is_file() or not SUBCAT_PATH.is_file():
     st.error(f"Data files not found.\nTried:\n{COMBINED_PATH}\n{SUBCAT_PATH}")
@@ -320,7 +319,7 @@ subcat = subcat[["year", *sub_cols]].copy()
 sub_labels = [SUBCAT_LABELS[c] for c in sub_cols]
 label_to_col = {SUBCAT_LABELS[c]: c for c in sub_cols}
 
-updated = pd.to_datetime(os.path.getmtime(COMBINED_PATH), unit="s").strftime("%B %d, %Y")
+updated = "May 19, 2026"
 caption = f"Source: FY 2024 Regulators' Budget report<br>Updated: {updated}"
 
 if "selected_cats" not in st.session_state:
@@ -389,7 +388,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("Regulatory Agency Personnel by Fiscal Year")
+st.title("Regulatory Agency Personnel by Subcategory")
 left, right = st.columns([3, 9], gap="large")
 
 with left:
@@ -461,5 +460,5 @@ with right:
         """,
         height=0,
     )
-    st.write("This dashboard displays regulatory agency personnel by fiscal year, from the latest Regulators' Budget report. Use the drop-down menu to select one or more regulatory subcategories to display."
+    st.write("This dashboard displays regulatory agency personnel by subcategory, from the latest Regulators' Budget report. Use the drop-down menu to select one or more regulatory subcategories to display."
     )

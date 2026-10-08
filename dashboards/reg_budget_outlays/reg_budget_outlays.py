@@ -214,7 +214,7 @@ def make_combined_chart(
     if not selected:
         _base_layout(
             fig, "Regulatory Agency Budget Outlays by Fiscal Year",
-            "Billions of 2012 U.S. Dollars",
+            "Billions of Constant 2012 U.S. Dollars",
             caption,
             df["year"], 50, 50,
         )
@@ -461,5 +461,5 @@ with right:
         """,
         height=0,
     )
-    st.write("This dashboard displays regulatory agency budget outlays by fiscal year, from the latest Regulators' Budget report. Use the drop-down menu to select one or more regulatory subcategories to display."
+    st.write("This dashboard displays regulatory agency budget outlays by subcategory, from the latest Regulators' Budget report. Use the drop-down menu to select one or more regulatory subcategories to display."
     )
