@@ -213,7 +213,7 @@ def make_combined_chart(
     fig = go.Figure()
     if not selected:
         _base_layout(
-            fig, "Regulatory Agency Budget Outlays by Fiscal Year",
+            fig, "Regulatory Agency Budget Outlays by Subcategory",
             "Billions of Constant 2012 U.S. Dollars",
             caption,
             df["year"], 50, 50,
@@ -246,7 +246,7 @@ def make_combined_chart(
         )
 
     _base_layout(
-        fig, "Regulatory Agency Budget Outlays by Fiscal Year",
+        fig, "Regulatory Agency Budget Outlays by Subcategory",
         "Billions of 2012 U.S. Dollars",
         caption, years, y_top, 10,
     )
@@ -259,7 +259,7 @@ def make_subcat_chart(
     fig = go.Figure()
     if not cols:
         _base_layout(
-            fig, "Regulatory Agency Budget Outlays by Fiscal Year",
+            fig, "Regulatory Agency Budget Outlays by Subcategory",
             "Billions of 2012 U.S. Dollars",
             caption,
             df["year"], 50, 50,
@@ -320,7 +320,7 @@ subcat = subcat[["year", *sub_cols]].copy()
 sub_labels = [SUBCAT_LABELS[c] for c in sub_cols]
 label_to_col = {SUBCAT_LABELS[c]: c for c in sub_cols}
 
-updated = pd.to_datetime(os.path.getmtime(COMBINED_PATH), unit="s").strftime("%B %d, %Y")
+updated = "May 19, 2026"
 caption = f"Source: FY 2024 Regulators' Budget report<br>Updated: {updated}"
 
 if "selected_cats" not in st.session_state:
