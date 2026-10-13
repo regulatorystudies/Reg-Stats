@@ -306,7 +306,7 @@ def make_subcat_chart(
 
 
 # --- UI ---
-st.set_page_config(page_title="Regulatory Agency Budget Outlays by Fiscal Year", layout="wide")
+st.set_page_config(page_title="Regulatory Agency Budget Outlays by Subcategory", layout="wide")
 
 if not COMBINED_PATH.is_file() or not SUBCAT_PATH.is_file():
     st.error(f"Data files not found.\nTried:\n{COMBINED_PATH}\n{SUBCAT_PATH}")
@@ -389,7 +389,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("Regulatory Agency Budget Outlays by Fiscal Year")
+st.title("Regulatory Agency Budget Outlays by Subcategory")
 left, right = st.columns([3, 9], gap="large")
 
 with left:
