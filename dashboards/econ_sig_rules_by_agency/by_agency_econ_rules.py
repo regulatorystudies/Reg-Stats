@@ -291,7 +291,7 @@ def plot_agency_plotly(df_agency: pd.DataFrame, agency_acronym: str, agency_name
     fg_colors = colors
 
     hover_texts = [
-        f"<b>Year {yr}</b><br>Rules: {int(r)}<br>Party: {p}"
+        f"<b>Year: {yr}</b><br>Rules: {int(r)}<br>Party: {p}"
         for yr, r, p in zip(years, rules, parties)
     ]
 
@@ -453,7 +453,7 @@ def plot_combined_plotly(df_combined: pd.DataFrame):
     colors = [PARTY_COLORS.get(p, "#003366") for p in parties]
 
     hover_texts = [
-        f"<b>Year {yr}</b><br>Rules: {int(r)}<br>Party: {p}"
+        f"<b>Year: {yr}</b><br>Rules: {int(r)}<br>Party: {p}"
         for yr, r, p in zip(years, rules, parties)
     ]
 
